@@ -25,4 +25,6 @@ Falkland CMS is a Content/Collection Management System written in Clojure, Cloju
 
 ## License
 
-Falkland CMS is released under the [MIT license](http://opensource.org/licenses/MIT).
+Copyright © 2013 Snooty Monkey
+
+Falkland CMS is distributed under the [MIT license](http://opensource.org/licenses/MIT).
