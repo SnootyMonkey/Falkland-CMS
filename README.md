@@ -3,26 +3,26 @@ falkland-cms
 
 Falkland CMS is a Content/Collection Management System written in Clojure, ClojureScript and Couchbase.
 
-# What is a CMS?
+## What is a CMS?
 
-# Why Falkland CMS?
+## Why Falkland CMS?
 
-## Where'd the name came from?
+### Where'd the name came from?
 
-# Who is this for?
+## Who is this for?
 
-# Installation
+## Installation
 
-# Quick Start Guide
+## Quick Start Guide
 
-# Concepts
+## Concepts
 
-## Taxonomies
+### Taxonomies
 
-# Contributing
+## Contributing
 
-# Getting Help
+## Getting Help
 
-# License
+## License
 
 Falkland CMS is released under the [MIT license](http://opensource.org/licenses/MIT).
