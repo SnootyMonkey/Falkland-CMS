@@ -11,7 +11,7 @@ Falkland CMS is a Content/Collection Management System written in Clojure, Cloju
 
 ### Who is this not for?
 
-* Anyone that needs granular [security][#security]
+* Anyone that needs granular [security](#security)
 
 ### Where'd the name came from?
 
