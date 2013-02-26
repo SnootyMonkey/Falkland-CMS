@@ -1,11 +1,11 @@
-Falkland-CMS
+Falkland CMS
 ============
 
 Falkland CMS is a Web Content/Collection Management System written in Clojure, ClojureScript and CouchDB.
 
 ## What is a CMS?
 
-A CMS or [WCMS (web content management sysstem)](http://en.wikipedia.org/wiki/Web_content_management_system) is a system for publishing website content. Key foundational features of a WCMS are:
+A CMS or [WCMS (web content management system)](http://en.wikipedia.org/wiki/Web_content_management_system) is a system for publishing website content. Key foundational features of a WCMS are:
 
 * separation of content and presentation, managing the data in the system separately from how it looks when presented
 * easy editing of content, usually through an administrative web UI
@@ -16,7 +16,7 @@ Falkland CMS has these foundational capabilities.
 
 ## Why Falkland CMS?
 
-Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a Web CMS, a Digital Collection Management system, and Museum Exhibit Management system.
+Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a Web CMS, a Digital Collection Management system, and a Museum Exhibit Management system.
 
 It is ideal for:
 
