@@ -1,9 +1,11 @@
 Falkland CMS
 ============
 
+## DESCRIPTION
+
 Falkland CMS is a Web Content/Collection Management System written in Clojure, ClojureScript and CouchDB.
 
-## What is a CMS?
+### What is a CMS?
 
 A CMS or [WCMS (web content management system)](http://en.wikipedia.org/wiki/Web_content_management_system) is a system for publishing website content. Key foundational features of a WCMS are:
 
@@ -14,7 +16,7 @@ A CMS or [WCMS (web content management system)](http://en.wikipedia.org/wiki/Web
 
 Falkland CMS has these foundational capabilities.
 
-## Why Falkland CMS?
+### Why Falkland CMS?
 
 Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a Web CMS, a Digital Collection Management system, and a Museum Exhibit Management system.
 
@@ -37,6 +39,12 @@ Falklands CMS is for collecting and curating, not authoring. While Falkland CMS 
 * teachers and professors
 * collectors / hobbyists / enthusiasts
 
+### Who is this not for?
+
+* Anyone that needs granular [security](#security)
+* Anyone that needs extensive new content authoring
+* Anyone that needs extensive, professional-grade offline artifact cataloging
+
 ### What are some (hypothetical) example uses of Falkland CMS?
 
 * The Venerable VIC-20 - an online exihibit of everything Commodore VIC-20
@@ -47,17 +55,15 @@ Falklands CMS is for collecting and curating, not authoring. While Falkland CMS 
 * 8-bit '80's - a site to show off an extensive retro video game collection
 * Pitiful Pirates - The most losingest team in the history of professional sports, Tampa Bay Buccaneers from 1976-1995
 
-### Who is this not for?
+### What are some (real) example uses of Falkland CMS?
 
-* Anyone that needs granular [security](#security)
-* Anyone that needs extensive new content authoring
-* Anyone that needs extensive, professional-grade offline artifact cataloging
+* [Falklandsophile](http://falklandsophile.com)
 
 ### Where'd the name came from?
 
 Falkland CMS was built to support the [Falklandsophile](http://falklandsophile.com) website. So the name seemed fitting.
 
-## Installation
+## INSTALLATION
 
 ### External Dependencies
 
@@ -69,7 +75,7 @@ Most of Falkland's dependencies are internal, meaning lein will handle getting t
 * [CouchDB](http://http://couchdb.apache.org/) - CouchDB is a schema-free, document-oriented database, ideally suited for a CMS
 * [elasticsearch](http://www.elasticsearch.org/) - elasticsearch is a schema-free, document-oriented search engine, ideally suited for CouchDB
 
-## Quick Start Guide
+## QUICK START
 
 ## Concepts
 
@@ -95,15 +101,11 @@ Users of Falkland CMS are one of three types:
 * **User** - named users that can create, update, and delete all items in the system, but not administer the configuration of the system
 * **The General Public** - everyone accessing the system anonymously with their web browser
 
-## Example Sites
+## DEVELOPMENT AND CONTRIBUTING
 
-* [Falklandsophile](http://falklandsophile.com)
+## GETTING HELP
 
-## Contributing
-
-## Getting Help
-
-## License
+## LICENSE
 
 Copyright © 2013 Snooty Monkey
 
