@@ -47,7 +47,7 @@ There are 3 types of pages
 * **item** - An item page displays a single particular item of a particular item type
 * **taxonomy** - A taxonomy page 
 
-### <a id="security"/> Security Model
+### <a name="security"/> Security Model
 
 Users of Falkland CMS are one of three types:
 
