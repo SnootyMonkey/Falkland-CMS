@@ -77,7 +77,7 @@ Most of Falkland's dependencies are internal, meaning lein will handle getting t
 
 ## QUICK START
 
-## Concepts
+## CONCEPTS
 
 ### Items
 
@@ -102,6 +102,8 @@ Users of Falkland CMS are one of three types:
 * **The General Public** - everyone accessing the system anonymously with their web browser
 
 ## DEVELOPMENT AND CONTRIBUTING
+
+### Repository Structure
 
 ## GETTING HELP
 
