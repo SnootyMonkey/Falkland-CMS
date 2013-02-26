@@ -1,4 +1,4 @@
-falkland-cms
+Falkland-CMS
 ============
 
 Falkland CMS is a Content/Collection Management System written in Clojure, ClojureScript and CouchDB.
@@ -26,13 +26,26 @@ Most of Falkland's dependencies are internal, meaning lein will handle getting t
 * [Clojure](http://clojure.org/) - Clojure is a Lisp that runs on the Java VM
 * [Java](http://www.java.com/) - a Java VM is needed to run Clojure
 * [Leiningen](https://github.com/technomancy/leiningen) - Clojure's native build tool
-* [CouchDB](http://http://couchdb.apache.org/) - CouchDB is a document-oriented database, ideally suited for a CMS
+* [CouchDB](http://http://couchdb.apache.org/) - CouchDB is a schema-free, document-oriented database, ideally suited for a CMS
+* [elasticsearch](http://www.elasticsearch.org/) - elasticsearch is a schema-free, document-oriented search engine, ideally suited for CouchDB
 
 ## Quick Start Guide
 
 ## Concepts
 
+### Items
+
 ### Taxonomies
+
+### Faceted Search
+
+### Pages
+
+There are 3 types of pages
+
+* **static** - A static page is a simple CMS page, it may reference named or searched for resources, but it could also be made up of just static content. A home page, about page, or terms of use page is a good example.
+* **item** - An item page displays a single particular item of a particular item type
+* **taxonomy** - A taxonomy page 
 
 ### <a id="security"/> Security Model
 
