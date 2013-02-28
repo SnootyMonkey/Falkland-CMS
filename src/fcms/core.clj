@@ -1,4 +1,4 @@
-(ns fc.core)
+(ns fcms.core)
 
 (defn foo
   "I don't do a whole lot."
