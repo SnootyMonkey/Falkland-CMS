@@ -87,7 +87,7 @@ Most of Falkland's dependencies are internal, meaning lein will handle getting t
 
 ### Pages
 
-There are 3 types of pages
+There are 3 types of pages:
 
 * **static** - A static page is a simple CMS page, it may reference named or searched for resources, but it could also be made up of just static content. A home page, about page, or terms of use page is a good example.
 * **item** - An item page displays a single particular item of a particular item type
@@ -102,8 +102,6 @@ Users of Falkland CMS are one of three types:
 * **The General Public** - everyone accessing the system anonymously with their web browser
 
 ## DEVELOPMENT AND CONTRIBUTING
-
-### Repository Structure
 
 ## GETTING HELP
 
