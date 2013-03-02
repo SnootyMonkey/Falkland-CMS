@@ -34,6 +34,15 @@ Given that, we have to deal with 2 issues, a document in CouchDB that is out of 
 * http://stackoverflow.com/questions/130092/couchdb-document-model-changes
 * http://grokbase.com/t/couchdb/user/12b2s3y6n8/how-do-u-handle-schema-changes
 
+## Ring / Compojure
+
+* [Compojure docs](http://briancarper.net/clojure/compojure-doc.html)
+* [Web Application Development with Clojure](http://www.vijaykiran.com/2012/01/11/web-application-development-with-clojure-part-1/)
+
 ## ClojureScript
 
 * [ClojureOne tutorial](http://clojurescriptone.com/)
+
+## Testing with Cucumber
+
+* [Cucumber Tutorial for Clojure](https://github.com/mjul/cucumber-tutorial)
