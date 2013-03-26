@@ -3,31 +3,33 @@ Falkland CMS
 
 ## DESCRIPTION
 
-Falkland CMS is a Web Content/Collection Management System written in Clojure, ClojureScript and CouchDB.
+Falkland CMS is a Curation Management System written in Clojure, ClojureScript and CouchDB.
 
 ### What is a CMS?
 
-A CMS or [WCMS (web content management system)](http://en.wikipedia.org/wiki/Web_content_management_system) is a system for publishing website content. Key foundational features of a WCMS are:
+Traditionally a CMS or [WCMS (web content management system)](http://en.wikipedia.org/wiki/Web_content_management_system) is a system for publishing website content. Key foundational features of a WCMS are:
 
 * separation of content and presentation, managing the data in the system separately from how it looks when presented
 * easy editing of content, usually through an administrative web UI
 * collaboration of multiple content authors
 * templates to take the data in the system and present it as web content, typically HTML
 
-Falkland CMS has these foundational capabilities.
+Falkland CMS has these foundational capabilities, but is not as focused on the creation of new content as a traditional CMS.
 
-### Why Falkland CMS?
+Alternatives acronyms that are more suited are Collection Management System (CMS), Digital Collection Management System (DCMS), or the acronym used for Falkland CMS, Curation Management System (CMS) or Digital Curation Management System (DCMS).
 
-Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a Web CMS, a Digital Collection Management system, and a Museum Exhibit Management system.
+### Why use Falkland CMS?
+
+Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a traditional Web CMS, a Digital Collection Management system, and a Museum Exhibit Management system.
 
 It is ideal for:
 
-* online museum exihibits
 * repository and presentation of digital collections
+* online museum exihibits
 * online presentation of library collections
 * repository and presentation of primary and secondary source collections
 
-Falklands CMS is for collecting and curating, not authoring. While Falkland CMS supports authoring of new content to provide context and exhibition of collected resources, it's not suitable as a WCMS for brand new content. You wouldn't run a daily newspaper with Falklankds CMS. It's primary role is to point to existing content, either content on the web, or content collected into Falklands CMS 
+Falklands CMS is for collecting and curating, not authoring. While Falkland CMS supports authoring of new content, it is to provide context for the presentation and exhibition of collected resources. Falkland CMS is not intended as a WCMS for a huge corpus of brand new content. You wouldn't run a daily newspaper with Falklankds CMS. Its primary role is to point to existing content, either content on the web, or content collected into Falklands CMS.
 
 ### Who is this for?
 
@@ -52,8 +54,8 @@ Falklands CMS is for collecting and curating, not authoring. While Falkland CMS 
 * Mudskippers.org - a guide to all the world's knowledge about the amazing amphibian fish
 * Jack Freeman's Library - presenting 40 years of one man's books
 * nil.org - A complete guide to Nihilism 
-* 8-bit '80's - a site to show off an extensive retro video game collection
-* Pitiful Pirates - The most losingest team in the history of professional sports, Tampa Bay Buccaneers from 1976-1995
+* 8-bit '80's - a site to exhibit an extensive retro video game collection
+* The Pitiful Pirates - The most losingest team in the history of professional sports, the Tampa Bay Buccaneers from 1976-1995
 
 ### What are some (real) example uses of Falkland CMS?
 
