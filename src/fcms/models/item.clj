@@ -1,15 +1,5 @@
 (ns fcms.models.item
-  (:use [fcms.models.base :exclude [db-resource]])
-  (:require [com.ashafa.clutch :as clutch]))
+  (:require [fcms.models.base :as base]))
  
-(defn create [params]
-  (clutch/with-db (db)
-    (clutch/put-document {:data params})))
-
-(defn delete [item]
-  (clutch/with-db (db)
-    (clutch/delete-document item)))
-
-(defn retrieve [id]
-  (clutch/with-db (db)
-    (clutch/get-document id)))
+(defn create-item [params]
+  (base/create (assoc params :type :item)))

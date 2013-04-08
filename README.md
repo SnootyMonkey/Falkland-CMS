@@ -24,12 +24,11 @@ Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the
 
 It is ideal for:
 
-* repository and presentation of digital collections
+* digital collections repository
 * online museum exihibits
 * online presentation of library collections
-* repository and presentation of primary and secondary source collections
 
-Falklands CMS is for collecting and curating, not authoring. While Falkland CMS supports authoring of new content, it is to provide context for the presentation and exhibition of collected resources. Falkland CMS is not intended as a WCMS for a huge corpus of brand new content. You wouldn't run a daily newspaper with Falklankds CMS. Its primary role is to point to existing content, either content on the web, or content collected into Falklands CMS.
+Falklands CMS is for collecting and curating, not authoring. While Falkland CMS supports authoring of new content, this new content is really intended to provide context for the presentation and exhibition of collected resources. Falkland CMS is not intended as a WCMS for a huge corpus of brand new content. You wouldn't run a daily newspaper with Falklankds CMS. Its primary role is to point to existing content, either content on the web, or content collected into Falklands CMS.
 
 ### Who is this for?
 
@@ -59,7 +58,7 @@ Falklands CMS is for collecting and curating, not authoring. While Falkland CMS 
 
 ### What are some (real) example uses of Falkland CMS?
 
-* [Falklandsophile](http://falklandsophile.com)
+* [Falklandsophile](http://falklandsophile.com) - The Complete Guide to Falkland Islands Resources
 
 ### Where'd the name came from?
 

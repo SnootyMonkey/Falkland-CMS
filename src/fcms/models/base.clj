@@ -14,6 +14,18 @@
   (clutch/with-db (db)
     (clutch/all-documents)))
  
+(defn create [params]
+  (clutch/with-db (db)
+    (clutch/put-document {:data params})))
+
 (defn all []
   (clutch/with-db (db)
     (clutch/all-documents {:include_docs true})))
+
+(defn delete [item]
+  (clutch/with-db (db)
+    (clutch/delete-document item)))
+
+(defn retrieve [id]
+  (clutch/with-db (db)
+    (clutch/get-document id)))
