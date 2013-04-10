@@ -22,10 +22,15 @@
   (clutch/with-db (db)
     (clutch/all-documents {:include_docs true})))
 
+(defn retrieve [id]
+  (clutch/with-db (db)
+    (clutch/get-document id)))
+
 (defn delete [item]
   (clutch/with-db (db)
     (clutch/delete-document item)))
 
-(defn retrieve [id]
-  (clutch/with-db (db)
-    (clutch/get-document id)))
+(defn delete-by-id [id]
+  (let [item (retrieve id)]
+    (if-not (nil? item)
+      (delete item))))
