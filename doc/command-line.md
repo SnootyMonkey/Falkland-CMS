@@ -1,6 +1,6 @@
 # Falkland CMS Command-line Interface
 
-The command-line interface can be invoked interactively, or with arguments.
+Falkland CMS includes a command-line interface can be invoked interactively, or with arguments.
 
 ## Interactive
 
@@ -16,15 +16,96 @@ Falkland CMS will respond with the menu of options.
 Welcome to Falkland CMS v0.1!
 
 Please choose an option:
-1) Add a new item
-2) Search for items
-3) Configure Falkland CMS
+1) Change current collection: Mudskippers
+2) Add a new item
+3) Search for items
+4) Configure Falkland CMS
 q) Quit
 
 >
 ```
 
 Chose an option from the resulting menu by typing in the option's number.
+
+### Changing the current collection
+
+```console
+Choose a collection:
+  1) Camus
+* 2) Mudskippers
+  3) Pitiful Pirates
+
+  a) Add a new collection
+  q) Return to the main menu
+
+> 1
+
+Choose a collection:
+* 1) Camus
+  2) Mudskippers
+  3) Pitiful Pirates
+
+  a) Add a new collection
+  q) Return to the main menu
+
+> 
+```
+
+### Adding a collection
+
+When you add a collection you're presented with a menu to fill in the collection's attributes.
+
+```console
+Choose a collection:
+* 1) Camus
+  2) Mudskippers
+  3) Pitiful Pirates
+
+  a) Add a new collection
+  q) Return to the main menu
+
+> a
+
+Add a collection. Please choose an option:
+1) Name*:
+2) Slug*:
+
+a) Add the collection
+q) Cancel and return to the collection menu
+
+> 1
+Name: Jack Freeman's Library
+
+Add a collection. Please choose an option:
+1) Name*: Jack Freeman's Library
+2) Slug*:
+
+a) Add the collection
+q) Cancel and return to the main menu
+
+> 2
+Slug: jack
+
+Add a collection. Please choose an option:
+1) Name*: Jack Freeman's Library
+2) Slug*: jack
+
+a) Add the collection
+q) Cancel and return to the collection menu
+
+> a
+
+Choose a collection:
+* 1) Camus
+  2) Mudskippers
+  3) Pitiful Pirates
+  4) Jack Freeman's Library
+
+  a) Add a new collection
+  q) Return to the main menu
+
+>
+```
 
 ### Adding an item
 
@@ -34,12 +115,13 @@ When you add an item you're presented with a menu to fill in the item's attribut
 Welcome to Falkland CMS v0.1!
 
 Please choose an option:
-1) Add a new item
-2) Search for items
-3) Configure Falkland CMS
+1) Change current collection: Mudskippers
+2) Add a new item
+3) Search for items
+4) Configure Falkland CMS
 q) Quit
 
-> 1
+> 2
 
 Add an item. Please choose an option:
 1) Name*:
@@ -143,12 +225,13 @@ You can search for items in the system by any of the attributes of the time. The
 Welcome to Falkland CMS v0.1!
 
 Please choose an option:
-1) Add a new item
-2) Search for items
-3) Configure Falkland CMS
+1) Change current collection: Mudskippers
+2) Add a new item
+3) Search for items
+4) Configure Falkland CMS
 q) Quit
 
-> 2
+> 3
 
 Find items. Please choose an option:
 1) Name:
@@ -311,6 +394,17 @@ q) Cancel and return to the main menu
 You can add a new taxonomy to the sytem.
 
 ```console
+Welcome to Falkland CMS v0.1!
+
+Please choose an option:
+1) Change current collection: Mudskippers
+2) Add a new item
+3) Search for items
+4) Configure Falkland CMS
+q) Quit
+
+> 4
+
 Please choose an option:
 1) Taxonomy - media-type
 2) Taxonomy - topic
