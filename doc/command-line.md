@@ -125,10 +125,11 @@ q) Quit
 
 Add an item. Please choose an option:
 1) Name*:
-2) URL*:
-3) Creator:
-4) Taxonomy - media-type:
-5) Taxonomy - topic:
+2) Slug*:
+3) URL*:
+4) Creator:
+5) Taxonomy - media-type:
+6) Taxonomy - topic:
 
 a) Add the item
 q) Cancel and return to the main menu
@@ -144,10 +145,11 @@ Name: Amazing animals - Mudskipper
 
 Add an item. Please choose an option:
 1) Name*: Amazing animals - Mudskipper
-2) URL*:
-3) Creator:
-4) Taxonomy - media-type:
-5) Taxonomy - topic:
+2) Slug*: amazing-animals-mudskipper
+3) URL*:
+4) Creator:
+5) Taxonomy - media-type:
+6) Taxonomy - topic:
 
 a) Add the item
 q) Cancel and return to the main menu

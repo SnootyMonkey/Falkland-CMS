@@ -7,6 +7,13 @@
                     :username nil
                     :password nil)) 
 
+;; Slugify
+;; Leave 0-9 and -
+;; replace A-Z with a-z
+;; replace non-alpha-numeric that's not at the end with -
+;; replace -- with -
+;; if not unique, add -1 to the end and increment 1 until it is unique
+
 (defn db []
   (clutch/get-database db-resource))
 

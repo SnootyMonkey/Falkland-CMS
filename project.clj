@@ -5,10 +5,9 @@
             :url "http://opensource.org/licenses/MIT"}
   :dependencies [
     [org.clojure/clojure "1.5.0"] ; Lisp on the JVM http://clojure.org/documentation
-    [ring "1.1.8"] ; Web middleware https://github.com/ring-clojure/ring
-    [ring/ring-json "0.2.0"] ; handling JSON requests and responses https://github.com/ring-clojure/ring-json
+    [ring/ring-jetty-adapter "1.1.8"] ; Web Server https://github.com/ring-clojure/ring
     [compojure "1.1.5"] ; Web routing https://github.com/weavejester/compojure
-    [lib-noir "0.4.8"] ; utilities and helpers for ring apps https://github.com/noir-clojure/lib-noir
+    [liberator "0.8.0"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0-RC1"] ; CouchDB client https://github.com/clojure-clutch/clutch
   ]
   :plugins [
