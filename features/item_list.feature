@@ -1,35 +1,68 @@
 Feature: Item list
-	
-	Scenario: List resources
-		Given the system knows about the following items
+
+	Background:
+		Given the system knows about the following items in collection "business"
 			|taxonomy				|name				|creator			|URL									|
 			|media-type:URL	|Amazon.com	|Jeff Bezos		|http://amazon.com/		|
 			|media-type:URL	|Apple 			|Steve Jobs		|http://apple.com/		|
 			|media-type:URL	|iPod 			|Jonathan Ives|http://apple.com/ipod|			
-		When an API client requests GET /resources
+	
+	Scenario: List resources
+		When an API client requests GET "/business/" accepting "application/json;schema=vnd.fcms.item;version=1"
 		Then the response should be JSON:
 		"""
-		[
-			{
-				"id": any,
-				"version": any,
-				"name": "Amazon.com",
-				"creator": "Jeff Bezos",
-				"URL": "http://amazon.com"
-			},
-			{
-				"id": any,
-				"version": any,
-				"name": "Apple",
-				"creator": "Steve Jobs",
-				"URL": "http://apple.com/"
-			},
-			{
-				"id": any,
-				"version": any,
-				"name": "iPod",
-				"creator": "Jonathan Ives",
-				"URL": "http://apple.com/ipod"
-			}
-		]
+		{
+		   "items":[
+		      {
+		         "name":"Amazon.com",
+		         "URL":"http://amazon.com/",
+		         "created_at":any,
+		         "updated_at":any,
+		         "links":[
+		            {
+		               "rel":"self",
+		               "method":"get",
+		               "href":"/business/amazon-com"
+		               "type":"application/json;schema=vnd.fcms.item;version=1"
+		            }
+		         ]
+		      },
+		      {
+		         "name":"Apple",
+		         "URL": "http://apple.com/"
+		         "created_at":any,
+		         "updated_at":any,
+		         "links":[
+		            {
+		               "rel":"self",
+		               "method":"get",
+		               "href":"/business/apple"
+		               "type":"application/json;schema=vnd.fcms.item;version=1"
+		            }
+		         ]
+		      },
+		      {
+		         "name":"iPod",
+		         "URL":"http://apple.com/ipod",
+		         "created_at":any,
+		         "updated_at":any,
+		         "links":[
+		            {
+		               "rel":"self",
+		               "method":"get",
+		               "href":"/business/ipod"
+		               "type":"application/json;schema=vnd.fcms.item;version=1"
+		            }
+		         ]
+		      }
+		   ],
+		   "links":[
+		      {
+		         "rel":"new",
+		         "method":"post",
+		         "href":"/business/",
+		         "type":"application/json;schema=vnd.fcms.item;version=1"
+		      }
+		   ]
+		}
 		"""

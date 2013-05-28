@@ -13,7 +13,7 @@ This is the documentation for using the Falkland CMS Hypermedia (REST) API.
 
 Falkland CMS supports a Hypermedia (RESTful) API that can be used from any programming language to access all the capabilities of Falkland CMS.
 
-The intent of this API is to be a true [REST](http://en.wikipedia.org/wiki/Representational_State_Transfer) API in the full-fledged [Roy Fielding](http://roy.gbiv.com/), [HATEOAS](http://en.wikipedia.org/wiki/HATEOAS) style. You can help with that by pointing out anything you perceive as a deviation. 
+The intent of this API is to be a true [REST](http://en.wikipedia.org/wiki/Representational_State_Transfer) API in the full-fledged [Roy Fielding](http://roy.gbiv.com/), [HATEOAS](http://en.wikipedia.org/wiki/HATEOAS) style. You can help with that by pointing out anything you perceive as a deviation.
 
 
 ## Notes on this Documentation
@@ -25,10 +25,10 @@ The example API calls are provided in [cURL](http://curl.haxx.se/). When explori
 
 Provide the custom [Internet media type](http://en.wikipedia.org/wiki/Internet_media_type) (formerly MIME type) saying you want Falkland CMS [JSON](http://www.json.org/) data and the version of the API you are using in the header of your API requests.
 
-	Accept: application/json;vnd.fcms.{type};version={version}  
+	Accept: application/json;vnd.fcms.{type};version={version}
 
 	Example:  Accept: application/json;vnd.fcms.category;version=1
-	
+
 The version of the API resource you want is determined by the Accept header that you pass in the request. If no version is provided, it is assumed you want the latest version.
 
 
@@ -53,13 +53,13 @@ The following is a quick overview of the API calls that make up the Falkland CMS
 
 /
 
-	GET - links to resources
+	GET - list of collections, links to resources
 
 /collection-slug
 Example: /mudskippers
 
 	GET (accept collection type) - get representation of the collection
-	GET (accept item type) - list of item resources in the collection 
+	GET (accept item type) - list of item resources in the collection
 	PUT - create or update the collection resource
 	POST - create a new item resource in the collection
 	DELETE - delete the collection
@@ -71,7 +71,7 @@ Example: /mudskippers/media-type
 	PUT - create or update the representation of the taxonomy
 	DELETE - delete the taxonomy
 
-/collection-slug/taxonomy-slug/category-slug 
+/collection-slug/taxonomy-slug/category-slug
 Example: /mudskippers/media-type/video
 /collection-slug/taxonomy-slug/category-slug/category-slug
 Example: /mudskippers/media-type/video/online
