@@ -1,0 +1,1 @@
+(ns fcms.views.collections)
