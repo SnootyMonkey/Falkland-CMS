@@ -2,6 +2,8 @@
   (:require [fcms.models.base :as base]
             [fcms.models.item :as item]))
 
+(def collection-type "application/vnd.fcms.collection+json")
+
 (defn create-collection [name]
   (base/create {:name name :type :collection}))
 

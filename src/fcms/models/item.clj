@@ -1,6 +1,8 @@
 (ns fcms.models.item
   (:require [fcms.models.base :as base]))
 
+(def item-type "application/vnd.fcms.item+json")
+
 (defn create-item [collection params]
   (base/create (assoc params :type :item)))
 

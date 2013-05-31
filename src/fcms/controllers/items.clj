@@ -3,10 +3,10 @@
             [liberator.core :refer (defresource)]
             [fcms.models.collection :as collection]
             [fcms.models.item :as item]
-    		    [fcms.views.items :as view]))
+    		    [fcms.models.item :refer (item-type)]))
 
 (defresource item [coll-name item-name]
-  :available-media-types ["application/json;schema=vnd.fcms.item;version=1"]
+  :available-media-types [item-type]
   :handle-ok (fn [_] (format "The collection is %s and the item is %s" coll-name item-name)))
 
 (defroutes item-routes

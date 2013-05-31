@@ -8,7 +8,7 @@ Feature: Item list
 			|media-type:URL	|iPod 			|Jonathan Ives|http://apple.com/ipod|			
 	
 	Scenario: List resources
-		When an API client requests GET "/business/" accepting "application/json;schema=vnd.fcms.item;version=1"
+		When an API client requests GET "/business/" accepting "application/vnd.fcms.item+json;version=1"
 		Then the response should be JSON:
 		"""
 		{
@@ -23,7 +23,7 @@ Feature: Item list
 		               "rel":"self",
 		               "method":"get",
 		               "href":"/business/amazon-com"
-		               "type":"application/json;schema=vnd.fcms.item;version=1"
+		               "type":"application/vnd.fcms.item+json;version=1"
 		            }
 		         ]
 		      },
@@ -37,7 +37,7 @@ Feature: Item list
 		               "rel":"self",
 		               "method":"get",
 		               "href":"/business/apple"
-		               "type":"application/json;schema=vnd.fcms.item;version=1"
+		               "type":"application/vnd.fcms.item+json;version=1"
 		            }
 		         ]
 		      },
@@ -51,7 +51,7 @@ Feature: Item list
 		               "rel":"self",
 		               "method":"get",
 		               "href":"/business/ipod"
-		               "type":"application/json;schema=vnd.fcms.item;version=1"
+		               "type":"application/vnd.fcms.item+json;version=1"
 		            }
 		         ]
 		      }
@@ -61,7 +61,7 @@ Feature: Item list
 		         "rel":"new",
 		         "method":"post",
 		         "href":"/business/",
-		         "type":"application/json;schema=vnd.fcms.item;version=1"
+		         "type":"application/vnd.fcms.item+json;version=1"
 		      }
 		   ]
 		}
