@@ -33,8 +33,8 @@ Get all the items in a collection.
 
    URL         /{collection slug}?num=50&start=200
    Method      GET
-   Query       num - how many items to return
-   Query       start - 0-based index of the 1st item to return
+   Query       num - how many items to return, optional, defaults to 50
+   Query       start - 0-based index of the 1st item to return, optional, defaults to 0
    Accept      application/vnd.fcms.item+json;version=1
 
 #### Request Example
@@ -94,7 +94,25 @@ The response has a JSON array called items which contains partial representation
       {
          "rel":"new",
          "method":"post",
-         "href":"/mudskippers/",
+         "href":"/mudskippers",
+         "type":"application/vnd.fcms.item+json;version=1"
+      },
+      {
+         "rel":"first",
+         "method":"get",
+         "href":"/mudskippers?num=2",
+         "type":"application/vnd.fcms.item+json;version=1"
+      },
+      {
+         "rel":"prev",
+         "method":"get",
+         "href":"/mudskippers?num=2&start=2",
+         "type":"application/vnd.fcms.item+json;version=1"
+      },
+      {
+         "rel":"next",
+         "method":"get",
+         "href":"/mudskippers?num=2&start=4",
          "type":"application/vnd.fcms.item+json;version=1"
       }
    ]
@@ -123,7 +141,7 @@ cURL
 ```shell
 curl -i --header "Accept: application/vnd.fcms.item+json;version=1" -X GET http://{host:port}/mudskippers/amazing-animals-mudskipper
 
-curl -i --header "Accept: application/vnd.fcms.item+json;version=1" -X GET http://{host:port}/mudskippers/media-type/video/online/amazing-animals-mudskipper
+curl -i --header "Accept: application/vnd.fcms.item+json;version=1" -X GET http://{host:port}/mudskippers/media-types/videos/online/amazing-animals-mudskipper
 ```
 
 #### Response
@@ -166,19 +184,19 @@ The response has a complete JSON representation of the item which contains links
       {
          "rel":"category",
          "method":"get",
-         "href":"/mudskippers/media-type/video/online",
+         "href":"/mudskippers/media-types/videos/online",
          "type":"application/vnd.fcms.category+json;version=1"
       },
       {
          "rel":"category",
          "method":"get",
-         "href":"/mudskippers/topic/reproduction",
+         "href":"/mudskippers/topics/reproduction",
          "type":"application/vnd.fcms.category+json;version=1"
       },
       {
          "rev":"collection",
          "method":"get",
-         "href":"/stashes/1",
+         "href":"/mudskippers",
          "type":"application/vnd.fcms.collection+json;version=1"
       }
    ]
@@ -186,7 +204,7 @@ The response has a complete JSON representation of the item which contains links
 ```
 
 <a name='create-item'/>
-### Create an Item in a Collection
+### Create an Item
 
 Create a new item in a collection.
 
@@ -214,10 +232,9 @@ Here is a more complete representation:
 ```json
 {
    "name":"Mudskipper",
-   "slug":"wikipedia-mudskipper"
    "URL":"http://en.wikipedia.org/wiki/Mudskipper",
-   "category":"/mudskippers/media-type/article/online",
-   "category":"/mudskippers/topic/general",
+   "category":"/mudskippers/media-types/articles/online",
+   "category":"/mudskippers/topics/general",
    "description":"Mudskipper entry from Wikipedia, the free encyclopedia"
 }
 ```
@@ -227,7 +244,7 @@ Here is a more complete representation:
 cURL
 
 ```shell
-curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"Mudskipper","slug":"wikipedia-mudskipper","URL":"http://en.wikipedia.org/wiki/Mudskipper","category":"/mudskippers/media-type/article/online","category":"/mudskippers/topic/general","description":"Mudskipper entry from Wikipedia, the free encyclopedia"}' http://{host:port}/mudskippers
+curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"Mudskipper","URL":"http://en.wikipedia.org/wiki/Mudskipper","category":"/mudskippers/media-types/articles/online","category":"/mudskippers/topics/general","description":"Mudskipper entry from Wikipedia, the free encyclopedia"}' http://{host:port}/mudskippers
 ```
 
 #### Response
@@ -244,46 +261,46 @@ The new item is at the location provided in the location in the header. A repres
 
 ```json
 {
-   "name":"Amazing animals - Mudskipper",
-   "URL":"http://www.youtube.com/watch?v=mJhUKzEq47U",
+   "name":"Mudskipper",
+   "URL":"http://en.wikipedia.org/wiki/Mudskipper",
    "created_at":"2013-04-23T14:30:50Z",
    "updated_at":"2013-04-23T14:30:50Z",
-   "slug":"amazing-animals-mudskipper",
-   "description":"Excerpt from David Attenborough's BBC Life series episode 04",
+   "slug":"wiki-mudskipper",
+   "description":"Mudskipper entry from Wikipedia, the free encyclopedia",
    "links":[
       {
          "rel":"self",
          "method":"get",
-         "href":"/mudskippers/amazing-animals-mudskipper"
+         "href":"/mudskippers/wikipedia-mudskipper"
          "type":"application/vnd.fcms.item+json;version=1"
       },
       {
          "rel":"update",
          "method":"put",
-         "href":"/mudskippers/amazing-animals-mudskipper",
+         "href":"/mudskippers/wikipedia-mudskipper",
          "type":"application/vnd.fcms.item+json;version=1"
       },
       {
          "rel":"destroy",
          "method":"delete",
-         "href":"/mudskippers/amazing-animals-mudskipper",
+         "href":"/mudskippers/wikipedia-mudskipper",
       },
       {
          "rel":"category",
          "method":"get",
-         "href":"/mudskippers/media-type/video/online",
+         "href":"/mudskippers/media-types/articles/online",
          "type":"application/vnd.fcms.category+json;version=1"
       },
       {
          "rel":"category",
          "method":"get",
-         "href":"/mudskippers/topic/reproduction",
+         "href":"/mudskippers/topics/general",
          "type":"application/vnd.fcms.category+json;version=1"
       },
       {
          "rev":"collection",
          "method":"get",
-         "href":"/stashes/1",
+         "href":"/mudskippers",
          "type":"application/vnd.fcms.collection+json;version=1"
       }
    ]
@@ -323,7 +340,7 @@ Here is a more complete representation:
 {
    "name":"Mudskipper",
    "URL":"http://en.wikipedia.org/wiki/Mudskipper",
-   "category":"/mudskippers/topic/general",
+   "category":"/mudskippers/topics/general",
    "description":"Mudskipper entry from Wikipedia, the free encyclopedia"
 }
 ```
@@ -333,7 +350,7 @@ Here is a more complete representation:
 cURL
 
 ```shell
-curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X PUT -d '{"name":"Mudskipper","URL":"http://en.wikipedia.org/wiki/Mudskipper","category":"/mudskippers/topic/general","description":"Mudskipper entry from Wikipedia, the free encyclopedia"}' http://{host:port}/mudskippers/media-type/article/online/wikipedia-mudskipper
+curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X PUT -d '{"name":"Mudskipper","URL":"http://en.wikipedia.org/wiki/Mudskipper","category":"/mudskippers/topics/general","description":"Mudskipper entry from Wikipedia, the free encyclopedia"}' http://{host:port}/mudskippers/media-types/articles/online/wikipedia-mudskipper
 ```
 
 #### Response
@@ -350,46 +367,46 @@ The representation of the new item is at the specified location, which is echoed
 
 ```json
 {
-   "name":"Amazing animals - Mudskipper",
-   "URL":"http://www.youtube.com/watch?v=mJhUKzEq47U",
+   "name":"Mudskipper",
+   "URL":"http://en.wikipedia.org/wiki/Mudskipper",
    "created_at":"2013-04-23T14:30:50Z",
    "updated_at":"2013-04-23T14:30:50Z",
-   "slug":"amazing-animals-mudskipper",
-   "description":"Excerpt from David Attenborough's BBC Life series episode 04",
+   "slug":"wiki-mudskipper",
+   "description":"Mudskipper entry from Wikipedia, the free encyclopedia",
    "links":[
       {
          "rel":"self",
          "method":"get",
-         "href":"/mudskippers/amazing-animals-mudskipper"
+         "href":"/mudskippers/wikipedia-mudskipper"
          "type":"application/vnd.fcms.item+json;version=1"
       },
       {
          "rel":"update",
          "method":"put",
-         "href":"/mudskippers/amazing-animals-mudskipper",
+         "href":"/mudskippers/wikipedia-mudskipper",
          "type":"application/vnd.fcms.item+json;version=1"
       },
       {
          "rel":"destroy",
          "method":"delete",
-         "href":"/mudskippers/amazing-animals-mudskipper",
+         "href":"/mudskippers/wikipedia-mudskipper",
       },
       {
          "rel":"category",
          "method":"get",
-         "href":"/mudskippers/media-type/video/online",
+         "href":"/mudskippers/media-types/articles/online",
          "type":"application/vnd.fcms.category+json;version=1"
       },
       {
          "rel":"category",
          "method":"get",
-         "href":"/mudskippers/topic/reproduction",
+         "href":"/mudskippers/topics/general",
          "type":"application/vnd.fcms.category+json;version=1"
       },
       {
          "rev":"collection",
          "method":"get",
-         "href":"/stashes/1",
+         "href":"/mudskippers",
          "type":"application/vnd.fcms.collection+json;version=1"
       }
    ]
@@ -422,7 +439,7 @@ Pass in details for the updated item as a JSON representation.
    "name":"Mudskipper",
    "slug":"wiki-mud"
    "URL":"http://en.wikipedia.org/wiki/Mudskipper",
-   "category":"/mudskippers/topic/general",
+   "category":"/mudskippers/topics/general",
    "description":"Mudskipper entry from Wikipedia, the free encyclopedia"
 }
 ```
@@ -434,7 +451,7 @@ Note: provide a new slug in the JSON body to move an item to a new slug.
 cURL
 
 ```shell
-curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X PUT -d '{"name":"Mudskipper","slug":"wiki-mud","URL":"http://en.wikipedia.org/wiki/Mudskipper","category":"/mudskippers/topic/general","description":"Mudskipper entry from Wikipedia, the free encyclopedia"}' http://{host:port}/mudskippers/media-type/article/online/wikipedia-mudskipper
+curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X PUT -d '{"name":"Mudskipper","slug":"wiki-mud","URL":"http://en.wikipedia.org/wiki/Mudskipper","category":"/mudskippers/topics/general","description":"Mudskipper entry from Wikipedia, the free encyclopedia"}' http://{host:port}/mudskippers/media-types/articles/online/wikipedia-mudskipper
 ```
 
 #### Response
@@ -478,19 +495,19 @@ The representation of the updated item is at the specified location, which is ec
       {
          "rel":"category",
          "method":"get",
-         "href":"/mudskippers/media-type/video/online",
+         "href":"/mudskippers/media-types/videos/online",
          "type":"application/vnd.fcms.category+json;version=1"
       },
       {
          "rel":"category",
          "method":"get",
-         "href":"/mudskippers/topic/reproduction",
+         "href":"/mudskippers/topics/reproduction",
          "type":"application/vnd.fcms.category+json;version=1"
       },
       {
          "rev":"collection",
          "method":"get",
-         "href":"/stashes/1",
+         "href":"/mudskippers",
          "type":"application/vnd.fcms.collection+json;version=1"
       }
    ]
@@ -517,7 +534,7 @@ cURL
 ```shell
 curl -i -X DELETE http://{host:port}/mudskippers/amazing-animals-mudskipper
 
-curl -i -X DELETE http://{host:port}/mudskippers/media-type/video/online/amazing-animals-mudskipper
+curl -i -X DELETE http://{host:port}/mudskippers/media-types/videos/online/amazing-animals-mudskipper
 ```
 
 #### Response
