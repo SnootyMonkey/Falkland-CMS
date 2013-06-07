@@ -4,8 +4,12 @@
 
 (def collection-type "application/vnd.fcms.collection+json")
 
-(defn create-collection [name]
-  (base/create {:name name :type :collection}))
+(defn create-collection
+  "Create a new collection using the specified name and optional map of properties.
+  If :slug is included in the properties it will be used as the collection's slug,
+  otherwise one will be created from the name."
+  ([name] (create-collection name {}))
+  ([name props] (base/create (merge props {:name name}) :collection)))
 
 (defn all [])
 
@@ -14,12 +18,15 @@
     (item/create-item collection (first items))
     (recur collection (rest items))))
 
-;; need a with-collection macro
+;; TODO need a with-collection macro
+
+
+;; TODO need to populate views automatically
 
 ;;CoffeeScript
 ;;(doc) ->
 ;;  if (doc.data && doc.data.type && doc.data.type == "collection")
-;;    emit(doc.data.name, doc)
+;;    emit(doc.data.slug, doc)
 
 ;;JS
 ;;function(doc) {

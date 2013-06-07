@@ -3,10 +3,17 @@
 
 (def item-type "application/vnd.fcms.item+json")
 
-(defn create-item [collection params]
-  (base/create (assoc params :type :item)))
+;; TODO account for the collection the item is in
+(defn create-item
+  "Create a new item using the specified name and optional map of properties.
+  If :slug is included in the properties it will be used as the item's slug,
+  otherwise one will be created from the name."
+  ([name] (create-item name {}))
+  ([name props] (base/create (merge props {:name name}) :item)))
 
 (defn all [])
+
+;; TODO need to populate views automatically
 
 ;;CoffeeScript
 ;;(doc) ->

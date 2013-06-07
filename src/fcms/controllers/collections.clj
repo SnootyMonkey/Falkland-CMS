@@ -23,9 +23,6 @@
 (defroutes collection-routes
   (ANY "/:coll-name" [coll-name] (collection coll-name)))
 
-application/json;schema=vnd.fcms.item;version=1
-application/vnd.fcms.item+json;version=1
-
 ;; {:representation
 ;;  {:media-type "application/vnd.fcms.item+json"},
 ;;  :resource
