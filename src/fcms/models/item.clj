@@ -11,6 +11,10 @@
   ([name] (create-item name {}))
   ([name props] (base/create (merge props {:name name}) :item)))
 
+(defn get-item
+  ""
+  [coll-slug item-slug])
+
 (defn all [])
 
 ;; TODO need to populate views automatically

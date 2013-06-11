@@ -5,9 +5,12 @@
             [fcms.models.item :as item]
     		    [fcms.models.item :refer (item-type)]))
 
-(defresource item [coll-name item-name]
+(defn get-item [coll-slug item-slug]
+  (format "The item: %s/%s" coll-slug item-slug))
+
+(defresource item [coll-slug item-slug]
   :available-media-types [item-type]
-  :handle-ok (fn [_] (format "The collection is %s and the item is %s" coll-name item-name)))
+  :handle-ok (fn [ctx] (get-item coll-slug item-slug)))
 
 (defroutes item-routes
-  (ANY "/:coll-name/:item-name" [coll-name item-name] (item coll-name item-name)))
+  (ANY "/:coll-slug/:item-slug" [coll-slug item-slug] (item coll-slug item-slug)))

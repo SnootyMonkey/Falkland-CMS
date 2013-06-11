@@ -18,10 +18,8 @@
     (item/create-item collection (first items))
     (recur collection (rest items))))
 
-;; TODO need a with-collection macro
-
-
-;; TODO need to populate views automatically
+;;ClojureScript
+;;(fn [doc] (js/emit (aget doc "slug") nil))
 
 ;;CoffeeScript
 ;;(doc) ->
@@ -34,7 +32,5 @@
 ;;    emit(doc.data.name, doc);
 ;;  }
 ;;}
-
-;;ClojureScript?
 
 ;;Erlang?

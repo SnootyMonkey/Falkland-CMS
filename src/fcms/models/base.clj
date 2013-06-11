@@ -18,6 +18,17 @@
   (clutch/with-db (db)
     (clutch/all-documents {:include_docs true})))
 
+;; Slugify
+;; TODO
+;; Leave 0-9 and -
+;; replace A-Z with a-z
+;; replace non-alpha-numeric with -
+;; replace -- with -
+;; replace - at the end with nothing
+;; if not unique, add -1 to the end and increment 1 until it is unique for that type
+(defn slugify [name type]
+  name)
+
 ;; TODO set timestamps
 ;; TODO base version
 (defn create [{name :name slug :slug :as props} type]
@@ -40,13 +51,8 @@
     (if-not (nil? item)
       (delete item))))
 
-;; Slugify
-;; TODO
-;; Leave 0-9 and -
-;; replace A-Z with a-z
-;; replace non-alpha-numeric with -
-;; replace -- with -
-;; replace - at the end with nothing
-;; if not unique, add -1 to the end and increment 1 until it is unique for that type
-(defn slugify [name type]
-  name)
+;; CouchDB Views
+(clutch/with-db (db)
+  (clutch/save-view "collections"
+    (clutch/view-server-fns :cljs {:all {:map (fn [doc]
+                                                (js/emit (str (aget doc "_id") " " (aget doc "_rev")) nil))}})))
