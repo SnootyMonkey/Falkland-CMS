@@ -50,9 +50,3 @@
   (let [item (retrieve id)]
     (if-not (nil? item)
       (delete item))))
-
-;; CouchDB Views
-(clutch/with-db (db)
-  (clutch/save-view "collections"
-    (clutch/view-server-fns :cljs {:all {:map (fn [doc]
-                                                (js/emit (str (aget doc "_id") " " (aget doc "_rev")) nil))}})))
