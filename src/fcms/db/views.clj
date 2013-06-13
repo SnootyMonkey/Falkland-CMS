@@ -5,23 +5,30 @@
 
 (println "FCMS: Initializing CouchDB views.")
 
+;; http://localhost:5984/falklandcms/_design/collection/_view/all
+;; http://localhost:5984/falklandcms/_design/collection/_view/all?include_docs=true
 (clutch/with-db (base/db)
   (clutch/save-view "collection"
-    (clutch/view-server-fns :cljs {:all {:map (fn [doc]
-      (if (and (aget doc "data") (= (aget (aget doc "data") "type") "collection"))
-        (js/emit (str (aget (aget doc "data") "slug") " | " (aget doc "_id") " | " (aget doc "_rev")) nil)))}})))
+    (clutch/view-server-fns :cljs {:all 
+      {:map (fn [doc]
+        (if (and (aget doc "data") (= (aget (aget doc "data") "type") "collection"))
+          (js/emit (aget (aget doc "data") "slug") nil)))}})))
 
+;; http://localhost:5984/falklandcms/_design/item/_view/all
+;; http://localhost:5984/falklandcms/_design/collection/_view/all?include_docs=true
 (clutch/with-db (base/db)
   (clutch/save-view "item"
     (clutch/view-server-fns :cljs {:all {:map (fn [doc]
       (if (and (aget doc "data") (= (aget (aget doc "data") "type") "item"))
-        (js/emit (str (aget (aget doc "data") "slug") " | " (aget doc "_id") " | " (aget doc "_rev")) nil)))}})))
+        (js/emit (aget (aget doc "data") "slug") nil)))}})))
 
+;; http://localhost:5984/falklandcms/_design/taxonomy/_view/all
+;; http://localhost:5984/falklandcms/_design/collection/_view/all?include_docs=true
 (clutch/with-db (base/db)
   (clutch/save-view "taxonomy"
     (clutch/view-server-fns :cljs {:all {:map (fn [doc]
       (if (and (aget doc "data") (= (aget (aget doc "data") "type") "taxonomy"))
-        (js/emit (str (aget (aget doc "data") "slug") " | " (aget doc "_id") " | " (aget doc "_rev")) nil)))}})))
+        (js/emit (aget (aget doc "data") "slug") nil)))}})))
 
 (println "FCMS: CouchDB view initialization complete.")
 

@@ -31,12 +31,12 @@
 
 ;; TODO set timestamps
 ;; TODO base version
-(defn create [{name :name slug :slug :as props} type]
+(defn create [{doc-name :name provided-slug :slug :as props} provided-type]
   (clutch/with-db (db)
-    (clutch/put-document {:data
-      (merge props
-        {:slug (or slug (slugify name type))
-         :type type})})))
+    (let [type (name provided-type)]
+      (let [slug (or provided-slug (slugify doc-name type))]
+        (clutch/put-document {:_id (str type "|" slug) 
+          :data (merge props {:slug slug :type type})})))))
 
 (defn retrieve [id]
   (clutch/with-db (db)
