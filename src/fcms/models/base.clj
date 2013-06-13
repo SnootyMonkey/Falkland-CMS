@@ -26,17 +26,17 @@
 ;; replace -- with -
 ;; replace - at the end with nothing
 ;; if not unique, add -1 to the end and increment 1 until it is unique for that type
-(defn slugify [name type]
-  name)
+(defn slugify [doc-name type-name]
+  doc-name)
 
 ;; TODO set timestamps
 ;; TODO base version
 (defn create [{doc-name :name provided-slug :slug :as props} provided-type]
   (clutch/with-db (db)
-    (let [type (name provided-type)]
-      (let [slug (or provided-slug (slugify doc-name type))]
-        (clutch/put-document {:_id (str type "|" slug) 
-          :data (merge props {:slug slug :type type})})))))
+    (let [type-name (name provided-type)]
+      (let [slug (or provided-slug (slugify doc-name type-name))]
+        (clutch/put-document {:_id (str type-name "|" slug) 
+          :data (merge props {:slug slug :type type-name})})))))
 
 (defn retrieve [id]
   (clutch/with-db (db)

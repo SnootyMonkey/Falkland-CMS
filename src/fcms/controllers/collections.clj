@@ -13,7 +13,7 @@
 
 (defn accept-switch [coll-slug {{accept :media-type} :representation}]
   (cond
-   (= accept collection-type) (get-collection coll-slug)
+    (= accept collection-type) (get-collection coll-slug)
     (= accept item-type) (items-list coll-slug)))
 
 (defresource collection [coll-slug]
