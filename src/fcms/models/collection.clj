@@ -1,8 +1,8 @@
 (ns fcms.models.collection
-  (:require [fcms.models.base :as base]
-            [fcms.models.item :as item]))
+  (:require [com.ashafa.clutch :as clutch]
+            [fcms.models.base :as base]))
 
-(def collection-type "application/vnd.fcms.collection+json")
+(def collection-media-type "application/vnd.fcms.collection+json")
 
 (defn create-collection
   "Create a new collection using the specified name and optional map of properties.
@@ -11,26 +11,11 @@
   ([name] (create-collection name {}))
   ([name props] (base/create (merge props {:name name}) :collection)))
 
-(defn all [])
+(defn all-collections [])
 
-(defn create-items [collection items]
-  (when (seq items)
-    (item/create-item collection (first items))
-    (recur collection (rest items))))
-
-;;ClojureScript
-;;(fn [doc] (js/emit (aget doc "slug") nil))
-
-;;CoffeeScript
-;;(doc) ->
-;;  if (doc.data && doc.data.type && doc.data.type == "collection")
-;;    emit(doc.data.slug, doc)
-
-;;JS
-;;function(doc) {
-;;  if (doc.data && doc.data.type && doc.data.type == "collection") {
-;;    emit(doc.data.name, doc);
-;;  }
-;;}
-
-;;Erlang?
+;; TODO get a nice map of the collection, not CouchDB's
+(defn get-collection
+  "Gives a slug return the collection as a map, or nil if there's no collection with that slug"
+  [slug]
+  (clutch/with-db (base/db)
+    (:doc (first (clutch/get-view "collection" :all {:key slug :include_docs true})))))

@@ -3,13 +3,13 @@
             [liberator.core :refer (defresource)]
             [fcms.models.collection :as collection]
             [fcms.models.item :as item]
-    		    [fcms.models.item :refer (item-type)]))
+    		    [fcms.models.item :refer (item-media-type)]))
 
 (defn get-item [coll-slug item-slug]
   (format "The item: %s/%s" coll-slug item-slug))
 
 (defresource item [coll-slug item-slug]
-  :available-media-types [item-type]
+  :available-media-types [item-media-type]
   :handle-ok (fn [ctx] (get-item coll-slug item-slug)))
 
 (defroutes item-routes

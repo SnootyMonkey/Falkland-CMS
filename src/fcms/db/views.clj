@@ -3,37 +3,50 @@
   (:require [com.ashafa.clutch :as clutch]
             [fcms.models.base :as base]))
 
-(println "FCMS: Initializing CouchDB views.")
+(defn init [])
+
+(println "FCMS: Initializing database")
+(clutch/with-db (base/db)
+
+;; http://localhost:5984/falklandcms/_design/fcms/_view/all
+;; http://localhost:5984/falklandcms/_design/collection/_view/all?include_docs=true
+  (clutch/save-view "fcms"
+    (clutch/view-server-fns :cljs {:all {:map (fn [doc]
+      (let [data (aget doc "data")]
+        (if (and data (or
+          (= (aget data "type") "collection")
+          (= (aget data "type") "item")
+          (= (aget data "type") "taxonomy")))
+          (js/emit (aget doc "_id") nil))))}}))
 
 ;; http://localhost:5984/falklandcms/_design/collection/_view/all
 ;; http://localhost:5984/falklandcms/_design/collection/_view/all?include_docs=true
-;; http://localhost:5984/falklandcms/_design/collection/_view/all?key="slug"
-(clutch/with-db (base/db)
+;; http://localhost:5984/falklandcms/_design/collection/_view/all?key="collection-slug"
   (clutch/save-view "collection"
-    (clutch/view-server-fns :cljs {:all 
-      {:map (fn [doc]
-        (if (and (aget doc "data") (= (aget (aget doc "data") "type") "collection"))
-          (js/emit (aget (aget doc "data") "slug") nil)))}})))
+    (clutch/view-server-fns :cljs {:all {:map (fn [doc]
+      (let [data (aget doc "data")]
+        (when (and data (= (aget data "type") "collection"))
+          (js/emit (aget data "slug") nil))))}}))
 
 ;; http://localhost:5984/falklandcms/_design/item/_view/all
 ;; http://localhost:5984/falklandcms/_design/collection/_view/all?include_docs=true
-;; http://localhost:5984/falklandcms/_design/collection/_view/all?key="slug"
-(clutch/with-db (base/db)
+;; http://localhost:5984/falklandcms/_design/collection/_view/all?key="[collection-slug, item-slug]"
   (clutch/save-view "item"
     (clutch/view-server-fns :cljs {:all {:map (fn [doc]
-      (if (and (aget doc "data") (= (aget (aget doc "data") "type") "item"))
-        (js/emit (aget (aget doc "data") "slug") nil)))}})))
+      (let [data (aget doc "data")]
+        (when (and data (= (aget data "type") "item"))
+          (js/emit (js/Array (aget data "collection") (aget data "slug")) nil))))}}))
 
 ;; http://localhost:5984/falklandcms/_design/taxonomy/_view/all
 ;; http://localhost:5984/falklandcms/_design/collection/_view/all?include_docs=true
-;; http://localhost:5984/falklandcms/_design/collection/_view/all?key="slug"
-(clutch/with-db (base/db)
+;; http://localhost:5984/falklandcms/_design/collection/_view/all?key="taxonomy-slug"
   (clutch/save-view "taxonomy"
     (clutch/view-server-fns :cljs {:all {:map (fn [doc]
-      (if (and (aget doc "data") (= (aget (aget doc "data") "type") "taxonomy"))
-        (js/emit (aget (aget doc "data") "slug") nil)))}})))
+      (let [data (aget doc "data")]
+        (when (and (aget doc "data") (= (aget (aget doc "data") "type") "taxonomy"))
+          (js/emit (aget (aget doc "data") "slug") nil))))}})))
 
-(println "FCMS: CouchDB view initialization complete.")
+(println "FCMS: Database initialization complete")
 
 ;; TODO want something more like below, so with less repition, but type needs to be a string literal by the time it makes it into the generated JS
 ;; at a minimum, need a macro that takes care of the with-db save-view view-server-fns boilerplate.

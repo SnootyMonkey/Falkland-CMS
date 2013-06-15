@@ -2,11 +2,16 @@
 
 ## Models
 
-*base* - a common set of functions common to everything that's stored in FCMS. You won't often use functions of base directly.
+*base* - a common set of functions for everything that's stored in FCMS. You won't often use functions of base directly.
+
+*collection* - a grouping of items to be managed together
 
 *item* - any resource that's been collected in your repository, often organized into many orthogonal taxonomies.
 
-*taxonomy* - a means of organizing items into different categories.
+*taxonomy* - a means of organizing items into hierarchical categories.
+??? needed, or just use a category with no parent?
+
+*category* - a hierarchical organization structure in a taxonomy.
 
 ## From the REPL
 
@@ -17,40 +22,54 @@ Start the REPL with:
 Require the models that you are going to use:
 
 	(require '[fcms.models.base :as base])
+	(require '[fcms.models.collection :as collection])
 	(require '[fcms.models.item :as item])
-	(require '[fcms.models.category :as category])
+	(require '[fcms.models.taxonomy :as taxonomy])
 
 Or, if you are doing devolpment on the code, require them using the reload flag:
 
 	(require '[fcms.models.base :as base] :reload-all)
+	(require '[fcms.models.collection :as collection] :reload-all)
 	(require '[fcms.models.item :as item] :reload-all)
-	(require '[fcms.models.item :as category] :reload-all)
+	(require '[fcms.models.taxonomy :as item] :reload-all)
 
 List everything in the CMS (don't do this on a very full CMS!):
 
 	(base/all)
 
+Create a collection:
+
+	(collection/create-collection "Mudskippers")
+
+Create a basic item:
+
+	(item/create-item "mudskippers" "Fish with Legs!")
+
+Create a taxonomy:
+
+	(taxonomy/create-taxonomy "media-types")
+
 Create a category:
 
-	(item/create-category {:name "media-type:wikipedia page" :parent "media-type:web page"})
+	(item/create-category "Wikipedia Pages" {:parent "media-types/web-pages"})
 
-Create an item:
+Create a more complete item:
 
-  (item/create-item {:taxonomy ["media-type:video" "topic:fish"] :name "Amazing animals - Mudskipper" :creator "BBC Life episode", :url "https://www.youtube.com/watch?v=KurTiX4FDuQ"})
+  (item/create-item "mudskippers" {:categories ["media-types/videos" "topics/fish"] :name "Amazing animals - Mudskipper" :creator "BBC Life episode", :url "https://www.youtube.com/watch?v=KurTiX4FDuQ"})
 
-	(item/create-item {:taxonomy ["media-type:web page" "topic:company"] :name "Apple" :creator ["Steve Jobs", "Steve Wozniak"], :url ["http://apple.com", "http://en.wikipedia.org/wiki/Apple_Inc."]})
+	(item/create-item "fortune-500" {:categories ["media-types/web-pages" "topics/companies"] :name "Apple" :creator ["Steve Jobs", "Steve Wozniak"], :url ["http://apple.com", "http://en.wikipedia.org/wiki/Apple_Inc."]})
   
-List all the items the CMS (don't do this on a very full CMS!):
+List all the items in a collection (don't do this on a very full collection!):
 
-	(item/all)
+	(item/all "mudskippers")
 
 List all items of a particular taxonomy:
 
-	(item/all [:taxonomy "media-type:web page"])
+	(item/all "mudskippers" {:categories ["media-types/web-pages"]})
 
 List all items of an intersection of taxonomies:
 
-	(item/all [:taxonomy ("media-type:video" "topic:mudskippers")])
+	(item/all "mudskippers" {:categories ["media-types/videos" "topics/fish"]})
 
 Retrieve an item by its ID:
 

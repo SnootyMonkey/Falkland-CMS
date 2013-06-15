@@ -18,9 +18,9 @@ You can:
 * [List the collections that exist in the system](#list-collections)
 * [Get a specific Collection](#get-collection)
 * [Update a Collection](#update-collection)
-* [Delete an Collection](#delete-collection)
+* [Delete a Collection](#delete-collection)
 
-<a name='list-items'/>
+<a name='list-collections'/>
 ### List Collections in the sytem
 
 Get all the collections in the system.
