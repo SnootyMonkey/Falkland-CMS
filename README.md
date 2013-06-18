@@ -22,13 +22,13 @@ Alternatives acronyms that are more suited are Collection Management System (CMS
 
 Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a traditional Web CMS, a Digital Collection Management system, and a Museum Exhibit Management system.
 
-It is ideal for:
+Falklands CMS is for collecting and curating, not authoring. While Falkland CMS supports authoring of new content, this new content is intended to provide context for the presentation and exhibition of collected resources. Falkland CMS is not intended as a WCMS for a huge corpus of brand new content. You wouldn't run a daily newspaper with Falklankds CMS. Its primary role is to point to existing content, either content on the web, or content collected into Falklands CMS.
 
-* digital collections repository
-* online museum exihibits
+Ideal uses:
+
+* a repository of digital collections
 * online presentation of library collections
-
-Falklands CMS is for collecting and curating, not authoring. While Falkland CMS supports authoring of new content, this new content is really intended to provide context for the presentation and exhibition of collected resources. Falkland CMS is not intended as a WCMS for a huge corpus of brand new content. You wouldn't run a daily newspaper with Falklankds CMS. Its primary role is to point to existing content, either content on the web, or content collected into Falklands CMS.
+* online museum exihibits
 
 ### Who is this for?
 
