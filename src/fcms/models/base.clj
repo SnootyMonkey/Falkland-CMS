@@ -18,6 +18,11 @@
   (clutch/with-db (db)
     (clutch/all-documents {:include_docs true})))
 
+(defn map-from-db [db-map]
+  "Turn the CouchDB map into the FCMS map"
+  (if-let [data (:data db-map)]
+    (assoc (dissoc data :type) :id (:_id db-map))))
+
 ;; Slugify
 ;; Rules:
 ;; replace A-Z with a-z

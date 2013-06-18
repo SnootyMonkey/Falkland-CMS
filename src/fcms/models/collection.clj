@@ -15,7 +15,9 @@
 
 ;; TODO get a nice map of the collection, not CouchDB's
 (defn get-collection
-  "Gives a slug return the collection as a map, or nil if there's no collection with that slug"
+  "Given the slug of the collection, return the collection as a map, or nil if there's no collection with that slug"
   [slug]
   (clutch/with-db (base/db)
-    (:doc (first (clutch/get-view "collection" :all {:key slug :include_docs true})))))
+    (if-let [coll (:doc (first (clutch/get-view "collection" :all {:key slug :include_docs true})))]
+      (base/map-from-db coll))))
+
