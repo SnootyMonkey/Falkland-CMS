@@ -27,11 +27,11 @@ You can:
 <a name='list-items'/>
 ### List Items in a Collection
 
-Get all the items in a collection.
+Get all the items in a collection. Note: the trailing slash after the collection slug is important.
 
 #### Request
 
-   URL         /{collection slug}?num=50&start=200
+   URL         /{collection slug}/?num=50&start=200
    Method      GET
    Query       num - how many items to return, optional, defaults to 50
    Query       start - 0-based index of the 1st item to return, optional, defaults to 0
@@ -40,11 +40,11 @@ Get all the items in a collection.
 #### Request Example
 
 ```shell
-curl -i --header "Accept: application/vnd.fcms.item+json;version=1" -X GET http://{host:port}/mudskippers
+curl -i --header "Accept: application/vnd.fcms.item+json;version=1" -X GET http://{host:port}/mudskippers/
 
-curl -i --header "Accept: application/vnd.fcms.item+json;version=1" -X GET http://{host:port}/mudskippers?num=100
+curl -i --header "Accept: application/vnd.fcms.item+json;version=1" -X GET http://{host:port}/mudskippers/?num=100
 
-curl -i --header "Accept: application/vnd.fcms.item+json;version=1" -X GET http://{host:port}/mudskippers?num=10&start=10
+curl -i --header "Accept: application/vnd.fcms.item+json;version=1" -X GET http://{host:port}/mudskippers/?num=10&start=10
 ```
 
 #### Response

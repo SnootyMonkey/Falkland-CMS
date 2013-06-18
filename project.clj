@@ -10,6 +10,7 @@
     [liberator "0.9.0"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
     [ibdknox/clojurescript "0.0-1534"] ; ClojureScript compiler and runtime https://github.com/clojure/clojurescript
     [com.ashafa/clutch "0.4.0-RC1"] ; CouchDB client https://github.com/clojure-clutch/clutch
+    [clj-json "0.5.3"] ; JSON de/encoding https://github.com/mmcgrana/clj-json/
     [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
   ]
   :plugins [

@@ -5,7 +5,6 @@ A [collection](http://www.wordnik.com/words/collection) is a logical grouping of
 
 Some examples of collection:
 
-* All created VIC-20 cartridges for vic20.com
 * A curated collection of secondary sources about Albert Camus for Camus.org
 * Everything there is on the Internet about mudskippers for Mudskippers.org
 * All the books in Jack Freeman's Library
@@ -115,7 +114,7 @@ The response has a JSON array called collections which contains partial represen
 <a name='get-collection'/>
 ### Get a Collection
 
-Get a particular collection.
+Get a particular collection. Note: the lack of a trailing slash is important.
 
 #### Request
 
@@ -148,13 +147,19 @@ The response has a complete JSON representation of the collection which contains
    "created_at":"2013-04-23T14:30:50Z",
    "updated_at":"2013-04-23T14:30:50Z",
    "slug":"mudskippers",
-   "description":"All the Internet's best resources on the Mudskipper",
+   "description":"The Internet's best resources on the Mudskipper",
    "links":[
       {
          "rel":"self",
          "method":"get",
          "href":"/mudskippers"
          "type":"application/vnd.fcms.collection+json;version=1"
+      },
+      {
+         "rel":"contains",
+         "method":"get",
+         "href":"/mudskippers/"
+         "type":"application/vnd.fcms.item+json;version=1"
       },
       {
          "rel":"update",
@@ -213,7 +218,7 @@ Here is a more complete representation:
    "name":"Mudskippers",
    "taxonomy":"/mudskippers/media-types",
    "taxonomy":"/mudskippers/topics",
-   "description":"All the Internet's best resources on the Mudskipper"
+   "description":"The Internet's best resources on the Mudskipper"
 }
 ```
 
@@ -222,7 +227,7 @@ Here is a more complete representation:
 cURL
 
 ```shell
-curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Content-type: application/vnd.fcms.collection+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"Mudskippers","taxonomy":"/mudskippers/media-types","taxonomy":"/mudskippers/topics","description":"All the Internet's best resources on the Mudskipper"}' http://{host:port}/
+curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Content-type: application/vnd.fcms.collection+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"Mudskippers","taxonomy":"/mudskippers/media-types","taxonomy":"/mudskippers/topics","description":"The Internet's best resources on the Mudskipper"}' http://{host:port}/
 ```
 
 #### Response
@@ -242,13 +247,19 @@ The new collection is at the location provided in the location in the header. A 
    "created_at":"2013-04-23T14:30:50Z",
    "updated_at":"2013-04-23T14:30:50Z",
    "slug":"mudskippers",
-   "description":"All the Internet's best resources on the Mudskipper",
+   "description":"The Internet's best resources on the Mudskipper",
    "links":[
       {
          "rel":"self",
          "method":"get",
          "href":"/mudskippers"
          "type":"application/vnd.fcms.collection+json;version=1"
+      },
+      {
+         "rel":"contains",
+         "method":"get",
+         "href":"/mudskippers/"
+         "type":"application/vnd.fcms.item+json;version=1"
       },
       {
          "rel":"update",
@@ -277,7 +288,7 @@ The new collection is at the location provided in the location in the header. A 
 }
 ```
 
-Create a new collection in the sysetm with a specified slug.
+Create a new collection in the system with a specified slug.
 
 #### Request
 
@@ -304,7 +315,7 @@ Here is a more complete representation:
    "name":"Mudskippers",
    "taxonomy":"/mudskippers/media-types",
    "taxonomy":"/mudskippers/topics",
-   "description":"All the Internet's best resources on the Mudskipper"
+   "description":"The Internet's best resources on the Mudskipper"
 }
 ```
 
@@ -313,7 +324,7 @@ Here is a more complete representation:
 cURL
 
 ```shell
-curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Content-type: application/vnd.fcms.collection+json;version=1" --header "Charset: UTF-8" -X PUT -d '{"name":"Mudskippers","taxonomy":"/mudskippers/media-types","taxonomy":"/mudskippers/topics","description":"All the Internet's best resources on the Mudskipper"}' http://{host:port}/mudskippers
+curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Content-type: application/vnd.fcms.collection+json;version=1" --header "Charset: UTF-8" -X PUT -d '{"name":"Mudskippers","taxonomy":"/mudskippers/media-types","taxonomy":"/mudskippers/topics","description":"The Internet's best resources on the Mudskipper"}' http://{host:port}/mudskippers
 ```
 
 #### Response
@@ -333,13 +344,19 @@ The representation of the new item is at the specified location, which is echoed
    "created_at":"2013-04-23T14:30:50Z",
    "updated_at":"2013-04-23T14:30:50Z",
    "slug":"mudskippers",
-   "description":"All the Internet's best resources on the Mudskipper",
+   "description":"The Internet's best resources on the Mudskipper",
    "links":[
       {
          "rel":"self",
          "method":"get",
          "href":"/mudskippers"
          "type":"application/vnd.fcms.collection+json;version=1"
+      },
+      {
+         "rel":"contains",
+         "method":"get",
+         "href":"/mudskippers/"
+         "type":"application/vnd.fcms.item+json;version=1"
       },
       {
          "rel":"update",
@@ -427,6 +444,12 @@ The representation of the updated collection is at the specified location, which
          "method":"get",
          "href":"/mudskipper-info"
          "type":"application/vnd.fcms.collection+json;version=1"
+      },
+      {
+         "rel":"contains",
+         "method":"get",
+         "href":"/mudskippers/"
+         "type":"application/vnd.fcms.item+json;version=1"
       },
       {
          "rel":"update",
