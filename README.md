@@ -64,6 +64,10 @@ Ideal uses:
 
 Falkland CMS was built to support the [Falklandsophile](http://falklandsophile.com) website. So the name seemed fitting.
 
+## STATUS
+
+Falkland CMS is pre-alpha and not yet usable.
+
 ## INSTALLATION
 
 ### External Dependencies
