@@ -2,7 +2,7 @@
 
 ## Models
 
-*base* - a common set of functions for everything that's stored in FCMS. You won't often use functions of base directly.
+*common* - a common set of functions for everything that's stored in FCMS. You won't often use these functions directly.
 
 *collection* - a grouping of items to be managed together
 
@@ -21,21 +21,21 @@ Start the REPL with:
 
 Require the models that you are going to use:
 
-	(require '[fcms.models.base :as base])
+	(require '[fcms.models.common :as common])
 	(require '[fcms.models.collection :as collection])
 	(require '[fcms.models.item :as item])
 	(require '[fcms.models.taxonomy :as taxonomy])
 
 Or, if you are doing devolpment on the code, require them using the reload flag:
 
-	(require '[fcms.models.base :as base] :reload-all)
+	(require '[fcms.models.common :as common] :reload-all)
 	(require '[fcms.models.collection :as collection] :reload-all)
 	(require '[fcms.models.item :as item] :reload-all)
 	(require '[fcms.models.taxonomy :as item] :reload-all)
 
 List everything in the CMS (don't do this on a very full CMS!):
 
-	(base/all)
+	(common/all)
 
 Create a collection:
 
@@ -73,10 +73,10 @@ List all items of an intersection of taxonomies:
 
 Retrieve an item by its ID:
 
-	(base/retrieve "ec5d4c2028bdcd46d95affe6db038172")
+	(common/retrieve "ec5d4c2028bdcd46d95affe6db038172")
 
 Delete an item:
 
-	(base/delete (base/retrieve "ec5d4c2028bdcd46d95affe6db038172"))
+	(common/delete (common/retrieve "ec5d4c2028bdcd46d95affe6db038172"))
 
-	(base/delete-by-id "ec5d4c2028bdcd46d95affe6db038172")
+	(common/delete-by-id "ec5d4c2028bdcd46d95affe6db038172")

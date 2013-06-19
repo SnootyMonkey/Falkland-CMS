@@ -1,4 +1,4 @@
-(ns fcms.models.base
+(ns fcms.models.common
   (:require [clojure.string :as str]
             [com.ashafa.clutch :as clutch])
   (:import (java.net URI)))

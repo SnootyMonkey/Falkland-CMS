@@ -1,6 +1,6 @@
 (ns fcms.models.item
   (:require [com.ashafa.clutch :as clutch]
-            [fcms.models.base :as base]
+            [fcms.models.common :as common]
             [fcms.models.collection :as collection]))
 
 (def item-media-type "application/vnd.fcms.item+json")
@@ -13,7 +13,7 @@
   ([coll-slug name] (create-item coll-slug name {}))
   ([coll-slug name props]
     (if-let [coll-id (:id (collection/get-collection coll-slug))]
-      (base/create (merge props {:collection coll-id :name name}) :item)
+      (common/create (merge props {:collection coll-id :name name}) :item)
       :bad_collection)))
 
 (defn get-item
@@ -22,8 +22,8 @@
   nil if there is no item with that slug"
   [coll-slug item-slug]
     (when-let [coll-id (:id (collection/get-collection coll-slug))]
-      (clutch/with-db (base/db)
+      (clutch/with-db (common/db)
         (if-let [item (:doc (first (clutch/get-view "item" :all {:key [coll-id, item-slug] :include_docs true})))]
-          (base/map-from-db item)))))
+          (common/map-from-db item)))))
 
 (defn all-items [coll-slug])

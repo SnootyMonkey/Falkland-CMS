@@ -1,12 +1,12 @@
 ;; CouchDB Views
 (ns fcms.db.views
   (:require [com.ashafa.clutch :as clutch]
-            [fcms.models.base :as base]))
+            [fcms.models.common :as common]))
 
 (defn init [])
 
 (println "FCMS: Initializing database")
-(clutch/with-db (base/db)
+(clutch/with-db (common/db)
 
 ;; http://localhost:5984/falklandcms/_design/fcms/_view/all
 ;; http://localhost:5984/falklandcms/_design/collection/_view/all?include_docs=true
@@ -55,7 +55,7 @@
 ;   (and (aget doc "data") (= (aget (aget doc "data") "type") type)))
 
 ; (defn all [type]
-;   (clutch/with-db (base/db)
+;   (clutch/with-db (common/db)
 ;     (clutch/save-view type-name
 ;       (clutch/view-server-fns :cljs {:all {:map (fn [doc]
 ;         (if (type-of doc type)

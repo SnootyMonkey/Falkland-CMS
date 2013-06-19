@@ -1,14 +1,14 @@
 (ns fcms.controllers.collections
   (:require [compojure.core :refer (defroutes ANY)]
             [liberator.core :refer (defresource)]
-            [clj-json.core :as json]
             [fcms.models.collection :as collection]
             [fcms.models.collection :refer (collection-media-type)]
-            [fcms.models.item :refer (item-media-type)]))
+            [fcms.models.item :refer (item-media-type)]
+            [fcms.views.collections :refer (render-collection)]))
 
 (defn get-collection [coll-slug]
   (if-let [coll (collection/get-collection coll-slug)]
-    (json/generate-string coll)))
+    (render-collection coll)))
 
 (defn get-items [coll-slug]
   (format "Items in the collection: %s" coll-slug))
