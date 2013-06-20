@@ -16,6 +16,9 @@
 (defn- contains-link [coll]
   (common/link-map "contains" common/GET (url coll "/") item-media-type))
 
+(defn- create-link [coll]
+  (common/create-link (url coll "/") item-media-type))
+
 (defn- update-link [coll]
   (common/update-link (url coll) collection/collection-media-type))
 
@@ -48,6 +51,7 @@
   (apply array-map (concat (flatten (into [] coll)) [:links [
     (self-link coll)
     (contains-link coll)
+    (create-link coll)
     (update-link coll)
     (delete-link coll)]])))
 

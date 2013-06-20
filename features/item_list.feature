@@ -58,7 +58,7 @@ Feature: Item list
 		   ],
 		   "links":[
 		      {
-		         "rel":"new",
+		         "rel":"create",
 		         "method":"post",
 		         "href":"/business/",
 		         "type":"application/vnd.fcms.item+json;version=1"

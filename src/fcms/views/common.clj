@@ -14,6 +14,9 @@
 (defn self-link [url media-type]
   (link-map "self" GET url media-type))
 
+(defn create-link [url media-type]
+  (link-map "create" POST url media-type))
+
 (defn update-link [url media-type]
   (link-map "update" PUT url media-type))
 

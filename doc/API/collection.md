@@ -84,7 +84,7 @@ The response has a JSON array called collections which contains partial represen
    ],
    "links":[
       {
-         "rel":"new",
+         "rel":"create",
          "method":"post",
          "href":"/",
          "type":"application/vnd.fcms.collection+json;version=1"
@@ -159,6 +159,12 @@ The response has a complete JSON representation of the collection which contains
          "rel":"contains",
          "method":"get",
          "href":"/mudskippers/"
+         "type":"application/vnd.fcms.item+json;version=1"
+      },
+      {
+         "rel":"create",
+         "method":"post",
+         "href":"/mudskippers/",
          "type":"application/vnd.fcms.item+json;version=1"
       },
       {
@@ -262,6 +268,12 @@ The new collection is at the location provided in the location in the header. A 
          "type":"application/vnd.fcms.item+json;version=1"
       },
       {
+         "rel":"create",
+         "method":"post",
+         "href":"/mudskippers/",
+         "type":"application/vnd.fcms.item+json;version=1"
+      },
+      {
          "rel":"update",
          "method":"put",
          "href":"/mudskippers",
@@ -359,6 +371,12 @@ The representation of the new item is at the specified location, which is echoed
          "type":"application/vnd.fcms.item+json;version=1"
       },
       {
+         "rel":"create",
+         "method":"post",
+         "href":"/mudskippers/",
+         "type":"application/vnd.fcms.item+json;version=1"
+      },
+      {
          "rel":"update",
          "method":"put",
          "href":"/mudskippers",
@@ -449,6 +467,12 @@ The representation of the updated collection is at the specified location, which
          "rel":"contains",
          "method":"get",
          "href":"/mudskippers/"
+         "type":"application/vnd.fcms.item+json;version=1"
+      },
+      {
+         "rel":"create",
+         "method":"post",
+         "href":"/mudskippers/",
          "type":"application/vnd.fcms.item+json;version=1"
       },
       {

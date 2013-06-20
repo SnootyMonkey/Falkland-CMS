@@ -92,7 +92,7 @@ The response has a JSON array called items which contains partial representation
    ],
    "links":[
       {
-         "rel":"new",
+         "rel":"create",
          "method":"post",
          "href":"/mudskippers",
          "type":"application/vnd.fcms.item+json;version=1"
