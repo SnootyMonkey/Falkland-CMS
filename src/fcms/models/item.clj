@@ -24,6 +24,6 @@
     (when-let [coll-id (:id (collection/get-collection coll-slug))]
       (clutch/with-db (common/db)
         (if-let [item (:doc (first (clutch/get-view "item" :all {:key [coll-id, item-slug] :include_docs true})))]
-          (common/map-from-db item)))))
+          (common/map-from-db (assoc-in item [:data :collection] coll-slug))))))
 
 (defn all-items [coll-slug])

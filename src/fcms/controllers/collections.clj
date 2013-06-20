@@ -2,7 +2,6 @@
   (:require [compojure.core :refer (defroutes ANY)]
             [liberator.core :refer (defresource)]
             [fcms.models.collection :as collection]
-            [fcms.models.collection :refer (collection-media-type)]
             [fcms.models.item :refer (item-media-type)]
             [fcms.views.collections :refer (render-collection)]))
 
@@ -14,7 +13,7 @@
   (format "Items in the collection: %s" coll-slug))
 
 (defresource collection [coll-slug]
-    :available-media-types [collection-media-type]
+    :available-media-types [collection/collection-media-type]
     :handle-ok (fn [ctx] (get-collection coll-slug)))
 
 (defresource items-list [coll-slug]
