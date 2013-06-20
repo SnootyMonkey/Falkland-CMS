@@ -4,6 +4,8 @@
             [fcms.models.collection :as collection]
             [fcms.models.item :refer (item-media-type)]))
 
+(def ordered-keys [:name :created-at :updated-at :slug :description])
+
 (defn- url 
   ([coll]
     (str "/" (:slug coll)))
@@ -41,7 +43,10 @@
   ;; 1) removing unneeded :id key
   ;; 2) making an ordered array hash of the known ordered keys
   ;; 3) adding a sorted hash of any remaining keys
-  ;; 3) adding the HATEAOS links to the array hash
+  ;; 4) adding the HATEAOS links to the array hash
   (let [coll-props (dissoc coll :id)]
     (json/generate-string
-      (-> coll-props common/ordered (common/append-sorted ,,, (common/remaining-keys coll-props)) links))))
+      (-> coll-props 
+        (common/ordered ,,, ordered-keys)
+        (common/append-sorted ,,, (common/remaining-keys coll-props ordered-keys))
+        links))))

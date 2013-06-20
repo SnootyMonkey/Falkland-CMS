@@ -6,8 +6,6 @@
 (def DELETE "delete")
 (def PATCH "delete")
 
-(def ordered-keys [:name, :created-at, :updated-at, :slug, :description])
-
 (defn link-map [rel method url media-type]
   (array-map :rel rel :method method :href url :type media-type))
 
@@ -25,7 +23,7 @@
 
 (defn ordered
   "Make an ordered array-map of the ordered key-values for the property map"
-  [prop-map]
+  [prop-map ordered-keys]
   ;; Iterate over the ordered keys collecting the value from the map for each key (or a blank string),
   ;; put these into a vector with the key name, and create an array-map out of it
   (apply array-map (flatten (map #(vec [% (or (prop-map %) "")]) ordered-keys))))
@@ -41,5 +39,5 @@
 
 (defn remaining-keys
   "Remove all the ordered keys leaving just the remaining keys"
-  [prop-map]
+  [prop-map ordered-keys]
   (apply dissoc prop-map ordered-keys))

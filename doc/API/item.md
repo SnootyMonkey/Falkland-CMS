@@ -162,6 +162,7 @@ The response has a complete JSON representation of the item which contains links
    "created_at":"2013-04-23T14:30:50Z",
    "updated_at":"2013-04-23T14:30:50Z",
    "slug":"amazing-animals-mudskipper",
+   "collection":"mudskippers",
    "description":"Excerpt from David Attenborough's BBC Life series episode 04",
    "links":[
       {
@@ -266,6 +267,7 @@ The new item is at the location provided in the location in the header. A repres
    "created_at":"2013-04-23T14:30:50Z",
    "updated_at":"2013-04-23T14:30:50Z",
    "slug":"wiki-mudskipper",
+   "collection":"mudskippers",
    "description":"Mudskipper entry from Wikipedia, the free encyclopedia",
    "links":[
       {
@@ -372,6 +374,7 @@ The representation of the new item is at the specified location, which is echoed
    "created_at":"2013-04-23T14:30:50Z",
    "updated_at":"2013-04-23T14:30:50Z",
    "slug":"wiki-mudskipper",
+   "collection":"mudskippers",
    "description":"Mudskipper entry from Wikipedia, the free encyclopedia",
    "links":[
       {
@@ -473,6 +476,7 @@ The representation of the updated item is at the specified location, which is ec
    "created_at":"2013-04-23T14:30:50Z",
    "updated_at":"2013-04-23T14:30:50Z",
    "slug":"amazing-animals-mudskipper",
+   "collection":"mudskippers",
    "description":"Excerpt from David Attenborough's BBC Life series episode 04",
    "links":[
       {
