@@ -168,7 +168,7 @@ The response has a complete JSON representation of the collection which contains
          "type":"application/vnd.fcms.collection+json;version=1"
       },
       {
-         "rel":"destroy",
+         "rel":"delete",
          "method":"delete",
          "href":"/mudskippers",
       },
@@ -268,7 +268,7 @@ The new collection is at the location provided in the location in the header. A 
          "type":"application/vnd.fcms.collection+json;version=1"
       },
       {
-         "rel":"destroy",
+         "rel":"delete",
          "method":"delete",
          "href":"/mudskippers",
       },
@@ -365,7 +365,7 @@ The representation of the new item is at the specified location, which is echoed
          "type":"application/vnd.fcms.collection+json;version=1"
       },
       {
-         "rel":"destroy",
+         "rel":"delete",
          "method":"delete",
          "href":"/mudskippers",
       },
@@ -458,7 +458,7 @@ The representation of the updated collection is at the specified location, which
          "type":"application/vnd.fcms.collection+json;version=1"
       },
       {
-         "rel":"destroy",
+         "rel":"delete",
          "method":"delete",
          "href":"/mudskipper-info",
       },

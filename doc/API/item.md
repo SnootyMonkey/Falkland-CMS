@@ -177,7 +177,7 @@ The response has a complete JSON representation of the item which contains links
          "type":"application/vnd.fcms.item+json;version=1"
       },
       {
-         "rel":"destroy",
+         "rel":"delete",
          "method":"delete",
          "href":"/mudskippers/amazing-animals-mudskipper",
       },
@@ -281,7 +281,7 @@ The new item is at the location provided in the location in the header. A repres
          "type":"application/vnd.fcms.item+json;version=1"
       },
       {
-         "rel":"destroy",
+         "rel":"delete",
          "method":"delete",
          "href":"/mudskippers/wikipedia-mudskipper",
       },
@@ -387,7 +387,7 @@ The representation of the new item is at the specified location, which is echoed
          "type":"application/vnd.fcms.item+json;version=1"
       },
       {
-         "rel":"destroy",
+         "rel":"delete",
          "method":"delete",
          "href":"/mudskippers/wikipedia-mudskipper",
       },
@@ -488,7 +488,7 @@ The representation of the updated item is at the specified location, which is ec
          "type":"application/vnd.fcms.item+json;version=1"
       },
       {
-         "rel":"destroy",
+         "rel":"delete",
          "method":"delete",
          "href":"/mudskippers/amazing-animals-mudskipper",
       },
