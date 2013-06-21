@@ -26,4 +26,13 @@
         (if-let [item (:doc (first (clutch/get-view "item" :all {:key [coll-id, item-slug] :include_docs true})))]
           (common/map-from-db (assoc-in item [:data :collection] coll-slug))))))
 
+;; TODO create these new item tests
+(defn check-new-item
+  "Given the slug of the collection, and a map of a new item,
+  check if the everything is in order to create this new item.
+  Ensure the collection exists, the name of the item is specified,
+  and the slug doesn't alread exist if it's specified."
+  [coll-slug item]
+  true)
+
 (defn all-items [coll-slug])
