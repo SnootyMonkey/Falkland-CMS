@@ -1,8 +1,7 @@
 (ns fcms.controllers.collections
   (:require [compojure.core :refer (defroutes ANY)]
             [liberator.core :refer (defresource)]
-            [clj-json.core :as json]
-            [clojure.walk :refer (keywordize-keys)]
+            [fcms.controllers.common :as common]
             [fcms.models.collection :as collection]
             [fcms.models.item :as item]
             [fcms.views.collections :refer (render-collection)]))
@@ -14,14 +13,11 @@
 (defn get-items [coll-slug]
   (format "Items in the collection: %s" coll-slug))
 
-(defn extract-item [ctx]
-  (keywordize-keys (json/parse-string (slurp (get-in ctx [:request :body])))))
-
 (defn check-new-item [coll-slug ctx]
-  (item/check-new-item coll-slug (extract-item ctx)))
+  (item/check-new-item coll-slug (common/extract-json-body ctx)))
 
 (defn create-item [coll-slug ctx]
-  (let [item (extract-item ctx)]
+  (let [item (common/extract-json-body ctx)]
     (item/create-item coll-slug (:name item) item)))
 
 (defresource collection [coll-slug]
@@ -32,7 +28,7 @@
     :available-media-types [item/item-media-type]
     :allowed-methods [:get :post]
     :handle-ok (fn [ctx] (get-items coll-slug))
-    :malformed? (fn [ctx] false) ;(not (check-new-item coll-slug ctx))) 
+    :malformed? (fn [ctx] (not (check-new-item coll-slug ctx))) 
     :post! (fn [ctx] (create-item coll-slug ctx)))
 
 (defroutes collection-routes
