@@ -13,10 +13,18 @@
     [clj-json "0.5.3"] ; JSON de/encoding https://github.com/mmcgrana/clj-json/
     [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
   ]
+  :git-dependencies [
+    ["https://github.com/clojure-liberator/liberator.git"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
+  ]
   :plugins [
+    [lein-git-deps "0.0.1-SNAPSHOT"] ; dependencies from GitHub https://github.com/tobyhede/lein-git-deps
   	[lein-ring "0.8.3"] ; common ring tasks https://github.com/weavejester/lein-ring
     [lein-cucumber "1.0.2"] ; cucumber-jvm (BDD testing) tasks https://github.com/nilswloka/lein-cucumber
     [lein-cljsbuild "0.3.2"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
+  ]
+  :source-paths [
+    ".lein-git-deps/liberator/src/"
+    "src/"
   ]
   :cljsbuild {
     :crossovers [] ; compile for both Clojure and ClojureScript
