@@ -5,6 +5,7 @@
             :url "http://opensource.org/licenses/MIT"}
   :dependencies [
     [org.clojure/clojure "1.5.0"] ; Lisp on the JVM http://clojure.org/documentation
+    [org.clojure/core.match "0.2.0-rc2"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [ring/ring-jetty-adapter "1.1.8"] ; Web Server https://github.com/ring-clojure/ring
     [compojure "1.1.5"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.9.0"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator

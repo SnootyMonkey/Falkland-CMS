@@ -21,18 +21,21 @@
   return the item as a map, or :bad_collection if there's no collection with that slug, or
   nil if there is no item with that slug"
   [coll-slug item-slug]
-    (when-let [coll-id (:id (collection/get-collection coll-slug))]
+    (if-let [coll-id (:id (collection/get-collection coll-slug))]
       (clutch/with-db (common/db)
-        (if-let [item (:doc (first (clutch/get-view "item" :all {:key [coll-id, item-slug] :include_docs true})))]
-          (common/map-from-db (assoc-in item [:data :collection] coll-slug))))))
+        (when-let [item (:doc (first (clutch/get-view "item" :all {:key [coll-id, item-slug] :include_docs true})))]
+          (common/map-from-db (assoc-in item [:data :collection] coll-slug)))))
+      :bad_collection)
 
-;; TODO create these new item tests
+;; TODO test for no name, and specified but already used slug
 (defn check-new-item
   "Given the slug of the collection, and a map of a new item,
   check if the everything is in order to create this new item.
   Ensure the collection exists, the name of the item is specified,
-  and the slug doesn't alread exist if it's specified."
+  and the slug doesn't already exist if it's specified."
   [coll-slug item]
-  true)
+  (if-let [coll-id (:id (collection/get-collection coll-slug))]
+    true
+    :bad_collection))
 
 (defn all-items [coll-slug])

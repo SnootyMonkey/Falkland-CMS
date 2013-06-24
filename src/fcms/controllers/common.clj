@@ -2,12 +2,12 @@
   (:require [clojure.walk :refer (keywordize-keys)]
             [clj-json.core :as json]))
 
-(def ^:dynamic body nil)
-
-(defn extract-json-body
-  "The request body can only be read once, so return the thread-local (request local)
-  var body if it's already set, otherwise read in the body param from the request as
-  a string, parse it into JSON, make sure all the keys are keywords, and store it as
-  a thread-local (request local) var named body."
+(defn malformed-json?
+  "The request body can only be read once, so read in the body param from the request as
+  a string, parse it into JSON, make sure all the keys are keywords, and return it as
+  the 2nd element in a vector, with the first part as false, indicating it's not malformed,
+  otherwise return true to indicate it's malformed."
   [ctx]
-  (or body (deref (def ^:dynamic body (keywordize-keys (json/parse-string (slurp (get-in ctx [:request :body]))))))))
+  (if-let [data (-> (get-in ctx [:request :body]) slurp json/parse-string keywordize-keys)]
+    [false {:data data}]
+    true))
