@@ -2,10 +2,13 @@
   (:require [compojure.core :refer (defroutes ANY)]
             [liberator.core :refer (defresource)]            
             [clojure.core.match :refer (match)]
+            [taoensso.timbre :refer (debug info warn error fatal spy)]
             [fcms.controllers.common :as common]
             [fcms.models.collection :as collection]
             [fcms.models.item :as item]
             [fcms.views.collections :refer (render-collection)]))
+
+(def missing-response {:status 404 :body "Not a valid collection." :headers {"Content-Type" "text/plain"}})
 
 (defn get-collection [coll-slug]
   (if-let [coll (collection/get-collection coll-slug)]
@@ -15,10 +18,10 @@
   (format "Items in the collection: %s" coll-slug))
 
 (defn check-new-item [coll-slug item]
-  (match (item/check-new-item coll-slug item)
-    :bad-collection [false {:status 404}]
-    false false
-    :else true))
+  (match (item/valid-new-item? coll-slug (:name item) item)
+    :bad-collection [false {:bad-collection true}]
+    :OK true
+    :else false))
 
 (defn create-item [coll-slug item]
   (item/create-item coll-slug (:name item) item))
@@ -33,6 +36,7 @@
     :handle-ok (fn [ctx] (get-items coll-slug))
     :malformed? (fn [ctx] (common/malformed-json? ctx)) 
     :processable? (fn [ctx] (check-new-item coll-slug (:data ctx)))
+    :handle-unprocessable-entity (fn [ctx] (if (:bad-collection ctx) missing-response))
     :post! (fn [ctx] (create-item coll-slug (:data ctx))))
 
 (defroutes collection-routes
