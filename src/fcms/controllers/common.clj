@@ -3,6 +3,10 @@
             [clojure.walk :refer (keywordize-keys)]
             [clj-json.core :as json]))
 
+(def missing-collection-response
+  (liberator.representation/ring-response
+    {:status 404 :body "Not a valid collection." :headers {"Content-Type" "text/plain"}}))
+
 (def malformed true)
 (def good-json false)
 
