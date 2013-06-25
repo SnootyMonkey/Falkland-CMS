@@ -8,7 +8,7 @@
             [fcms.models.item :as item]
             [fcms.views.collections :refer (render-collection)]))
 
-(def missing-response {:status 404 :body "Not a valid collection." :headers {"Content-Type" "text/plain"}})
+(def missing-response (liberator.representation/ring-response {:status 404 :body "Not a valid collection." :headers {"Content-Type" "text/plain"}}))
 
 (defn get-collection [coll-slug]
   (if-let [coll (collection/get-collection coll-slug)]
