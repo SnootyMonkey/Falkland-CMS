@@ -6,7 +6,7 @@
             [fcms.models.collection :as collection]
             [fcms.views.collections :refer (render-collection)]))
 
-(defn get-collection [coll-slug]
+(defn- get-collection [coll-slug]
   (if-let [coll (collection/get-collection coll-slug)]
     (render-collection coll)))
 

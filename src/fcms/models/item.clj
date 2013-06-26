@@ -5,6 +5,11 @@
 
 (def item-media-type "application/vnd.fcms.item+json")
 
+(defn- item-from-db 
+  "Turn an item from its CouchDB map representation into its FCMS map representation."
+  [coll-slug item]
+  (common/map-from-db (assoc-in item [:data :collection] coll-slug)))
+
 (defn create-item
   "Create a new item in the collection specified by its slug, using the specified
   item name and an optional map of properties. If :slug is included in the properties
@@ -13,18 +18,19 @@
   ([coll-slug item-name] (create-item coll-slug item-name {}))
   ([coll-slug item-name props]
     (if-let [coll-id (:id (collection/get-collection coll-slug))]
-      (common/create (merge props {:collection coll-id :name item-name}) :item)
+      (when-let [item (common/create (merge props {:collection coll-id :name item-name}) :item)]
+        (item-from-db coll-slug item))
       :bad-collection)))
 
 (defn get-item
   "Given the slug of the collection containing the item and the slug of the item,
   return the item as a map, or :bad-collection if there's no collection with that slug, or
-  nil if there is no item with that slug"
+  nil if there is no item with that slug."
   [coll-slug item-slug]
     (if-let [coll-id (:id (collection/get-collection coll-slug))]
       (clutch/with-db (common/db)
         (when-let [item (:doc (first (clutch/get-view "item" :all {:key [coll-id, item-slug] :include_docs true})))]
-          (common/map-from-db (assoc-in item [:data :collection] coll-slug))))
+          (item-from-db coll-slug item)))
       :bad-collection))
 
 (defn valid-new-item?
