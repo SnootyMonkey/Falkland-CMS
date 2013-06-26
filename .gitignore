@@ -4,6 +4,7 @@
 /classes
 /checkouts
 /out
+/docs/test-urls.txt
 pom.xml
 *.jar
 *.class

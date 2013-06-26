@@ -32,6 +32,10 @@
     (delete-link item)
     (collection-link item)]])))
 
+(defn render-items
+  "Create a JSON representation of a group of items for the REST API"
+  [items])
+
 (defn render-item 
   "Create a JSON representation of an item for the REST API"
   [item]

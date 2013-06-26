@@ -9,15 +9,14 @@
   If :slug is included in the properties it will be used as the collection's slug,
   otherwise one will be created from the name."
   ([name] (create-collection name {}))
-  ([name props] (common/create (merge props {:name name}) :collection)))
+  ([name props] (when-let [collection (common/create (merge props {:name name}) :collection)]
+    (common/map-from-db collection))))
 
 (defn all-collections [])
 
-;; TODO get a nice map of the collection, not CouchDB's
 (defn get-collection
   "Given the slug of the collection, return the collection as a map, or nil if there's no collection with that slug"
   [slug]
   (clutch/with-db (common/db)
     (if-let [coll (:doc (first (clutch/get-view "collection" :all {:key slug :include_docs true})))]
       (common/map-from-db coll))))
-

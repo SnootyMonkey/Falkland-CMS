@@ -7,12 +7,14 @@
             [fcms.views.collections :refer (render-collection)]))
 
 (defn- get-collection [coll-slug]
-  (if-let [coll (collection/get-collection coll-slug)]
-    (render-collection coll)))
+  (if-let [collection (collection/get-collection coll-slug)]
+    {:collection collection}))
 
 (defresource collection [coll-slug]
     :available-media-types [collection/collection-media-type]
-    :handle-ok (fn [ctx] (get-collection coll-slug)))
+    :allowed-methods [:get :put :delete]
+    :exists? (fn [ctx] (get-collection coll-slug))
+    :handle-ok (fn [ctx] (render-collection (:collection ctx))))
 
 (defroutes collection-routes
   (ANY "/:coll-slug" [coll-slug] (collection coll-slug)))
