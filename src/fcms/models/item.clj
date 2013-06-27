@@ -3,7 +3,12 @@
             [fcms.models.common :as common]
             [fcms.models.collection :as collection]))
 
-(def item-media-type "application/vnd.fcms.item+json")
+(def item-media-type "application/vnd.fcms.item+json;charset=utf-8;version=1")
+
+(defn- item-doc
+  ""
+  [coll-id item-slug]
+  (:doc (first (clutch/get-view "item" :all {:key [coll-id, item-slug] :include_docs true}))))
 
 (defn- item-from-db 
   "Turn an item from its CouchDB map representation into its FCMS map representation."
@@ -29,9 +34,18 @@
   [coll-slug item-slug]
     (if-let [coll-id (:id (collection/get-collection coll-slug))]
       (clutch/with-db (common/db)
-        (when-let [item (:doc (first (clutch/get-view "item" :all {:key [coll-id, item-slug] :include_docs true})))]
+        (when-let [item (item-doc coll-id item-slug)]
           (item-from-db coll-slug item)))
       :bad-collection))
+
+(defn delete-item
+  ""
+  [coll-slug item-slug]
+  (if-let [coll-id (:id (collection/get-collection coll-slug))]
+    (if-let [item (clutch/with-db (common/db) (item-doc coll-id item-slug))]
+      (:ok (common/delete item))
+      :bad-item)
+    :bad-collection))
 
 (defn valid-new-item?
   "Given the slug of the collection, and a map of a potential new item,

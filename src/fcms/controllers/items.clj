@@ -30,16 +30,28 @@
     :headers {"Location" (format "/%s/%s" coll-slug (:slug item))}}))
 
 (defresource item [coll-slug item-slug]
+  :available-charsets [common/UTF8]
   :available-media-types [item/item-media-type]
+  :handle-not-acceptable (fn [ctx] (common/only-accept item/item-media-type))
   :allowed-methods [:get :put :delete]
+  ;; Get an item
   :exists? (fn [ctx] (get-item coll-slug item-slug))
-  :handle-ok (fn [ctx] (render-item (:item ctx))))
+  :handle-ok (fn [ctx] (render-item (:item ctx)))
+  ;; Delete an item
+  :delete! (fn [ctx] (item/delete-item coll-slug item-slug))
+  ;; Update an item
+  )
 
 (defresource items-list [coll-slug]
+    :available-charsets [common/UTF8]
     :available-media-types [item/item-media-type]
+    :handle-not-acceptable (fn [ctx] (common/only-accept item/item-media-type))
     :allowed-methods [:get :post]
+    ;; Get list of items  
     :exists? (fn [ctx] (get-items coll-slug))
     :handle-ok (fn [ctx] (render-items (:items ctx)))
+    ;; Create new item
+    :known-content-type? (fn [ctx] (=  (get-in ctx [:request :content-type]) item/item-media-type))
     :malformed? (fn [ctx] (common/malformed-json? ctx)) 
     :processable? (fn [ctx] (check-new-item coll-slug (:data ctx)))
     :handle-unprocessable-entity (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
