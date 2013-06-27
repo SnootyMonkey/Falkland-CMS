@@ -46,11 +46,11 @@
   (clutch/with-db (db)
     (clutch/get-document id)))
 
-(defn delete [item]
+(defn delete [resource]
   (clutch/with-db (db)
-    (clutch/delete-document item)))
+    (clutch/delete-document resource)))
 
 (defn delete-by-id [id]
-  (let [item (retrieve id)]
-    (if-not (nil? item)
-      (delete item))))
+  (let [resource (retrieve id)]
+    (if-not (nil? resource)
+      (delete resource))))
