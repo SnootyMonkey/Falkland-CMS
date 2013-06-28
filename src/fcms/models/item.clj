@@ -3,7 +3,7 @@
             [fcms.models.common :as common]
             [fcms.models.collection :as collection]))
 
-(def item-media-type "application/vnd.fcms.item+json;charset=utf-8;version=1")
+(def item-media-type "application/vnd.fcms.item+json;version=1")
 
 (defn- item-doc
   ""

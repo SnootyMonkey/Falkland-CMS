@@ -8,8 +8,11 @@
             [fcms.views.items :refer (render-item render-items)]))
 
 (defn- get-item [coll-slug item-slug]
-  (when-let [item (item/get-item coll-slug item-slug)]
-    {:item item}))
+  (let [item (item/get-item coll-slug item-slug)]
+    (match item
+      :bad-collection [false {:bad-collection true}]
+      nil false
+      :else {:item item})))
 
 (defn- get-items [coll-slug]
   (format "Items in the collection: %s" coll-slug))
@@ -34,8 +37,9 @@
   :available-media-types [item/item-media-type]
   :handle-not-acceptable (fn [ctx] (common/only-accept item/item-media-type))
   :allowed-methods [:get :put :delete]
-  ;; Get an item
   :exists? (fn [ctx] (get-item coll-slug item-slug))
+  :handle-not-found (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
+  ;; Get an item
   :handle-ok (fn [ctx] (render-item (:item ctx)))
   ;; Delete an item
   :delete! (fn [ctx] (item/delete-item coll-slug item-slug))

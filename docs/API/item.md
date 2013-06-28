@@ -214,8 +214,8 @@ Create a new item in a collection.
    URL            /{collection-slug}
    Method         POST
    Accept         application/vnd.fcms.item+json;version=1
+   Accept-Charset utf-8
    Content-type   application/vnd.fcms.item+json;version=1
-   Charset        UTF-8
 
 Pass in details for the new item as a JSON representation. The name is required and will be used to create the slug.
 
@@ -245,7 +245,7 @@ Here is a more complete representation:
 cURL
 
 ```shell
-curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"Mudskipper","URL":"http://en.wikipedia.org/wiki/Mudskipper","category":"/mudskippers/media-types/articles/online","category":"/mudskippers/topics/general","description":"Mudskipper entry from Wikipedia, the free encyclopedia"}' http://{host:port}/mudskippers/
+curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"Mudskipper","URL":"http://en.wikipedia.org/wiki/Mudskipper","category":"/mudskippers/media-types/articles/online","category":"/mudskippers/topics/general","description":"Mudskipper entry from Wikipedia, the free encyclopedia"}' http://{host:port}/mudskippers/
 ```
 
 #### Response
@@ -316,14 +316,14 @@ Create a new item in a collection with a specified slug and/or category.
    URL            /{collection-slug}/{item-slug}
    Method         PUT
    Accept         application/vnd.fcms.item+json;version=1
+   Accept-Charset utf-8
    Content-type   application/vnd.fcms.item+json;version=1
-   Charset        UTF-8
 
    URL            /{collection-slug}/{taxonomy-slug}/{category-slug}/{category-slug}/{item-slug}
    Method         PUT
    Accept         application/vnd.fcms.item+json;version=1
+   Accept-Charset utf-8
    Content-type   application/vnd.fcms.item+json;version=1
-   Charset        UTF-8
 
 Pass in details for the new item as a JSON representation.
 
@@ -352,7 +352,7 @@ Here is a more complete representation:
 cURL
 
 ```shell
-curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X PUT -d '{"name":"Mudskipper","URL":"http://en.wikipedia.org/wiki/Mudskipper","category":"/mudskippers/topics/general","description":"Mudskipper entry from Wikipedia, the free encyclopedia"}' http://{host:port}/mudskippers/media-types/articles/online/wikipedia-mudskipper
+curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"Mudskipper","URL":"http://en.wikipedia.org/wiki/Mudskipper","category":"/mudskippers/topics/general","description":"Mudskipper entry from Wikipedia, the free encyclopedia"}' http://{host:port}/mudskippers/media-types/articles/online/wikipedia-mudskipper
 ```
 
 #### Response
@@ -426,14 +426,14 @@ Update an existing item.
    URL            /{collection-slug}/{item-slug}
    Method         PUT
    Accept         application/vnd.fcms.item+json;version=1
+   Accept-Charset utf-8
    Content-type   application/vnd.fcms.item+json;version=1
-   Charset        UTF-8
 
    URL            /{collection-slug}/{taxonomy-slug}/{category-slug}/{category-slug}/{item-slug}
    Method         PUT
    Accept         application/vnd.fcms.item+json;version=1
+   Accept-Charset utf-8
    Content-type   application/vnd.fcms.item+json;version=1
-   Charset        UTF-8
 
 Pass in details for the updated item as a JSON representation.
 
@@ -454,7 +454,7 @@ Note: provide a new slug in the JSON body to move an item to a new slug.
 cURL
 
 ```shell
-curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X PUT -d '{"name":"Mudskipper","slug":"wiki-mud","URL":"http://en.wikipedia.org/wiki/Mudskipper","category":"/mudskippers/topics/general","description":"Mudskipper entry from Wikipedia, the free encyclopedia"}' http://{host:port}/mudskippers/media-types/articles/online/wikipedia-mudskipper
+curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"Mudskipper","slug":"wiki-mud","URL":"http://en.wikipedia.org/wiki/Mudskipper","category":"/mudskippers/topics/general","description":"Mudskipper entry from Wikipedia, the free encyclopedia"}' http://{host:port}/mudskippers/media-types/articles/online/wikipedia-mudskipper
 ```
 
 #### Response

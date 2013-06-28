@@ -3,17 +3,17 @@
             [clojure.walk :refer (keywordize-keys)]
             [clj-json.core :as json]))
 
-(def UTF8 "UTF-8")
+(def UTF8 "utf-8")
 
 (def malformed true)
 (def good-json false)
 
 (defn only-accept [media-type]
-  (format "Acceptable media type: %s" media-type))
+  (format "Acceptable media type: %s\nAcceptable char set: %s" media-type UTF8))
 
 (def missing-collection-response
   (liberator.representation/ring-response
-    {:status 404 :body "Not a valid collection." :headers {"Content-Type" "text/plain"}}))
+    {:status 404 :body "Collection not found." :headers {"Content-Type" "text/plain"}}))
 
 (defn malformed-json?
   "Read in the body param from the request as a string, parse it into JSON, make sure all the

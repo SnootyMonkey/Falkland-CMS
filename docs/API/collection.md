@@ -204,8 +204,8 @@ Create a new collection in the system.
    URL            /
    Method         POST
    Accept         application/vnd.fcms.collection+json;version=1
+   Accept-Charset utf-8
    Content-type   application/vnd.fcms.collection+json;version=1
-   Charset        UTF-8
 
 Pass in details for the new collection as a JSON representation. The name is required and will be used to create the slug.
 
@@ -233,7 +233,7 @@ Here is a more complete representation:
 cURL
 
 ```shell
-curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Content-type: application/vnd.fcms.collection+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"Mudskippers","taxonomy":"/mudskippers/media-types","taxonomy":"/mudskippers/topics","description":"The Internet's best resources on the Mudskipper"}' http://{host:port}/
+curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"Mudskippers","taxonomy":"/mudskippers/media-types","taxonomy":"/mudskippers/topics","description":"The Internet's best resources on the Mudskipper"}' http://{host:port}/
 ```
 
 #### Response
@@ -307,8 +307,8 @@ Create a new collection in the system with a specified slug.
 URL            /{collection-slug}
 Method         PUT
 Accept         application/vnd.fcms.collection+json;version=1
+Accept-Charset utf-8
 Content-type   application/vnd.fcms.collection+json;version=1
-Charset        UTF-8
 
 Pass in details for the new item as a JSON representation.
 
@@ -336,7 +336,7 @@ Here is a more complete representation:
 cURL
 
 ```shell
-curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Content-type: application/vnd.fcms.collection+json;version=1" --header "Charset: UTF-8" -X PUT -d '{"name":"Mudskippers","taxonomy":"/mudskippers/media-types","taxonomy":"/mudskippers/topics","description":"The Internet's best resources on the Mudskipper"}' http://{host:port}/mudskippers
+curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"Mudskippers","taxonomy":"/mudskippers/media-types","taxonomy":"/mudskippers/topics","description":"The Internet's best resources on the Mudskipper"}' http://{host:port}/mudskippers
 ```
 
 #### Response
@@ -413,8 +413,8 @@ Update an existing collection.
    URL            /{collection-slug}
    Method         PUT
    Accept         application/vnd.fcms.item+json;version=1
+   Accept-Charset utf-8
    Content-type   application/vnd.fcms.item+json;version=1
-   Charset        UTF-8
 
 Pass in details for the updated collection as a JSON representation.
 
@@ -434,7 +434,7 @@ Note: provide a new slug in the JSON body to move a collection to a new slug.
 cURL
 
 ```shell
-curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X PUT -d '{"name":"Mudskipper","slug":"mudskipper-info","taxonomy":"/mudskippers/topics","description":"The world's best resources on the Mudskipper"}' http://{host:port}/mudskippers
+curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"Mudskipper","slug":"mudskipper-info","taxonomy":"/mudskippers/topics","description":"The world's best resources on the Mudskipper"}' http://{host:port}/mudskippers
 ```
 
 #### Response
