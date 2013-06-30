@@ -51,13 +51,17 @@
   "Given the slug of the collection, and a map of a potential new item,
   check if the everything is in order to create the new item.
   Ensure the collection exists, the name of the item is specified,
-  and the slug doesn't already exist if it's specified."
+  and the slug is valid and doesn't already exist if it's specified."
   ([coll-slug item-name] (valid-new-item? coll-slug item-name {}))
   ([coll-slug item-name {provided-slug :slug}]
-  (if-let [coll-id (:id (collection/get-collection coll-slug))]
-    (if (and item-name (or (not provided-slug) (not (get-item coll-slug provided-slug))))
-      :OK
-      :bad-item)
-    :bad-collection)))
+    (println provided-slug)
+    (if-let [coll-id (:id (collection/get-collection coll-slug))]
+      (cond
+        (not item-name) :no-name
+        (not provided-slug) :OK
+        (not (common/valid-slug? provided-slug)) :invalid-slug
+        (not (get-item coll-slug provided-slug)) :OK
+        :else :slug-conflict)
+      :bad-collection)))
 
 (defn all-items [coll-slug])

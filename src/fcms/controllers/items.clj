@@ -7,6 +7,8 @@
             [fcms.models.item :as item]
             [fcms.views.items :refer (render-item render-items)]))
 
+;; Get item(s)
+
 (defn- get-item [coll-slug item-slug]
   (let [item (item/get-item coll-slug item-slug)]
     (match item
@@ -17,20 +19,32 @@
 (defn- get-items [coll-slug]
   (format "Items in the collection: %s" coll-slug))
 
+;; Create new item
+
 (defn- check-new-item [coll-slug item]
-  (match (item/valid-new-item? coll-slug (:name item) item)
-    :bad-collection [false {:bad-collection true}]
-    :OK true
-    :else false))
+  (let [reason (item/valid-new-item? coll-slug (:name item) item)]
+    (if (= reason :OK)
+      true
+      [false {:reason reason}])))
 
 (defn- create-item [coll-slug item]
   (when-let [item (item/create-item coll-slug (:name item) item)]
     {:item item}))
 
+(defn- unprocessable-reason [reason]
+  (match reason 
+    :bad-collection (common/missing-collection-response)
+    :no-name "Name is required."
+    :slug-conflict "Slug already used in collection."
+    :invalid-slug "Invalid slug."
+    else ))
+
 (defn- item-location-response [coll-slug item]
   (liberator.representation/ring-response
     {:body (render-item item)
     :headers {"Location" (format "/%s/%s" coll-slug (:slug item))}}))
+
+;; Resources & routes
 
 (defresource item [coll-slug item-slug]
   :available-charsets [common/UTF8]
@@ -58,7 +72,7 @@
     :known-content-type? (fn [ctx] (=  (get-in ctx [:request :content-type]) item/item-media-type))
     :malformed? (fn [ctx] (common/malformed-json? ctx)) 
     :processable? (fn [ctx] (check-new-item coll-slug (:data ctx)))
-    :handle-unprocessable-entity (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
+    :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
     :post! (fn [ctx] (create-item coll-slug (:data ctx)))
     :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))
 

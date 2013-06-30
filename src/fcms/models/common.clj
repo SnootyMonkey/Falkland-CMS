@@ -23,23 +23,29 @@
   (if-let [data (:data db-map)]
     (assoc (dissoc data :type) :id (:_id db-map))))
 
+;; TODO implement
 ;; Slugify
 ;; Rules:
 ;; replace A-Z with a-z
 ;; replace non-alpha-numeric with -
 ;; replace -- with -
 ;; replace - at the end with nothing
-;; if not unique, add -1 to the end and increment 1 until it is unique for that type
-(defn slugify [doc-name type-name]
-  (str/lower-case doc-name))
+;; call make-unique
+(defn slugify [resource-name make-unique]
+  (str/lower-case resource-name))
+
+(defn valid-slug? [provided-slug]
+  ;; if the slug is the same one we'd provide for a resource with that name, then it's valid 
+  (= provided-slug (slugify provided-slug (fn [slug] slug))))
 
 ;; TODO set timestamps
 ;; TODO base version
+;; TODO provide slugify a uniqueness function for the type
 (defn create
   "Create a resource in the DB, returning the property map for the resource."
-  [{doc-name :name provided-slug :slug :as props} provided-type]
+  [{resource-name :name provided-slug :slug :as props} provided-type]
   (clutch/with-db (db)
-    (let [slug (or provided-slug (slugify doc-name (name provided-type)))]
+    (let [slug (or provided-slug (slugify resource-name (name provided-type)))]
       (clutch/put-document {:data (merge props {:slug slug :type (name provided-type)})}))))
 
 (defn retrieve [id]

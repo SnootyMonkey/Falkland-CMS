@@ -1,8 +1,6 @@
 # all good - no slug
 # all good - with slug
 # all good - unicode in the body
-# slug specified in body is already used
-# slug specified in body is invalid
 # no accept
 # wrong accept
 # no content header
@@ -13,6 +11,8 @@
 # body, but not valid JSON
 # collection doesn't exist
 # no "name" in body
+# slug specified in body is already used
+# slug specified in body is invalid
 
 # all good, no slug - 201 Created
 
@@ -96,6 +96,16 @@ Collection not found.
 
 curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"foo":"h"}' http://localhost:3000/vic-20/
 
+Name is required.
+
 # slug specified in body is already used - 422 Unprocessable Entity ??? reason
 
 curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"a", "slug":"a"}' http://localhost:3000/vic-20/
+
+Slug already used in collection.
+
+# slug specified in body is already used - 422 Unprocessable Entity ??? reason
+
+curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"a", "slug":"a a"}' http://localhost:3000/vic-20/
+
+Invalid slug.
