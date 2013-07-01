@@ -38,6 +38,15 @@
           (item-from-db coll-slug item)))
       :bad-collection))
 
+; (defn get-item
+;   "Given the slug of the collection containing the item and the slug of the item,
+;   return the item as a map, or :bad-collection if there's no collection with that slug, or
+;   nil if there is no item with that slug."
+;   [coll-slug item-slug]
+;     (collection/with-collection coll-slug
+;       (when-let [item (item-doc coll-id item-slug)]
+;         (item-from-db coll-slug item))))
+
 (defn delete-item
   ""
   [coll-slug item-slug]

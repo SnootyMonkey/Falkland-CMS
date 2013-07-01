@@ -12,11 +12,21 @@
   ([name props] (when-let [collection (common/create (merge props {:name name}) :collection)]
     (common/map-from-db collection))))
 
-(defn all-collections [])
-
 (defn get-collection
   "Given the slug of the collection, return the collection as a map, or nil if there's no collection with that slug"
   [slug]
   (clutch/with-db (common/db)
     (if-let [coll (:doc (first (clutch/get-view "collection" :all {:key slug :include_docs true})))]
       (common/map-from-db coll))))
+
+;; Not working
+; (defmacro with-collection
+;   ""
+;   [coll-slug & body]
+;   `(do (def coll-id (:id (get-collection '~coll-slug)))
+;     (if coll-id
+;       (clutch/with-db (common/db)
+;         ~@body)
+;       :bad-collection)))
+
+(defn all-collections [])
