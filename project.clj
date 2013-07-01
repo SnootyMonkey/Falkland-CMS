@@ -19,6 +19,7 @@
     ["https://github.com/clojure-liberator/liberator.git"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
   ]
   :plugins [
+    [lein-ancient "0.4.0"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
     [lein-git-deps "0.0.1-SNAPSHOT"] ; dependencies from GitHub https://github.com/tobyhede/lein-git-deps
   	[lein-ring "0.8.3"] ; common ring tasks https://github.com/weavejester/lein-ring
     [lein-cucumber "1.0.2"] ; cucumber-jvm (BDD testing) tasks https://github.com/nilswloka/lein-cucumber
