@@ -19,14 +19,13 @@
     (if-let [coll (:doc (first (clutch/get-view "collection" :all {:key slug :include_docs true})))]
       (common/map-from-db coll))))
 
-;; Not working
-; (defmacro with-collection
-;   ""
-;   [coll-slug & body]
-;   `(do (def coll-id (:id (get-collection '~coll-slug)))
-;     (if coll-id
-;       (clutch/with-db (common/db)
-;         ~@body)
-;       :bad-collection)))
+(defmacro with-collection
+  "Given the slug of the collection, execute some code with the retrieved collection
+  lexically scoped as collection, or return :bad-collection if the collection slug is no good"
+  [coll-slug & body]
+  `(if-let [~'collection (get-collection ~coll-slug)]
+    (clutch/with-db (common/db)
+      ~@body)
+    :bad-collection))
 
 (defn all-collections [])
