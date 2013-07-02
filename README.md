@@ -50,7 +50,7 @@ Ideal uses:
 
 * The Venerable VIC-20 - an online exihibit of everything Commodore VIC-20
 * Camus.org - Primary and secondary source collection for the philosopher Albert Camus
-* Mudskippers.org - a guide to all the world's knowledge about the amazing amphibian fish
+* Mudskippers.org - a guide to all the world's knowledge about the amazing amphibious fish
 * Jack Freeman's Library - presenting 40 years of one man's books
 * nil.org - A complete guide to Nihilism 
 * 8-bit '80's - a site to exhibit an extensive retro video game collection
