@@ -21,21 +21,15 @@ Start the REPL with:
 
 Require the models that you are going to use:
 
-	(require '[fcms.models.common :as common])
 	(require '[fcms.models.collection :as collection])
 	(require '[fcms.models.item :as item])
 	(require '[fcms.models.taxonomy :as taxonomy])
 
 Or, if you are doing devolpment on the code, require them using the reload flag:
 
-	(require '[fcms.models.common :as common] :reload-all)
 	(require '[fcms.models.collection :as collection] :reload-all)
 	(require '[fcms.models.item :as item] :reload-all)
 	(require '[fcms.models.taxonomy :as item] :reload-all)
-
-List everything in the CMS (don't do this on a very full CMS!):
-
-	(common/all)
 
 Create a collection:
 
@@ -71,12 +65,6 @@ List all items of an intersection of taxonomies:
 
 	(item/all "mudskippers" {:categories ["media-types/videos" "topics/fish"]})
 
-Retrieve an item by its ID:
-
-	(common/retrieve "ec5d4c2028bdcd46d95affe6db038172")
-
 Delete an item:
 
-	(common/delete (common/retrieve "ec5d4c2028bdcd46d95affe6db038172"))
-
-	(common/delete-by-id "ec5d4c2028bdcd46d95affe6db038172")
+	(item/delete-item "mudskippers" "amazing-animals-mudskipper")

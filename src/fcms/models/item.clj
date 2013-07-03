@@ -23,7 +23,7 @@
   ([coll-slug item-name] (create-item coll-slug item-name {}))
   ([coll-slug item-name props]
     (collection/with-collection coll-slug
-      (when-let [item (common/create (merge props {:collection (:id collection) :name item-name}) :item)]
+      (when-let [item (common/create-with-db (merge props {:collection (:id collection) :name item-name}) :item)]
         (item-from-db coll-slug item)))))
 
 (defn get-item

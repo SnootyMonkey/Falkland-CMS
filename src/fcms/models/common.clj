@@ -18,8 +18,9 @@
   (clutch/with-db (db)
     (clutch/all-documents {:include_docs true})))
 
-(defn map-from-db [db-map]
+(defn map-from-db
   "Turn the CouchDB map into the FCMS map"
+  [db-map]
   (if-let [data (:data db-map)]
     (assoc (dissoc data :type) :id (:_id db-map))))
 
@@ -41,12 +42,16 @@
 ;; TODO set timestamps
 ;; TODO base version
 ;; TODO provide slugify a uniqueness function for the type
+(defn create-with-db
+  [{resource-name :name provided-slug :slug :as props} provided-type]
+  (let [slug (or provided-slug (slugify resource-name (name provided-type)))]
+    (clutch/put-document {:data (merge props {:slug slug :type (name provided-type)})})))
+
 (defn create
   "Create a resource in the DB, returning the property map for the resource."
-  [{resource-name :name provided-slug :slug :as props} provided-type]
+  [props provided-type]
   (clutch/with-db (db)
-    (let [slug (or provided-slug (slugify resource-name (name provided-type)))]
-      (clutch/put-document {:data (merge props {:slug slug :type (name provided-type)})}))))
+    (create-with-db props provided-type)))
 
 (defn retrieve [id]
   (clutch/with-db (db)
