@@ -72,15 +72,16 @@ Falkland CMS is pre-alpha and not yet usable.
 
 ### External Dependencies
 
-Most of Falkland's dependencies are internal, meaning lein will handle getting them for you. There are a few exceptions:
+Most of Falkland's dependencies are internal, meaning Leiningen will handle getting them for you. There are a few exceptions:
 
-* [Clojure](http://clojure.org/) - Clojure is a Lisp that runs on the Java VM
-* [Java](http://www.java.com/) - a Java VM is needed to run Clojure
-* [Leiningen](https://github.com/technomancy/leiningen) - Clojure's native build tool
+* [Java 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html) - a Java 7 JRE is needed to run Clojure
+* [Leiningen](https://github.com/technomancy/leiningen) - Clojure's build and package management tool
 * [CouchDB](http://http://couchdb.apache.org/) - CouchDB is a schema-free, document-oriented database, ideally suited for a CMS
 * [elasticsearch](http://www.elasticsearch.org/) - elasticsearch is a schema-free, document-oriented search engine, ideally suited for CouchDB
 
-## QUICK START
+### Quick Start - Heroku
+
+## Local Installation
 
 ## CONCEPTS
 
@@ -95,6 +96,7 @@ Most of Falkland's dependencies are internal, meaning lein will handle getting t
 There are 3 types of pages:
 
 * **static** - A static page is a simple CMS page, it may reference named or searched for resources, but it could also be made up of just static content. A home page, about page, or terms of use page is a good example.
+* **exihibit** - An exhibit page ...
 * **item** - An item page displays a single particular item of a particular item type
 * **taxonomy** - A taxonomy page 
 

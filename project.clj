@@ -13,6 +13,7 @@
     [com.ashafa/clutch "0.4.0-RC1"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [com.taoensso/timbre "2.1.2"] ; Logging https://github.com/ptaoussanis/timbre
     [clj-json "0.5.3"] ; JSON de/encoding https://github.com/mmcgrana/clj-json/
+    [print-foo "0.3.3"] ; Old school print debugging https://github.com/danielribeiro/print-foo
     [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
   ]
   :git-dependencies [
