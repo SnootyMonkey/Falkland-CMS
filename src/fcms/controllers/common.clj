@@ -1,7 +1,9 @@
 (ns fcms.controllers.common
   (:require [taoensso.timbre :refer (debug info warn error fatal spy)]
+            [clojure.string :refer (join)]
             [clojure.walk :refer (keywordize-keys)]
-            [clj-json.core :as json]))
+            [clj-json.core :as json]
+            [liberator.representation :refer (ring-response)]))
 
 (def UTF8 "utf-8")
 
@@ -12,8 +14,16 @@
   (format "Acceptable media type: %s\nAcceptable char set: %s" media-type UTF8))
 
 (def missing-collection-response
-  (liberator.representation/ring-response
-    {:status 404 :body "Collection not found." :headers {"Content-Type" "text/plain"}}))
+  (ring-response
+    {:status 404
+     :body "Collection not found."
+     :headers {"Content-Type" "text/plain"}}))
+
+(defn location-response [path-parts body media-type]
+  (ring-response
+    {:body body
+     :headers {"Location" (format "/%s" (join "/" path-parts))
+               "Content-Type" (format "%s;charset=%s" media-type UTF8)}}))
 
 (defn malformed-json?
   "Read in the body param from the request as a string, parse it into JSON, make sure all the

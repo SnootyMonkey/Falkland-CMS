@@ -40,9 +40,7 @@
     else ))
 
 (defn- item-location-response [coll-slug item]
-  (liberator.representation/ring-response
-    {:body (render-item item)
-    :headers {"Location" (format "/%s/%s" coll-slug (:slug item))}}))
+  (common/location-response [coll-slug (:slug item)] (render-item item) item/item-media-type))
 
 ;; Resources & routes
 
@@ -58,6 +56,7 @@
   ;; Delete an item
   :delete! (fn [ctx] (item/delete-item coll-slug item-slug))
   ;; Update an item
+  ;; TODO
   )
 
 (defresource items-list [coll-slug]

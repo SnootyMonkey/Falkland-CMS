@@ -54,12 +54,12 @@ curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --head
 Acceptable media type: application/vnd.fcms.item+json
 Acceptable char set: UTF-8
 
-# no accept charset, unicode in body - ??? application/vnd.fcms.item+json;charset=ISO-8859-1
+# no accept charset, unicode in body - 201 Created
 
 curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"私はガラスを食", "slug":"d"}' http://localhost:3000/vic-20/
 
 Location: /vic-20/d
-{"name":"d","created-at":"","updated-at":"","slug":"d","collection":"vic-20","description":"","links":[{"rel":"self","method":"get","href":"/vic-20/d","type":"application/vnd.fcms.item+json;version=1"},{"rel":"update","method":"put","href":"/vic-20/d","type":"application/vnd.fcms.item+json;version=1"},{"rel":"delete","method":"delete","href":"/vic-20/d"},{"rel":"collection","method":"get","href":"/vic-20","type":"application/vnd.fcms.collection+json"}]}
+{"name":"私はガラスを食","created-at":"","updated-at":"","slug":"d","collection":"vic-20","description":"","links":[{"rel":"self","method":"get","href":"/vic-20/d","type":"application/vnd.fcms.item+json;version=1"},{"rel":"update","method":"put","href":"/vic-20/d","type":"application/vnd.fcms.item+json;version=1"},{"rel":"delete","method":"delete","href":"/vic-20/d"},{"rel":"collection","method":"get","href":"/vic-20","type":"application/vnd.fcms.collection+json"}]}
 
 # wrong accept charset - 406 Not Acceptable
 
@@ -92,19 +92,19 @@ curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Co
 
 Collection not found.
 
-# no "name" in body - 422 Unprocessable Entity ??? reason
+# no "name" in body - 422 Unprocessable Entity
 
 curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"foo":"h"}' http://localhost:3000/vic-20/
 
 Name is required.
 
-# slug specified in body is already used - 422 Unprocessable Entity ??? reason
+# slug specified in body is already used - 422 Unprocessable Entity
 
 curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"a", "slug":"a"}' http://localhost:3000/vic-20/
 
 Slug already used in collection.
 
-# slug specified in body is already used - 422 Unprocessable Entity ??? reason
+# slug specified in body is already used - 422 Unprocessable Entity
 
 curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"a", "slug":"a a"}' http://localhost:3000/vic-20/
 
