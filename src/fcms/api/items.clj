@@ -56,7 +56,7 @@
   ;; Delete an item
   :delete! (fn [ctx] (item/delete-item coll-slug item-slug))
   ;; Update an item
-  ;; TODO
+  ;;:put! (fn [ctx] (update-item coll-slug (:data ctx)))
   )
 
 (defresource items-list [coll-slug]
