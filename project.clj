@@ -25,6 +25,7 @@
   	[lein-ring "0.8.3"] ; common ring tasks https://github.com/weavejester/lein-ring
     [lein-cucumber "1.0.2"] ; cucumber-jvm (BDD testing) tasks https://github.com/nilswloka/lein-cucumber
     [lein-cljsbuild "0.3.2"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
+    [lein-spell "0.1.0"] ; Catch spelling mistakes in docs and docstrings https://github.com/cldwalker/lein-spell
   ]
   :source-paths [
     ".lein-git-deps/liberator/src/"

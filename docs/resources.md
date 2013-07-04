@@ -25,7 +25,7 @@ Require the models that you are going to use:
 	(require '[fcms.resources.item :as item])
 	(require '[fcms.resources.taxonomy :as taxonomy])
 
-Or, if you are doing devolpment on the code, require them using the reload flag:
+Or, if you are doing development on the code, require them using the reload flag:
 
 	(require '[fcms.resources.collection :as collection] :reload-all)
 	(require '[fcms.resources.item :as item] :reload-all)

@@ -28,12 +28,12 @@ Ideal uses:
 
 * a repository of digital collections
 * online presentation of library collections
-* online museum exihibits
+* online museum exhibits
 
 ### Who is this for?
 
 * scholars
-* museum and exihibit curators
+* museum and exhibit curators
 * librarians
 * archivists
 * historical organizations
@@ -48,7 +48,7 @@ Ideal uses:
 
 ### What are some (hypothetical) example uses of Falkland CMS?
 
-* The Venerable VIC-20 - an online exihibit of everything Commodore VIC-20
+* The Venerable VIC-20 - an online exhibit of everything Commodore VIC-20
 * Camus.org - Primary and secondary source collection for the philosopher Albert Camus
 * Mudskippers.org - a guide to all the world's knowledge about the amazing amphibious fish
 * Jack Freeman's Library - presenting 40 years of one man's books
@@ -96,7 +96,7 @@ Most of Falkland's dependencies are internal, meaning Leiningen will handle gett
 There are 3 types of pages:
 
 * **static** - A static page is a simple CMS page, it may reference named or searched for resources, but it could also be made up of just static content. A home page, about page, or terms of use page is a good example.
-* **exihibit** - An exhibit page ...
+* **exhibit** - An exhibit page ...
 * **item** - An item page displays a single particular item of a particular item type
 * **taxonomy** - A taxonomy page 
 

@@ -1,7 +1,7 @@
 <a name='item'/>
 ## Collection Resource
 
-A [collection](http://www.wordnik.com/words/collection) is a logical grouping of items to be managed together. A collection also has zero or more taxanomies that define hierarchical organizational structures for the items in the collection.
+A [collection](http://www.wordnik.com/words/collection) is a logical grouping of items to be managed together. A collection also has zero or more taxonomies that define hierarchical organizational structures for the items in the collection.
 
 Some examples of collection:
 
@@ -20,7 +20,7 @@ You can:
 * [Delete a Collection](#delete-collection)
 
 <a name='list-collections'/>
-### List Collections in the sytem
+### List Collections in the system
 
 Get all the collections in the system.
 

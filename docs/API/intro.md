@@ -84,7 +84,7 @@ Example: /mudskippers/media-type/video/online
 /collection-slug/item-slug
 Example: /mudskippers/amazing-animals-mudskipper
 /collection-slug/taxonomy-slug/category-slug/category-slug/item-slug
-Example: /mudskippers/media-type/videoamazing-animals-mudskipper
+Example: /mudskippers/media-type/video/amazing-animals-mudskipper
 
 	GET - get representation of the item
 	PUT - create or update the representation of the item

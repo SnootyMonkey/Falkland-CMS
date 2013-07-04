@@ -393,7 +393,7 @@ q) Cancel and return to the main menu
 
 ### Configure the system
 
-You can add a new taxonomy to the sytem.
+You can add a new taxonomy to the system.
 
 ```console
 Welcome to Falkland CMS v0.1!

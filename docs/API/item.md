@@ -3,7 +3,7 @@
 
 An [item](http://www.wordnik.com/words/item) is a single entry in a collection. An item is not itself THE member of the collection, but is a pointer TO the member of the collection. It's not THE article on Faulkner's early history with bedwetting and its effect on his later writing career, it's a pointer TO the article.
 
-With Falkland CMS, you capture items in a collection and catgorize them into multiple orthogonal taxonomies. Items can point to literally anything in the world: books, articles, web pages, videos, art, artifacts, quotes, collectables, et cetera. An item is simply anything in a collection that is big enough to warrant spending the time to organize the collection. Once created, items can be browsed and searched, and can be displayed in exhibits.
+With Falkland CMS, you capture items in a collection and categorize them into multiple orthogonal taxonomies. Items can point to literally anything in the world: books, articles, web pages, videos, art, artifacts, quotes, collectables, et cetera. An item is simply anything in a collection that is big enough to warrant spending the time to organize the collection. Once created, items can be browsed and searched, and can be displayed in exhibits.
 
 Some examples of items:
 
