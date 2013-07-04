@@ -4,15 +4,15 @@
 
 */doc* - you're reading them
 
-*/features* - cucumber test suite
+*/test/features* - cucumber test suite
 
-*/src/fcms/core.clj* - server bootstrap
+*/src/fcms/app.clj* - server bootstrap
 
-*/src/fcms/controllers* - HTTP request handlers
+*/src/fcms/api/* - HTTP request handlers implementing REST API
 
-*/src/fcms/models* - lite business logic wrapper around CouchDB
+*/src/fcms/resources/* - lite business logic wrapper around CouchDB
 
-*/src/fcms/views* - HTML templates
+*/src/fcms/representations/* - JSON rendering
 
 */resources/css* - CSS
 

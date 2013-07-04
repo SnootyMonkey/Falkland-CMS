@@ -1,48 +1,70 @@
-# Developer Resources
+# Falkland CMS Resources
 
-This is an ever evolving list of resources useful for development of Falkland CMS. Some are long standing links to reference documents and the like, while others will come and go as decision support items during development of new features or designs.
+## Resources
 
-## CMS
+*common* - a common set of functions for everything that's stored in FCMS. You won't often use these functions directly.
 
-* The inspiration for Falkland CMS, [omeka](http://omeka.org/codex/Documentation)
+*collection* - a grouping of items to be managed together
 
-## CouchDB
+*item* - any resource that's been collected in your repository, often organized into many orthogonal taxonomies.
 
-* The [Clutch](https://github.com/clojure-clutch/clutch) Clojure API for CouchDB
-* [Using CouchDB with Clojure](http://www.ibm.com/developerworks/java/library/j-couchdb-clojure/) is somewhat out of date (Feb. 2011), but still has some OK info
-* [A Simple Web Application with Clojure and CouchDB](http://www.vijaykiran.com/2011/07/18/a-simple-web-application-with-clojure-and-couchdb/) is somewhat out of date (July 2011), but still has some OK info
-* [Simple example CouchDB schema](http://wiki.apache.org/couchdb/ApplicationSchema)
+*taxonomy* - a means of organizing items into hierarchical categories.
+??? needed, or just use a category with no parent?
 
-### Views
+*category* - a hierarchical organization structure in a taxonomy.
 
-They won't be in JavaScript because a perverse goal of Falkland CMS is to be JS'less, so the question is Erlang or ClojureScript for CouchDB map/reduce views?
+## From the REPL
 
-* [Writing CouchDB Views using ClojureScript](http://cemerick.com/2011/10/11/writing-couchdb-views-using-clojurescript/)
-* [How to Enable Erlang Views](http://wiki.apache.org/couchdb/EnableErlangViews)
-* [CouchDB, Writing views in Erlang](http://newtonius.blogspot.com/2012/08/couchdb-writing-views-in-erlang-part-1.html)
-* [CouchDB, Custom Erlang Map Functions](http://blog.echolibre.com/2010/02/couchdb-custom-erlang-map-functions/)
-* [CouchDB Woes and Writing Erlang Map/Reduce](http://www.the-eleven.com/tlegg/blog/2012/07/06/couchdb-woes-and-writing-erlang-mapreduce/)
-* [Handling JSON Objects in CouchDB Native Erlang Views](http://jamietalbot.com/2010/03/18/handling-json-objects-in-couchdb-native-erlang-views/)
+Start the REPL with:
 
-### Schema issues
+	lein repl
 
-CouchDB is schema-less, but there are implicitly 2 levels of schemas in Falkland CMS. The CMS' schema that will change slowly and irregularly as Falkland CMS evolves and gets new features and the scheme defined by the taxonomies each administrator defines for their instance. These will be different for everyone and will often change regularly and rapidly.
+Require the models that you are going to use:
 
-Given that, we have to deal with 2 issues, a document in CouchDB that is out of date with the current CMS schema, and an item in CouchDB that is out of data with the currently configured taxonomies. Further things can be easily out of date, such as a new field missing. There are more challenging scenarios, such as a field being renamed or changing types, and finally there are radical changes, such as the taxonomy category no longer existing at all.
+	(require '[fcms.resources.collection :as collection])
+	(require '[fcms.resources.item :as item])
+	(require '[fcms.resources.taxonomy :as taxonomy])
 
-* http://java.dzone.com/articles/schemas-couchdb
-* http://stackoverflow.com/questions/130092/couchdb-document-model-changes
-* http://grokbase.com/t/couchdb/user/12b2s3y6n8/how-do-u-handle-schema-changes
+Or, if you are doing devolpment on the code, require them using the reload flag:
 
-## Ring / Compojure
+	(require '[fcms.resources.collection :as collection] :reload-all)
+	(require '[fcms.resources.item :as item] :reload-all)
+	(require '[fcms.resources.taxonomy :as item] :reload-all)
 
-* [Compojure docs](http://briancarper.net/clojure/compojure-doc.html)
-* [Web Application Development with Clojure](http://www.vijaykiran.com/2012/01/11/web-application-development-with-clojure-part-1/)
+Create a collection:
 
-## ClojureScript
+	(collection/create-collection "Mudskippers")
 
-* [ClojureOne tutorial](http://clojurescriptone.com/)
+Create a basic item:
 
-## Testing with Cucumber
+	(item/create-item "mudskippers" "Fish with Legs!")
 
-* [Cucumber Tutorial for Clojure](https://github.com/mjul/cucumber-tutorial)
+Create a taxonomy:
+
+	(taxonomy/create-taxonomy "media-types")
+
+Create a category:
+
+	(item/create-category "Wikipedia Pages" {:parent "media-types/web-pages"})
+
+Create a more complete item:
+
+  (item/create-item "mudskippers" {:categories ["media-types/videos" "topics/fish"] :name "Amazing animals - Mudskipper" :creator "BBC Life episode", :url "https://www.youtube.com/watch?v=KurTiX4FDuQ"})
+
+	(item/create-item "fortune-500" {:categories ["media-types/web-pages" "topics/companies"] :name "Apple" :creator ["Steve Jobs", "Steve Wozniak"], :url ["http://apple.com", "http://en.wikipedia.org/wiki/Apple_Inc."]})
+  
+List all the items in a collection (don't do this on a very full collection!):
+
+	(item/all "mudskippers")
+
+List all items of a particular taxonomy:
+
+	(item/all "mudskippers" {:categories ["media-types/web-pages"]})
+
+List all items of an intersection of taxonomies:
+
+	(item/all "mudskippers" {:categories ["media-types/videos" "topics/fish"]})
+
+Delete an item:
+
+	(item/delete-item "mudskippers" "amazing-animals-mudskipper")
