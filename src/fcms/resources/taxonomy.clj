@@ -1,5 +1,5 @@
-(ns fcms.models.taxonomy
-  (:require [fcms.models.common :as common]))
+(ns fcms.resources.taxonomy
+  (:require [fcms.resources.common :as common]))
 
 (def taxonomy-media-type "application/vnd.fcms.taxonomy+json")
 

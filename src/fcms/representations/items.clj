@@ -1,8 +1,8 @@
-(ns fcms.views.items
+(ns fcms.representations.items
   (:require [clj-json.core :as json]
-            [fcms.views.common :as common]
-            [fcms.models.item :as item]
-            [fcms.models.collection :refer (collection-media-type)]))
+            [fcms.representations.common :as common]
+            [fcms.resources.item :as item]
+            [fcms.resources.collection :refer (collection-media-type)]))
 
 (def ordered-keys [:name :created-at :updated-at :slug :collection :description])
 

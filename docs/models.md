@@ -21,15 +21,15 @@ Start the REPL with:
 
 Require the models that you are going to use:
 
-	(require '[fcms.models.collection :as collection])
-	(require '[fcms.models.item :as item])
-	(require '[fcms.models.taxonomy :as taxonomy])
+	(require '[fcms.resources.collection :as collection])
+	(require '[fcms.resources.item :as item])
+	(require '[fcms.resources.taxonomy :as taxonomy])
 
 Or, if you are doing devolpment on the code, require them using the reload flag:
 
-	(require '[fcms.models.collection :as collection] :reload-all)
-	(require '[fcms.models.item :as item] :reload-all)
-	(require '[fcms.models.taxonomy :as item] :reload-all)
+	(require '[fcms.resources.collection :as collection] :reload-all)
+	(require '[fcms.resources.item :as item] :reload-all)
+	(require '[fcms.resources.taxonomy :as item] :reload-all)
 
 Create a collection:
 

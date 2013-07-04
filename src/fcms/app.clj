@@ -2,8 +2,8 @@
   (:require [liberator.core :refer [resource defresource]]
             [compojure.core :refer (defroutes ANY)]
             [ring.adapter.jetty :as ring]
-            [fcms.controllers.collections :as collections]
-            [fcms.controllers.items :as items]
+            [fcms.api.collections :as collections]
+            [fcms.api.items :as items]
             [fcms.db.views :as db-views]
             [compojure.route :as route]))
 

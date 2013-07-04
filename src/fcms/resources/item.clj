@@ -1,7 +1,7 @@
-(ns fcms.models.item
+(ns fcms.resources.item
   (:require [com.ashafa.clutch :as clutch]
-            [fcms.models.common :as common]
-            [fcms.models.collection :as collection]))
+            [fcms.resources.common :as common]
+            [fcms.resources.collection :as collection]))
 
 (def item-media-type "application/vnd.fcms.item+json;version=1")
 

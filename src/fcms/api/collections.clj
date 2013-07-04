@@ -1,10 +1,10 @@
-(ns fcms.controllers.collections
+(ns fcms.api.collections
   (:require [compojure.core :refer (defroutes ANY)]
             [liberator.core :refer (defresource)]            
             [taoensso.timbre :refer (debug info warn error fatal spy)]
-            [fcms.controllers.common :as common]
-            [fcms.models.collection :as collection]
-            [fcms.views.collections :refer (render-collection)]))
+            [fcms.api.common :as common]
+            [fcms.resources.collection :as collection]
+            [fcms.representations.collections :refer (render-collection)]))
 
 (defn- get-collection [coll-slug]
   (if-let [collection (collection/get-collection coll-slug)]

@@ -1,11 +1,11 @@
-(ns fcms.controllers.items
+(ns fcms.api.items
   (:require [compojure.core :refer (defroutes ANY)]
             [liberator.core :refer (defresource)]
             [clojure.core.match :refer (match)]
             [taoensso.timbre :refer (debug info warn error fatal spy)]
-            [fcms.controllers.common :as common]
-            [fcms.models.item :as item]
-            [fcms.views.items :refer (render-item render-items)]))
+            [fcms.api.common :as common]
+            [fcms.resources.item :as item]
+            [fcms.representations.items :refer (render-item render-items)]))
 
 ;; Get item(s)
 

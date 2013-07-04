@@ -1,6 +1,6 @@
-(ns fcms.models.collection
+(ns fcms.resources.collection
   (:require [com.ashafa.clutch :as clutch]
-            [fcms.models.common :as common]))
+            [fcms.resources.common :as common]))
 
 (def collection-media-type "application/vnd.fcms.collection+json")
 

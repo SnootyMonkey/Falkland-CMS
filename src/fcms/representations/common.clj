@@ -1,4 +1,4 @@
-(ns fcms.views.common)
+(ns fcms.representations.common)
 
 (def GET "get")
 (def POST "post")

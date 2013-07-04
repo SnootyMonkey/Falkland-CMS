@@ -1,4 +1,4 @@
-(ns fcms.controllers.common
+(ns fcms.api.common
   (:require [taoensso.timbre :refer (debug info warn error fatal spy)]
             [clojure.string :refer (join)]
             [clojure.walk :refer (keywordize-keys)]

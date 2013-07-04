@@ -1,7 +1,7 @@
 ;; CouchDB Views
 (ns fcms.db.views
   (:require [com.ashafa.clutch :as clutch]
-            [fcms.models.common :as common]))
+            [fcms.resources.common :as common]))
 
 (defn init [])
 
