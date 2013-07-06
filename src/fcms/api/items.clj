@@ -42,7 +42,7 @@
 (defn- item-location-response [coll-slug item]
   (common/location-response [coll-slug (:slug item)] (render-item item) item/item-media-type))
 
-;; Resources & routes
+;; Resources, see: http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
 
 (defresource item [coll-slug item-slug]
   :available-charsets [common/UTF8]
@@ -55,9 +55,13 @@
   :handle-ok (fn [ctx] (render-item (:item ctx)))
   ;; Delete an item
   :delete! (fn [ctx] (item/delete-item coll-slug item-slug))
-  ;; Update an item
-  ;;:put! (fn [ctx] (update-item coll-slug (:data ctx)))
-  )
+  ;; Update/Create an item
+  :malformed? (fn [ctx] (common/malformed-json? ctx)) 
+  :processable? (fn [ctx] false)
+  :can-put-to-missing? (fn [_] false) ; temporarily only use PUT for update
+  :conflict? (fn [ctx] false)
+  :put! (fn [ctx] (spy "HERE: put!"))
+  :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))
 
 (defresource items-list [coll-slug]
     :available-charsets [common/UTF8]
@@ -74,6 +78,8 @@
     :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
     :post! (fn [ctx] (create-item coll-slug (:data ctx)))
     :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))
+
+;; Routes
 
 (defroutes item-routes
   (ANY "/:coll-slug/:item-slug" [coll-slug item-slug] (item coll-slug item-slug))

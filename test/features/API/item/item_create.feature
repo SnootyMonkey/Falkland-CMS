@@ -1,3 +1,4 @@
+# POST
 # all good - no slug
 # all good - with slug
 # all good - unicode in the body
@@ -13,6 +14,25 @@
 # no "name" in body
 # slug specified in body is already used
 # slug specified in body is invalid
+
+# PUT
+# all good - no slug
+# all good - with slug
+# all good - unicode in the body
+# slug conflicting with URL
+# no accept
+# wrong accept
+# no content header
+# wrong content header
+# no charset
+# wrong charset
+# no body
+# body, but not valid JSON
+# collection doesn't exist
+# no "name" in body
+# slug specified in body is invalid
+# slug specified in URL is invalid
+
 
 # all good, no slug - 201 Created
 

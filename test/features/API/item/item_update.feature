@@ -36,7 +36,7 @@ curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Ac
 
 curl -i --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a6", "description":"a6", "a6":"a6"}' http://localhost:3000/vic-20/a
 
-# wrong accept type
+# wrong accept type - 406 Not Acceptable
 
 curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a7", "description":"a7", "a7":"a7"}' http://localhost:3000/vic-20/a
 
@@ -44,7 +44,7 @@ curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --head
 
 curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X PUT -d '{"name":"a8", "description":"a8", "a8":"a8"}' http://localhost:3000/vic-20/a
 
-# wrong content-type header
+# wrong content-type header - 406 Not Acceptable
 
 curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"a9", "description":"a9", "a9":"a9"}' http://localhost:3000/vic-20/a
 
@@ -52,15 +52,15 @@ curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Ac
 
 curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a10", "description":"a10", "a10":"a10"}' http://localhost:3000/vic-20/a
 
-# wrong charset
+# wrong charset - 406 Not Acceptable
 
 curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: iso-8859-1" --header "Content-type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a11", "description":"a11", "a11":"a11"}' http://localhost:3000/vic-20/a
 
-# no body
+# no body - 400 Bad Request
 
 curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X PUT http://localhost:3000/vic-20/a
 
-# body, but not valid JSON
+# body, but not valid JSON - 400 Bad Request
 
 curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X PUT -d 'Hi Mom!' http://localhost:3000/vic-20/a
 
