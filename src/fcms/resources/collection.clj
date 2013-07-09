@@ -19,6 +19,16 @@
     (if-let [coll (:doc (first (clutch/get-view "collection" :all {:key slug :include_docs true})))]
       (common/map-from-db coll))))
 
+;; TODO delete the items
+(defn delete-collection
+  "Given the slug of the collection, delete it and all its contents and return :ok,
+  or return :bad-collection if the collection slug is not good"
+  [slug]
+  (if-let [id (clutch/with-db (common/db)
+    (:id (first (clutch/get-view "collection" :all {:key slug :include_docs false}))))]
+      (do (common/delete-by-id id) :ok)
+      :bad-collection))
+
 (defmacro with-collection
   "Given the slug of the collection, execute some code with the retrieved collection
   lexically scoped as collection, or return :bad-collection if the collection slug is no good"
