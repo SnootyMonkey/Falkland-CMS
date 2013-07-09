@@ -51,7 +51,6 @@
   and the slug is valid and doesn't already exist if it's specified."
   ([coll-slug item-name] (valid-new-item? coll-slug item-name {}))
   ([coll-slug item-name {provided-slug :slug}]
-    (println provided-slug)
     (if-let [coll-id (:id (collection/get-collection coll-slug))]
       (cond
         (not item-name) :no-name
@@ -59,6 +58,17 @@
         (not (common/valid-slug? provided-slug)) :invalid-slug
         (not (get-item coll-slug provided-slug)) :OK
         :else :slug-conflict)
+      :bad-collection)))
+
+(defn valid-item-update?
+  ""
+  ([coll-slug item-slug {item-name :name provided-slug :slug}]
+    (if-let [coll-id (:id (collection/get-collection coll-slug))]
+      (cond
+        (not item-name) :no-name
+        (not provided-slug) :OK
+        (not (common/valid-slug? provided-slug)) :invalid-slug
+        :else :OK)
       :bad-collection)))
 
 (defn all-items [coll-slug])

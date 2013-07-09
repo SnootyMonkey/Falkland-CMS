@@ -4,10 +4,9 @@
             [clojure.core.match :refer (match)]
             [taoensso.timbre :refer (debug info warn error fatal spy)]
             [fcms.api.common :as common]
+            [fcms.resources.collection :as collection]
             [fcms.resources.item :as item]
             [fcms.representations.items :refer (render-item render-items)]))
-
-;; Get item(s)
 
 (defn- get-item [coll-slug item-slug]
   (let [item (item/get-item coll-slug item-slug)]
@@ -16,8 +15,13 @@
       nil false
       :else {:item item})))
 
-(defn- get-items [coll-slug]
-  (format "Items in the collection: %s" coll-slug))
+(defn- get-collection [coll-slug]
+  (if-let [collection (collection/get-collection coll-slug)]
+    [true {:collection collection}]
+    [false {:bad-collection true}]))
+
+(defn- item-location-response [coll-slug item]
+  (common/location-response [coll-slug (:slug item)] (render-item item) item/item-media-type))
 
 ;; Create new item
 
@@ -33,14 +37,19 @@
 
 (defn- unprocessable-reason [reason]
   (match reason 
-    :bad-collection (common/missing-collection-response)
+    :bad-collection common/missing-collection-response
     :no-name "Name is required."
     :slug-conflict "Slug already used in collection."
     :invalid-slug "Invalid slug."
     else ))
 
-(defn- item-location-response [coll-slug item]
-  (common/location-response [coll-slug (:slug item)] (render-item item) item/item-media-type))
+;; Update item
+
+(defn- check-item-update [coll-slug item-slug item]
+  (let [reason (item/valid-item-update? coll-slug item-slug item)]
+    (if (= reason :OK)
+      true
+      [false {:reason reason}])))
 
 ;; Resources, see: http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
 
@@ -57,10 +66,11 @@
   :delete! (fn [ctx] (item/delete-item coll-slug item-slug))
   ;; Update/Create an item
   :malformed? (fn [ctx] (common/malformed-json? ctx)) 
-  :processable? (fn [ctx] false)
+  :processable? (fn [ctx] (check-item-update coll-slug item-slug (:data ctx)))
   :can-put-to-missing? (fn [_] false) ; temporarily only use PUT for update
   :conflict? (fn [ctx] false)
   :put! (fn [ctx] (spy "HERE: put!"))
+  :handle-not-implemented (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
   :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))
 
 (defresource items-list [coll-slug]
@@ -68,8 +78,8 @@
     :available-media-types [item/item-media-type]
     :handle-not-acceptable (fn [ctx] (common/only-accept item/item-media-type))
     :allowed-methods [:get :post]
+    :exists? (fn [ctx] (get-collection coll-slug))
     ;; Get list of items  
-    :exists? (fn [ctx] (get-items coll-slug))
     :handle-ok (fn [ctx] (render-items (:items ctx)))
     ;; Create new item
     :known-content-type? (fn [ctx] (=  (get-in ctx [:request :content-type]) item/item-media-type))

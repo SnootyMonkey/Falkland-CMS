@@ -66,9 +66,11 @@ curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Ac
 
 curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a12"' http://localhost:3000/vic-20/a
 
-# collection doesn't exist
+# collection doesn't exist - 404 Not Found
 
 curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a13", "description":"a13", "a13":"a13"}' http://localhost:3000/vic-202/a
+
+Collection not found.
 
 # item doesn't exist
 
