@@ -5,9 +5,7 @@
 
 (def item-media-type "application/vnd.fcms.item+json;version=1")
 
-(defn- item-doc
-  ""
-  [coll-id item-slug]
+(defn- item-doc [coll-id item-slug]
   (:doc (first (clutch/get-view "item" :all {:key [coll-id, item-slug] :include_docs true}))))
 
 (defn- item-from-db 
@@ -28,7 +26,7 @@
 
 (defn get-item
   "Given the slug of the collection containing the item and the slug of the item,
-  return the item as a map, or :bad-collection if there's no collection with that slug, or
+  return the item as a map, or return :bad-collection if there's no collection with that slug, or
   nil if there is no item with that slug."
   [coll-slug item-slug]
     (collection/with-collection coll-slug
@@ -36,7 +34,9 @@
         (item-from-db coll-slug item))))
 
 (defn delete-item
-  ""
+  "Given the slug of the collection containing the item and the slug of the item,
+  delete the item, or return :bad-collection if there's no collection with that slug, or
+  :bad-item if there is no item with that slug."
   [coll-slug item-slug]
   (if-let [coll-id (:id (collection/get-collection coll-slug))]
     (if-let [item (clutch/with-db (common/db) (item-doc coll-id item-slug))]
@@ -70,5 +70,3 @@
         (not (common/valid-slug? provided-slug)) :invalid-slug
         :else :OK)
       :bad-collection)))
-
-(defn all-items [coll-slug])

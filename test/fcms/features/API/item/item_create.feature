@@ -20,13 +20,14 @@ Feature: Creating Items
 
   Background:
     Given I have a collection "c" with no items
-    Then the collection's item count is 0
+    Then the collection "c" has an item count of "0"
 
   Scenario: Create a valid item with no slug
     When I have a "item" request with name "i"
     And I "POST" the request with URL "/c/"
     Then the status is "201"
     And the item is "i" named "i" in "c"
+    And the collection "c" has an item count of "1"
     When I "GET" the request with URL "/c/i"
     Then the item is "i" named "i" in "c"
 
@@ -47,6 +48,7 @@ Feature: Creating Items
     And I "POST" the request with URL "/c/"
     Then the status is "201"
     And the item is "another-i" named "i" in "c"
+    And the collection "c" has an item count of "1"
     When I "GET" the request with URL "/c/another-i"
     Then the item is "another-i" named "i" in "c"
 

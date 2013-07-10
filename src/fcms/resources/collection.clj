@@ -19,7 +19,7 @@
     (if-let [coll (:doc (first (clutch/get-view "collection" :all {:key slug :include_docs true})))]
       (common/map-from-db coll))))
 
-;; TODO delete the items
+;; TODO delete the items as well
 (defn delete-collection
   "Given the slug of the collection, delete it and all its contents and return :ok,
   or return :bad-collection if the collection slug is not good"
@@ -37,5 +37,16 @@
     (clutch/with-db (common/db)
       ~@body)
     :bad-collection))
+
+(defn item-count
+  "Given the slug of the collection, return the number of items it contains,
+  or return :bad-collection if the collection slug is no good"
+  [coll-slug]
+  (with-collection coll-slug
+    (if-let [result (first (clutch/get-view "item" :count-by-collection {:key (:id collection) :include_docs false}))]
+      (:value result)
+      0)))
+
+(defn all-items [coll-slug])
 
 (defn all-collections [])
