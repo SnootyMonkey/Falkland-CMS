@@ -23,8 +23,8 @@ Feature: Creating Items
     Then the collection "c" has an item count of "0"
 
   Scenario: Create a valid item with no slug
-    When I have a "item" request with name "i"
-    And I "POST" the request with URL "/c/"
+    When I have a "item" "POST" request with URL "/c/"
+    And I set the "name" to "i"
     Then the status is "201"
     And the item is "i" named "i" in "c"
     And the collection "c" has an item count of "1"
@@ -43,9 +43,9 @@ Feature: Creating Items
     # And the "collection" link of the "collection" is "GET" on "a/a"
 
   Scenario: Create a valid item with a slug
-    When I have a "item" request with name "i"
-    And I add a "slug" of "another-i" to the request
-    And I "POST" the request with URL "/c/"
+    When I have a "item" "POST" request with URL "/c/"
+    And I set the "name" to "i"
+    And I set the "slug" to "another-i"
     Then the status is "201"
     And the item is "another-i" named "i" in "c"
     And the collection "c" has an item count of "1"
