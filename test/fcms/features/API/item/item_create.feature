@@ -28,19 +28,8 @@ Feature: Creating Items
     Then the status is "201"
     And the item is "i" named "i" in "c"
     And the collection "c" has an item count of "1"
-    When I "GET" the request with URL "/c/i"
+    When I have a "item" "GET" request with URL "/c/i"
     Then the item is "i" named "i" in "c"
-
-    # And location of the item is "/a/a"
-    # And the "name" is "a"
-    # And the "slug" is "a"
-    # And the "collection" is "a"
-    # And the "created-at" is about now
-    # And the "updated-at" is about now
-    # And the "self" link of the "item" is a "GET" on "a/a"
-    # And the "update" link of the "item" is "PUT" on "a/a"
-    # And the "delete" link of the "item" is "DELETE" on "a/a"
-    # And the "collection" link of the "collection" is "GET" on "a/a"
 
   Scenario: Create a valid item with a slug
     When I have a "item" "POST" request with URL "/c/"
@@ -49,7 +38,7 @@ Feature: Creating Items
     Then the status is "201"
     And the item is "another-i" named "i" in "c"
     And the collection "c" has an item count of "1"
-    When I "GET" the request with URL "/c/another-i"
+    When I have a "item" "GET" request with URL "/c/another-i"
     Then the item is "another-i" named "i" in "c"
 
 

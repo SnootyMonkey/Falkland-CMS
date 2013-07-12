@@ -1,6 +1,6 @@
 (ns fcms.api.items
   (:require [compojure.core :refer (defroutes ANY)]
-            [liberator.core :refer (defresource)]
+            [liberator.core :refer (defresource by-method)]
             [clojure.core.match :refer (match)]
             [taoensso.timbre :refer (debug info warn error fatal spy)]
             [fcms.api.common :as common]
@@ -36,7 +36,7 @@
     {:item item}))
 
 (defn- unprocessable-reason [reason]
-  (match reason 
+  (match reason
     :bad-collection common/missing-collection-response
     :no-name "Name is required."
     :slug-conflict "Slug already used in collection."
@@ -65,8 +65,12 @@
   ;; Delete an item
   :delete! (fn [ctx] (item/delete-item coll-slug item-slug))
   ;; Update/Create an item
-  :malformed? (fn [ctx] (common/malformed-json? ctx)) 
-  :processable? (fn [ctx] (check-item-update coll-slug item-slug (:data ctx)))
+  ;; ideally we'd want to use the helper function like this:
+  ;; :malformed? (by-method {:post (common/malformed-json? ctx)})
+  ;; :processable? (by-method {:post (check-item-update coll-slug item-slug (:data ctx))})
+  ;; but for now, using the more verbose:
+  :malformed? (fn [{{method :request-method} :request :as ctx}] (when (= :post method) (common/malformed-json? ctx)))
+  :processable? (fn [{{method :request-method} :request :as ctx}] (if (= :post method) (check-item-update coll-slug item-slug (:data ctx)) true))
   :can-put-to-missing? (fn [_] false) ; temporarily only use PUT for update
   :conflict? (fn [ctx] false)
   :put! (fn [ctx] (spy "HERE: put!"))
@@ -79,11 +83,11 @@
     :handle-not-acceptable (fn [ctx] (common/only-accept item/item-media-type))
     :allowed-methods [:get :post]
     :exists? (fn [ctx] (get-collection coll-slug))
-    ;; Get list of items  
+    ;; Get list of items
     :handle-ok (fn [ctx] (render-items (:items ctx)))
     ;; Create new item
     :known-content-type? (fn [ctx] (=  (get-in ctx [:request :content-type]) item/item-media-type))
-    :malformed? (fn [ctx] (common/malformed-json? ctx)) 
+    :malformed? (fn [ctx] (common/malformed-json? ctx))
     :processable? (fn [ctx] (check-new-item coll-slug (:data ctx)))
     :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
     :post! (fn [ctx] (create-item coll-slug (:data ctx)))
