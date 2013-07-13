@@ -28,11 +28,9 @@
 
 ;; mock a request
 
-(When #"^I have a \"([^\"]*)\" \"([^\"]*)\" request with URL \"([^\"]*)\"$" [res-type method url]
+(When #"^I have a \"([^\"]*)\" request to URL \"([^\"]*)\"$" [method url]
   (http-mock/body {})
   (http-mock/request (request (method-keyword method) url))
-  (http-mock/request (content-type (http-mock/request) (mime-type res-type)))
-  (http-mock/request (header (http-mock/request) "Accept" (mime-type res-type)))
   (http-mock/request (header (http-mock/request) "Accept-Charset" "utf-8")))
 
 (When #"^I set the \"([^\"]*)\" header to \"([^\"]*)\"$" [header value]
@@ -41,8 +39,8 @@
 (When #"^I accept a \"([^\"]*)\"$" [res-type]
   (http-mock/request (header (http-mock/request) "Accept" (mime-type res-type))))
 
-(When #"^I remove the header \"([^\"]*)\"$" [header]
-  (http-mock/request (dissoc-in (http-mock/request) [:headers (lower-case header)])))
+(When #"^I provide a \"([^\"]*)\"$" [res-type]
+  (http-mock/request (content-type (http-mock/request) (mime-type res-type))))
 
 (When #"^I set the \"([^\"]*)\" to \"([^\"]*)\"$" [property value]
   (http-mock/body (assoc (http-mock/body) (keyword property) value)))
