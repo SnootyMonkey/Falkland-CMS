@@ -26,20 +26,24 @@ Feature: Creating Items
     When I have a "item" "POST" request with URL "/c/"
     And I set the "name" to "i"
     Then the status is "201"
-    And the item is "i" named "i" in "c"
+    And the "Location" header is "/c/i"
+    And the item is "i" named "i" in collection "c"
     And the collection "c" has an item count of "1"
     When I have a "item" "GET" request with URL "/c/i"
-    Then the item is "i" named "i" in "c"
+    Then the status is "200"
+    Then the item is "i" named "i" in collection "c"
 
   Scenario: Create a valid item with a slug
     When I have a "item" "POST" request with URL "/c/"
     And I set the "name" to "i"
     And I set the "slug" to "another-i"
     Then the status is "201"
-    And the item is "another-i" named "i" in "c"
+    And the "Location" header is "/c/another-i"
+    And the item is "another-i" named "i" in collection "c"
     And the collection "c" has an item count of "1"
     When I have a "item" "GET" request with URL "/c/another-i"
-    Then the item is "another-i" named "i" in "c"
+    Then the status is "200"
+    Then the item is "another-i" named "i" in collection "c"
 
 
 # PUT
