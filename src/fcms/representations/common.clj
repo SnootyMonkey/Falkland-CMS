@@ -1,10 +1,10 @@
 (ns fcms.representations.common)
 
-(def GET "get")
-(def POST "post")
-(def PUT "put")
-(def DELETE "delete")
-(def PATCH "delete")
+(def GET "GET")
+(def POST "POST")
+(def PUT "PUT")
+(def DELETE "DELETE")
+(def PATCH "PATCH")
 
 (defn link-map [rel method url media-type]
   (array-map :rel rel :method method :href url :type media-type))

@@ -7,10 +7,10 @@
          '[fcms.resources.collection :as collection]
          '[fcms.resources.item :as item])
 
-(defn method-keyword [method]
+(defn- method-keyword [method]
   (keyword (lower-case method)))
 
-(defn mime-type [res-type]
+(defn- mime-type [res-type]
   (case res-type
     "item" item/item-media-type
     "collection" collection/collection-media-type))
@@ -31,3 +31,6 @@
 
 (Then #"^the \"([^\"]*)\" header is \"([^\"]*)\"$" [header value]
   (check (= value (get-in (mock/response) [:headers header]))))
+
+(Then #"^the \"([^\"]*)\" is \"([^\"]*)\"$" [property value]
+  (check (= value ((mock/body) (keyword property)))))

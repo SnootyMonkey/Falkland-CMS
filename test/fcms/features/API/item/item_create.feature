@@ -22,6 +22,8 @@ Feature: Creating Items
     Given I have a collection "c" with no items
     Then the collection "c" has an item count of "0"
 
+  # all good, no slug - 201 Created
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
   Scenario: Create a valid item with no slug
     When I have a "item" "POST" request with URL "/c/"
     And I set the "name" to "i"
@@ -31,8 +33,10 @@ Feature: Creating Items
     And the collection "c" has an item count of "1"
     When I have a "item" "GET" request with URL "/c/i"
     Then the status is "200"
-    Then the item is "i" named "i" in collection "c"
+    And the item is "i" named "i" in collection "c"
 
+  # all good, with slug - 201 Created
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i", "slug":"another-i"}' http://localhost:3000/c/
   Scenario: Create a valid item with a slug
     When I have a "item" "POST" request with URL "/c/"
     And I set the "name" to "i"
@@ -43,7 +47,24 @@ Feature: Creating Items
     And the collection "c" has an item count of "1"
     When I have a "item" "GET" request with URL "/c/another-i"
     Then the status is "200"
-    Then the item is "another-i" named "i" in collection "c"
+    And the item is "another-i" named "i" in collection "c"
+
+  # all good, unicode in the body - 201 Created
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"私はガラスを食", "slug":"i", "description":"er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"}' http://localhost:3000/c/
+  Scenario: Create a valid item containing unicode
+    When I have a "item" "POST" request with URL "/c/"
+    And I set the "name" to "私はガラスを食"
+    And I set the "slug" to "i"
+    And I set the "description" to "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"
+    Then the status is "201"
+    And the "Location" header is "/c/i"
+    And the item is "i" named "私はガラスを食" in collection "c"
+    And the "description" is "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"
+    And the collection "c" has an item count of "1"
+    When I have a "item" "GET" request with URL "/c/i"
+    Then the status is "200"
+    And the item is "i" named "私はガラスを食" in collection "c"
+    And the "description" is "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"
 
 
 # PUT
@@ -66,26 +87,11 @@ Feature: Creating Items
 # slug specified in URL is invalid
 
 
-# all good, no slug - 201 Created
 
-# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"a"}' http://localhost:3000/vic-20/
 
-# Location: /vic-20/a
-# {"name":"a","created-at":"","updated-at":"","slug":"a","collection":"vic-20","description":"","links":[{"rel":"self","method":"get","href":"/vic-20/a","type":"application/vnd.fcms.item+json"},{"rel":"update","method":"put","href":"/vic-20/a","type":"application/vnd.fcms.item+json"},{"rel":"delete","method":"delete","href":"/vic-20/a"},{"rel":"collection","method":"get","href":"/vic-20","type":"application/vnd.fcms.collection+json"}]}
 
-# all good, with slug - 201 Created
 
-# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"a", "slug":"another-a"}' http://localhost:3000/vic-20/
 
-# Location: /vic-20/another-a
-# {"name":"a","created-at":"","updated-at":"","slug":"another-a","collection":"vic-20","description":"","links":[{"rel":"self","method":"get","href":"/vic-20/another-a","type":"application/vnd.fcms.item+json"},{"rel":"update","method":"put","href":"/vic-20/another-a","type":"application/vnd.fcms.item+json"},{"rel":"delete","method":"delete","href":"/vic-20/another-a"},{"rel":"collection","method":"get","href":"/vic-20","type":"application/vnd.fcms.collection+json"}]}
-
-# all good, unicode in the body - 201 Created
-
-# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"私はガラスを食", "slug":"b", "description":"er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"}' http://localhost:3000/vic-20/
-
-# Location: /vic-20/b
-# {"name":"私はガラスを食","created-at":"","updated-at":"","slug":"b","collection":"vic-20","description":"er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €","links":[{"rel":"self","method":"get","href":"/vic-20/b","type":"application/vnd.fcms.item+json;version=1"},{"rel":"update","method":"put","href":"/vic-20/b","type":"application/vnd.fcms.item+json;version=1"},{"rel":"delete","method":"delete","href":"/vic-20/b"},{"rel":"collection","method":"get","href":"/vic-20","type":"application/vnd.fcms.collection+json"}]}
 
 # no accept type - 201 Created
 
