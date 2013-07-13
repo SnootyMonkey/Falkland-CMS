@@ -1,6 +1,4 @@
-(ns fcms.features.step-definitions.api.mock
-  (:require [clojure.walk :refer (keywordize-keys)]
-            [clj-json.core :as json]))
+(ns fcms.features.step-definitions.api.mock)
 
 (def req) ; mock HTTP request
 (def bod) ; body of the mock HTTP request or response
@@ -19,8 +17,4 @@
 (defn response
   ""
   ([] resp)
-  ([new-resp]
-    (def resp new-resp)
-    (if-let [new-body (:body new-resp)]
-      (def bod (keywordize-keys (json/parse-string new-body)))
-      (def bod nil))))
+  ([new-resp] (def resp new-resp)))

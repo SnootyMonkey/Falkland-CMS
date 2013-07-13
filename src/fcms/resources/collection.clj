@@ -2,7 +2,7 @@
   (:require [com.ashafa.clutch :as clutch]
             [fcms.resources.common :as common]))
 
-(def collection-media-type "application/vnd.fcms.collection+json")
+(def collection-media-type "application/vnd.fcms.collection+json;version=1")
 
 (defn create-collection
   "Create a new collection using the specified name and optional map of properties.

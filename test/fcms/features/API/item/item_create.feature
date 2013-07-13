@@ -66,6 +66,33 @@ Feature: Creating Items
     And the item is "i" named "私はガラスを食" in collection "c"
     And the "description" is "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"
 
+    # no accept type - 201 Created
+    # curl -i --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
+    Scenario: Create a valid item without using an accept header
+      When I have a "item" "POST" request with URL "/c/"
+      And I set the "name" to "i"
+      And I remove the header "Accept"
+      Then the status is "201"
+      And the "Location" header is "/c/i"
+      And the item is "i" named "i" in collection "c"
+      And the collection "c" has an item count of "1"
+      When I have a "item" "GET" request with URL "/c/i"
+      Then the status is "200"
+      And the item is "i" named "i" in collection "c"
+
+    # curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
+    # wrong accept type - 406 Not Acceptable
+    Scenario: Attempt to create an item with the wrong accept type
+      When I have a "item" "POST" request with URL "/c/"
+      And I set the "name" to "i"
+      And I accept a "collection"
+      Then the status is "406"
+      And the "Location" header is not present
+      And the body contains "Acceptable media type: application/vnd.fcms.item+json;version=1"
+      And the body contains "Acceptable char set: utf-8"
+      And the collection "c" has an item count of "0"
+      When I have a "item" "GET" request with URL "/c/i"
+      Then the status is "404"
 
 # PUT
 # all good - no slug
