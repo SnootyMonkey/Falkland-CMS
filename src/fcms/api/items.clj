@@ -65,12 +65,8 @@
   ;; Delete an item
   :delete! (fn [ctx] (item/delete-item coll-slug item-slug))
   ;; Update/Create an item
-  ;; ideally we'd want to use the helper function like this:
-  ;; :malformed? (by-method {:post (common/malformed-json? ctx)})
-  ;; :processable? (by-method {:post (check-item-update coll-slug item-slug (:data ctx))})
-  ;; but for now, using the more verbose:
-  :malformed? (fn [{{method :request-method} :request :as ctx}] (when (= :post method) (common/malformed-json? ctx)))
-  :processable? (fn [{{method :request-method} :request :as ctx}] (if (= :post method) (check-item-update coll-slug item-slug (:data ctx)) true))
+  :malformed? (by-method {:get false :post (fn [ctx] (common/malformed-json? ctx))})
+  :processable? (by-method {:get true :post (fn [ctx] (check-item-update coll-slug item-slug (:data ctx)))})
   :can-put-to-missing? (fn [_] false) ; temporarily only use PUT for update
   :conflict? (fn [ctx] false)
   :put! (fn [ctx] (spy "HERE: put!"))
