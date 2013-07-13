@@ -66,87 +66,33 @@ Feature: Creating Items
     And the item is "i" named "私はガラスを食" in collection "c"
     And the "description" is "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"
 
-    # no accept type - 201 Created
-    # curl -i --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
-    Scenario: Create a valid item without using an accept header
-      When I have a "item" "POST" request with URL "/c/"
-      And I set the "name" to "i"
-      And I remove the header "Accept"
-      Then the status is "201"
-      And the "Location" header is "/c/i"
-      And the item is "i" named "i" in collection "c"
-      And the collection "c" has an item count of "1"
-      When I have a "item" "GET" request with URL "/c/i"
-      Then the status is "200"
-      And the item is "i" named "i" in collection "c"
+  # no accept type - 201 Created
+  # curl -i --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
+  Scenario: Create a valid item without using an accept header
+    When I have a "item" "POST" request with URL "/c/"
+    And I set the "name" to "i"
+    And I remove the header "Accept"
+    Then the status is "201"
+    And the "Location" header is "/c/i"
+    And the item is "i" named "i" in collection "c"
+    And the collection "c" has an item count of "1"
+    When I have a "item" "GET" request with URL "/c/i"
+    Then the status is "200"
+    And the item is "i" named "i" in collection "c"
 
-    # curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
-    # wrong accept type - 406 Not Acceptable
-    Scenario: Attempt to create an item with the wrong accept type
-      When I have a "item" "POST" request with URL "/c/"
-      And I set the "name" to "i"
-      And I accept a "collection"
-      Then the status is "406"
-      And the "Location" header is not present
-      And the body contains "Acceptable media type: application/vnd.fcms.item+json;version=1"
-      And the body contains "Acceptable char set: utf-8"
-      And the collection "c" has an item count of "0"
-      When I have a "item" "GET" request with URL "/c/i"
-      Then the status is "404"
-
-# PUT
-# all good - no slug
-# all good - with slug
-# all good - unicode in the body
-# slug conflicting with URL
-# no accept
-# wrong accept
-# no content header
-# wrong content header
-# no charset
-# wrong charset
-# no body
-# body, but not valid JSON
-# collection doesn't exist
-# no "name" in body
-# slug specified in body is already used
-# slug specified in body is invalid
-# slug specified in URL is invalid
-
-
-
-
-
-
-
-
-# no accept type - 201 Created
-
-# curl -i --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/vic-20/
-
-# Location: /vic-20/c
-# {"name":"c","created-at":"","updated-at":"","slug":"c","collection":"vic-20","description":"","links":[{"rel":"self","method":"get","href":"/vic-20/c","type":"application/vnd.fcms.item+json;version=1"},{"rel":"update","method":"put","href":"/vic-20/c","type":"application/vnd.fcms.item+json;version=1"},{"rel":"delete","method":"delete","href":"/vic-20/c"},{"rel":"collection","method":"get","href":"/vic-20","type":"application/vnd.fcms.collection+json"}]}
-
-# wrong accept type - 406 Not Acceptable
-
-# curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/vic-20/
-
-# Acceptable media type: application/vnd.fcms.item+json
-# Acceptable char set: UTF-8
-
-# no accept charset, unicode in body - 201 Created
-
-# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"私はガラスを食", "slug":"d"}' http://localhost:3000/vic-20/
-
-# Location: /vic-20/d
-# {"name":"私はガラスを食","created-at":"","updated-at":"","slug":"d","collection":"vic-20","description":"","links":[{"rel":"self","method":"get","href":"/vic-20/d","type":"application/vnd.fcms.item+json;version=1"},{"rel":"update","method":"put","href":"/vic-20/d","type":"application/vnd.fcms.item+json;version=1"},{"rel":"delete","method":"delete","href":"/vic-20/d"},{"rel":"collection","method":"get","href":"/vic-20","type":"application/vnd.fcms.collection+json"}]}
-
-# wrong accept charset - 406 Not Acceptable
-
-# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: iso-8859-1" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"e"}' http://localhost:3000/vic-20/
-
-# Acceptable media type: application/vnd.fcms.item+json
-# Acceptable char set: UTF-8
+  # curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
+  # wrong accept type - 406 Not Acceptable
+  Scenario: Attempt to create an item with the wrong accept type
+    When I have a "item" "POST" request with URL "/c/"
+    And I set the "name" to "i"
+    And I accept a "collection"
+    Then the status is "406"
+    And the "Location" header is not present
+    And the body contains "Acceptable media type: application/vnd.fcms.item+json;version=1"
+    And the body contains "Acceptable char set: utf-8"
+    And the collection "c" has an item count of "0"
+    When I have a "item" "GET" request with URL "/c/i"
+    Then the status is "404"
 
 # no content type - 415 Unsupported Media Type
 
@@ -189,3 +135,22 @@ Feature: Creating Items
 # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"a", "slug":"a a"}' http://localhost:3000/vic-20/
 
 # Invalid slug.
+
+# PUT
+# all good - no slug
+# all good - with slug
+# all good - unicode in the body
+# slug conflicting with URL
+# no accept
+# wrong accept
+# no content header
+# wrong content header
+# no charset
+# wrong charset
+# no body
+# body, but not valid JSON
+# collection doesn't exist
+# no "name" in body
+# slug specified in body is already used
+# slug specified in body is invalid
+# slug specified in URL is invalid
