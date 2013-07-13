@@ -1,4 +1,4 @@
-(ns fcms.features.step-definitions.api.mock)
+(ns fcms.lib.http-mock)
 
 (def req) ; mock HTTP request
 (def bod) ; body of the mock HTTP request or response

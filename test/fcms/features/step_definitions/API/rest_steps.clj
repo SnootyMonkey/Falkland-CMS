@@ -4,19 +4,19 @@
          '[clojure.core.incubator :refer (dissoc-in)]
          '[print.foo :refer (print->)]
          '[ring.mock.request :refer (request body content-type header)]
-         '[fcms.features.step-definitions.api.mock :as mock]
+         '[fcms.lib.http-mock :as http-mock]
          '[fcms.lib.check :refer (check)]
          '[fcms.app :refer (app)]
-         '[fcms.resources.collection :as collection]
-         '[fcms.resources.item :as item])
+         '[fcms.resources.collection :refer (collection-media-type)]
+         '[fcms.resources.item :refer (item-media-type)])
 
 (defn- method-keyword [method]
   (keyword (lower-case method)))
 
 (defn- mime-type [res-type]
   (case res-type
-    "item" item/item-media-type
-    "collection" collection/collection-media-type))
+    "item" item-media-type
+    "collection" collection-media-type))
 
 (defn- body-from-response [resp-map]
   (try
@@ -29,42 +29,42 @@
 ;; mock a request
 
 (When #"^I have a \"([^\"]*)\" \"([^\"]*)\" request with URL \"([^\"]*)\"$" [res-type method url]
-  (mock/body {})
-  (mock/request (request (method-keyword method) url))
-  (mock/request (content-type (mock/request) (mime-type res-type)))
-  (mock/request (header (mock/request) "Accept" (mime-type res-type)))
-  (mock/request (header (mock/request) "Accept-Charset" "utf-8")))
+  (http-mock/body {})
+  (http-mock/request (request (method-keyword method) url))
+  (http-mock/request (content-type (http-mock/request) (mime-type res-type)))
+  (http-mock/request (header (http-mock/request) "Accept" (mime-type res-type)))
+  (http-mock/request (header (http-mock/request) "Accept-Charset" "utf-8")))
 
 (When #"^I set the \"([^\"]*)\" header to \"([^\"]*)\"$" [header value]
-  (mock/request (header (mock/request) header value)))
+  (http-mock/request (header (http-mock/request) header value)))
 
 (When #"^I accept a \"([^\"]*)\"$" [res-type]
-  (mock/request (header (mock/request) "Accept" (mime-type res-type))))
+  (http-mock/request (header (http-mock/request) "Accept" (mime-type res-type))))
 
 (When #"^I remove the header \"([^\"]*)\"$" [header]
-  (mock/request (dissoc-in (mock/request) [:headers (lower-case header)])))
+  (http-mock/request (dissoc-in (http-mock/request) [:headers (lower-case header)])))
 
 (When #"^I set the \"([^\"]*)\" to \"([^\"]*)\"$" [property value]
-  (mock/body (assoc (mock/body) (keyword property) value)))
+  (http-mock/body (assoc (http-mock/body) (keyword property) value)))
 
 ;; pretends to execute the request, then checks the HTTP status code
 (Then #"^the status is \"([^\"]*)\"$" [status]
-  (mock/response (app (body (mock/request) (json/generate-string (mock/body)))))
-  (mock/body (body-from-response (mock/response)))
-  (check (= (read-string status) (:status (mock/response)))))
+  (http-mock/response (app (body (http-mock/request) (json/generate-string (http-mock/body)))))
+  (http-mock/body (body-from-response (http-mock/response)))
+  (check (= (read-string status) (:status (http-mock/response)))))
 
 ;; check on the response
 
 (Then #"^the \"([^\"]*)\" header is \"([^\"]*)\"$" [header value]
-  (check (= value (get-in (mock/response) [:headers header]))))
+  (check (= value (get-in (http-mock/response) [:headers header]))))
 
 (Then #"^the \"([^\"]*)\" header is not present$" [header]
-  (check (nil? (get-in (mock/response) [:headers header]))))
+  (check (nil? (get-in (http-mock/response) [:headers header]))))
 
 (Then #"^the \"([^\"]*)\" is \"([^\"]*)\"$" [property value]
-  (check (map? (mock/body)))
-  (check (= value ((mock/body) (keyword property)))))
+  (check (map? (http-mock/body)))
+  (check (= value ((http-mock/body) (keyword property)))))
 
 (Then #"^the body contains \"([^\"]*)\"$" [contents]
-  (check (string? (mock/body)))
-  (check (.contains (mock/body) contents)))
+  (check (string? (http-mock/body)))
+  (check (.contains (http-mock/body) contents)))
