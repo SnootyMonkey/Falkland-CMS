@@ -1,22 +1,22 @@
 Feature: Creating Items
 
-  The system should store valid items into a collection.
+  The system should store valid items into a collection and handle the following secnarios:
 
-  # all good - no slug
-  # all good - with slug
-  # all good - unicode in the body
-  # no accept
-  # wrong accept
-  # no content header
-  # wrong content header
-  # no charset
-  # wrong charset
-  # no body
-  # body, but not valid JSON
-  # collection doesn't exist
-  # no "name" in body
-  # slug specified in body is already used
-  # slug specified in body is invalid
+  all good - no slug
+  all good - with slug
+  all good - unicode in the body
+  no accept
+  wrong accept
+  no content header
+  wrong content header
+  no charset
+  wrong charset
+  no body
+  body not valid JSON
+  collection doesn't exist
+  no name in body
+  slug specified in body is already used
+  slug specified in body is invalid
 
   Background:
     Given I have a collection "c" with no items

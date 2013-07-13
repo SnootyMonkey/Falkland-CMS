@@ -74,20 +74,20 @@
   :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))
 
 (defresource items-list [coll-slug]
-    :available-charsets [common/UTF8]
-    :available-media-types [item/item-media-type]
-    :handle-not-acceptable (fn [ctx] (common/only-accept item/item-media-type))
-    :allowed-methods [:get :post]
-    :exists? (fn [ctx] (get-collection coll-slug))
-    ;; Get list of items
-    :handle-ok (fn [ctx] (render-items (:items ctx)))
-    ;; Create new item
-    :known-content-type? (fn [ctx] (=  (get-in ctx [:request :content-type]) item/item-media-type))
-    :malformed? (fn [ctx] (common/malformed-json? ctx))
-    :processable? (fn [ctx] (check-new-item coll-slug (:data ctx)))
-    :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
-    :post! (fn [ctx] (create-item coll-slug (:data ctx)))
-    :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))
+  :available-charsets [common/UTF8]
+  :available-media-types [item/item-media-type]
+  :handle-not-acceptable (fn [ctx] (common/only-accept item/item-media-type))
+  :allowed-methods [:get :post]
+  :exists? (fn [ctx] (get-collection coll-slug))
+  ;; Get list of items
+  :handle-ok (fn [ctx] (render-items (:items ctx)))
+  ;; Create new item
+  :known-content-type? (fn [ctx] (=  (get-in ctx [:request :content-type]) item/item-media-type))
+  :malformed? (fn [ctx] (common/malformed-json? ctx))
+  :processable? (fn [ctx] (check-new-item coll-slug (:data ctx)))
+  :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
+  :post! (fn [ctx] (create-item coll-slug (:data ctx)))
+  :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))
 
 ;; Routes
 
