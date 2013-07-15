@@ -12,6 +12,7 @@
     [liberator "0.9.0"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
     [ibdknox/clojurescript "0.0-1534"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     [com.ashafa/clutch "0.4.0-RC1"] ; CouchDB client https://github.com/clojure-clutch/clutch
+    [clojurewerkz/elastisch "1.1.1"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [com.taoensso/timbre "2.3.0"] ; Logging https://github.com/ptaoussanis/timbre
     [clj-json "0.5.3"] ; JSON de/encoding https://github.com/mmcgrana/clj-json/
   ]
