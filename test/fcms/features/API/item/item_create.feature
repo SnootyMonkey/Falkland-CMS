@@ -149,15 +149,38 @@ Feature: Creating Items
     Then the status is "404"
     And the body is empty
 
-# no body - 400 Bad Request
+  # no body - 400 Bad Request
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST http://localhost:3000/c/
+  Scenario: Attempt to create an item while providing no body
+    When I have a "POST" request to URL "/c/"
+    And I provide a "item"
+    And I accept a "item"
+    And I provide no body
+    Then the status is "400"
+    And the body is text
+    And the body is "Bad request."
+    And the collection "c" has an item count of "0"
 
-# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST http://localhost:3000/vic-20/
-
-# body, but not valid JSON - 400 Bad Request
-
-# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d 'Hi Mom!' http://localhost:3000/vic-20/
-
-# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"g' http://localhost:3000/vic-20/
+  # body, but not valid JSON - 400 Bad Request
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d 'Hi Mom!' http://localhost:3000/c/
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"g' http://localhost:3000/c/
+  Scenario: Attempt to create an item while providing no body
+    When I have a "POST" request to URL "/c/"
+    And I provide a "item"
+    And I accept a "item"
+    And I provide the body "Hi Mom!"
+    Then the status is "400"
+    And the body is text
+    And the body is "Bad request."
+    And the collection "c" has an item count of "0"
+    When I have a "POST" request to URL "/c/"
+    And I provide a "item"
+    And I accept a "item"
+    And I provide the body "{'name':'i'"
+    Then the status is "400"
+    And the body is text
+    And the body is "Bad request."
+    And the collection "c" has an item count of "0"
 
 # collection doesn't exist - 404 Not Found
 

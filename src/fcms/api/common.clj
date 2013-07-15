@@ -30,9 +30,11 @@
   keys are keywords, and then return it, mapped to :data as the 2nd value in a vector,
   with the first value indicating it's not malformed. Otherwise just indicate it's malformed."
   [ctx]
-  (try 
+  (try
     (if-let [data (-> (get-in ctx [:request :body]) slurp json/parse-string keywordize-keys)]
-      [good-json {:data data}]
+      ; handle case of a string which is valid JSON, but still malformed for us
+      (do (when-not (map? data) (throw (Exception.)))
+        [good-json {:data data}])
       malformed)
     (catch Exception e
       (debug "Request body not processable as JSON: " e)

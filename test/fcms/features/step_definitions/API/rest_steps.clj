@@ -42,6 +42,12 @@
 (When #"^I provide a \"([^\"]*)\"$" [res-type]
   (http-mock/request (content-type (http-mock/request) (mime-type res-type))))
 
+(When #"^I provide no body$" []
+  (http-mock/body nil))
+
+(When #"^I provide the body \"([^\"]*)\"$" [contents]
+  (http-mock/body contents))
+
 (When #"^I set the \"([^\"]*)\" to \"([^\"]*)\"$" [property value]
   (http-mock/body (assoc (http-mock/body) (keyword property) value)))
 
