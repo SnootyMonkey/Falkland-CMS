@@ -97,10 +97,9 @@ Most of Falkland's dependencies are internal, meaning Leiningen will handle gett
 
 There are 3 types of pages:
 
-* **static** - A static page is a simple CMS page, it may reference named or searched for resources, but it could also be made up of just static content. A home page, about page, or terms of use page is a good example.
-* **exhibit** - An exhibit page ...
+* **exhibit** - An exhibit page is a CMS page, it may reference many named or searched for resources, but it could also be made up of just static content. A home page, about page, or terms of use page is a good example of the latter.
 * **item** - An item page displays a single particular item of a particular item type
-* **taxonomy** - A taxonomy page 
+* **taxonomy** - A taxonomy page ...
 
 ### <a name="security"/> Security Model
 
