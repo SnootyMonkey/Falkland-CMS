@@ -1,11 +1,13 @@
 Falkland CMS
 ============
 
+All your links are belong to us!
+
 ## DESCRIPTION
 
 Falkland CMS is a Curation Management System written in Clojure, ClojureScript and CouchDB.
 
-### What is a CMS?
+### What's a Curation Management Sysytem?
 
 Traditionally a CMS or [WCMS (web content management system)](http://en.wikipedia.org/wiki/Web_content_management_system) is a system for publishing website content. Key foundational features of a WCMS are:
 
@@ -14,9 +16,9 @@ Traditionally a CMS or [WCMS (web content management system)](http://en.wikipedi
 * collaboration of multiple content authors
 * templates to take the data in the system and present it as web content, typically HTML
 
-Falkland CMS has these foundational capabilities, but is not as focused on the creation of new content as a traditional CMS.
+Falkland CMS has these foundational capabilities, but is not nearly as focused on the creation of *new* content as is a traditional WCMS. Instead, Falkland CMS is used for collecting, curating and exhibiting exhisting content.
 
-Alternatives acronyms that are more suited are Collection Management System (CMS), Digital Collection Management System (DCMS), or the acronym used for Falkland CMS, Curation Management System (CMS) or Digital Curation Management System (DCMS).
+Alternatives acronyms that are more suited are Collection Management System (CMS), Digital Collection Management System (DCMS), or the acronym that is used for Falkland CMS, Curation Management System (CMS) or Digital Curation Management System (DCMS).
 
 ### Why use Falkland CMS?
 
@@ -42,23 +44,23 @@ Ideal uses:
 
 ### Who is this not for?
 
-* Anyone that needs granular [security](#security)
 * Anyone that needs extensive new content authoring
 * Anyone that needs extensive, professional-grade offline artifact cataloging
+* Anyone that needs granular [security](#security)
 
 ### What are some (hypothetical) example uses of Falkland CMS?
 
 * The Venerable VIC-20 - an online exhibit of everything Commodore VIC-20
-* Camus.org - Primary and secondary source collection for the philosopher Albert Camus
+* Camus.org - a primary and secondary source collection for the philosopher Albert Camus
 * Mudskippers.org - a guide to all the world's knowledge about the amazing amphibious fish
 * Jack Freeman's Library - presenting 40 years of one man's books
-* nil.org - A complete guide to Nihilism 
+* nil.org - a complete guide to Nihilism 
 * 8-bit '80's - a site to exhibit an extensive retro video game collection
-* The Pitiful Pirates - The most losingest team in the history of professional sports, the Tampa Bay Buccaneers from 1976-1995
+* The Pitiful Pirates - a history of the most losingest team in the history of professional sports, the Tampa Bay Buccaneers from 1976-1995
 
 ### What are some (real) example uses of Falkland CMS?
 
-* [Falklandsophile](http://falklandsophile.com) - The Complete Guide to Falkland Islands Resources
+* [Falklandsophile](http://falklandsophile.com) - the complete guide to resources about the Falkland Islands
 
 ### Where'd the name came from?
 
