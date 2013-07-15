@@ -1,4 +1,4 @@
-(require '[clojure.string :refer (lower-case)]
+(require '[clojure.string :refer (lower-case blank?)]
          '[clojure.walk :refer (keywordize-keys)]
          '[clj-json.core :as json]
          '[clojure.core.incubator :refer (dissoc-in)]
@@ -48,7 +48,6 @@
 ;; pretends to execute the request, then checks the HTTP status code
 (Then #"^the status is \"([^\"]*)\"$" [status]
   (http-mock/response (app (body (http-mock/request) (json/generate-string (http-mock/body)))))
-  (http-mock/body (body-from-response (http-mock/response)))
   (check (= (read-string status) (:status (http-mock/response)))))
 
 ;; check on the response
@@ -59,10 +58,26 @@
 (Then #"^the \"([^\"]*)\" header is not present$" [header]
   (check (nil? (get-in (http-mock/response) [:headers header]))))
 
-(Then #"^the \"([^\"]*)\" is \"([^\"]*)\"$" [property value]
-  (check (map? (http-mock/body)))
-  (check (= value ((http-mock/body) (keyword property)))))
+(Then #"^the body is JSON$" []
+  (http-mock/body (body-from-response (http-mock/response)))
+  (check (map? (http-mock/body))))
+
+(Then #"^the body is text$" []
+  (http-mock/body (body-from-response (http-mock/response)))
+  (check (string? (http-mock/body))))
+
+(Then #"^the body is empty$" []
+  (http-mock/body (body-from-response (http-mock/response)))
+  (check (blank? (http-mock/body))))
+
+(Then #"^the body is \"([^\"]*)\"$" [contents]
+  (check (string? (http-mock/body)))
+  (check (= (http-mock/body) contents)))
 
 (Then #"^the body contains \"([^\"]*)\"$" [contents]
   (check (string? (http-mock/body)))
   (check (.contains (http-mock/body) contents)))
+
+(Then #"^the \"([^\"]*)\" is \"([^\"]*)\"$" [property value]
+  (check (map? (http-mock/body)))
+  (check (= value ((http-mock/body) (keyword property)))))

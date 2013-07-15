@@ -1,21 +1,47 @@
 Feature: Deleting Items
 
-  The system should delete items from a collection.
+  The system should delete items from a collection and handle the following scenarios:
 
-# all good
-# item doesn't exist
-# collection doesn't exist
+	all good
+	item doesn't exist
+	collection doesn't exist
 
-# all good - 204 No Content
+	Background:
+	  Given I have a collection "c" with the following items
+	  |slug				|name			|
+	  |i  				|i   			|
+	  |another-i 	|another-i|
+	  Then the collection "c" has an item count of "2"
 
-# curl -i -X DELETE http://localhost:3000/vic-20/a
+	# all good - 204 No Content
+	# curl -i -X DELETE http://localhost:3000/c/i
+	Scenario: Delete an item
+  	When I have a "DELETE" request to URL "/c/i"
+  	Then the status is "204"
+  	And the body is empty
+  	And the collection "c" has an item count of "1"
+  	When I have a "GET" request to URL "/c/i"
+  	And I accept a "item"
+  	Then the status is "404"
+  	When I have a "GET" request to URL "/c/another-i"
+  	And I accept a "item"
+  	Then the status is "200"
+  	And the body is JSON
+  	And the item is "another-i" named "another-i" in collection "c"
 
-# collection doesn't exist - 404 Not Found
+	# collection doesn't exist - 404 Not Found
+	# curl -i -X DELETE http://localhost:3000/not-here/i
+	Scenario: Delete an item from a collection that does not exist
+	 	When I have a "DELETE" request to URL "/not-here/i"
+	 	Then the status is "404"
+	 	And the body is text
+	 	And the body is "Collection not found."
+	 	And the collection "c" has an item count of "2"
 
-# curl -X DELETE http://localhost:3000/vic-202/a
-
-# Collection not found.
-
-# item doesn't exist - 404 Not Found
-
-# curl -X DELETE http://localhost:3000/vic-20/not-me
+	# item doesn't exist - 404 Not Found
+	# curl -i -X DELETE http://localhost:3000/c/not-here
+	Scenario: Delete an item does not exist
+	 	When I have a "DELETE" request to URL "/c/not-here"
+	 	Then the status is "404"
+	 	And the body is empty
+	 	And the collection "c" has an item count of "2"

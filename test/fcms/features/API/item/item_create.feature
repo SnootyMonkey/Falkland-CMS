@@ -1,6 +1,6 @@
 Feature: Creating Items
 
-  The system should store valid items into a collection and handle the following secnarios:
+  The system should store valid items into a collection and handle the following scenarios:
 
   all good - no slug
   all good - with slug
@@ -31,11 +31,13 @@ Feature: Creating Items
     And I set the "name" to "i"
     Then the status is "201"
     And the "Location" header is "/c/i"
+    And the body is JSON
     And the item is "i" named "i" in collection "c"
     And the collection "c" has an item count of "1"
     When I have a "GET" request to URL "/c/i"
     And I accept a "item"
     Then the status is "200"
+    And the body is JSON
     And the item is "i" named "i" in collection "c"
 
   # all good, with slug - 201 Created
@@ -48,11 +50,13 @@ Feature: Creating Items
     And I set the "slug" to "another-i"
     Then the status is "201"
     And the "Location" header is "/c/another-i"
+    And the body is JSON
     And the item is "another-i" named "i" in collection "c"
     And the collection "c" has an item count of "1"
     When I have a "GET" request to URL "/c/another-i"
     And I accept a "item"
     Then the status is "200"
+    And the body is JSON
     And the item is "another-i" named "i" in collection "c"
 
   # all good, unicode in the body - 201 Created
@@ -66,12 +70,14 @@ Feature: Creating Items
     And I set the "description" to "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"
     Then the status is "201"
     And the "Location" header is "/c/i"
+    And the body is JSON
     And the item is "i" named "私はガラスを食" in collection "c"
     And the "description" is "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"
     And the collection "c" has an item count of "1"
     When I have a "GET" request to URL "/c/i"
     And I accept a "item"
     Then the status is "200"
+    And the body is JSON
     And the item is "i" named "私はガラスを食" in collection "c"
     And the "description" is "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"
 
@@ -83,11 +89,13 @@ Feature: Creating Items
     And I set the "name" to "i"
     Then the status is "201"
     And the "Location" header is "/c/i"
+    And the body is JSON
     And the item is "i" named "i" in collection "c"
     And the collection "c" has an item count of "1"
     When I have a "GET" request to URL "/c/i"
     And I accept a "item"
     Then the status is "200"
+    And the body is JSON
     And the item is "i" named "i" in collection "c"
 
   # wrong accept type - 406 Not Acceptable
@@ -99,12 +107,14 @@ Feature: Creating Items
     And I set the "name" to "i"
     Then the status is "406"
     And the "Location" header is not present
+    And the body is text
     And the body contains "Acceptable media type: application/vnd.fcms.item+json;version=1"
     And the body contains "Acceptable char set: utf-8"
     And the collection "c" has an item count of "0"
     When I have a "GET" request to URL "/c/i"
     And I accept a "item"
     Then the status is "404"
+    And the body is empty
 
   # no content type - 415 Unsupported Media Type
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X POST -d '{"name":"i"}' http://localhost:3000/c/
@@ -114,11 +124,13 @@ Feature: Creating Items
     And I set the "name" to "i"
     Then the status is "415"
     And the "Location" header is not present
-    And the body contains "Unsupported media type."
+    And the body is text
+    And the body is "Unsupported media type."
     And the collection "c" has an item count of "0"
     When I have a "GET" request to URL "/c/i"
     And I accept a "item"
     Then the status is "404"
+    And the body is empty
 
   # wrong content type - 415 Unsupported Media Type
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
@@ -129,11 +141,13 @@ Feature: Creating Items
     And I set the "name" to "i"
     Then the status is "415"
     And the "Location" header is not present
-    And the body contains "Unsupported media type."
+    And the body is text
+    And the body is "Unsupported media type."
     And the collection "c" has an item count of "0"
     When I have a "GET" request to URL "/c/i"
     And I accept a "item"
     Then the status is "404"
+    And the body is empty
 
 # no body - 400 Bad Request
 

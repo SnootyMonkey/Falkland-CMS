@@ -65,8 +65,8 @@
   ;; Delete an item
   :delete! (fn [ctx] (item/delete-item coll-slug item-slug))
   ;; Update/Create an item
-  :malformed? (by-method {:get false :post (fn [ctx] (common/malformed-json? ctx))})
-  :processable? (by-method {:get true :post (fn [ctx] (check-item-update coll-slug item-slug (:data ctx)))})
+  :malformed? (by-method {:get false :delete false :post (fn [ctx] (common/malformed-json? ctx))})
+  :processable? (by-method {:get true :delete true :post (fn [ctx] (check-item-update coll-slug item-slug (:data ctx)))})
   :can-put-to-missing? (fn [_] false) ; temporarily only use PUT for update
   :conflict? (fn [ctx] false)
   :put! (fn [ctx] (spy "HERE: put!"))
