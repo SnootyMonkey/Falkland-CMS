@@ -38,13 +38,16 @@
   (http-mock/request (request (method-keyword method) url))
   (http-mock/request (header (http-mock/request) "Accept-Charset" "utf-8")))
 
-(When #"^I set the \"([^\"]*)\" header to \"([^\"]*)\"$" [header value]
-  (http-mock/request (header (http-mock/request) header value)))
+(When #"^I set the \"([^\"]*)\" header to \"([^\"]*)\"$" [header-name value]
+  (http-mock/request (header (http-mock/request) header-name value)))
 
-(When #"^I accept a \"([^\"]*)\"$" [res-type]
+(When #"^I remove the header \"([^\"]*)\"$" [header]
+  (http-mock/request (dissoc-in (http-mock/request) [:headers (lower-case header)])))
+
+(When #"^I accept a[n]? \"([^\"]*)\"$" [res-type]
   (http-mock/request (header (http-mock/request) "Accept" (send-mime-type res-type))))
 
-(When #"^I provide a \"([^\"]*)\"$" [res-type]
+(When #"^I provide a[n]? \"([^\"]*)\"$" [res-type]
   (http-mock/request (content-type (http-mock/request) (send-mime-type res-type))))
 
 (When #"^I provide no body$" []
@@ -73,7 +76,7 @@
   (http-mock/body (body-from-response (http-mock/response)))
   (check (map? (http-mock/body))))
 
-(Then #"^I receive an \"([^\"]*)\"$" [res-type]
+(Then #"^I receive a[n]? \"([^\"]*)\"$" [res-type]
   (check (.contains (get-in (http-mock/response) [:headers "Content-Type"]) (receive-mime-type res-type))))
 
 (Then #"^the body is text$" []

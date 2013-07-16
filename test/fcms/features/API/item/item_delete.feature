@@ -8,9 +8,11 @@ Feature: Deleting Items
 
 	Background:
 	  Given I have a collection "c" with the following items
-	  |slug				|name			|
-	  |i  				|i   			|
-	  |another-i 	|another-i|
+
+	  |slug				|name			|description					|
+	  |i  				|i   			|this is an item 			|
+	  |another-i 	|another-i|this is another item |
+
 	  Then the collection "c" has an item count of "2"
 
 	# all good - 204 No Content

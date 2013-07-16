@@ -11,7 +11,7 @@
 (def good-json false)
 
 (defn only-accept [media-type]
-  (format "Acceptable media type: %s\nAcceptable char set: %s" media-type UTF8))
+  (format "Acceptable media type: %s\nAcceptable charset: %s" media-type UTF8))
 
 (def missing-collection-response
   (ring-response
