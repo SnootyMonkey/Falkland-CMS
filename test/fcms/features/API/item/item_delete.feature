@@ -26,6 +26,7 @@ Feature: Deleting Items
   	When I have a "GET" request to URL "/c/another-i"
   	And I accept a "item"
   	Then the status is "200"
+  	And I receive an "item"
   	And the body is JSON
   	And the item is "another-i" named "another-i" in collection "c"
 
@@ -40,6 +41,7 @@ Feature: Deleting Items
 	 	When I have a "GET" request to URL "/c/i"
 	 	And I accept a "item"
 	 	Then the status is "200"
+	 	And I receive an "item"
 	 	And the body is JSON
 	 	And the item is "i" named "i" in collection "c"
 	 	When I have a "GET" request to URL "/c/another-i"
@@ -58,10 +60,12 @@ Feature: Deleting Items
 	 	When I have a "GET" request to URL "/c/i"
 	 	And I accept a "item"
 	 	Then the status is "200"
+	 	And I receive an "item"
 	 	And the body is JSON
 	 	And the item is "i" named "i" in collection "c"
 	 	When I have a "GET" request to URL "/c/another-i"
 	 	And I accept a "item"
 	 	Then the status is "200"
+	 	And I receive an "item"
 	 	And the body is JSON
 	 	And the item is "another-i" named "another-i" in collection "c"

@@ -13,10 +13,15 @@
 (defn- method-keyword [method]
   (keyword (lower-case method)))
 
-(defn- mime-type [res-type]
+;; TODO ideally this should be all one mime type, but on an item GET we aren't returning a version #
+(defn- send-mime-type [res-type]
   (case res-type
     "item" item-media-type
     "collection" collection-media-type))
+(defn- receive-mime-type [res-type]
+  (case res-type
+    "item" "application/vnd.fcms.item+json"
+    "collection" "application/vnd.fcms.collection+json"))
 
 (defn- body-from-response [resp-map]
   (try
@@ -37,10 +42,10 @@
   (http-mock/request (header (http-mock/request) header value)))
 
 (When #"^I accept a \"([^\"]*)\"$" [res-type]
-  (http-mock/request (header (http-mock/request) "Accept" (mime-type res-type))))
+  (http-mock/request (header (http-mock/request) "Accept" (send-mime-type res-type))))
 
 (When #"^I provide a \"([^\"]*)\"$" [res-type]
-  (http-mock/request (content-type (http-mock/request) (mime-type res-type))))
+  (http-mock/request (content-type (http-mock/request) (send-mime-type res-type))))
 
 (When #"^I provide no body$" []
   (http-mock/body nil))
@@ -67,6 +72,9 @@
 (Then #"^the body is JSON$" []
   (http-mock/body (body-from-response (http-mock/response)))
   (check (map? (http-mock/body))))
+
+(Then #"^I receive an \"([^\"]*)\"$" [res-type]
+  (check (.contains (get-in (http-mock/response) [:headers "Content-Type"]) (receive-mime-type res-type))))
 
 (Then #"^the body is text$" []
   (http-mock/body (body-from-response (http-mock/response)))
