@@ -1,4 +1,4 @@
-Feature: Deleting Items
+Feature: Deleting Items with the REST API
 
   The system should delete items from a collection and handle the following scenarios:
 

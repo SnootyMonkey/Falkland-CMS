@@ -98,3 +98,7 @@
 (Then #"^the \"([^\"]*)\" is \"([^\"]*)\"$" [property value]
   (check (map? (http-mock/body)))
   (check (= value ((http-mock/body) (keyword property)))))
+
+(Then #"^the \"([^\"]*)\" does not exist$" [property]
+  (check (map? (http-mock/body)))
+  (check (not (contains? (http-mock/body) (keyword property)))))

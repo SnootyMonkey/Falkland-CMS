@@ -1,4 +1,4 @@
-Feature: Retrieving Items
+Feature: Retrieving Items with the REST API
 
   The system should return the detail of items stored in a collection and handle the following scenarios:
 

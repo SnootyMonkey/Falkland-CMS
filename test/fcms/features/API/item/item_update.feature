@@ -1,24 +1,58 @@
-# all good - no slug
-# all good - with same slug
-# all good - with different slug
-# all good - unicode in the body
-# no accept
-# wrong accept
-# no content header
-# wrong content header
-# no charset
-# wrong charset
-# no body
-# body, but not valid JSON
-# collection doesn't exist
-# item doesn't exist
-# no "name" in body
-# different slug specified in body is already used
-# different slug specified in body is invalid
+Feature: Updating Items with the REST API
 
-# all good, no slug
+  The system should return the detail of items stored in a collection and handle the following scenarios:
 
-# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a1", "description":"a1", "a1":"a1"}' http://localhost:3000/vic-20/a
+  all good - no slug
+  all good - with same slug
+  all good - with different slug
+  all good - unicode in the body
+  no accept
+  wrong accept
+  no content header
+  wrong content header
+  no charset
+  wrong charset
+  no body
+  body, but not valid JSON
+  collection doesn't exist
+  item doesn't exist
+  no name in body
+  different slug specified in body is already used
+  different slug specified in body is invalid
+
+	Background:
+	  Given I have a collection "c" with the following items
+	  
+	  |slug			|name        	|description																																																																				|
+	  |i 				|i 					 	|this is an item																																																																		|
+	  |another-i|私はガラスを食	|er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €	|
+	  
+	  Then the collection "c" has an item count of "2"
+
+	# all good, no slug
+	# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i
+	Scenario: Update an item without providing a new slug
+	  When I have a "PUT" request to URL "/c/i"
+	  And I provide an "item"
+	  And I accept an "item"
+	  And I set the "name" to "i-prime"
+	  And I set the "i" to "i"
+	  Then the status is "200"
+	  And I receive an "item"
+	  And the "Location" header is "/c/i"
+	  And the body is JSON
+	  And the item is "i" named "i-prime" in collection "c"
+	  And the "description" does not exist
+	  And the "i" is "i"
+	  And the collection "c" has an item count of "2"
+	  When I have a "GET" request to URL "/c/i"
+	  And I accept an "item"
+	  Then the status is "200"
+	  And I receive an "item"
+	  And the body is JSON
+	  And the item is "i" named "i-prime" in collection "c"
+	  And the "description" does not exist
+	  And the "i" is "i"
 
 # all good - with same slug
 
@@ -66,15 +100,28 @@
 
 # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a12"' http://localhost:3000/vic-20/a
 
-# collection doesn't exist - 404 Not Found
+	# collection doesn't exist - 404 Not Found
+	# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/not-here/i
+	Scenario: Attempt to update an item in a collection that doesn't exist
+	  When I have a "PUT" request to URL "/not-here/i"
+	  And I provide an "item"
+	  And I accept an "item"
+	  And I set the "name" to "i-prime"
+	  And I set the "i" to "i"
+	  Then the status is "404"
+	  And the body is text
+	  And the body is "Collection not found."
 
-# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a13", "description":"a13", "a13":"a13"}' http://localhost:3000/vic-202/a
-
-# Collection not found.
-
-# item doesn't exist
-
-# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a14", "description":"a14", "a14":"a14"}' http://localhost:3000/vic-202/not-me
+	# item doesn't exist - 404 Not Found
+	# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/not-here
+	Scenario: Attempt to update an item that doesn't exist
+	  When I have a "PUT" request to URL "/c/not-here"
+	  And I provide an "item"
+	  And I accept an "item"
+	  And I set the "name" to "i-prime"
+	  And I set the "i" to "i"
+	  Then the status is "404"
+	  And the body is empty
 
 # no "name" in body
 

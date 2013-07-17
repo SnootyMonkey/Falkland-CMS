@@ -1,12 +1,18 @@
 (ns fcms.api.items
-  (:require [compojure.core :refer (defroutes ANY)]
+  (:require [clojure.core.match :refer (match)]
+            [compojure.core :refer (defroutes ANY)]
             [liberator.core :refer (defresource by-method)]
-            [clojure.core.match :refer (match)]
+            [liberator.representation :refer (ring-response)]
             [taoensso.timbre :refer (debug info warn error fatal spy)]
             [fcms.api.common :as common]
             [fcms.resources.collection :as collection]
             [fcms.resources.item :as item]
             [fcms.representations.items :refer (render-item render-items)]))
+
+(def missing-item-response
+  (ring-response
+    {:status 404
+     :headers {"Content-Type" "text/plain"}}))
 
 (defn- get-item [coll-slug item-slug]
   (let [item (item/get-item coll-slug item-slug)]
@@ -27,7 +33,7 @@
 
 (defn- check-new-item [coll-slug item]
   (let [reason (item/valid-new-item? coll-slug (:name item) item)]
-    (if (= reason :OK)
+    (if (= reason true)
       true
       [false {:reason reason}])))
 
@@ -38,18 +44,29 @@
 (defn- unprocessable-reason [reason]
   (match reason
     :bad-collection common/missing-collection-response
+    :bad-item missing-item-response
     :no-name "Name is required."
     :slug-conflict "Slug already used in collection."
     :invalid-slug "Invalid slug."
-    else ))
+    :else "Not processable."))
 
 ;; Update item
 
 (defn- check-item-update [coll-slug item-slug item]
   (let [reason (item/valid-item-update? coll-slug item-slug item)]
-    (if (= reason :OK)
+    (if (= reason true)
       true
       [false {:reason reason}])))
+
+; (defn- update-item [coll-slug item-slug item]
+;   (let [item (item/get-item coll-slug item-slug)]
+;     (match item
+;       :bad-collection [false {:bad-collection true}]
+;       :bad-item false
+;       :else {:item item})))
+
+;   (when-let [item (item/create-item coll-slug (:name item) item)]
+;     {:item item}))
 
 ;; Resources, see: http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
 
@@ -65,11 +82,21 @@
   ;; Delete an item
   :delete! (fn [ctx] (item/delete-item coll-slug item-slug))
   ;; Update/Create an item
-  :malformed? (by-method {:get false :delete false :post (fn [ctx] (common/malformed-json? ctx))})
-  :processable? (by-method {:get true :delete true :post (fn [ctx] (check-item-update coll-slug item-slug (:data ctx)))})
+  :malformed? (by-method {
+    :get false
+    :delete false
+    :post (fn [ctx] (common/malformed-json? ctx))
+    :put (fn [ctx] (common/malformed-json? ctx))})
+  :processable? (by-method {
+    :get true
+    :delete true
+    :post (fn [ctx] (check-item-update coll-slug item-slug (:data ctx)))
+    :put (fn [ctx] (check-item-update coll-slug item-slug (:data ctx)))})
+  :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
   :can-put-to-missing? (fn [_] false) ; temporarily only use PUT for update
   :conflict? (fn [ctx] false)
-  :put! (fn [ctx] (spy "HERE: put!"))
+  ;:put! (fn [ctx] (update-item coll-slug item-slug (:data ctx)))
+  :new? (by-method {:post true :put false})
   :handle-not-implemented (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
   :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))
 

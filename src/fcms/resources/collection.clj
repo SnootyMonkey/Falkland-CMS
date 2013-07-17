@@ -21,12 +21,12 @@
 
 ;; TODO delete the items as well
 (defn delete-collection
-  "Given the slug of the collection, delete it and all its contents and return :ok,
+  "Given the slug of the collection, delete it and all its contents and return true,
   or return :bad-collection if the collection slug is not good"
   [slug]
   (if-let [id (clutch/with-db (common/db)
     (:id (first (clutch/get-view "collection" :all {:key slug :include_docs false}))))]
-      (do (common/delete-by-id id) :ok)
+      (do (common/delete-by-id id) true)
       :bad-collection))
 
 (defmacro with-collection

@@ -1,4 +1,4 @@
-Feature: Creating Items
+Feature: Creating Items with the REST API
 
   The system should store valid items into a collection and handle the following scenarios:
 

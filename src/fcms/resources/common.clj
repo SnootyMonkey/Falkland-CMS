@@ -47,6 +47,9 @@
   (let [slug (or provided-slug (slugify resource-name (name provided-type)))]
     (clutch/put-document {:data (merge props {:slug slug :type (name provided-type)})})))
 
+(defn update-with-db [document props]
+  (clutch/update-document document {:data props}))
+
 (defn create
   "Create a resource in the DB, returning the property map for the resource."
   [props provided-type]
