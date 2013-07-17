@@ -7,7 +7,7 @@
 (def item-media-type "application/vnd.fcms.item+json;version=1")
 
 (defn- item-doc [coll-id item-slug]
-  (:doc (first (clutch/get-view "item" :all {:key [coll-id, item-slug] :include_docs true}))))
+  (:doc (first (clutch/get-view "item" :all {:key [coll-id item-slug] :include_docs true}))))
 
 (defn- item-from-db 
   "Turn an item from its CouchDB map representation into its FCMS map representation."
