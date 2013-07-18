@@ -13,7 +13,7 @@ Feature: Deleting Items with the REST API
 	  |i  				|i   			|this is an item 			|
 	  |another-i 	|another-i|this is another item |
 
-	  Then the collection "c" has an item count of "2"
+	  Then the collection "c" has an item count of 2
 
 	# all good - 204 No Content
 	# curl -i -X DELETE http://localhost:3000/c/i
@@ -21,7 +21,7 @@ Feature: Deleting Items with the REST API
   	When I have a "DELETE" request to URL "/c/i"
   	Then the status is "204"
   	And the body is empty
-  	And the collection "c" has an item count of "1"
+  	And the collection "c" has an item count of 1
   	When I have a "GET" request to URL "/c/i"
   	And I accept a "item"
   	Then the status is "404"
@@ -39,7 +39,7 @@ Feature: Deleting Items with the REST API
 	 	Then the status is "404"
 	 	And the body is text
 	 	And the body is "Collection not found."
-	 	And the collection "c" has an item count of "2"
+	 	And the collection "c" has an item count of 2
 	 	When I have a "GET" request to URL "/c/i"
 	 	And I accept a "item"
 	 	Then the status is "200"
@@ -58,7 +58,7 @@ Feature: Deleting Items with the REST API
 	 	When I have a "DELETE" request to URL "/c/not-here"
 	 	Then the status is "404"
 	 	And the body is empty
-	 	And the collection "c" has an item count of "2"
+	 	And the collection "c" has an item count of 2
 	 	When I have a "GET" request to URL "/c/i"
 	 	And I accept a "item"
 	 	Then the status is "200"

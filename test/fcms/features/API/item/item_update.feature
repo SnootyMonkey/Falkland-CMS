@@ -27,7 +27,7 @@ Feature: Updating Items with the REST API
 	  |i 				|i 					 	|this is an item																																																																		|
 	  |another-i|私はガラスを食	|er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €	|
 	  
-	  Then the collection "c" has an item count of "2"
+	  Then the collection "c" has an item count of 2
 
 	# all good, no slug
 	# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i
@@ -43,7 +43,7 @@ Feature: Updating Items with the REST API
 	  And the item "i" is named "i-prime" in collection "c"
 	  And the "description" is "this is an item"
 	  And the "i" is "i"
-	  And the collection "c" has an item count of "2"
+	  And the collection "c" has an item count of 2
 	  When I have a "GET" request to URL "/c/i"
 	  And I accept an "item"
 	  Then the status is "200"

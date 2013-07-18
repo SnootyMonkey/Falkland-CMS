@@ -18,7 +18,7 @@ Feature: Retrieving Items with the REST API
 	  |i 				|i 					 	|this is an item																																																																		|
 	  |another-i|私はガラスを食	|er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €	|
 	  
-	  Then the collection "c" has an item count of "2"
+	  Then the collection "c" has an item count of 2
 
   # all good - 200 OK
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/c/i

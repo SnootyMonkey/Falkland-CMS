@@ -39,8 +39,8 @@ Feature: Creating Items with the REST API
   slug specified in URL is invalid
 
   Background:
-    Given I have a collection "c" with no items
-    Then the collection "c" has an item count of "0"
+    Given I have an empty collection "c"
+    Then the collection "c" has an item count of 0
 
   # all good, no slug - 201 Created
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
@@ -54,7 +54,7 @@ Feature: Creating Items with the REST API
     And the "Location" header is "/c/i"
     And the body is JSON
     And the item "i" is named "i" in collection "c"
-    And the collection "c" has an item count of "1"
+    And the collection "c" has an item count of 1
     When I have a "GET" request to URL "/c/i"
     And I accept an "item"
     Then the status is "200"
@@ -75,7 +75,7 @@ Feature: Creating Items with the REST API
     And the "Location" header is "/c/another-i"
     And the body is JSON
     And the item "another-i" is named "i" in collection "c"
-    And the collection "c" has an item count of "1"
+    And the collection "c" has an item count of 1
     When I have a "GET" request to URL "/c/another-i"
     And I accept an "item"
     Then the status is "200"
@@ -98,7 +98,7 @@ Feature: Creating Items with the REST API
     And the body is JSON
     And the item "i" is named "私はガラスを食" in collection "c"
     And the "description" is "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"
-    And the collection "c" has an item count of "1"
+    And the collection "c" has an item count of 1
     When I have a "GET" request to URL "/c/i"
     And I accept an "item"
     Then the status is "200"
@@ -118,7 +118,7 @@ Feature: Creating Items with the REST API
     And the "Location" header is "/c/i"
     And the body is JSON
     And the item "i" is named "i" in collection "c"
-    And the collection "c" has an item count of "1"
+    And the collection "c" has an item count of 1
     When I have a "GET" request to URL "/c/i"
     And I accept an "item"
     Then the status is "200"
@@ -138,7 +138,7 @@ Feature: Creating Items with the REST API
     And the body is text
     And the body contains "Acceptable media type: application/vnd.fcms.item+json;version=1"
     And the body contains "Acceptable charset: utf-8"
-    And the collection "c" has an item count of "0"
+    And the collection "c" has an item count of 0
     When I have a "GET" request to URL "/c/i"
     And I accept an "item"
     Then the status is "404"
@@ -154,7 +154,7 @@ Feature: Creating Items with the REST API
     And the "Location" header is not present
     And the body is text
     And the body is "Unsupported media type."
-    And the collection "c" has an item count of "0"
+    And the collection "c" has an item count of 0
     When I have a "GET" request to URL "/c/i"
     And I accept an "item"
     Then the status is "404"
@@ -171,7 +171,7 @@ Feature: Creating Items with the REST API
     And the "Location" header is not present
     And the body is text
     And the body is "Unsupported media type."
-    And the collection "c" has an item count of "0"
+    And the collection "c" has an item count of 0
     When I have a "GET" request to URL "/c/i"
     And I accept an "item"
     Then the status is "404"
@@ -190,7 +190,7 @@ Feature: Creating Items with the REST API
     And the "Location" header is "/c/i"
     And the body is JSON
     And the item "i" is named "i" in collection "c"
-    And the collection "c" has an item count of "1"
+    And the collection "c" has an item count of 1
     When I have a "GET" request to URL "/c/i"
     And I accept an "item"
     Then the status is "200"
@@ -211,7 +211,7 @@ Feature: Creating Items with the REST API
     And the body is text
     And the body contains "Acceptable media type: application/vnd.fcms.item+json;version=1"
     And the body contains "Acceptable charset: utf-8"
-    And the collection "c" has an item count of "0"
+    And the collection "c" has an item count of 0
     When I have a "GET" request to URL "/c/i"
     And I accept an "item"
     Then the status is "404"
@@ -228,7 +228,7 @@ Feature: Creating Items with the REST API
     Then the status is "400"
     And the body is text
     And the body is "Bad request."
-    And the collection "c" has an item count of "0"
+    And the collection "c" has an item count of 0
 
   # body, but not valid JSON - 400 Bad Request
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d 'Hi Mom!' http://localhost:3000/c/
@@ -241,7 +241,7 @@ Feature: Creating Items with the REST API
     Then the status is "400"
     And the body is text
     And the body is "Bad request."
-    And the collection "c" has an item count of "0"
+    And the collection "c" has an item count of 0
     When I have a "POST" request to URL "/c/"
     And I provide an "item"
     And I accept an "item"
@@ -249,7 +249,7 @@ Feature: Creating Items with the REST API
     Then the status is "400"
     And the body is text
     And the body is "Bad request."
-    And the collection "c" has an item count of "0"
+    And the collection "c" has an item count of 0
 
   # collection doesn't exist - 404 Not Found
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"i"}' http://localhost:3000/not-here/
@@ -261,7 +261,7 @@ Feature: Creating Items with the REST API
     Then the status is "404"
     And the body is text
     And the body is "Collection not found."
-    And the collection "c" has an item count of "0"
+    And the collection "c" has an item count of 0
 
   # no "name" in body - 422 Unprocessable Entity
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"slug":"i"}' http://localhost:3000/c/
@@ -273,7 +273,7 @@ Feature: Creating Items with the REST API
     Then the status is "422"
     And the body is text
     And the body is "Name is required."
-    And the collection "c" has an item count of "0"
+    And the collection "c" has an item count of 0
 
   # slug specified in body is already used - 422 Unprocessable Entity
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"another-i", "slug":"i"}' http://localhost:3000/c/
@@ -288,7 +288,7 @@ Feature: Creating Items with the REST API
     And the "Location" header is "/c/i"
     And the body is JSON
     And the item "i" is named "i" in collection "c"
-    And the collection "c" has an item count of "1"
+    And the collection "c" has an item count of 1
     When I have a "GET" request to URL "/c/i"
     And I accept an "item"
     Then the status is "200"
@@ -304,7 +304,7 @@ Feature: Creating Items with the REST API
     Then the status is "422"
     And the body is text
     And the body is "Slug already used in collection."
-    And the collection "c" has an item count of "1"
+    And the collection "c" has an item count of 1
 
   # slug specified in body is invalid - 422 Unprocessable Entity
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"i", "slug":"I i"}' http://localhost:3000/c/
@@ -317,4 +317,4 @@ Feature: Creating Items with the REST API
     Then the status is "422"
     And the body is text
     And the body is "Invalid slug."
-    And the collection "c" has an item count of "0"
+    And the collection "c" has an item count of 0
