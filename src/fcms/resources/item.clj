@@ -86,10 +86,11 @@
         (= item-slug provided-slug) true
         :else (if (nil? (get-item coll-slug provided-slug)) true :slug-conflict))))
 
-(defn- update [coll-slug item-slug props]
+(defn- update [coll-slug item-slug updated-props]
   (collection/with-collection coll-slug
     (if-let [item (item-doc (:id collection) item-slug)]
-      (item-from-db coll-slug (common/update-with-db item props))
+      (let [retained-props (select-keys (:data item) [:type :collection :slug])]
+        (item-from-db coll-slug (common/update-with-db item (merge retained-props updated-props))))
       :bad-item)))
 
 (defn update-item
