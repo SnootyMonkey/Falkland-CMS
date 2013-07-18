@@ -54,33 +54,25 @@
 
 (defn- check-item-update [coll-slug item-slug item]
   (let [reason (item/valid-item-update? coll-slug item-slug item)]
-    (if (= reason true)
-      true
-      [false {:reason reason}])))
+    (if (= reason true) true [false {:reason reason}])))
 
-; (defn- update-item [coll-slug item-slug item]
-;   (let [item (item/get-item coll-slug item-slug)]
-;     (match item
-;       :bad-collection [false {:bad-collection true}]
-;       :bad-item false
-;       :else {:item item})))
-
-;   (when-let [item (item/create-item coll-slug (:name item) item)]
-;     {:item item}))
+(defn- update-item [coll-slug item-slug item]
+  (when-let [result (item/update-item coll-slug item-slug item)]
+    {:item item}))
 
 ;; Resources, see: http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
 
 (defresource item [coll-slug item-slug]
   :available-charsets [common/UTF8]
   :available-media-types [item/item-media-type]
-  :handle-not-acceptable (fn [ctx] (common/only-accept item/item-media-type))
+  :handle-not-acceptable (fn [_] (common/only-accept item/item-media-type))
   :allowed-methods [:get :put :delete]
-  :exists? (fn [ctx] (get-item coll-slug item-slug))
+  :exists? (fn [_] (get-item coll-slug item-slug))
   :handle-not-found (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
   ;; Get an item
   :handle-ok (fn [ctx] (render-item (:item ctx)))
   ;; Delete an item
-  :delete! (fn [ctx] (item/delete-item coll-slug item-slug))
+  :delete! (fn [_] (item/delete-item coll-slug item-slug))
   ;; Update/Create an item
   :malformed? (by-method {
     :get false
@@ -94,9 +86,10 @@
     :put (fn [ctx] (check-item-update coll-slug item-slug (:data ctx)))})
   :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
   :can-put-to-missing? (fn [_] false) ; temporarily only use PUT for update
-  :conflict? (fn [ctx] false)
-  ;:put! (fn [ctx] (update-item coll-slug item-slug (:data ctx)))
+  :conflict? (fn [_] false)
+  :put! (fn [ctx] (update-item coll-slug item-slug (:data ctx)))
   :new? (by-method {:post true :put false})
+  :respond-with-entity? (fn [_] true)
   :handle-not-implemented (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
   :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))
 
