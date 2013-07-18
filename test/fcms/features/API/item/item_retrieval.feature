@@ -21,14 +21,14 @@ Feature: Retrieving Items with the REST API
 	  Then the collection "c" has an item count of "2"
 
   # all good - 200 OK
-  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/c/another-i
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/c/i
   Scenario: Retrieve an item
 	  When I have a "GET" request to URL "/c/i"
 	  And I accept a "item"
 	  Then the status is "200"
 	  And I receive an "item"
 	  And the body is JSON
-	  And the item is "i" named "i" in collection "c"
+	  And the item "i" is named "i" in collection "c"
 	  And the "description" is "this is an item"
 
 	# all good with unicode - 200 OK
@@ -39,7 +39,7 @@ Feature: Retrieving Items with the REST API
 		Then the status is "200"
 		And I receive an "item"
 		And the body is JSON
-		And the item is "another-i" named "私はガラスを食" in collection "c"
+		And the item "another-i" is named "私はガラスを食" in collection "c"
 		And the "description" is "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"
 
 	# no accept - 200 OK
@@ -49,7 +49,7 @@ Feature: Retrieving Items with the REST API
 	  Then the status is "200"
 	  And I receive an "item"
 	  And the body is JSON
-	  And the item is "i" named "i" in collection "c"
+	  And the item "i" is named "i" in collection "c"
 	  And the "description" is "this is an item"
 
 	# wrong accept - 406 Not Acceptable
@@ -71,7 +71,7 @@ Feature: Retrieving Items with the REST API
 	  Then the status is "200"
 	  And I receive an "item"
 	  And the body is JSON
-	  And the item is "i" named "i" in collection "c"
+	  And the item "i" is named "i" in collection "c"
 	  And the "description" is "this is an item"
 
 	# wrong accept charset - 406 Not Acceptable

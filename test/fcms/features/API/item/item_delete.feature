@@ -30,7 +30,7 @@ Feature: Deleting Items with the REST API
   	Then the status is "200"
   	And I receive an "item"
   	And the body is JSON
-  	And the item is "another-i" named "another-i" in collection "c"
+  	And the item "another-i" is named "another-i" in collection "c"
 
 	# collection doesn't exist - 404 Not Found
 	# curl -i -X DELETE http://localhost:3000/not-here/i
@@ -45,12 +45,12 @@ Feature: Deleting Items with the REST API
 	 	Then the status is "200"
 	 	And I receive an "item"
 	 	And the body is JSON
-	 	And the item is "i" named "i" in collection "c"
+	 	And the item "i" is named "i" in collection "c"
 	 	When I have a "GET" request to URL "/c/another-i"
 	 	And I accept a "item"
 	 	Then the status is "200"
 	 	And the body is JSON
-	 	And the item is "another-i" named "another-i" in collection "c"
+	 	And the item "another-i" is named "another-i" in collection "c"
 
 	# item doesn't exist - 404 Not Found
 	# curl -i -X DELETE http://localhost:3000/c/not-here
@@ -64,10 +64,10 @@ Feature: Deleting Items with the REST API
 	 	Then the status is "200"
 	 	And I receive an "item"
 	 	And the body is JSON
-	 	And the item is "i" named "i" in collection "c"
+	 	And the item "i" is named "i" in collection "c"
 	 	When I have a "GET" request to URL "/c/another-i"
 	 	And I accept a "item"
 	 	Then the status is "200"
 	 	And I receive an "item"
 	 	And the body is JSON
-	 	And the item is "another-i" named "another-i" in collection "c"
+	 	And the item "another-i" is named "another-i" in collection "c"

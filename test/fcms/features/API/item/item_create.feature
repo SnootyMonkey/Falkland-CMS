@@ -53,14 +53,14 @@ Feature: Creating Items with the REST API
     And I receive an "item"
     And the "Location" header is "/c/i"
     And the body is JSON
-    And the item is "i" named "i" in collection "c"
+    And the item "i" is named "i" in collection "c"
     And the collection "c" has an item count of "1"
     When I have a "GET" request to URL "/c/i"
     And I accept an "item"
     Then the status is "200"
     And I receive an "item"
     And the body is JSON
-    And the item is "i" named "i" in collection "c"
+    And the item "i" is named "i" in collection "c"
 
   # all good, with slug - 201 Created
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i", "slug":"another-i"}' http://localhost:3000/c/
@@ -74,14 +74,14 @@ Feature: Creating Items with the REST API
     And I receive an "item"
     And the "Location" header is "/c/another-i"
     And the body is JSON
-    And the item is "another-i" named "i" in collection "c"
+    And the item "another-i" is named "i" in collection "c"
     And the collection "c" has an item count of "1"
     When I have a "GET" request to URL "/c/another-i"
     And I accept an "item"
     Then the status is "200"
     And I receive an "item"
     And the body is JSON
-    And the item is "another-i" named "i" in collection "c"
+    And the item "another-i" is named "i" in collection "c"
 
   # all good, unicode in the body - 201 Created
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"私はガラスを食", "slug":"i", "description":"er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"}' http://localhost:3000/c/
@@ -96,7 +96,7 @@ Feature: Creating Items with the REST API
     And I receive an "item"
     And the "Location" header is "/c/i"
     And the body is JSON
-    And the item is "i" named "私はガラスを食" in collection "c"
+    And the item "i" is named "私はガラスを食" in collection "c"
     And the "description" is "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"
     And the collection "c" has an item count of "1"
     When I have a "GET" request to URL "/c/i"
@@ -104,7 +104,7 @@ Feature: Creating Items with the REST API
     Then the status is "200"
     And I receive an "item"
     And the body is JSON
-    And the item is "i" named "私はガラスを食" in collection "c"
+    And the item "i" is named "私はガラスを食" in collection "c"
     And the "description" is "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"
 
   # no accept type - 201 Created
@@ -117,14 +117,14 @@ Feature: Creating Items with the REST API
     And I receive an "item"
     And the "Location" header is "/c/i"
     And the body is JSON
-    And the item is "i" named "i" in collection "c"
+    And the item "i" is named "i" in collection "c"
     And the collection "c" has an item count of "1"
     When I have a "GET" request to URL "/c/i"
     And I accept an "item"
     Then the status is "200"
     And I receive an "item"
     And the body is JSON
-    And the item is "i" named "i" in collection "c"
+    And the item "i" is named "i" in collection "c"
 
   # wrong accept type - 406 Not Acceptable
   # curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
@@ -189,14 +189,14 @@ Feature: Creating Items with the REST API
     And I receive an "item"
     And the "Location" header is "/c/i"
     And the body is JSON
-    And the item is "i" named "i" in collection "c"
+    And the item "i" is named "i" in collection "c"
     And the collection "c" has an item count of "1"
     When I have a "GET" request to URL "/c/i"
     And I accept an "item"
     Then the status is "200"
     And I receive an "item"
     And the body is JSON
-    And the item is "i" named "i" in collection "c"
+    And the item "i" is named "i" in collection "c"
  
   # wrong charset - 
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
@@ -287,14 +287,14 @@ Feature: Creating Items with the REST API
     And I receive an "item"
     And the "Location" header is "/c/i"
     And the body is JSON
-    And the item is "i" named "i" in collection "c"
+    And the item "i" is named "i" in collection "c"
     And the collection "c" has an item count of "1"
     When I have a "GET" request to URL "/c/i"
     And I accept an "item"
     Then the status is "200"
     And I receive an "item"
     And the body is JSON
-    And the item is "i" named "i" in collection "c"
+    And the item "i" is named "i" in collection "c"
     # try to create another item with slug "i"
     When I have a "POST" request to URL "/c/"
     And I provide an "item"

@@ -39,10 +39,9 @@ Feature: Updating Items with the REST API
 	  And I set the "i" to "i"
 	  Then the status is "200"
 	  And I receive an "item"
-	  And the "Location" header is "/c/i"
 	  And the body is JSON
-	  And the item is "i" named "i-prime" in collection "c"
-	  And the "description" does not exist
+	  And the item "i" is named "i-prime" in collection "c"
+	  And the "description" is "this is an item"
 	  And the "i" is "i"
 	  And the collection "c" has an item count of "2"
 	  When I have a "GET" request to URL "/c/i"
@@ -50,7 +49,7 @@ Feature: Updating Items with the REST API
 	  Then the status is "200"
 	  And I receive an "item"
 	  And the body is JSON
-	  And the item is "i" named "i-prime" in collection "c"
+	  And the item "i" is named "i-prime" in collection "c"
 	  And the "description" does not exist
 	  And the "i" is "i"
 
@@ -59,6 +58,7 @@ Feature: Updating Items with the REST API
 # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a2", "slug":"a", description":"a2", "a2":"a2"}' http://localhost:3000/vic-20/a
 
 # all good - with different slug
+#And the "Location" header is "/c/moved-i"
 
 # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a3", "slug":"a3", description":"a3", "a3":"a3"}' http://localhost:3000/vic-20/a
 
