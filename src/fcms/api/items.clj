@@ -89,7 +89,7 @@
   :conflict? (fn [_] false)
   :put! (fn [ctx] (update-item coll-slug item-slug (:data ctx)))
   :new? (by-method {:post true :put false})
-  :respond-with-entity? (fn [_] true)
+  :respond-with-entity? (by-method {:put true :delete false})
   :handle-not-implemented (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
   :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))
 
