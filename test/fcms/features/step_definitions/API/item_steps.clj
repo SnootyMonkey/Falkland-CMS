@@ -1,7 +1,7 @@
 (require '[fcms.lib.body :as body]
          '[fcms.representations.common :refer (GET PUT DELETE)])
 
-(Then #"^the item \"([^\"]*)\" is named \"([^\"]*)\" in collection \"([^\"]*)\"$" [item-slug item-name coll-slug]
+(Then #"^the item \"([^\"]*)\" in collection \"([^\"]*)\" will be named \"([^\"]*)\"$" [item-slug coll-slug item-name]
   (body/verify :name item-name)
   (body/verify :slug item-slug)
   (body/verify :collection coll-slug)

@@ -44,10 +44,10 @@
 (When #"^I remove the header \"([^\"]*)\"$" [header]
   (http-mock/request (dissoc-in (http-mock/request) [:headers (lower-case header)])))
 
-(When #"^I accept a[n]? \"([^\"]*)\"$" [res-type]
+(When #"^I accept an? \"([^\"]*)\"$" [res-type]
   (http-mock/request (header (http-mock/request) "Accept" (send-mime-type res-type))))
 
-(When #"^I provide a[n]? \"([^\"]*)\"$" [res-type]
+(When #"^I provide an? \"([^\"]*)\"$" [res-type]
   (http-mock/request (content-type (http-mock/request) (send-mime-type res-type))))
 
 (When #"^I provide no body$" []
@@ -60,45 +60,45 @@
   (http-mock/body (assoc (http-mock/body) (keyword property) value)))
 
 ;; pretends to execute the request, then checks the HTTP status code
-(Then #"^the status is \"([^\"]*)\"$" [status]
+(Then #"^the status will be \"([^\"]*)\"$" [status]
   (http-mock/response (app (body (http-mock/request) (json/generate-string (http-mock/body)))))
   (check (= (read-string status) (:status (http-mock/response)))))
 
 ;; check on the response
 
-(Then #"^the \"([^\"]*)\" header is \"([^\"]*)\"$" [header value]
+(Then #"^the \"([^\"]*)\" header will be \"([^\"]*)\"$" [header value]
   (check (= value (get-in (http-mock/response) [:headers header]))))
 
-(Then #"^the \"([^\"]*)\" header is not present$" [header]
+(Then #"^the \"([^\"]*)\" header will not be present$" [header]
   (check (nil? (get-in (http-mock/response) [:headers header]))))
 
-(Then #"^the body is JSON$" []
+(Then #"^the body will be JSON$" []
   (http-mock/body (body-from-response (http-mock/response)))
   (check (map? (http-mock/body))))
 
-(Then #"^I receive a[n]? \"([^\"]*)\"$" [res-type]
+(Then #"^I will receive an? \"([^\"]*)\"$" [res-type]
   (check (.contains (get-in (http-mock/response) [:headers "Content-Type"]) (receive-mime-type res-type))))
 
-(Then #"^the body is text$" []
+(Then #"^the body will be text$" []
   (http-mock/body (body-from-response (http-mock/response)))
   (check (string? (http-mock/body))))
 
-(Then #"^the body is empty$" []
+(Then #"^the body will be empty$" []
   (http-mock/body (body-from-response (http-mock/response)))
   (check (blank? (http-mock/body))))
 
-(Then #"^the body is \"([^\"]*)\"$" [contents]
+(Then #"^the body contents will be \"([^\"]*)\"$" [contents]
   (check (string? (http-mock/body)))
   (check (= (http-mock/body) contents)))
 
-(Then #"^the body contains \"([^\"]*)\"$" [contents]
+(Then #"^the body will contain \"([^\"]*)\"$" [contents]
   (check (string? (http-mock/body)))
   (check (.contains (http-mock/body) contents)))
 
-(Then #"^the \"([^\"]*)\" is \"([^\"]*)\"$" [property value]
+(Then #"^the \"([^\"]*)\" will be \"([^\"]*)\"$" [property value]
   (check (map? (http-mock/body)))
   (check (= value ((http-mock/body) (keyword property)))))
 
-(Then #"^the \"([^\"]*)\" does not exist$" [property]
+(Then #"^the \"([^\"]*)\" will not exist$" [property]
   (check (map? (http-mock/body)))
   (check (not (contains? (http-mock/body) (keyword property)))))

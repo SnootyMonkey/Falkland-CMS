@@ -21,13 +21,13 @@ Feature: Updating Items with the REST API
   different slug specified in body is invalid
 
 	Background:
-	  Given I have a collection "c" with the following items
+	  Given I had a collection "c" with the following items:
 	  
-	  |slug			|name        	|description																																																																				|
-	  |i 				|i 					 	|this is an item																																																																		|
-	  |another-i|私はガラスを食	|er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €	|
+	  |slug				|name        	|description																																																																				|
+	  | i 				| i 					| this is an item																																																																		|
+	  | another-i	| 私はガラスを食	| er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €|
 	  
-	  Then the collection "c" has an item count of 2
+	  And the collection "c" had an item count of 2
 
 	# all good, no slug
 	# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i
@@ -37,28 +37,28 @@ Feature: Updating Items with the REST API
 	  And I accept an "item"
 	  And I set the "name" to "i-prime"
 	  And I set the "i" to "i"
-	  Then the status is "200"
-	  And I receive an "item"
-	  And the body is JSON
-	  And the item "i" is named "i-prime" in collection "c"
-	  And the "description" is "this is an item"
-	  And the "i" is "i"
+	  Then the status will be "200"
+	  And I will receive an "item"
+	  And the body will be JSON
+	  And the item "i" in collection "c" will be named "i-prime"
+	  And the "description" will be "this is an item"
+	  And the "i" will be "i"
 	  And the collection "c" has an item count of 2
 	  When I have a "GET" request to URL "/c/i"
 	  And I accept an "item"
-	  Then the status is "200"
-	  And I receive an "item"
-	  And the body is JSON
-	  And the item "i" is named "i-prime" in collection "c"
-	  And the "description" does not exist
-	  And the "i" is "i"
+	  Then the status will be "200"
+	  And I will receive an "item"
+	  And the body will be JSON
+	  And the item "i" in collection "c" will be named "i-prime"
+	  And the "description" will not exist
+	  And the "i" will be "i"
 
 # all good - with same slug
 
 # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a2", "slug":"a", description":"a2", "a2":"a2"}' http://localhost:3000/vic-20/a
 
 # all good - with different slug
-#And the "Location" header is "/c/moved-i"
+#And the "Location" header will be "/c/moved-i"
 
 # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a3", "slug":"a3", description":"a3", "a3":"a3"}' http://localhost:3000/vic-20/a
 
@@ -108,9 +108,9 @@ Feature: Updating Items with the REST API
 	  And I accept an "item"
 	  And I set the "name" to "i-prime"
 	  And I set the "i" to "i"
-	  Then the status is "404"
-	  And the body is text
-	  And the body is "Collection not found."
+	  Then the status will be "404"
+	  And the body will be text
+	  And the body contents will be "Collection not found."
 
 	# item doesn't exist - 404 Not Found
 	# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/not-here
@@ -120,8 +120,8 @@ Feature: Updating Items with the REST API
 	  And I accept an "item"
 	  And I set the "name" to "i-prime"
 	  And I set the "i" to "i"
-	  Then the status is "404"
-	  And the body is empty
+	  Then the status will be "404"
+	  And the body will be empty
 
 # no "name" in body
 
