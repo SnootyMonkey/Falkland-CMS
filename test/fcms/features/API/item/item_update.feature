@@ -29,7 +29,7 @@ Feature: Updating Items with the REST API
 	  
 	  And the collection "c" had an item count of 2
 
-	# all good, no slug
+	# all good, no slug - 200 OK
 	# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i
 	Scenario: Update an item without providing a new slug
 	  When I have a "PUT" request to URL "/c/i"
@@ -53,30 +53,127 @@ Feature: Updating Items with the REST API
 	  And the "description" will not exist
 	  And the "i" will be "i"
 
-# all good - with same slug
-
-# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a2", "slug":"a", description":"a2", "a2":"a2"}' http://localhost:3000/vic-20/a
+	# all good, with same slug - 200 OK
+	# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "slug":"i", i":"i"}' http://localhost:3000/c/i
+	Scenario: Update an item providing the same slug
+	  When I have a "PUT" request to URL "/c/i"
+	  And I provide an "item"
+	  And I accept an "item"
+	  And I set the "name" to "i-prime"
+		And I set the "slug" to "i"
+	  And I set the "i" to "i"
+	  Then the status will be "200"
+	  And I will receive an "item"
+	  And the body will be JSON
+	  And the item "i" in collection "c" will be named "i-prime"
+	  And the "description" will not exist
+	  And the "i" will be "i"
+	  And the collection "c" has an item count of 2
+	  When I have a "GET" request to URL "/c/i"
+	  And I accept an "item"
+	  Then the status will be "200"
+	  And I will receive an "item"
+	  And the body will be JSON
+	  And the item "i" in collection "c" will be named "i-prime"
+	  And the "description" will not exist
+	  And the "i" will be "i"
 
 # all good - with different slug
-#And the "Location" header will be "/c/moved-i"
-
+#And the "Location" header will be "/c/i-moved"
 # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a3", "slug":"a3", description":"a3", "a3":"a3"}' http://localhost:3000/vic-20/a
 
-# all good - unicode in the body
+	# all good, unicode in the body - 200 OK
+	# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"私", "description":"Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło", "i":"i"}' http://localhost:3000/c/another-i
+	Scenario: Update an item containing unicode
+	  When I have a "PUT" request to URL "/c/another-i"
+	  And I provide an "item"
+	  And I accept an "item"
+	  And I set the "name" to "私"
+	  And I set the "description" to "Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło"
+	  And I set the "i" to "i"
+	  Then the status will be "200"
+	  And I will receive an "item"
+	  And the body will be JSON
+	  And the item "another-i" in collection "c" will be named "私"
+	  And the "description" will be "Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło"
+	  And the "i" will be "i"
+	  And the collection "c" has an item count of 2
+	  When I have a "GET" request to URL "/c/another-i"
+	  And I accept an "item"
+	  Then the status will be "200"
+	  And I will receive an "item"
+	  And the body will be JSON
+	  And the item "another-i" in collection "c" will be named "私"
+	  And the "description" will be "Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło"
+	  And the "i" will be "i"
 
-# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"私はガラスを食", "description":"er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €", "a5":"a5"}' http://localhost:3000/vic-20/a
+	# no accept type - 200 OK
+	# curl -i --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i
+	Scenario: Update an item without using an Accept header
+	  When I have a "PUT" request to URL "/c/i"
+	  And I provide an "item"
+	  And I set the "name" to "i-prime"
+	  And I set the "i" to "i"
+	  Then the status will be "200"
+	  And I will receive an "item"
+	  And the body will be JSON
+	  And the item "i" in collection "c" will be named "i-prime"
+	  And the "description" will not exist
+	  And the "i" will be "i"
+	  And the collection "c" has an item count of 2
+	  When I have a "GET" request to URL "/c/i"
+	  And I accept an "item"
+	  Then the status will be "200"
+	  And I will receive an "item"
+	  And the body will be JSON
+	  And the item "i" in collection "c" will be named "i-prime"
+	  And the "description" will not exist
+	  And the "i" will be "i"	
 
-# no accept type
+	# wrong accept type - 406 Not Acceptable
+	# curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i
+	Scenario: Attempt to update an item with the wrong Accept type
+	  When I have a "PUT" request to URL "/c/i"
+	  And I provide an "item"
+	  And I accept a "collection"
+	  And I set the "name" to "i-prime"
+	  And I set the "i" to "i"
+	  Then the status will be "406"
+	  And the body will be text
+	  And the body will contain "Acceptable media type: application/vnd.fcms.item+json;version=1"
+	  And the body will contain "Acceptable charset: utf-8"
+	  And the collection "c" has an item count of 2
+	  When I have a "GET" request to URL "/c/i"
+	  And I accept an "item"
+	  Then the status will be "200"
+	  And I will receive an "item"
+	  And the body will be JSON
+	  And the item "i" in collection "c" will be named "i"
+	  And the "description" will be "this is an item"
+	  And the "i" will not exist
 
-# curl -i --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a6", "description":"a6", "a6":"a6"}' http://localhost:3000/vic-20/a
-
-# wrong accept type - 406 Not Acceptable
-
-# curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"a7", "description":"a7", "a7":"a7"}' http://localhost:3000/vic-20/a
-
-# no Content-Type header
-
-# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X PUT -d '{"name":"a8", "description":"a8", "a8":"a8"}' http://localhost:3000/vic-20/a
+	# no Content-Type header - 200 OK
+	# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i
+	Scenario: Attempt to update an item without a Content-Type header
+	  When I have a "PUT" request to URL "/c/i"
+	  And I accept an "item"
+	  And I set the "name" to "i-prime"
+	  And I set the "i" to "i"
+	  Then the status will be "200"
+	  And I will receive an "item"
+	  And the body will be JSON
+	  And the item "i" in collection "c" will be named "i-prime"
+	  And the "description" will not exist
+	  And the "i" will be "i"
+	  And the collection "c" has an item count of 2
+	  When I have a "GET" request to URL "/c/i"
+	  And I accept an "item"
+	  Then the status will be "200"
+	  And I will receive an "item"
+	  And the body will be JSON
+	  And the item "i" in collection "c" will be named "i-prime"
+	  And the "description" will not exist
+	  And the "i" will be "i"	
 
 # wrong Content-Type header - 406 Not Acceptable
 
@@ -111,6 +208,15 @@ Feature: Updating Items with the REST API
 	  Then the status will be "404"
 	  And the body will be text
 	  And the body contents will be "Collection not found."
+	  And the collection "c" has an item count of 2
+	  When I have a "GET" request to URL "/c/i"
+	  And I accept an "item"
+	  Then the status will be "200"
+	  And I will receive an "item"
+	  And the body will be JSON
+	  And the item "i" in collection "c" will be named "i"
+	  And the "description" will be "this is an item"
+	  And the "i" will not exist
 
 	# item doesn't exist - 404 Not Found
 	# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/not-here
@@ -122,6 +228,15 @@ Feature: Updating Items with the REST API
 	  And I set the "i" to "i"
 	  Then the status will be "404"
 	  And the body will be empty
+	  And the collection "c" has an item count of 2
+	  When I have a "GET" request to URL "/c/i"
+	  And I accept an "item"
+	  Then the status will be "200"
+	  And I will receive an "item"
+	  And the body will be JSON
+	  And the item "i" in collection "c" will be named "i"
+	  And the "description" will be "this is an item"
+	  And the "i" will not exist
 
 # no "name" in body
 

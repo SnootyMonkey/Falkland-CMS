@@ -109,7 +109,7 @@ Feature: Creating Items with the REST API
 
   # no accept type - 201 Created
   # curl -i --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
-  Scenario: Create an item without using an Accept header
+  Scenario: Create an item without an Accept header
     When I have a "POST" request to URL "/c/"
     And I provide an "item"
     And I set the "name" to "i"
@@ -144,25 +144,28 @@ Feature: Creating Items with the REST API
     Then the status will be "404"
     And the body will be empty
 
-  # no content type - 415 Unsupported Media Type
+  # no content type - 201 Created
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X POST -d '{"name":"i"}' http://localhost:3000/c/
-  Scenario: Create an item without using a Content-Type header
+  Scenario: Create an item without a Content-Type header
     When I have a "POST" request to URL "/c/"
     And I accept an "item"
     And I set the "name" to "i"
-    Then the status will be "415"
-    And the "Location" header will not be present
-    And the body will be text
-    And the body contents will be "Unsupported media type."
-    And the collection "c" has an item count of 0
+    Then the status will be "201"
+    And I will receive an "item"
+    And the "Location" header will be "/c/i"
+    And the body will be JSON
+    And the item "i" in collection "c" will be named "i"
+    And the collection "c" has an item count of 1
     When I have a "GET" request to URL "/c/i"
     And I accept an "item"
-    Then the status will be "404"
-    And the body will be empty
+    Then the status will be "200"
+    And I will receive an "item"
+    And the body will be JSON
+    And the item "i" in collection "c" will be named "i"
 
   # wrong content type - 415 Unsupported Media Type
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
-  Scenario: Attempt to create an item with the wrong Accept type
+  Scenario: Attempt to create an item with the wrong Content-Type header
     When I have a "POST" request to URL "/c/"
     And I provide a "collection"
     And I accept an "item"
@@ -179,7 +182,7 @@ Feature: Creating Items with the REST API
 
   # no charset - 201 Created
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
-  Scenario: Create an item without using an Accept-Charset header
+  Scenario: Create an item without an Accept-Charset header
     When I have a "POST" request to URL "/c/"
     And I remove the header "Accept-Charset"
     And I provide an "item"
@@ -219,7 +222,7 @@ Feature: Creating Items with the REST API
 
   # no body - 400 Bad Request
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST http://localhost:3000/c/
-  Scenario: Attempt to create an item while providing no body
+  Scenario: Attempt to create an item with no body
     When I have a "POST" request to URL "/c/"
     And I provide an "item"
     And I accept an "item"
@@ -233,7 +236,7 @@ Feature: Creating Items with the REST API
   # body, but not valid JSON - 400 Bad Request
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d 'Hi Mom!' http://localhost:3000/c/
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"g' http://localhost:3000/c/
-  Scenario: Attempt to create an item while providing no body
+  Scenario: Attempt to create an item with an invalid body
     When I have a "POST" request to URL "/c/"
     And I provide an "item"
     And I accept an "item"

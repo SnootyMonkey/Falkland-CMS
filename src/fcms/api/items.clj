@@ -82,6 +82,7 @@
     :delete false
     :post (fn [ctx] (common/malformed-json? ctx))
     :put (fn [ctx] (common/malformed-json? ctx))})
+  :known-content-type? (fn [ctx] (common/known-content-type ctx item/item-media-type))
   :processable? (by-method {
     :get true
     :delete true
@@ -105,8 +106,8 @@
   ;; Get list of items
   :handle-ok (fn [ctx] (render-items (:items ctx)))
   ;; Create new item
-  :known-content-type? (fn [ctx] (=  (get-in ctx [:request :content-type]) item/item-media-type))
   :malformed? (fn [ctx] (common/malformed-json? ctx))
+  :known-content-type? (fn [ctx] (common/known-content-type ctx item/item-media-type))
   :processable? (fn [ctx] (check-new-item coll-slug (:data ctx)))
   :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
   :post! (fn [ctx] (create-item coll-slug (:data ctx)))

@@ -39,3 +39,9 @@
     (catch Exception e
       (debug "Request body not processable as JSON: " e)
       malformed)))
+
+(defn known-content-type 
+  [ctx content-type]
+  (if-let [request-type (get-in ctx [:request :content-type])]
+    (= request-type content-type)
+    true))
