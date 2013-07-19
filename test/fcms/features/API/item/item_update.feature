@@ -41,7 +41,7 @@ Feature: Updating Items with the REST API
 	  And I will receive an "item"
 	  And the body will be JSON
 	  And the item "i" in collection "c" will be named "i-prime"
-	  And the "description" will be "this is an item"
+	  And the "description" will not exist
 	  And the "i" will be "i"
 	  And the collection "c" has an item count of 2
 	  When I have a "GET" request to URL "/c/i"

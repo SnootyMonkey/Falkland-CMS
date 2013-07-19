@@ -58,7 +58,7 @@
 
 (defn- update-item [coll-slug item-slug item]
   (when-let [result (item/update-item coll-slug item-slug item)]
-    {:item item}))
+    {:updated-item result}))
 
 ;; Resources, see: http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
 
@@ -70,7 +70,10 @@
   :exists? (fn [_] (get-item coll-slug item-slug))
   :handle-not-found (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
   ;; Get an item
-  :handle-ok (fn [ctx] (render-item (:item ctx)))
+  :handle-ok (by-method {
+    :get (fn [ctx] (render-item (:item ctx)))
+    :post (fn [ctx] (render-item (:item ctx)))
+    :put (fn [ctx] (render-item (:updated-item ctx)))})
   ;; Delete an item
   :delete! (fn [_] (item/delete-item coll-slug item-slug))
   ;; Update/Create an item
