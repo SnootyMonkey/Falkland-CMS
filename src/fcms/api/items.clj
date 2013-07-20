@@ -60,6 +60,13 @@
   (when-let [result (item/update-item coll-slug item-slug item)]
     {:updated-item result}))
 
+(defn- update-item-response [coll-slug ctx]
+  (if (= (get-in ctx [:updated-item :slug]) (get-in ctx [:item :slug]))
+    ; it's in the same spot
+    (render-item (:updated-item ctx))
+    ; it moved
+    (item-location-response coll-slug (:updated-item ctx))))
+
 ;; Resources, see: http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
 
 (defresource item [coll-slug item-slug]
@@ -73,7 +80,7 @@
   :handle-ok (by-method {
     :get (fn [ctx] (render-item (:item ctx)))
     :post (fn [ctx] (render-item (:item ctx)))
-    :put (fn [ctx] (render-item (:updated-item ctx)))})
+    :put (fn [ctx] (update-item-response coll-slug ctx))})
   ;; Delete an item
   :delete! (fn [_] (item/delete-item coll-slug item-slug))
   ;; Update/Create an item
@@ -83,6 +90,7 @@
     :post (fn [ctx] (common/malformed-json? ctx))
     :put (fn [ctx] (common/malformed-json? ctx))})
   :known-content-type? (fn [ctx] (common/known-content-type ctx item/item-media-type))
+  :handle-unsupported-media-type (fn [ctx] (common/only-accept item/item-media-type))
   :processable? (by-method {
     :get true
     :delete true
@@ -108,6 +116,7 @@
   ;; Create new item
   :malformed? (fn [ctx] (common/malformed-json? ctx))
   :known-content-type? (fn [ctx] (common/known-content-type ctx item/item-media-type))
+  :handle-unsupported-media-type (fn [ctx] (common/only-accept item/item-media-type))
   :processable? (fn [ctx] (check-new-item coll-slug (:data ctx)))
   :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
   :post! (fn [ctx] (create-item coll-slug (:data ctx)))

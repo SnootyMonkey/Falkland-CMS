@@ -128,7 +128,7 @@ Feature: Creating Items with the REST API
 
   # wrong accept type - 406 Not Acceptable
   # curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
-  Scenario: Attempt to create an item with the wrong Accept type
+  Scenario: Attempt to create an item with the wrong Accept header
     When I have a "POST" request to URL "/c/"
     And I provide an "item"
     And I accept a "collection"
@@ -173,7 +173,8 @@ Feature: Creating Items with the REST API
     Then the status will be "415"
     And the "Location" header will not be present
     And the body will be text
-    And the body contents will be "Unsupported media type."
+    And the body will contain "Acceptable media type: application/vnd.fcms.item+json;version=1"
+    And the body will contain "Acceptable charset: utf-8"
     And the collection "c" has an item count of 0
     When I have a "GET" request to URL "/c/i"
     And I accept an "item"
@@ -201,7 +202,7 @@ Feature: Creating Items with the REST API
     And the body will be JSON
     And the item "i" in collection "c" will be named "i"
  
-  # wrong charset - 
+  # wrong charset - 406 Not Acceptable
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
   Scenario: Attempt to create an item with the wrong Accept-Charset header
     When I have a "POST" request to URL "/c/"
@@ -226,7 +227,6 @@ Feature: Creating Items with the REST API
     When I have a "POST" request to URL "/c/"
     And I provide an "item"
     And I accept an "item"
-    And I set the "name" to "i"
     And I provide no body
     Then the status will be "400"
     And the body will be text
