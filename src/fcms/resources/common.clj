@@ -1,11 +1,17 @@
 (ns fcms.resources.common
-  (:require [clojure.string :as str]
+  (:require [clojure.string :refer (lower-case)]
+            [environ.core :refer (env)]
             [com.ashafa.clutch :as clutch])
   (:import (java.net URI)))
 
-(def db-resource (assoc (cemerick.url/url "http://localhost:5984/" "falklandcms")
-                    :username nil
-                    :password nil))
+(def db-host (or (env :db-host) "http://localhost:5984/"))
+(def db-name (or (env :db-name) "falklandcms"))
+(def db-user (or (env :db-user) nil))
+(def db-password (or (env :db-password) nil))
+
+(def db-resource (assoc (cemerick.url/url db-host db-name)
+                    :username db-user
+                    :password db-password))
 
 (defn db []
   (clutch/get-database db-resource))
@@ -33,7 +39,7 @@
 ;; replace - at the end with nothing
 ;; call make-unique
 (defn slugify [resource-name make-unique]
-  (str/lower-case resource-name))
+  (lower-case resource-name))
 
 (defn valid-slug? [provided-slug]
   ;; if the slug is the same one we'd provide for a resource with that name, then it's valid 

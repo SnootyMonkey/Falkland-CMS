@@ -1,8 +1,8 @@
 (defproject falkland-cms "0.1.0-SNAPSHOT"
   :description "Falkland CMS is a Content/Collection Management System written in Clojure, ClojureScript and CouchDB."
   :url "https://github.com/SnootyMonkey/Falkland-CMS/"
-  :license {:name "MIT License"
-            :url "http://opensource.org/licenses/MIT"}
+  :license {:name "Mozilla Public License v2.0"
+            :url "http://www.mozilla.org/MPL/2.0/"}
   :dependencies [
     [org.clojure/clojure "1.5.1"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.incubator "0.1.3"] ; functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
@@ -13,26 +13,39 @@
     [ibdknox/clojurescript "0.0-1534"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     [com.ashafa/clutch "0.4.0-RC1"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "1.1.1"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
-    [com.taoensso/timbre "2.3.0"] ; Logging https://github.com/ptaoussanis/timbre
+    [environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
+    [com.taoensso/timbre "2.3.4"] ; Logging https://github.com/ptaoussanis/timbre
     [clj-json "0.5.3"] ; JSON de/encoding https://github.com/mmcgrana/clj-json/
   ]
   :profiles {
     :dev {
       :dependencies [
-        [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
         [print-foo "0.3.7"] ; Old school print debugging https://github.com/danielribeiro/print-foo
       ]
     }
+    :test [:dev {
+      :env {:db-name "falklandcms-test"}
+      :cucumber-feature-paths ["test/fcms/features"]
+      :dependencies [
+        [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
+      ]}
+    ]
+  }
+  :aliases {
+    "test" ["with-profile" "test" "cucumber"]
+    "test!" ["with-profile" "test" "do" "clean," "deps," "cucumber"]
+    "cucumber" ["with-profile" "test" "cucumber"]
   }
   :git-dependencies [
     ["https://github.com/clojure-liberator/liberator.git"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
   ]
   :plugins [
-    [lein-ancient "0.4.0"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
+    [lein-ring "0.8.3"] ; common ring tasks https://github.com/weavejester/lein-ring
+    [lein-environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [lein-git-deps "0.0.1-SNAPSHOT"] ; dependencies from GitHub https://github.com/tobyhede/lein-git-deps
-  	[lein-ring "0.8.3"] ; common ring tasks https://github.com/weavejester/lein-ring
-    [lein-cucumber "1.0.2"] ; BDD testing https://github.com/nilswloka/lein-cucumber
     [lein-cljsbuild "0.3.2"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
+    [lein-cucumber "1.0.2"] ; BDD testing https://github.com/nilswloka/lein-cucumber
+    [lein-ancient "0.4.0"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
     [lein-spell "0.1.0"] ; Catch spelling mistakes in docs and docstrings https://github.com/cldwalker/lein-spell
   ]
   :source-paths [
@@ -51,9 +64,8 @@
         :pretty-print false ; generated JS code prettyfication
       }}]
   }
-  :cucumber-feature-paths ["test/fcms/features"]
   :ring {
     :handler fcms.app/app
     :init fcms.db.views/init}
-  :min-lein-version "2.0.0"
+  :min-lein-version "2.1"
   :main fcms.app)
