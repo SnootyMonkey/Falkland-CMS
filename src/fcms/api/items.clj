@@ -31,12 +31,6 @@
 
 ;; Create new item
 
-(defn- check-new-item [coll-slug item]
-  (let [reason (item/valid-new-item? coll-slug (:name item) item)]
-    (if (= reason true)
-      true
-      [false {:reason reason}])))
-
 (defn- create-item [coll-slug item]
   (when-let [item (item/create-item coll-slug (:name item) item)]
     {:item item}))
@@ -51,10 +45,6 @@
     :else "Not processable."))
 
 ;; Update item
-
-(defn- check-item-update [coll-slug item-slug item]
-  (let [reason (item/valid-item-update? coll-slug item-slug item)]
-    (if (= reason true) true [false {:reason reason}])))
 
 (defn- update-item [coll-slug item-slug item]
   (when-let [result (item/update-item coll-slug item-slug item)]
@@ -94,16 +84,15 @@
   :processable? (by-method {
     :get true
     :delete true
-    :post (fn [ctx] (check-item-update coll-slug item-slug (:data ctx)))
-    :put (fn [ctx] (check-item-update coll-slug item-slug (:data ctx)))})
+    :post (fn [ctx] (common/check-input (item/valid-item-update? coll-slug item-slug (:data ctx))))
+    :put (fn [ctx] (common/check-input (item/valid-item-update? coll-slug item-slug (:data ctx))))})
   :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
   :can-put-to-missing? (fn [_] false) ; temporarily only use PUT for update
   :conflict? (fn [_] false)
   :put! (fn [ctx] (update-item coll-slug item-slug (:data ctx)))
   :new? (by-method {:post true :put false})
   :respond-with-entity? (by-method {:put true :delete false})
-  :handle-not-implemented (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
-  :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))
+  :handle-not-implemented (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response)))
 
 (defresource items-list [coll-slug]
   :available-charsets [common/UTF8]
@@ -117,7 +106,7 @@
   :malformed? (fn [ctx] (common/malformed-json? ctx))
   :known-content-type? (fn [ctx] (common/known-content-type ctx item/item-media-type))
   :handle-unsupported-media-type (fn [ctx] (common/only-accept item/item-media-type))
-  :processable? (fn [ctx] (check-new-item coll-slug (:data ctx)))
+  :processable? (fn [ctx] (common/check-input (item/valid-new-item? coll-slug (get-in ctx [:data :name]) (:data ctx))))
   :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
   :post! (fn [ctx] (create-item coll-slug (:data ctx)))
   :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))

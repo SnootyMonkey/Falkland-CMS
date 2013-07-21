@@ -45,3 +45,6 @@
   (if-let [request-type (get-in ctx [:request :content-type])]
     (= request-type content-type)
     true))
+
+(defn check-input [check]
+  (if (= check true) true [false {:reason check}]))
