@@ -117,4 +117,4 @@ Users of Falkland CMS are one of three types:
 
 Copyright © 2013 Snooty Monkey
 
-Falkland CMS is distributed under the [MIT license](http://opensource.org/licenses/MIT).
+Falkland CMS is distributed under the [Mozilla Public License v2.0](http://www.mozilla.org/MPL/2.0/).
