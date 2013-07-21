@@ -3,7 +3,7 @@
             [liberator.dev :refer (wrap-trace)]
             [compojure.core :refer (defroutes ANY)]
             [ring.adapter.jetty :as ring]
-            [fcms.config :refer (lib-trace)]
+            [fcms.config :refer (liberator-trace)]
             [fcms.api.collections :refer (collection-routes)]
             [fcms.api.items :refer (item-routes)]
             [fcms.db.views :as db-views]
@@ -18,7 +18,7 @@
   (-> routes (wrap-trace :header :ui)))
 
 (def app
-  (if lib-trace trace-app routes))
+  (if liberator-trace trace-app routes))
 
 (defn start [port]
   (db-views/init) ; make sure DB is created and has latest views

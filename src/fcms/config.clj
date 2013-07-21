@@ -12,4 +12,4 @@
                     :password db-password))
 
 ;; Liberator config
-(def lib-trace (or (env :lib-trace) false))
+(def liberator-trace (or (env :liberator-trace) false))

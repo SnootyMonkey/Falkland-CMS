@@ -19,7 +19,7 @@
   ]
   :profiles {
     :dev {
-      :env {:lib-trace true}
+      :env {:liberator-trace true}
       :dependencies [
         [print-foo "0.3.7"] ; Old school print debugging https://github.com/danielribeiro/print-foo
       ]
@@ -27,7 +27,7 @@
     :test [:dev {
       :env {
         :db-name "falklandcms-test"
-        :lib-trace false
+        :liberator-trace false
       }
       :cucumber-feature-paths ["test/fcms/features"]
       :dependencies [
