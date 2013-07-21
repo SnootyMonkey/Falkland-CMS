@@ -16,7 +16,7 @@ Traditionally a CMS or [WCMS (web content management system)](http://en.wikipedi
 * collaboration of multiple content authors
 * templates to take the data in the system and present it as web content, typically HTML
 
-Falkland CMS has these foundational capabilities, but is not nearly as focused on the creation of *new* content as is a traditional WCMS. Instead, Falkland CMS is used for collecting, curating and exhibiting exhisting content.
+Falkland CMS has these foundational capabilities, but is not nearly as focused on the creation of *new* content as is a traditional WCMS. Instead, Falkland CMS is used for collecting, curating and exhibiting existing content.
 
 Alternatives acronyms that are more suited are Collection Management System (CMS), Digital Collection Management System (DCMS), or the acronym that is used for Falkland CMS, Curation Management System (CMS) or Digital Curation Management System (DCMS).
 
