@@ -7,6 +7,7 @@
 (def item-media-type "application/vnd.fcms.item+json;version=1")
 
 (defn- item-doc [coll-id item-slug]
+  "Get the CouchDB map representation of an item given the ID of its collection and the item slug."
   (:doc (first (clutch/get-view "item" :all {:key [coll-id item-slug] :include_docs true}))))
 
 (defn- item-from-db 
@@ -86,7 +87,9 @@
         (= item-slug provided-slug) true
         :else (if (nil? (get-item coll-slug provided-slug)) true :slug-conflict))))
 
-(defn- update [coll-slug item-slug updated-props]
+(defn- update
+  "Update an item retaining it's manufactured properties and replacing the rest with the provided properties"
+  [coll-slug item-slug updated-props]
   (collection/with-collection coll-slug
     (if-let [item (item-doc (:id collection) item-slug)]
       (let [retained-props (select-keys (:data item) [:type :collection :slug])]
@@ -103,3 +106,11 @@
       (if (= reason true)
         (update coll-slug item-slug props)
         reason)))
+
+(defn all-items
+  "Given the slug of the collection, return all the items it contains as a sequence of maps,
+  or return :bad-collection if there's no collection with that slug."
+  [coll-slug]
+  (collection/with-collection coll-slug
+    (when-let [results (clutch/get-view "item" :all-by-collection {:key (:id collection) :include_docs true})]
+      (map #(item-from-db coll-slug (:doc %)) results))))

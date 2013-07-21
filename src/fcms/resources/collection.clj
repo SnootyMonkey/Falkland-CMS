@@ -47,6 +47,9 @@
       (:value result)
       0)))
 
-(defn all-items [coll-slug])
-
-(defn all-collections [])
+(defn all-collections
+  "Return all the collections in the system as a sequence of maps."
+  []
+  (clutch/with-db (common/db)
+    (when-let [results (clutch/get-view "collection" :all {:include_docs true})]
+      (map #(common/map-from-db (:doc %)) results))))
