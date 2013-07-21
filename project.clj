@@ -52,6 +52,8 @@
       }}]
   }
   :cucumber-feature-paths ["test/fcms/features"]
-  :ring {:handler fcms.app/app}
+  :ring {
+    :handler fcms.app/app
+    :init fcms.db.views/init}
   :min-lein-version "2.0.0"
   :main fcms.app)
