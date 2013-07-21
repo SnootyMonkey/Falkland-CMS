@@ -19,12 +19,16 @@
   ]
   :profiles {
     :dev {
+      :env {:lib-trace true}
       :dependencies [
         [print-foo "0.3.7"] ; Old school print debugging https://github.com/danielribeiro/print-foo
       ]
     }
     :test [:dev {
-      :env {:db-name "falklandcms-test"}
+      :env {
+        :db-name "falklandcms-test"
+        :lib-trace false
+      }
       :cucumber-feature-paths ["test/fcms/features"]
       :dependencies [
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
