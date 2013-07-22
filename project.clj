@@ -71,5 +71,5 @@
   :ring {
     :handler fcms.app/app
     :init fcms.db.views/init}
-  :min-lein-version "2.1"
+  :min-lein-version "2.2"
   :main fcms.app)
