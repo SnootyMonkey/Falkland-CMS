@@ -1,5 +1,5 @@
 (ns fcms.resources.common
-  (:require [clojure.string :refer (lower-case)]
+  (:require [clojure.string :refer (lower-case trim split join)]
             [com.ashafa.clutch :as clutch]
             [fcms.config :refer (db-resource)]))
 
@@ -23,13 +23,16 @@
 ;; TODO implement
 ;; Slugify
 ;; Rules:
+;; replace non-ASCII with normalized
 ;; replace A-Z with a-z
 ;; replace non-alpha-numeric with -
 ;; replace -- with -
-;; replace - at the end with nothing
-;; call make-unique
+;; replace - at the beginning and end with nothing
+;; limit to 256 characters
+;; call make-unique function
 (defn slugify [resource-name make-unique]
-  (lower-case resource-name))
+  (let [slug (-> resource-name lower-case trim)]
+    (join "-" (split slug #"[\p{Space}\p{P}]+"))))
 
 (defn valid-slug? [provided-slug]
   ;; if the slug is the same one we'd provide for a resource with that name, then it's valid 

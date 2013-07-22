@@ -32,12 +32,14 @@
       :cucumber-feature-paths ["test/fcms/features"]
       :dependencies [
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
+        [midje "1.6-alpha2"] ; Example-based testing https://github.com/marick/Midje
       ]}
     ]
   }
   :aliases {
-    "test" ["with-profile" "test" "cucumber"]
-    "test!" ["with-profile" "test" "do" "clean," "deps," "cucumber"]
+    "test" ["with-profile" "test" "midje," "cucumber"]
+    "test!" ["with-profile" "test" "do" "clean," "deps," "midje," "cucumber"]
+    "midje" ["with-profile" "test" "midje"]    
     "cucumber" ["with-profile" "test" "cucumber"]
   }
   :git-dependencies [
@@ -49,6 +51,7 @@
     [lein-git-deps "0.0.1-SNAPSHOT"] ; dependencies from GitHub https://github.com/tobyhede/lein-git-deps
     [lein-cljsbuild "0.3.2"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
     [lein-cucumber "1.0.2"] ; BDD testing https://github.com/nilswloka/lein-cucumber
+    [lein-midje "3.0.0"] ; Example-based testing https://github.com/marick/Midje
     [lein-ancient "0.4.0"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
     [lein-spell "0.1.0"] ; Catch spelling mistakes in docs and docstrings https://github.com/cldwalker/lein-spell
   ]
