@@ -20,30 +20,38 @@
   (if-let [data (:data db-map)]
     (assoc (dissoc data :type) :id (:_id db-map))))
 
+(defn- internal-whitespace [slug]
+  (join "-" (split slug #"[\p{Space}\p{P}]+")))
+
 ;; TODO implement
 ;; Slugify
 ;; Rules:
 ;; replace non-ASCII with normalized
 ;; replace A-Z with a-z
+;; remove prefixed and trailing whitespace
+;; replace internal white space with -
 ;; replace non-alpha-numeric with -
 ;; replace -- with -
 ;; replace - at the beginning and end with nothing
 ;; limit to 256 characters
 ;; call make-unique function
 (defn slugify [resource-name make-unique]
-  (let [slug (-> resource-name lower-case trim)]
-    (join "-" (split slug #"[\p{Space}\p{P}]+"))))
+  (-> resource-name 
+    lower-case
+    trim
+    internal-whitespace
+    make-unique))
 
 (defn valid-slug? [provided-slug]
   ;; if the slug is the same one we'd provide for a resource with that name, then it's valid 
-  (= provided-slug (slugify provided-slug (fn [slug] slug))))
+  (= provided-slug (slugify provided-slug identity)))
 
 ;; TODO set timestamps
 ;; TODO base version
 ;; TODO provide slugify a uniqueness function for the type
 (defn create-with-db
   [{resource-name :name provided-slug :slug :as props} provided-type]
-  (let [slug (or provided-slug (slugify resource-name (name provided-type)))]
+  (let [slug (or provided-slug (slugify resource-name identity))]
     (clutch/put-document {:data (merge props {:slug slug :type (name provided-type)})})))
 
 (defn update-with-db [document props]

@@ -37,7 +37,7 @@
     ]
   }
   :aliases {
-    "test" ["with-profile" "test" "midje," "cucumber"]
+    "test" ["with-profile" "test" "do" "midje," "cucumber"]
     "test!" ["with-profile" "test" "do" "clean," "deps," "midje," "cucumber"]
     "midje" ["with-profile" "test" "midje"]    
     "cucumber" ["with-profile" "test" "cucumber"]

@@ -2,6 +2,8 @@
   (:use [midje.sweet])
   (:require [fcms.resources.common :refer (slugify)]))
 
+(defn unique-it [_] "i-am-a-pretty-snowflake")
+
 (fact "upper case letters are replaced with lower case letters"
   (slugify "slug" identity) => "slug"
   (slugify "Slug" identity) => "slug"
@@ -33,7 +35,8 @@
 
 (fact "unicode characters are replaced with ")
 
-(fact "slug collisions are detected and resolved by a function")
+(fact "slug collisions are detected and resolved by a function"
+  (slugify "already-used-slug" unique-it) => "i-am-a-pretty-snowflake")
 
 (fact "perfectly good slugs are unaffected"
   (slugify "slug" identity) => "slug"
