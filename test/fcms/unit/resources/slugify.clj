@@ -10,18 +10,20 @@
   (slugify "sluG" identity) => "slug"
   (slugify "sLuG" identity) => "slug")
 
-(fact "spaces are replaced with a single dash"
+(fact "white space is replaced with a single dash"
   (slugify "this is a slug" identity) => "this-is-a-slug"
   (slugify "this is-a slug" identity) => "this-is-a-slug"
   (slugify "this  is  a  slug" identity) => "this-is-a-slug"
-  (slugify "this is a          slug" identity) => "this-is-a-slug")
+  (slugify "this is a          slug" identity) => "this-is-a-slug"
+  (slugify "this\t\tis\r\ralso\n\na\r\n\r\nslug" identity) => "this-is-also-a-slug")
 
 (fact "prefixed and trailing spaces are ignored"
   (slugify " this is a slug" identity) => "this-is-a-slug"
   (slugify " this is a slug" identity) => "this-is-a-slug"
   (slugify "this is a slug " identity) => "this-is-a-slug"
   (slugify " this is a slug " identity) => "this-is-a-slug"
-  (slugify "          this is a slug          " identity) => "this-is-a-slug")
+  (slugify "          this is a slug          " identity) => "this-is-a-slug"
+  (slugify "\t\tthis is a slug\t\t\r\n\r\n" identity) => "this-is-a-slug")
 
 (fact "punctuation is replaced with a dash")
 
