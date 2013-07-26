@@ -1,8 +1,6 @@
 (ns fcms.unit.resources.slugify
   (:use [midje.sweet])
-  (:require [fcms.lib.slugify :refer (slugify)]))
-
-(defn unique-it [_] "i-am-a-pretty-snowflake")
+  (:require [fcms.lib.slugify :refer (slugify max-slug-length)]))
 
 (fact "upper case letters are replaced with lower case letters"
   (slugify "slug") => "slug"
@@ -57,15 +55,15 @@
   (slugify "γλώσσαthis-μουέδωσανis-ελληνικήalso-მივჰხვდეaმასჩემსაالزجاجوهذالايؤلمني.slug मैकाँचखासकताฉันกินกระจกได้לאמזיק")  => "this-is-also-a-slug"
   (slugify "æ-ǽ-ǣ-this-♜-♛-☃-✄-✈-is-→-☞-➩-⇏-⇉-also-•-✪-▼-❊-✔-a-∑-∏-∛-≃-≈-⅋-⋶-slug") => "this-is-also-a-slug")
 
-(fact "slug collisions are detected and resolved by a function"
-  (slugify "already-used-slug" unique-it) => "i-am-a-pretty-snowflake")
-
-(fact "slugs longer than 256 characters are truncated"
-  (let [long-slug (apply str (range 0 200))]
-    (slugify long-slug) => (apply str (take 256 long-slug))
+(fact "slugs that are too long are truncated"
+  (let [long-slug (apply str (range 0 500))]
+    ; default max
+    (slugify long-slug) => (apply str (take max-slug-length long-slug))
+    ; small max
+    (slugify long-slug 10) => (apply str (take 10 long-slug))
     ; shouldn't end on a - if that's where it gets cut off for length
-    (slugify (str (apply str (take 255 long-slug)) "-")) => (apply str (take 255 long-slug))
-    (slugify (str (apply str (take 254 long-slug)) "--")) => (apply str (take 254 long-slug))))
+    (slugify (str (apply str (take (- max-slug-length 1) long-slug)) "-")) => (apply str (take (- max-slug-length 1) long-slug))
+    (slugify (str (apply str (take (- max-slug-length 2) long-slug)) "--")) => (apply str (take (- max-slug-length 2) long-slug))))
 
 (fact "all these slug rules work together"
   ; upper lower
@@ -76,7 +74,7 @@
   ; punctuation
   ; accented latin
   ; unicode
-  ; truncate to <= 256 characters
+  ; truncate for length
   (let [all-in-one " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
         long-slug (apply str (range 0 200))]
     (slugify all-in-one) => "this-is-also-a-slug"

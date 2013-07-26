@@ -16,13 +16,13 @@
     [environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [com.taoensso/timbre "2.3.4"] ; Logging https://github.com/ptaoussanis/timbre
     [clj-json "0.5.3"] ; JSON de/encoding https://github.com/mmcgrana/clj-json/
+    [print-foo "0.3.7"] ; Old school print debugging https://github.com/danielribeiro/print-foo
+    [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
+    [midje "1.6-alpha2"] ; Example-based testing https://github.com/marick/Midje
   ]
   :profiles {
     :dev {
       :env {:liberator-trace true}
-      :dependencies [
-        [print-foo "0.3.7"] ; Old school print debugging https://github.com/danielribeiro/print-foo
-      ]
     }
     :test [:dev {
       :env {
@@ -30,11 +30,7 @@
         :liberator-trace false
       }
       :cucumber-feature-paths ["test/fcms/features"]
-      :dependencies [
-        [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
-        [midje "1.6-alpha2"] ; Example-based testing https://github.com/marick/Midje
-      ]}
-    ]
+    }]
   }
   :aliases {
     "test" ["with-profile" "test" "do" "midje," "cucumber"]

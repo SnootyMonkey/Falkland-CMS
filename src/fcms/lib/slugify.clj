@@ -2,6 +2,8 @@
   (:require [clojure.string :as s])
   (:import [java.text Normalizer Normalizer$Form]))
 
+(def max-slug-length 256)
+
 (defn- replace-whitespace [slug]
   (s/join "-" (s/split slug #"[\p{Space}]+")))
 
@@ -17,7 +19,7 @@
 (defn- normalize-dashes [slug]
   (s/replace (s/join "-" (s/split slug #"\-+")) #"^-+" ""))
 
-(defn- limit [slug n]
+(defn- truncate [slug n]
   (apply str (take n slug)))
 
 ;; Slugify Rules:
@@ -28,13 +30,11 @@
 ;; remove any remaining non-alpha-numberic characters
 ;; replace A-Z with a-z
 ;; replace multiple dashes with dash and dash at the beginning and end with nothing
-;; limit to 256 characters
+;; truncate
 ;; replace dash at the end with nothing (in case we left a - at the end by truncating)
-;; call make-unique function
 (defn slugify 
-  ([resource-name] (slugify resource-name identity))
-  ([resource-name make-unique] (slugify resource-name make-unique 256))
-  ([resource-name make-unique max-length]
+  ([resource-name] (slugify resource-name max-slug-length))
+  ([resource-name max-length]
     (-> resource-name
       s/trim
       replace-whitespace
@@ -43,6 +43,5 @@
       remove-non-alpha-numeric
       s/lower-case
       normalize-dashes
-      (limit max-length)
-      normalize-dashes
-      make-unique)))
+      (truncate max-length)
+      normalize-dashes)))

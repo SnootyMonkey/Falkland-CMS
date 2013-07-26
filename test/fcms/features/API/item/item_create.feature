@@ -4,6 +4,7 @@ Feature: Creating Items with the REST API
 
   POST
   all good - no slug
+  all good - generated slug is already used
   all good - with slug
   all good - unicode in the body
   no accept
@@ -44,6 +45,7 @@ Feature: Creating Items with the REST API
 
   # all good, no slug - 201 Created
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":" -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "}' http://localhost:3000/c/
   Scenario: Create an item without providing a slug
     When I have a "POST" request to URL "/c/"
     And I provide an "item"
@@ -61,6 +63,76 @@ Feature: Creating Items with the REST API
     And I will receive an "item"
     And the body will be JSON
     And the item "i" in collection "c" will be named "i"
+    When I have a "POST" request to URL "/c/"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
+    Then the status will be "201"
+    And I will receive an "item"
+    And the "Location" header will be "/c/this-is-also-a-slug"
+    And the body will be JSON
+    And the item "this-is-also-a-slug" in collection "c" will be named " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
+    And the collection "c" will have an item count of 2
+    When I have a "GET" request to URL "/c/this-is-also-a-slug"
+    And I accept an "item"
+    Then the status will be "200"
+    And I will receive an "item"
+    And the body will be JSON
+    And the item "this-is-also-a-slug" in collection "c" will be named " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
+
+  # all good, generated slug is already used - 201 Created
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
+  Scenario: Create an item without providing a slug
+    When I have a "POST" request to URL "/c/"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to "i"
+    Then the status will be "201"
+    And I will receive an "item"
+    And the "Location" header will be "/c/i"
+    And the body will be JSON
+    And the item "i" in collection "c" will be named "i"
+    And the collection "c" will have an item count of 1
+    When I have a "GET" request to URL "/c/i"
+    And I accept an "item"
+    Then the status will be "200"
+    And I will receive an "item"
+    And the body will be JSON
+    And the item "i" in collection "c" will be named "i"
+    When I have a "POST" request to URL "/c/"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to "i"
+    Then the status will be "201"
+    And I will receive an "item"
+    And the "Location" header will be "/c/i-1"
+    And the body will be JSON
+    And the item "i-1" in collection "c" will be named "i"
+    And the collection "c" will have an item count of 2
+    When I have a "GET" request to URL "/c/i-1"
+    And I accept an "item"
+    Then the status will be "200"
+    And I will receive an "item"
+    And the body will be JSON
+    And the item "i-1" in collection "c" will be named "i"
+    When I have a "POST" request to URL "/c/"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to "i"
+    Then the status will be "201"
+    And I will receive an "item"
+    And the "Location" header will be "/c/i-2"
+    And the body will be JSON
+    And the item "i-2" in collection "c" will be named "i"
+    And the collection "c" will have an item count of 3
+    When I have a "GET" request to URL "/c/i-2"
+    And I accept an "item"
+    Then the status will be "200"
+    And I will receive an "item"
+    And the body will be JSON
+    And the item "i-2" in collection "c" will be named "i"
 
   # all good, with slug - 201 Created
   # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i", "slug":"another-i"}' http://localhost:3000/c/
