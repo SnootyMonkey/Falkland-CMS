@@ -60,9 +60,14 @@
 (fact "slug collisions are detected and resolved by a function"
   (slugify "already-used-slug" unique-it) => "i-am-a-pretty-snowflake")
 
-(fact "slugs longer than 256 characters are truncated")
+(fact "slugs longer than 256 characters are truncated"
+  (let [long-slug (apply str (range 0 200))]
+    (slugify long-slug) => (apply str (take 256 long-slug))
+    ; shouldn't end on a - if that's where it gets cut off for length
+    (slugify (str (apply str (take 255 long-slug)) "-")) => (apply str (take 255 long-slug))
+    (slugify (str (apply str (take 254 long-slug)) "--")) => (apply str (take 254 long-slug))))
 
-(fact "all these slug rules work together")
+(fact "all these slug rules work together"
   ; upper lower
   ; internal white space
   ; prefixed and trailing space
@@ -71,7 +76,11 @@
   ; punctuation
   ; accented latin
   ; unicode
-  ; longer than 256
+  ; truncate to <= 256 characters
+  (let [all-in-one " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
+        long-slug (apply str (range 0 200))]
+    (slugify all-in-one) => "this-is-also-a-slug"
+    (slugify (str all-in-one long-slug)) => (str "this-is-also-a-slug-" (apply str (take 236 long-slug)))))
 
 (fact "perfectly good slugs are unaffected"
   (slugify "slug") => "slug"
