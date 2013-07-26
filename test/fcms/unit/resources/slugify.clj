@@ -75,10 +75,10 @@
   ; accented latin
   ; unicode
   ; truncate for length
-  (let [all-in-one " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
-        long-slug (apply str (range 0 200))]
+  (let [all-in-one " -tHiS #$is%?-----ελληνικήalso-მივჰხვდ-ემასჩემსაãالزجاجوه---ذالايؤلمني-slüg♜-♛--☃-✄-✈  - "
+        long-string (apply str (range 0 200))]
     (slugify all-in-one) => "this-is-also-a-slug"
-    (slugify (str all-in-one long-slug)) => (str "this-is-also-a-slug-" (apply str (take 236 long-slug)))))
+    (slugify (str all-in-one long-string)) => (str "this-is-also-a-slug-" (apply str (take 236 long-string)))))
 
 (fact "perfectly good slugs are unaffected"
   (slugify "slug") => "slug"
