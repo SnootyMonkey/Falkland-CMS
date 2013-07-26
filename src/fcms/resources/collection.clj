@@ -4,19 +4,23 @@
 
 (def collection-media-type "application/vnd.fcms.collection+json;version=1")
 
+(defn- collection-doc [slug]
+  "Get the CouchDB map representation of a collection given the collection's slug."
+  (:doc (first (clutch/get-view "collection" :all {:key slug :include_docs true}))))
+
 (defn create-collection
   "Create a new collection using the specified name and optional map of properties.
   If :slug is included in the properties it will be used as the collection's slug,
   otherwise one will be created from the name."
   ([name] (create-collection name {}))
-  ([name props] (when-let [collection (common/create (merge props {:name name}) :collection)]
+  ([name props] (when-let [collection (common/create (merge props {:slug name :name name}) :collection)]
     (common/map-from-db collection))))
 
 (defn get-collection
   "Given the slug of the collection, return the collection as a map, or nil if there's no collection with that slug"
   [slug]
   (clutch/with-db (common/db)
-    (if-let [coll (:doc (first (clutch/get-view "collection" :all {:key slug :include_docs true})))]
+    (if-let [coll (collection-doc slug)]
       (common/map-from-db coll))))
 
 ;; TODO delete the items as well

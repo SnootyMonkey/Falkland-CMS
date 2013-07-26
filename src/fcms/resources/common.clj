@@ -1,7 +1,7 @@
 (ns fcms.resources.common
   (:require [clojure.string :as s]
             [com.ashafa.clutch :as clutch]
-            [fcms.lib.slugify :refer (slugify max-slug-length)]
+            [fcms.lib.slugify :refer (slugify)]
             [fcms.config :refer (db-resource)]))
 
 (defn valid-slug? [provided-slug]
@@ -26,14 +26,12 @@
     (assoc (dissoc data :type) :id (:_id db-map))))
 
 ;; TODO set timestamps
-(defn create-with-db
-  [{resource-name :name provided-slug :slug :as props} provided-type]
-  (let [slug (or provided-slug (slugify resource-name max-slug-length))]
-    (clutch/put-document {:data (merge props 
-      {:slug slug 
-       :version 1
-       :type (name provided-type)})})))
+(defn create-with-db [props provided-type]
+  (clutch/put-document {:data (merge props {
+    :version 1
+    :type (name provided-type)})}))
 
+;; TODO update version
 (defn update-with-db [document props]
   (clutch/update-document document {:data props}))
 

@@ -1,14 +1,27 @@
 (ns fcms.resources.item
   (:require [clojure.core.match :refer (match)]
+            [clojure.string :as s]
             [com.ashafa.clutch :as clutch]
             [fcms.resources.common :as common]
+            [fcms.lib.slugify :refer (slugify)]
             [fcms.resources.collection :as collection]))
 
 (def item-media-type "application/vnd.fcms.item+json;version=1")
 
 (defn- item-doc [coll-id item-slug]
-  "Get the CouchDB map representation of an item given the ID of its collection and the item slug."
+  "Get the CouchDB map representation of an item given the ID of its collection and the item's slug."
   (:doc (first (clutch/get-view "item" :all {:key [coll-id item-slug] :include_docs true}))))
+
+(defn- unique-slug
+  "Look for a conflicting item slug in the collection and increment an appended slug counter
+  numeral until you have a unique item slug."
+  ([coll-id item-slug] (unique-slug coll-id item-slug 0))
+  ([coll-id item-slug counter] 
+    (if-not (item-doc coll-id item-slug)
+      item-slug
+      ;; recur after removing the old counter suffix, and adding the new counter suffix
+      (recur coll-id 
+        (str (s/replace item-slug (java.util.regex.Pattern/compile (str "-" counter "$")) "") "-" (inc counter)) (inc counter)))))
 
 (defn- item-from-db 
   "Turn an item from its CouchDB map representation into its FCMS map representation."
@@ -23,8 +36,9 @@
   ([coll-slug item-name] (create-item coll-slug item-name {}))
   ([coll-slug item-name props]
     (collection/with-collection coll-slug
-      (when-let [item (common/create-with-db (merge props {:collection (:id collection) :name item-name}) :item)]
-        (item-from-db coll-slug item)))))
+      (let [item-slug (unique-slug (:id collection) (or (:slug props) (slugify item-name)))]
+        (when-let [item (common/create-with-db (merge props {:slug item-slug :collection (:id collection) :name item-name}) :item)]
+          (item-from-db coll-slug item))))))
 
 (defn get-item
   "Given the slug of the collection containing the item and the slug of the item,
