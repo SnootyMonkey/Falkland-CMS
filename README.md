@@ -56,7 +56,7 @@ Ideal uses:
 * Jack Freeman's Library - presenting 40 years of one man's books
 * nil.org - a complete guide to Nihilism 
 * 8-bit '80's - a site to exhibit an extensive retro video game collection
-* The Pitiful Pirates - a history of the most losingest team in the history of professional sports, the Tampa Bay Buccaneers from 1976-1995
+* The Pitiful Pirates - a history of the Tampa Bay Buccaneers from 1976-1995
 
 ### What are some (real) example uses of Falkland CMS?
 
