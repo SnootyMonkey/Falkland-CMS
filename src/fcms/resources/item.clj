@@ -1,6 +1,5 @@
 (ns fcms.resources.item
   (:require [clojure.core.match :refer (match)]
-            [clojure.string :as s]
             [com.ashafa.clutch :as clutch]
             [fcms.resources.common :as common]
             [fcms.lib.slugify :refer (slugify)]
@@ -19,9 +18,8 @@
   ([coll-id slug counter] 
     (if-not (item-doc coll-id slug)
       slug
-      ;; recur after removing the old counter suffix, and adding the new counter suffix
-      (recur coll-id 
-        (str (s/replace slug (java.util.regex.Pattern/compile (str "-" counter "$")) "") "-" (inc counter)) (inc counter)))))
+      ;; recur with the next possible slug
+      (recur coll-id (common/next-slug slug counter) (inc counter)))))
 
 (defn- item-from-db 
   "Turn an item from its CouchDB map representation into its FCMS map representation."

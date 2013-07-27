@@ -8,6 +8,11 @@
   ;; if the slug is the same one we'd provide for a resource with that name, then it's valid 
   (= provided-slug (slugify provided-slug)))
 
+(defn next-slug 
+  "Generate the next possible slug to attempt by removing the old counter suffix and adding the new counter suffix."
+  [slug counter]
+  (str (s/replace slug (java.util.regex.Pattern/compile (str "-" counter "$")) "") "-" (inc counter)))
+
 (defn db []
   (clutch/get-database db-resource))
 

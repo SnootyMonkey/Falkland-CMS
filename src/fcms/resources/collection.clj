@@ -1,6 +1,5 @@
 (ns fcms.resources.collection
-  (:require [clojure.string :as s]
-            [com.ashafa.clutch :as clutch]
+  (:require [com.ashafa.clutch :as clutch]
             [fcms.lib.slugify :refer (slugify)]
             [fcms.resources.common :as common]))
 
@@ -20,8 +19,8 @@
   ([slug counter] 
     (if-not (get-collection slug)
       slug
-      ;; recur after removing the old counter suffix, and adding the new counter suffix
-      (recur (str (s/replace slug (java.util.regex.Pattern/compile (str "-" counter "$")) "") "-" (inc counter)) (inc counter)))))
+      ;; recur with the next possible slug
+      (recur (common/next-slug slug counter) (inc counter)))))
 
 (defn create-collection
   "Create a new collection using the specified name and optional map of properties.
