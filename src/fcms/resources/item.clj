@@ -28,18 +28,6 @@
   [coll-slug item]
   (common/map-from-db (assoc-in item [:data :collection] coll-slug)))
 
-(defn create-item
-  "Create a new item in the collection specified by its slug, using the specified
-  item name and an optional map of properties. If :slug is included in the properties
-  it will be used as the item's slug, otherwise the slug will be created from
-  the name."
-  ([coll-slug item-name] (create-item coll-slug item-name {}))
-  ([coll-slug item-name props]
-    (collection/with-collection coll-slug
-      (let [item-slug (unique-slug (:id collection) (or (:slug props) (slugify item-name)))]
-        (when-let [item (common/create-with-db (merge props {:slug item-slug :collection (:id collection) :name item-name}) :item)]
-          (item-from-db coll-slug item))))))
-
 (defn get-item
   "Given the slug of the collection containing the item and the slug of the item,
   return the item as a map, or return :bad-collection if there's no collection with that slug, or
@@ -48,6 +36,22 @@
     (collection/with-collection coll-slug
       (when-let [item (item-doc (:id collection) item-slug)]
         (item-from-db coll-slug item))))
+
+(defn create-item
+  "Create a new item in the collection specified by its slug, using the specified
+  item name and an optional map of properties. If :slug is included in the properties
+  it will be used as the item's slug, otherwise the slug will be created from
+  the name. If a :slug is included in the properties and an item already exists
+  in the collection with that slug, a :slug-conflict will be returned"
+  ([coll-slug item-name] (create-item coll-slug item-name {}))
+  ([coll-slug item-name props]
+    (if (and (:slug props) (get-item coll-slug (:slug props)))
+      :slug-conflict
+      (collection/with-collection coll-slug
+        (let [item-slug (unique-slug (:id collection) (or (:slug props) (slugify item-name)))]
+          (when-let [item (common/create-with-db
+            (merge props {:slug item-slug :collection (:id collection) :name item-name}) :item)]
+            (item-from-db coll-slug item)))))))
 
 (defn delete-item
   "Given the slug of the collection containing the item and the slug of the item,
