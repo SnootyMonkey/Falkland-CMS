@@ -14,7 +14,7 @@
     [com.ashafa/clutch "0.4.0-RC1"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "1.1.1"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    [com.taoensso/timbre "2.3.4"] ; Logging https://github.com/ptaoussanis/timbre
+    [com.taoensso/timbre "2.4.1"] ; Logging https://github.com/ptaoussanis/timbre
     [clj-json "0.5.3"] ; JSON de/encoding https://github.com/mmcgrana/clj-json/
     [print-foo "0.3.7"] ; Old school print debugging https://github.com/danielribeiro/print-foo
     [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
@@ -33,8 +33,9 @@
     }]
   }
   :aliases {
+    "init-db" ["run" "-m" "fcms.db.views"]
     "test" ["with-profile" "test" "do" "midje," "cucumber"]
-    "test!" ["with-profile" "test" "do" "clean," "deps," "midje," "cucumber"]
+    "test!" ["with-profile" "test" "do" "clean," "deps," "init-db," "midje," "cucumber"]
     "midje" ["with-profile" "test" "midje"]    
     "cucumber" ["with-profile" "test" "cucumber"]
   }

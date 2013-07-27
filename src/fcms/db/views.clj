@@ -89,3 +89,6 @@
   ; (doseq [type ["collection", "item", "taxonomy"]] (all type))
   ; (println "FCMS: CouchDB view initialization complete.")
 )
+
+(defn -main []
+  (init))
