@@ -8,20 +8,20 @@
 
 (def item-media-type "application/vnd.fcms.item+json;version=1")
 
-(defn- item-doc [coll-id item-slug]
+(defn- item-doc [coll-id slug]
   "Get the CouchDB map representation of an item given the ID of its collection and the item's slug."
-  (:doc (first (clutch/get-view "item" :all {:key [coll-id item-slug] :include_docs true}))))
+  (:doc (first (clutch/get-view "item" :all {:key [coll-id slug] :include_docs true}))))
 
 (defn- unique-slug
   "Look for a conflicting item slug in the collection and increment an appended slug counter
   numeral until you have a unique item slug."
-  ([coll-id item-slug] (unique-slug coll-id item-slug 0))
-  ([coll-id item-slug counter] 
-    (if-not (item-doc coll-id item-slug)
-      item-slug
+  ([coll-id slug] (unique-slug coll-id slug 0))
+  ([coll-id slug counter] 
+    (if-not (item-doc coll-id slug)
+      slug
       ;; recur after removing the old counter suffix, and adding the new counter suffix
       (recur coll-id 
-        (str (s/replace item-slug (java.util.regex.Pattern/compile (str "-" counter "$")) "") "-" (inc counter)) (inc counter)))))
+        (str (s/replace slug (java.util.regex.Pattern/compile (str "-" counter "$")) "") "-" (inc counter)) (inc counter)))))
 
 (defn- item-from-db 
   "Turn an item from its CouchDB map representation into its FCMS map representation."
@@ -32,9 +32,9 @@
   "Given the slug of the collection containing the item and the slug of the item,
   return the item as a map, or return :bad-collection if there's no collection with that slug, or
   nil if there is no item with that slug."
-  [coll-slug item-slug]
+  [coll-slug slug]
     (collection/with-collection coll-slug
-      (when-let [item (item-doc (:id collection) item-slug)]
+      (when-let [item (item-doc (:id collection) slug)]
         (item-from-db coll-slug item))))
 
 (defn create-item
@@ -42,24 +42,24 @@
   item name and an optional map of properties. If :slug is included in the properties
   it will be used as the item's slug, otherwise the slug will be created from
   the name. If a :slug is included in the properties and an item already exists
-  in the collection with that slug, a :slug-conflict will be returned"
+  in the collection with that slug, a :slug-conflict will be returned."
   ([coll-slug item-name] (create-item coll-slug item-name {}))
   ([coll-slug item-name props]
     (if (and (:slug props) (get-item coll-slug (:slug props)))
       :slug-conflict
       (collection/with-collection coll-slug
-        (let [item-slug (unique-slug (:id collection) (or (:slug props) (slugify item-name)))]
+        (let [slug (unique-slug (:id collection) (or (:slug props) (slugify item-name)))]
           (when-let [item (common/create-with-db
-            (merge props {:slug item-slug :collection (:id collection) :name item-name}) :item)]
+            (merge props {:slug slug :collection (:id collection) :name item-name}) :item)]
             (item-from-db coll-slug item)))))))
 
 (defn delete-item
   "Given the slug of the collection containing the item and the slug of the item,
   delete the item, or return :bad-collection if there's no collection with that slug, or
   :bad-item if there is no item with that slug."
-  [coll-slug item-slug]
+  [coll-slug slug]
   (if-let [coll-id (:id (collection/get-collection coll-slug))]
-    (if-let [item (clutch/with-db (common/db) (item-doc coll-id item-slug))]
+    (if-let [item (clutch/with-db (common/db) (item-doc coll-id slug))]
       (common/delete item)
       :bad-item)
     :bad-collection))
@@ -93,23 +93,23 @@
   valid or return :invalid-slug and ensure it is unused or
   return :slug-conflict. If no item slug is specified in
   the properties it will be retain its current slug."
-  [coll-slug item-slug {item-name :name provided-slug :slug}]
+  [coll-slug slug {item-name :name provided-slug :slug}]
     (let [coll-id (:id (collection/get-collection coll-slug))
-          item-id (:id (get-item coll-slug item-slug))]
+          item-id (:id (get-item coll-slug slug))]
       (cond
         (nil? coll-id) :bad-collection
         (nil? item-id) :bad-item
         (not item-name) :no-name
         (not provided-slug) true
         (not (common/valid-slug? provided-slug)) :invalid-slug
-        (= item-slug provided-slug) true
+        (= slug provided-slug) true
         :else (if (nil? (get-item coll-slug provided-slug)) true :slug-conflict))))
 
 (defn- update
   "Update an item retaining it's manufactured properties and replacing the rest with the provided properties"
-  [coll-slug item-slug updated-props]
+  [coll-slug slug updated-props]
   (collection/with-collection coll-slug
-    (if-let [item (item-doc (:id collection) item-slug)]
+    (if-let [item (item-doc (:id collection) slug)]
       (let [retained-props (select-keys (:data item) [:type :collection :slug])]
         (item-from-db coll-slug (common/update-with-db item (merge retained-props updated-props))))
       :bad-item)))
@@ -119,10 +119,10 @@
   map of properties. If :slug is included in the properties
   the item will be moved to the new slug, otherwise the slug will remain the same.
   The same validity conditions and invalid return values as valid-item-update? apply."
-  [coll-slug item-slug props]
-    (let [reason (valid-item-update? coll-slug item-slug props)]
+  [coll-slug slug props]
+    (let [reason (valid-item-update? coll-slug slug props)]
       (if (= reason true)
-        (update coll-slug item-slug props)
+        (update coll-slug slug props)
         reason)))
 
 (defn all-items

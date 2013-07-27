@@ -1,27 +1,40 @@
 (ns fcms.resources.collection
-  (:require [com.ashafa.clutch :as clutch]
+  (:require [clojure.string :as s]
+            [com.ashafa.clutch :as clutch]
+            [fcms.lib.slugify :refer (slugify)]
             [fcms.resources.common :as common]))
 
 (def collection-media-type "application/vnd.fcms.collection+json;version=1")
-
-(defn- collection-doc [slug]
-  "Get the CouchDB map representation of a collection given the collection's slug."
-  (:doc (first (clutch/get-view "collection" :all {:key slug :include_docs true}))))
-
-(defn create-collection
-  "Create a new collection using the specified name and optional map of properties.
-  If :slug is included in the properties it will be used as the collection's slug,
-  otherwise one will be created from the name."
-  ([name] (create-collection name {}))
-  ([name props] (when-let [collection (common/create (merge props {:slug name :name name}) :collection)]
-    (common/map-from-db collection))))
 
 (defn get-collection
   "Given the slug of the collection, return the collection as a map, or nil if there's no collection with that slug"
   [slug]
   (clutch/with-db (common/db)
-    (if-let [coll (collection-doc slug)]
+    (if-let [coll (:doc (first (clutch/get-view "collection" :all {:key slug :include_docs true})))]
       (common/map-from-db coll))))
+
+(defn- unique-slug
+  "Look for a conflicting collection slug and increment an appended slug counter
+  numeral until you have a unique collection slug."
+  ([slug] (unique-slug slug 0))
+  ([slug counter] 
+    (if-not (get-collection slug)
+      slug
+      ;; recur after removing the old counter suffix, and adding the new counter suffix
+      (recur (str (s/replace slug (java.util.regex.Pattern/compile (str "-" counter "$")) "") "-" (inc counter)) (inc counter)))))
+
+(defn create-collection
+  "Create a new collection using the specified name and optional map of properties.
+  If :slug is included in the properties it will be used as the collection's slug,
+  otherwise one will be created from the name. If a :slug is included in the
+  properties and a collection already exists with that slug, a :slug-conflict will be returned."
+  ([coll-name] (create-collection coll-name {}))
+  ([coll-name props] 
+    (if (and (:slug props) (get-collection (:slug props)))
+      :slug-conflict
+      (let [slug (unique-slug (or (:slug props) (slugify coll-name)))]
+        (when-let [collection (common/create (merge props {:slug slug :name coll-name}) :collection)]
+          (common/map-from-db collection))))))
 
 ;; TODO delete the items as well
 (defn delete-collection
