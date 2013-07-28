@@ -28,7 +28,9 @@ Feature: Retrieving Items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And the item "i" in collection "c" will be named "i" 
+	  And the item "i" in collection "c" will be named "i"
+	  And the "version" will be 1
+	  And the timestamps will be matching parseable dates
 	  And the "description" will be "this is an item"
 
 	# all good with unicode - 200 OK
@@ -40,6 +42,8 @@ Feature: Retrieving Items with the REST API
 		And I will receive an "item"
 		And the body will be JSON
 		And the item "another-i" in collection "c" will be named "私はガラスを食"
+		And the "version" will be 1
+		And the timestamps will be matching parseable dates
 		And the "description" will be "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"
 
 	# no accept - 200 OK
@@ -50,6 +54,8 @@ Feature: Retrieving Items with the REST API
 	  And I will receive an "item"
 	  And the body will be JSON
 	  And the item "i" in collection "c" will be named "i"
+	  And the "version" will be 1
+	  And the timestamps will be matching parseable dates
 	  And the "description" will be "this is an item"
 
 	# wrong accept - 406 Not Acceptable
@@ -72,6 +78,8 @@ Feature: Retrieving Items with the REST API
 	  And I will receive an "item"
 	  And the body will be JSON
 	  And the item "i" in collection "c" will be named "i"
+	  And the "version" will be 1
+	  And the timestamps will be matching parseable dates
 	  And the "description" will be "this is an item"
 
 	# wrong accept charset - 406 Not Acceptable

@@ -1,6 +1,6 @@
 (require '[fcms.resources.collection :as collection]
          '[fcms.resources.item :as item]
-         '[fcms.lib.check :refer (check)])
+         '[fcms.lib.checks :refer (check)])
 
 (Given #"^I had an empty collection \"([^\"]*)\"$" [coll-slug]
   (collection/delete-collection coll-slug)

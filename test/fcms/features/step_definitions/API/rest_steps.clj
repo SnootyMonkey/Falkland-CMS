@@ -5,7 +5,7 @@
          '[print.foo :refer (print->)]
          '[ring.mock.request :refer (request body content-type header)]
          '[fcms.lib.http-mock :as http-mock]
-         '[fcms.lib.check :refer (check)]
+         '[fcms.lib.checks :refer (check)]
          '[fcms.app :refer (app)]
          '[fcms.resources.collection :refer (collection-media-type)]
          '[fcms.resources.item :refer (item-media-type)])
@@ -98,6 +98,10 @@
 (Then #"^the \"([^\"]*)\" will be \"([^\"]*)\"$" [property value]
   (check (map? (http-mock/body)))
   (check (= value ((http-mock/body) (keyword property)))))
+
+(Then #"^the \"([^\"]*)\" will be (\d+)$" [property value]
+  (check (map? (http-mock/body)))
+  (check (= (read-string value) ((http-mock/body) (keyword property)))))
 
 (Then #"^the \"([^\"]*)\" will not exist$" [property]
   (check (map? (http-mock/body)))

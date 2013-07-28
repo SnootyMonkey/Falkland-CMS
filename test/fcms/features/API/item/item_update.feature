@@ -40,7 +40,7 @@ Feature: Updating Items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And the item "i" in collection "c" will be named "i-prime"
+	  And the updated item "i" in collection "c" will be named "i-prime"
 	  And the "description" will not exist
 	  And the "i" will be "i"
 	  And the collection "c" has an item count of 2
@@ -49,7 +49,7 @@ Feature: Updating Items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And the item "i" in collection "c" will be named "i-prime"
+	  And the updated item "i" in collection "c" will be named "i-prime"
 	  And the "description" will not exist
 	  And the "i" will be "i"
 
@@ -65,7 +65,7 @@ Feature: Updating Items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And the item "i" in collection "c" will be named "i-prime"
+	  And the updated item "i" in collection "c" will be named "i-prime"
 	  And the "description" will not exist
 	  And the "i" will be "i"
 	  And the collection "c" has an item count of 2
@@ -74,7 +74,7 @@ Feature: Updating Items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And the item "i" in collection "c" will be named "i-prime"
+	  And the updated item "i" in collection "c" will be named "i-prime"
 	  And the "description" will not exist
 	  And the "i" will be "i"
 
@@ -91,7 +91,7 @@ Feature: Updating Items with the REST API
 	  And the "Location" header will be "/c/i-moved"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And the item "i-moved" in collection "c" will be named "i-prime"
+	  And the updated item "i-moved" in collection "c" will be named "i-prime"
 	  And the "description" will not exist
 	  And the "i" will be "i"
 	  And the collection "c" has an item count of 2
@@ -104,7 +104,7 @@ Feature: Updating Items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And the item "i-moved" in collection "c" will be named "i-prime"
+	  And the updated item "i-moved" in collection "c" will be named "i-prime"
 	  And the "description" will not exist
 	  And the "i" will be "i"
 
@@ -120,7 +120,7 @@ Feature: Updating Items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And the item "another-i" in collection "c" will be named "私"
+	  And the updated item "another-i" in collection "c" will be named "私"
 	  And the "description" will be "Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło"
 	  And the "i" will be "i"
 	  And the collection "c" has an item count of 2
@@ -129,7 +129,7 @@ Feature: Updating Items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And the item "another-i" in collection "c" will be named "私"
+	  And the updated item "another-i" in collection "c" will be named "私"
 	  And the "description" will be "Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło"
 	  And the "i" will be "i"
 
@@ -143,7 +143,7 @@ Feature: Updating Items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And the item "i" in collection "c" will be named "i-prime"
+	  And the updated item "i" in collection "c" will be named "i-prime"
 	  And the "description" will not exist
 	  And the "i" will be "i"
 	  And the collection "c" has an item count of 2
@@ -152,7 +152,7 @@ Feature: Updating Items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And the item "i" in collection "c" will be named "i-prime"
+	  And the updated item "i" in collection "c" will be named "i-prime"
 	  And the "description" will not exist
 	  And the "i" will be "i"	
 
@@ -188,7 +188,7 @@ Feature: Updating Items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And the item "i" in collection "c" will be named "i-prime"
+	  And the updated item "i" in collection "c" will be named "i-prime"
 	  And the "description" will not exist
 	  And the "i" will be "i"
 	  And the collection "c" has an item count of 2
@@ -197,7 +197,7 @@ Feature: Updating Items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And the item "i" in collection "c" will be named "i-prime"
+	  And the updated item "i" in collection "c" will be named "i-prime"
 	  And the "description" will not exist
 	  And the "i" will be "i"	
 
@@ -235,7 +235,7 @@ Feature: Updating Items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And the item "i" in collection "c" will be named "i-prime"
+	  And the updated item "i" in collection "c" will be named "i-prime"
 	  And the "description" will not exist
 	  And the "i" will be "i"
 	  And the collection "c" has an item count of 2
@@ -244,7 +244,7 @@ Feature: Updating Items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And the item "i" in collection "c" will be named "i-prime"
+	  And the updated item "i" in collection "c" will be named "i-prime"
 	  And the "description" will not exist
 	  And the "i" will be "i"	
 

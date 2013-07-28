@@ -4,7 +4,7 @@
             [fcms.resources.item :as item]
             [fcms.resources.collection :refer (collection-media-type)]))
 
-(def ordered-keys [:name :created-at :updated-at :slug :collection])
+(def ordered-keys [:name :slug :collection :version :created-at :updated-at])
 
 (defn- collection-url [item]
   (str "/" (:collection item)))

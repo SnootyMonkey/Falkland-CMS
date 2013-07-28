@@ -7,6 +7,8 @@
 
 (def item-media-type "application/vnd.fcms.item+json;version=1")
 
+(def properties (conj common/properties :collection))
+
 (defn- item-doc [coll-id slug]
   "Get the CouchDB map representation of an item given the ID of its collection and the item's slug."
   (:doc (first (clutch/get-view "item" :all {:key [coll-id slug] :include_docs true}))))
@@ -108,7 +110,7 @@
   [coll-slug slug updated-props]
   (collection/with-collection coll-slug
     (if-let [item (item-doc (:id collection) slug)]
-      (let [retained-props (select-keys (:data item) [:type :collection :slug])]
+      (let [retained-props (select-keys (:data item) properties)]
         (item-from-db coll-slug (common/update-with-db item (merge retained-props updated-props))))
       :bad-item)))
 
