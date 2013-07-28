@@ -28,6 +28,7 @@ Feature: Updating Items with the REST API
 	  | another-i	| 私はガラスを食	| er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €|
 	  
 	  And the collection "c" had an item count of 2
+	  And I delay a moment
 
 	# all good, no slug - 200 OK
 	# (get-in ctx [:updated-item :slug])

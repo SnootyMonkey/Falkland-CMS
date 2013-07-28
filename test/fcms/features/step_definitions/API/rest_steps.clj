@@ -64,6 +64,9 @@
   (http-mock/response (app (body (http-mock/request) (json/generate-string (http-mock/body)))))
   (check (= (read-string status) (:status (http-mock/response)))))
 
+(When #"^I delay a moment$" []
+  (Thread/sleep 1000))
+
 ;; check on the response
 
 (Then #"^the \"([^\"]*)\" header will be \"([^\"]*)\"$" [header value]
