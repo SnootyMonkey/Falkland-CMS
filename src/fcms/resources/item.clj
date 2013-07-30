@@ -130,5 +130,5 @@
   or return :bad-collection if there's no collection with that slug."
   [coll-slug]
   (collection/with-collection coll-slug
-    (when-let [results (clutch/get-view "item" :all-by-collection {:key (:id collection) :include_docs true})]
+    (when-let [results (clutch/get-view "item" :all-slugs-by-collection {:key (:id collection) :include_docs true})]
       (map #(item-from-db coll-slug (:doc %)) results))))

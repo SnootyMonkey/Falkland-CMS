@@ -47,10 +47,14 @@
           (let [data (aget doc "data")]
             (when (and data (= (aget data "type") "item"))
               (js/emit (js/Array (aget data "collection") (aget data "slug")) (aget doc "_id")))))}
-        :all-by-collection {:map (fn [doc]
+        :all-slugs-by-collection {:map (fn [doc]
           (let [data (aget doc "data")]
             (when (and data (= (aget data "type") "item"))
               (js/emit (aget data "collection") (aget data "slug")))))}
+        :delete-by-collection {:map (fn [doc]
+          (let [data (aget doc "data")]
+            (when (and data (= (aget data "type") "item"))
+              (js/emit (aget data "collection") (js/Array (aget doc "_id")(aget doc "_rev"))))))}
         :count-by-collection {
           :map (fn [doc]
             (let [data (aget doc "data")]

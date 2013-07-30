@@ -36,6 +36,9 @@
           (common/map-from-db collection))))))
 
 ;; TODO delete the items as well
+;; (collection/with-collection "c"
+;;    (clutch/get-view "item" :delete-by-collection {:key (:id collection) :include_docs false}))
+;; clutch/bulk-update (common/db) [{:_id "90266b5200cbea828bffa934c440fcf0" :_rev "3-a88db101ac4c9a986b63f38c57cc8ba3" :_deleted true} {:_id "90266b5200cbea828bffa934c45204f8" :rev "1-a2d62a6566335d34b40aabe622456c0b" :_deleted true}])
 (defn delete-collection
   "Given the slug of the collection, delete it and all its contents and return true,
   or return :bad-collection if the collection slug is not good"
