@@ -11,7 +11,7 @@
 
 (defn- item-doc [coll-id slug]
   "Get the CouchDB map representation of an item given the ID of its collection and the item's slug."
-  (:doc (first (clutch/get-view "item" :all {:key [coll-id slug] :include_docs true}))))
+  (:doc (first (clutch/get-view "item" :all-ids-by-coll-id-and-slug {:key [coll-id slug] :include_docs true}))))
 
 (defn- unique-slug
   "Look for a conflicting item slug in the collection and increment an appended slug counter
@@ -130,5 +130,5 @@
   or return :bad-collection if there's no collection with that slug."
   [coll-slug]
   (collection/with-collection coll-slug
-    (when-let [results (clutch/get-view "item" :all-slugs-by-collection {:key (:id collection) :include_docs true})]
+    (when-let [results (clutch/get-view "item" :all-slugs-by-coll-id {:key (:id collection) :include_docs true})]
       (map #(item-from-db coll-slug (:doc %)) results))))

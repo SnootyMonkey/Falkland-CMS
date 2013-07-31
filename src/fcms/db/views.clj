@@ -27,35 +27,43 @@
               (if (#{"collection" "item" "taxonomy"} type)
                 (js/emit (js/Array (aget data "type") (aget doc "_id")) nil)))))}}))
 
-    ;; http://localhost:5984/falklandcms/_design/collection/_view/all
-    ;; http://localhost:5984/falklandcms/_design/collection/_view/all?include_docs=true
-    ;; http://localhost:5984/falklandcms/_design/collection/_view/all?key="collection-slug"
+    ;; http://localhost:5984/falklandcms/_design/collection/_view/all-ids-by-slug
+    ;; http://localhost:5984/falklandcms/_design/collection/_view/all-ids-by-slug?include_docs=true
+    ;; http://localhost:5984/falklandcms/_design/collection/_view/all-ids-by-slug?key="collection-slug"
+    ;; http://localhost:5984/falklandcms/_design/collection/_view/delete-by-slug?key="collection-slug"
     (clutch/save-view "collection"
       (clutch/view-server-fns :cljs {
-        :all {:map (fn [doc]
+        :all-ids-by-slug {:map (fn [doc]
           (let [data (aget doc "data")]
             (when (and data (= (aget data "type") "collection"))
-              (js/emit (aget data "slug") (aget doc "_id")))))}}))
+              (js/emit (aget data "slug") (aget doc "_id")))))}
+        :delete-by-slug {:map (fn [doc]
+          (let [data (aget doc "data")]
+            (when (and data (= (aget data "type") "collection"))
+              (js/emit (aget data "slug") (js/Array (aget doc "_id")(aget doc "_rev"))))))}}))
 
-    ;; http://localhost:5984/falklandcms/_design/item/_view/all
-    ;; http://localhost:5984/falklandcms/_design/collection/_view/all?include_docs=true
-    ;; http://localhost:5984/falklandcms/_design/collection/_view/all?key=["collection-id", "item-slug"]
-    ;; http://localhost:5984/falklandcms/_design/item/_view/count-by-collection?key="collection-id"
+    ;; http://localhost:5984/falklandcms/_design/item/_view/all-ids-by-coll-id-and-slug
+    ;; http://localhost:5984/falklandcms/_design/collection/_view/all-ids-by-coll-id-and-slug?include_docs=true
+    ;; http://localhost:5984/falklandcms/_design/collection/_view/all-ids-by-coll-id-and-slug?key=["collection-id", "item-slug"]
+    ;; http://localhost:5984/falklandcms/_design/item/_view/all-slugs-by-coll-id?key="collection-id"
+    ;; http://localhost:5984/falklandcms/_design/item/_view/all-slugs-by-coll-id?key="collection-id"&include_docs=true
+    ;; http://localhost:5984/falklandcms/_design/item/_view/delete-by-coll-id?key="collection-id"
+    ;; http://localhost:5984/falklandcms/_design/item/_view/count-by-coll-id?key="collection-id"
     (clutch/save-view "item"
       (clutch/view-server-fns :cljs {
-        :all {:map (fn [doc]
+        :all-ids-by-coll-id-and-slug {:map (fn [doc]
           (let [data (aget doc "data")]
             (when (and data (= (aget data "type") "item"))
               (js/emit (js/Array (aget data "collection") (aget data "slug")) (aget doc "_id")))))}
-        :all-slugs-by-collection {:map (fn [doc]
+        :all-slugs-by-coll-id {:map (fn [doc]
           (let [data (aget doc "data")]
             (when (and data (= (aget data "type") "item"))
               (js/emit (aget data "collection") (aget data "slug")))))}
-        :delete-by-collection {:map (fn [doc]
+        :delete-by-coll-id {:map (fn [doc]
           (let [data (aget doc "data")]
             (when (and data (= (aget data "type") "item"))
               (js/emit (aget data "collection") (js/Array (aget doc "_id")(aget doc "_rev"))))))}
-        :count-by-collection {
+        :count-by-coll-id {
           :map (fn [doc]
             (let [data (aget doc "data")]
               (when (and data (= (aget data "type") "item"))
@@ -67,7 +75,7 @@
     ;; http://localhost:5984/falklandcms/_design/collection/_view/all?key="taxonomy-slug"
     (clutch/save-view "taxonomy"
       (clutch/view-server-fns :cljs {
-        :all {:map (fn [doc]
+        :all-ids-by-slug {:map (fn [doc]
           (let [data (aget doc "data")]
             (when (and data (= (aget data "type") "taxonomy"))
               (js/emit (aget data "slug") (aget doc "_id")))))}})))

@@ -5,6 +5,7 @@
 /checkouts
 /out
 /docs/test-urls.txt
+REPL_prep.clj
 pom.xml
 *.jar
 *.class

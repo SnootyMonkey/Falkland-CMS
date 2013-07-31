@@ -19,6 +19,11 @@
   [slug counter]
   (str (s/replace slug (java.util.regex.Pattern/compile (str "-" counter "$")) "") "-" (inc counter)))
 
+(defn delete-map
+  "Given an array of the id and rev of a document, return the map needed to delete the document in a bulk update"
+  [id-rev]
+  {:_id (first id-rev) :_rev (last id-rev) :_deleted true})
+
 (defn db []
   (clutch/get-database db-resource))
 
