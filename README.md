@@ -1,4 +1,4 @@
-Falkland CMS
+Falkland CMS [![Build Status](https://travis-ci.org/SnootyMonkey/Falkland-CMS.png?branch=master)](https://travis-ci.org/SnootyMonkey/Falkland-CMS)
 ============
 
 All your links are belong to us!
