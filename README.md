@@ -1,10 +1,6 @@
 Falkland CMS [![Build Status](https://travis-ci.org/SnootyMonkey/Falkland-CMS.png?branch=master)](https://travis-ci.org/SnootyMonkey/Falkland-CMS)
 ============
 
-All your links are belong to us!
-
-## DESCRIPTION
-
 Falkland CMS is a Curation Management System written in Clojure, ClojureScript and CouchDB.
 
 ### What's a Curation Management Sysytem?
@@ -72,7 +68,9 @@ Falkland CMS is pre-alpha and not yet usable.
 
 ## INSTALLATION
 
-### External Dependencies
+## Quick Start - Heroku
+
+## Local Installation
 
 Most of Falkland's dependencies are internal, meaning Leiningen will handle getting them for you. There are a few exceptions:
 
@@ -81,11 +79,9 @@ Most of Falkland's dependencies are internal, meaning Leiningen will handle gett
 * [CouchDB](http://http://couchdb.apache.org/) - CouchDB is a schema-free, document-oriented database, ideally suited for a CMS
 * [elasticsearch](http://www.elasticsearch.org/) - elasticsearch is a schema-free, document-oriented search engine, ideally suited for CouchDB
 
-### Quick Start - Heroku
+## KEY CONCEPTS
 
-## Local Installation
-
-## CONCEPTS
+### Collections
 
 ### Items
 
