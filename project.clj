@@ -17,12 +17,14 @@
     [com.taoensso/timbre "2.4.1"] ; Logging https://github.com/ptaoussanis/timbre
     [clj-json "0.5.3"] ; JSON de/encoding https://github.com/mmcgrana/clj-json/
     [print-foo "0.3.7"] ; Old school print debugging https://github.com/danielribeiro/print-foo
-    [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
-    [midje "1.6-alpha2"] ; Example-based testing https://github.com/marick/Midje
   ]
   :profiles {
     :dev {
       :env {:liberator-trace true}
+      :dependencies [
+        [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
+        [midje "1.6-alpha2"] ; Example-based testing https://github.com/marick/Midje
+      ]
     }
     :test [:dev {
       :env {
@@ -35,7 +37,7 @@
   :aliases {
     "init-db" ["run" "-m" "fcms.db.views"]
     "test" ["with-profile" "test" "do" "midje," "cucumber"]
-    "test!" ["with-profile" "test" "do" "clean," "deps," "init-db," "midje," "cucumber"]
+    "test!" ["with-profile" "test" "do" "clean," "deps," "git-deps,", "init-db," "midje," "cucumber"]
     "midje" ["with-profile" "test" "midje"]    
     "cucumber" ["with-profile" "test" "cucumber"]
   }
