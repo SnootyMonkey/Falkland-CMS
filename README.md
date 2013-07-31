@@ -7,16 +7,16 @@ Falkland CMS is a Curation Management System written in Clojure, ClojureScript a
 
 ### What's a Curation Management Sysytem?
 
-Traditionally a CMS or [WCMS (web content management system)](http://en.wikipedia.org/wiki/Web_content_management_system) is a system for publishing website content. Key foundational features of a WCMS are:
+A traditonal CMS or [WCMS (web content management system)](http://en.wikipedia.org/wiki/Web_content_management_system) is a system for publishing website content. Key foundational features of a WCMS are:
 
 * separation of content and presentation - managing the data in the system separately from how it looks when its presented
 * easy editing of content, usually through an administrative web UI
 * collaboration of multiple content authors
 * templates to take the data in the system and present it as web content, typically HTML
 
-Falkland CMS has these foundational capabilities, but is not nearly as focused on the creation of *new* content as is a traditional WCMS. Instead, Falkland CMS is used for collecting, curating and exhibiting existing content.
+Falkland CMS has these foundational capabilities, but is not focused on the creation of *new* content. Instead, Falkland CMS is used for collecting, curating and exhibiting existing content.
 
-Because of this difference of focus, the acronym that is used for Falkland CMS is Curation Management System (CMS).
+Because of this difference of focus, the acronym that is used for Falkland CMS is Curation Management System.
 
 ### Why use Falkland CMS?
 
