@@ -1,17 +1,15 @@
 (ns fcms.lib.http-mock)
 
-(def req) ; mock HTTP request
-(def bod) ; body of the mock HTTP request or response
-(def resp) ; mock HTTP response
+(def mock-data (atom {:request {} :body "" :response {}}))
 
 (defn request
-  ([] req)
-  ([new-req] (def req new-req)))
+  ([] (:request @mock-data))
+  ([new-request] (swap! mock-data assoc :request new-request)))
 
 (defn body
-  ([] bod)
-  ([new-body] (def bod new-body)))
+  ([] (:body @mock-data))
+  ([new-body] (swap! mock-data assoc :body new-body)))
 
 (defn response
-  ([] resp)
-  ([new-resp] (def resp new-resp)))
+  ([] (:response @mock-data))
+  ([new-response] (swap! mock-data assoc :response new-response)))
