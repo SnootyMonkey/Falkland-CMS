@@ -1,20 +1,22 @@
--=Falkland CMS=- [![Development on Trello](http://snooty-monkey-open-images.s3.amazonaws.com/managed_on_trello.jpg)](https://trello.com/b/UgzPjFAX/falkland-cms) [![Build Status](https://travis-ci.org/SnootyMonkey/Falkland-CMS.png?branch=master)](https://travis-ci.org/SnootyMonkey/Falkland-CMS)
+-= Falkland CMS =-
 ============
 
 Falkland CMS is a Curation Management System written in Clojure, ClojureScript and CouchDB.
+
+[![Development on Trello](http://snooty-monkey-open-images.s3.amazonaws.com/managed_on_trello.jpg)](https://trello.com/b/UgzPjFAX/falkland-cms) [![Build Status](https://travis-ci.org/SnootyMonkey/Falkland-CMS.png?branch=master)](https://travis-ci.org/SnootyMonkey/Falkland-CMS)
 
 ### What's a Curation Management Sysytem?
 
 Traditionally a CMS or [WCMS (web content management system)](http://en.wikipedia.org/wiki/Web_content_management_system) is a system for publishing website content. Key foundational features of a WCMS are:
 
-* separation of content and presentation, managing the data in the system separately from how it looks when presented
+* separation of content and presentation - managing the data in the system separately from how it looks when its presented
 * easy editing of content, usually through an administrative web UI
 * collaboration of multiple content authors
 * templates to take the data in the system and present it as web content, typically HTML
 
 Falkland CMS has these foundational capabilities, but is not nearly as focused on the creation of *new* content as is a traditional WCMS. Instead, Falkland CMS is used for collecting, curating and exhibiting existing content.
 
-Alternatives acronyms that are more suited are Collection Management System (CMS), Digital Collection Management System (DCMS), or the acronym that is used for Falkland CMS, Curation Management System (CMS) or Digital Curation Management System (DCMS).
+Because of this difference of focus, the acronym that is used for Falkland CMS is Curation Management System (CMS).
 
 ### Why use Falkland CMS?
 
