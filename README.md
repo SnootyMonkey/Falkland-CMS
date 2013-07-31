@@ -1,4 +1,4 @@
-Falkland CMS [![Build Status](https://travis-ci.org/SnootyMonkey/Falkland-CMS.png?branch=master)](https://travis-ci.org/SnootyMonkey/Falkland-CMS)
+-=Falkland CMS=- [![Development on Trello](http://snooty-monkey-open-images.s3.amazonaws.com/managed-on-trello.jpg)](https://trello.com/b/UgzPjFAX/falkland-cms) [![Build Status](https://travis-ci.org/SnootyMonkey/Falkland-CMS.png?branch=master)](https://travis-ci.org/SnootyMonkey/Falkland-CMS)
 ============
 
 Falkland CMS is a Curation Management System written in Clojure, ClojureScript and CouchDB.
