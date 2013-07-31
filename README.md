@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/SnootyMonkey/falkland-cms.png)](https://waffle.io/SnootyMonkey/falkland-cms)  
 Falkland CMS [![Build Status](https://travis-ci.org/SnootyMonkey/Falkland-CMS.png?branch=master)](https://travis-ci.org/SnootyMonkey/Falkland-CMS)
 ============
 
@@ -111,6 +112,6 @@ Users of Falkland CMS are one of three types:
 
 ## LICENSE
 
-Copyright © 2013 Snooty Monkey
+Copyright B) 2013 Snooty Monkey
 
 Falkland CMS is distributed under the [Mozilla Public License v2.0](http://www.mozilla.org/MPL/2.0/).
