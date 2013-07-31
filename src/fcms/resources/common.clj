@@ -27,6 +27,22 @@
 (defn db []
   (clutch/get-database db-resource))
 
+(defn from-view
+  ([view function] (clutch/get-view (db) (name view) function {:include_docs false}))
+  ([view function key-value] (clutch/get-view (db) (name view) function {:key key-value :include_docs false})))
+
+(defn from-view-with-db
+  ([view function] (clutch/get-view (name view) function {:include_docs false}))
+  ([view function key-value] (clutch/get-view (name view) function {:key key-value :include_docs false})))
+
+(defn doc-from-view
+  ([view function] (clutch/get-view (db) (name view) function {:include_docs true}))
+  ([view function key-value] (clutch/get-view (db) (name view) function {:key key-value :include_docs true})))
+
+(defn doc-from-view-with-db
+  ([view function] (clutch/get-view (name view) function {:include_docs true}))
+  ([view function key-value] (clutch/get-view (name view) function {:key key-value :include_docs true})))
+
 (defn all-meta []
   (clutch/with-db (db)
     (clutch/all-documents)))

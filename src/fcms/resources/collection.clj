@@ -8,9 +8,8 @@
 (defn get-collection
   "Given the slug of the collection, return the collection as a map, or nil if there's no collection with that slug"
   [slug]
-  (clutch/with-db (common/db)
-    (if-let [coll (:doc (first (clutch/get-view "collection" :all-ids-by-slug {:key slug :include_docs true})))]
-      (common/map-from-db coll))))
+  (if-let [coll (:doc (first (common/doc-from-view :collection :all-ids-by-slug slug)))]
+    (common/map-from-db coll)))
 
 (defn- unique-slug
   "Look for a conflicting collection slug and increment an appended slug counter
@@ -37,7 +36,7 @@
 
 (defn- delete-collection-and-contents [id rev]
   ;; get all the id and rev of all the items in this collection
-  (let [items (clutch/get-view (common/db) "item" :delete-by-coll-id {:key id :include_docs false})]
+  (let [items (common/from-view :item :delete-by-coll-id id)]
     ;; create a bulk update request to delete all the items and the collection
     (let [delete-items (map #(common/delete-map (:value %)) items)]
       (clutch/bulk-update (common/db) (vec (conj delete-items (common/delete-map [id rev])))))))
@@ -47,7 +46,7 @@
   "Given the slug of the collection, delete it and all its contents and return true,
   or return :bad-collection if the collection slug is not good"
   [slug]
-  (if-let [coll (first (clutch/get-view (common/db) "collection" :delete-by-slug {:key slug :include_docs false}))]
+  (if-let [coll (first (common/from-view :collection :delete-by-slug slug))]
     (delete-collection-and-contents (first (:value coll)) (last (:value coll)))
     :bad-collection))
 
@@ -65,13 +64,12 @@
   or return :bad-collection if the collection slug is no good"
   [coll-slug]
   (with-collection coll-slug
-    (if-let [result (first (clutch/get-view "item" :count-by-coll-id {:key (:id collection) :include_docs false}))]
+    (if-let [result (first (common/from-view-with-db :item :count-by-coll-id (:id collection)))]
       (:value result)
       0)))
 
 (defn all-collections
   "Return all the collections in the system as a sequence of maps."
   []
-  (clutch/with-db (common/db)
-    (when-let [collections (clutch/get-view "collection" :all-ids-by-slug {:include_docs true})]
-      (map #(common/map-from-db (:doc %)) collections))))
+  (when-let [collections (common/doc-from-view :collection :all-ids-by-slug)]
+    (map #(common/map-from-db (:doc %)) collections)))
