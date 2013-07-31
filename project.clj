@@ -35,7 +35,9 @@
     }]
   }
   :aliases {
+    "spell" ["spell" "-n"]
     "init-db" ["run" "-m" "fcms.db.views"]
+    "ancient" ["with-profile" "test" "ancient"]
     "test" ["with-profile" "test" "do" "midje," "cucumber"]
     "test!" ["with-profile" "test" "do" "clean," "deps," "git-deps,", "init-db," "midje," "cucumber"]
     "midje" ["with-profile" "test" "midje"]    
