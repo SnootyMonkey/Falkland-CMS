@@ -50,6 +50,44 @@
     (delete-collection-and-contents (first (:value coll)) (last (:value coll)))
     :bad-collection))
 
+(defn valid-collection-update?
+  "Given the slug of the collection, and a map of updated
+  properties for the collection, check if the everything
+  is in order to update the collection.
+  Ensure the collection exists or return :bad-collection.
+  If a new slug is provided in the properties, ensure it is
+  valid or return :invalid-slug and ensure it is unused or
+  return :slug-conflict. If no slug is specified in
+  the properties it will be retain its current slug."
+  [slug {coll-name :name provided-slug :slug}]
+    (let [id (:id (get-collection slug))]
+      (cond
+        (nil? id) :bad-collection
+        (not coll-name) :no-name
+        (not provided-slug) true
+        (not (common/valid-slug? provided-slug)) :invalid-slug
+        (= slug provided-slug) true
+        :else (if (nil? (get-collection provided-slug)) true :slug-conflict))))
+
+(defn- update
+  "Update a collection retaining it's manufactured properties and replacing the rest with the provided properties"
+  [slug updated-props]
+  (if-let [coll (:doc (first (common/doc-from-view :collection :all-ids-by-slug slug)))]
+    (let [retained-props (select-keys (:data coll) common/properties)]
+      (common/map-from-db (common/update coll (merge retained-props updated-props))))
+    :bad-collection))
+
+(defn update-collection
+  "Update the collection specified by its slug using the specified
+  map of properties. If :slug is included in the properties
+  the item will be moved to the new slug, otherwise the slug will remain the same.
+  The same validity conditions and invalid return values as valid-item-update? apply."
+  [slug props]
+    (let [reason (valid-collection-update? slug props)]
+      (if (= reason true)
+        (update slug props)
+        reason)))
+
 (defmacro with-collection
   "Given the slug of the collection, execute some code with the retrieved collection
   lexically scoped as collection, or return :bad-collection if the collection slug is no good"

@@ -69,16 +69,20 @@
       :updated-at timestamp
       :type (name provided-type)})})))
 
-(defn update-with-db [document props]
-  (clutch/update-document document {:data (merge props {
-    :version (inc (:version props))
-    :updated-at (current-timestamp)})}))
-
 (defn create
   "Create a resource in the DB, returning the property map for the resource."
   [props provided-type]
   (clutch/with-db (db)
     (create-with-db props provided-type)))
+
+(defn update-with-db [document props]
+  (clutch/update-document document {:data (merge props {
+    :version (inc (:version props))
+    :updated-at (current-timestamp)})}))
+
+(defn update [document props]
+  (clutch/with-db (db)
+    (update-with-db document props)))
 
 (defn retrieve [id]
   (clutch/with-db (db)
