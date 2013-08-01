@@ -6,7 +6,7 @@
   (collection/delete-collection coll-slug)
   (collection/create-collection coll-slug))
 
-(Given #"^I had a collection \"([^\"]*)\" with the following items:$" [coll-slug table]
+(Given #"^I had a collection \"([^\"]*)\" with the following items?:$" [coll-slug table]
   (collection/delete-collection coll-slug)
   (collection/create-collection coll-slug)
   (let [items (table->rows table)]

@@ -103,10 +103,14 @@
   ;; Get list of items
   :handle-ok (fn [ctx] (render-items (:items ctx)))
   ;; Create new item
-  :malformed? (fn [ctx] (common/malformed-json? ctx))
+  :malformed? (by-method {
+    :get false
+    :post (fn [ctx] (common/malformed-json? ctx))})
   :known-content-type? (fn [ctx] (common/known-content-type ctx item/item-media-type))
   :handle-unsupported-media-type (fn [ctx] (common/only-accept item/item-media-type))
-  :processable? (fn [ctx] (common/check-input (item/valid-new-item? coll-slug (get-in ctx [:data :name]) (:data ctx))))
+  :processable? (by-method {
+    :get true
+    :post (fn [ctx] (common/check-input (item/valid-new-item? coll-slug (get-in ctx [:data :name]) (:data ctx))))})
   :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
   :post! (fn [ctx] (create-item coll-slug (:data ctx)))
   :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))
