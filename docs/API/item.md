@@ -66,6 +66,9 @@ The response has a JSON array called items which contains partial representation
          "URL":"http://www.youtube.com/watch?v=mJhUKzEq47U",
          "created_at":"2013-04-23T14:30:50Z",
          "updated_at":"2013-04-23T14:30:50Z",
+         "slug":"amazing-animals-mudskipper",
+         "collection":"mudskippers",
+         "description":"Excerpt from David Attenborough's BBC Life series episode 04",
          "links":[
             {
                "rel":"self",
@@ -80,6 +83,9 @@ The response has a JSON array called items which contains partial representation
          "URL": "http://animal.discovery.com/tv-shows/animal-planet-presents/videos/whats-to-love-mudskippers-habitat.htm"
          "created_at":"2011-04-23T14:32:17Z",
          "updated_at":"2011-04-23T14:32:17Z",
+         "slug":"mudskippers-habitat",
+         "collection":"mudskippers",
+         "description":"Animal Planet Presents Mudskipper's Habitat",
          "links":[
             {
                "rel":"self",

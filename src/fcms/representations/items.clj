@@ -24,7 +24,10 @@
 (defn- collection-link [item]
   (common/link-map "collection" common/GET (collection-url item) collection-media-type))
 
-(defn links [item]
+(defn- create-item-link [coll-slug]
+  (common/create-link (str "/" coll-slug "/") item/item-media-type))
+
+(defn- item-links [item]
   "Add the HATEAOS links to the item"
   (apply array-map (concat (flatten (into [] item)) [:links [
     (self-link item)
@@ -32,21 +35,30 @@
     (delete-link item)
     (collection-link item)]])))
 
-(defn render-items
-  "Create a JSON representation of a group of items for the REST API"
-  [items])
+(defn- item-list-links [coll-slug]
+  "Array of HATEAOS links for the item list"
+  [(create-item-link coll-slug)])
 
-(defn render-item 
-  "Create a JSON representation of an item for the REST API"
-  [item]
+(defn- item-to-json-map [item]
   ;; Generate JSON from the sorted array map that results from:
   ;; 1) removing unneeded :id key
   ;; 2) making an ordered array hash of the known ordered keys
   ;; 3) adding a sorted hash of any remaining keys
   ;; 4) adding the HATEAOS links to the array hash
   (let [item-props (dissoc item :id)]
-    (json/generate-string
-      (-> item-props
-        (common/ordered ,,, ordered-keys)
-        (common/append-sorted ,,, (common/remaining-keys item-props ordered-keys))
-        links))))
+    (-> item-props
+      (common/ordered ordered-keys)
+      (common/append-sorted (common/remaining-keys item-props ordered-keys))
+      item-links)))
+
+(defn render-items
+  "Create a JSON representation of a group of items for the REST API"
+  [coll-slug items]
+  (json/generate-string {
+    :items (map item-to-json-map items)
+    :links (item-list-links coll-slug)}))
+
+(defn render-item 
+  "Create a JSON representation of an item for the REST API"
+  [item]
+  (json/generate-string (item-to-json-map item)))

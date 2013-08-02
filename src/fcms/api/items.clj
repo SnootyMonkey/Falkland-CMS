@@ -21,9 +21,9 @@
       nil false
       :else {:item item})))
 
-(defn- get-collection [coll-slug]
+(defn- get-items [coll-slug]
   (if-let [collection (collection/get-collection coll-slug)]
-    [true {:collection collection}]
+    [true {:items (item/all-items coll-slug)}]
     [false {:bad-collection true}]))
 
 (defn- item-location-response [coll-slug item]
@@ -99,9 +99,9 @@
   :available-media-types [item/item-media-type]
   :handle-not-acceptable (fn [ctx] (common/only-accept item/item-media-type))
   :allowed-methods [:get :post]
-  :exists? (fn [ctx] (get-collection coll-slug))
+  :exists? (fn [ctx] (get-items coll-slug))
   ;; Get list of items
-  :handle-ok (fn [ctx] (render-items (:items ctx)))
+  :handle-ok (fn [ctx] (render-items coll-slug (:items ctx)))
   ;; Create new item
   :malformed? (by-method {
     :get false
