@@ -66,7 +66,7 @@ Falkland CMS was built to support the [Falklandsophile](http://falklandsophile.c
 
 ## STATUS
 
-Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of September 2013.
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of October 2013.
 
 ## INSTALLATION
 
