@@ -76,6 +76,35 @@ The response has a JSON array called items which contains partial representation
                "href":"/mudskippers/amazing-animals-mudskipper"
                "type":"application/vnd.fcms.item+json;version=1"
             }
+            {
+               "rel":"update",
+               "method":"put",
+               "href":"/mudskippers/amazing-animals-mudskipper",
+               "type":"application/vnd.fcms.item+json;version=1"
+            },
+            {
+               "rel":"delete",
+               "method":"delete",
+               "href":"/mudskippers/amazing-animals-mudskipper",
+            },
+            {
+               "rel":"category",
+               "method":"get",
+               "href":"/mudskippers/media-types/videos/online",
+               "type":"application/vnd.fcms.category+json;version=1"
+            },
+            {
+               "rel":"category",
+               "method":"get",
+               "href":"/mudskippers/topics/reproduction",
+               "type":"application/vnd.fcms.category+json;version=1"
+            },
+            {
+               "rev":"collection",
+               "method":"get",
+               "href":"/mudskippers",
+               "type":"application/vnd.fcms.collection+json;version=1"
+            }
          ]
       },
       {
@@ -92,6 +121,35 @@ The response has a JSON array called items which contains partial representation
                "method":"get",
                "href":"/mudskippers/mudskippers-habitat"
                "type":"application/vnd.fcms.item+json;version=1"
+            }
+            {
+               "rel":"update",
+               "method":"put",
+               "href":"/mudskippers/mudskippers-habitat",
+               "type":"application/vnd.fcms.item+json;version=1"
+            },
+            {
+               "rel":"delete",
+               "method":"delete",
+               "href":"/mudskippers/mudskippers-habitat",
+            },
+            {
+               "rel":"category",
+               "method":"get",
+               "href":"/mudskippers/media-types/videos/online",
+               "type":"application/vnd.fcms.category+json;version=1"
+            },
+            {
+               "rel":"category",
+               "method":"get",
+               "href":"/mudskippers/topics/habitat",
+               "type":"application/vnd.fcms.category+json;version=1"
+            },
+            {
+               "rev":"collection",
+               "method":"get",
+               "href":"/mudskippers",
+               "type":"application/vnd.fcms.collection+json;version=1"
             }
          ]
       }

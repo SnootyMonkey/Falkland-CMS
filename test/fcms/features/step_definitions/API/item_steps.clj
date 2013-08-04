@@ -1,19 +1,13 @@
 (require '[clj-time.core :refer (before?)]
          '[clj-time.format :refer (parse)]
          '[fcms.lib.body :as body]
-         '[fcms.representations.common :refer (GET PUT DELETE)]
-         '[fcms.resources.item :refer (item-media-type)]
-         '[fcms.resources.collection :refer (collection-media-type)]
          '[fcms.lib.checks :refer (check about-now? timestamp?)])
 
-(defn verify-item [coll-slug item-slug item-name]
+(defn- verify-item [coll-slug item-slug item-name]
   (body/verify :name item-name)
   (body/verify :slug item-slug)
   (body/verify :collection coll-slug)
-  (body/verify-link "self" GET (str "/" coll-slug "/" item-slug) item-media-type)
-  (body/verify-link "update" PUT (str "/" coll-slug "/" item-slug) item-media-type)
-  (body/verify-link "delete" DELETE (str "/" coll-slug "/" item-slug))
-  (body/verify-link "collection" GET (str "/" coll-slug) collection-media-type))
+  (body/verify-item-links coll-slug item-slug))
 
 (Then #"^the item \"([^\"]*)\" in collection \"([^\"]*)\" will be named \"([^\"]*)\"$" [item-slug coll-slug item-name]
   (verify-item coll-slug item-slug item-name))

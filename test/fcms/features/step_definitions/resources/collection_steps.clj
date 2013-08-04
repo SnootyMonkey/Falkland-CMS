@@ -9,9 +9,8 @@
 (Given #"^I had a collection \"([^\"]*)\" with the following items?:$" [coll-slug table]
   (collection/delete-collection coll-slug)
   (collection/create-collection coll-slug)
-  (let [items (table->rows table)]
-    (doseq [item items]
-      (item/create-item coll-slug (:name item) {:slug (:slug item) :description (:description item)}))))
+  (doseq [item (table->rows table)]
+    (item/create-item coll-slug (:name item) {:slug (:slug item) :description (:description item)})))
 
 (Then #"^the collection \"([^\"]*)\" (had|has|will have) an item count of (\d+)$" [coll-slug _ item-count]
   (check (= (read-string item-count) (collection/item-count coll-slug))))

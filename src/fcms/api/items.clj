@@ -100,6 +100,7 @@
   :handle-not-acceptable (fn [ctx] (common/only-accept item/item-media-type))
   :allowed-methods [:get :post]
   :exists? (fn [ctx] (get-items coll-slug))
+  :handle-not-found (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
   ;; Get list of items
   :handle-ok (fn [ctx] (render-items coll-slug (:items ctx)))
   ;; Create new item

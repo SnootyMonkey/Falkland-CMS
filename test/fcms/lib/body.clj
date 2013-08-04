@@ -1,5 +1,8 @@
 (ns fcms.lib.body
   (:require [fcms.lib.http-mock :as http-mock]
+            [fcms.representations.common :refer (GET PUT DELETE)]
+            [fcms.resources.item :refer (item-media-type)]
+            [fcms.resources.collection :refer (collection-media-type)]
             [fcms.lib.checks :refer (check)]))
 
 (defn value-of [prop]
@@ -25,6 +28,12 @@
           (check (nil? (:type link)))
           (check (= type (:type link)))))
       (check (= rel :link_not_present)))))
+
+(defn verify-item-links [coll-slug item-slug]
+  (verify-link "self" GET (str "/" coll-slug "/" item-slug) item-media-type)
+  (verify-link "update" PUT (str "/" coll-slug "/" item-slug) item-media-type)
+  (verify-link "delete" DELETE (str "/" coll-slug "/" item-slug))
+  (verify-link "collection" GET (str "/" coll-slug) collection-media-type))
 
 (defn verify-length [prop length]
   (check (sequential? (value-of prop)))

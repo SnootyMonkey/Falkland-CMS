@@ -84,7 +84,7 @@ Feature: Retrieving an item with the REST API
 
 	# wrong accept charset - 406 Not Acceptable
 	# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: iso-8859-1" -X GET http://localhost:3000/c/i
-  Scenario: Retrieve an item without using an Accept-Charset header
+  Scenario: Retrieve an item with the wrong Accept-Charset header
 	  When I have a "GET" request to URL "/c/i"
 	  And I set the "Accept-Charset" header to "iso-8859-1"
 	  And I accept an "item"
