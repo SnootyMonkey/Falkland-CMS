@@ -7,7 +7,7 @@
   (body/verify :name item-name)
   (body/verify :slug item-slug)
   (body/verify :collection coll-slug)
-  (body/verify-item-links coll-slug item-slug))
+  (body/verify-item-links coll-slug item-slug (body/value-of :links)))
 
 (Then #"^the item \"([^\"]*)\" in collection \"([^\"]*)\" will be named \"([^\"]*)\"$" [item-slug coll-slug item-name]
   (verify-item coll-slug item-slug item-name))
