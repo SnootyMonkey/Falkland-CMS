@@ -10,11 +10,17 @@
 (Then #"^there will be no items in \"([^\"]*)\"$" [coll-slug]
   (verify-item-list coll-slug 0))
 
-(Then #"^there will be (\d+) items? in \"([^\"]*)\":$" [length coll-slug table]
-  (verify-item-list coll-slug (read-string length))
+;; Compare the items in the response to the items in the provided table
+(Then #"^there will be (this|these) items? in \"([^\"]*)\":$" [_ coll-slug table]
+  ;; the right # of items?
+  (verify-item-list coll-slug (count (table->rows table)))
+  ;; check each item
   (loop [items (table->rows table), i 0]
     (when (seq items)
-      ;; TODO verify match of table to JSON item
+      ;; check that all the properties match
+      (doseq [property (first items)]
+        (check (= ((first property) (nth (body/value-of :items) i)) (last property))))
+      ;; check that all the item links are correct
       (body/verify-item-links coll-slug (:slug (first items)) (:links (nth (body/value-of :items) i)))
       (recur (rest items) (inc i)))))
 

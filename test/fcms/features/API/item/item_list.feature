@@ -49,7 +49,7 @@ Feature: Listing items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And there will be 1 item in "one":
+	  And there will be this item in "one":
 	  |slug				|name        	|description			|version|collection|
 	  | i 				| i 					| this is an item	|1			|one			 |
 	  And all the timestamps will be matching parseable dates
@@ -62,7 +62,7 @@ Feature: Listing items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And there will be 5 items in "many":
+	  And there will be these items in "many":
 	  |slug		|name        	|description																																																																				|version|collection|
 	  | i 		| i 					| this is an item																																																																		|1			|many			 |
 	  | uni-i	| 私はガラスを食	| er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €|1			|many			 |
@@ -81,7 +81,7 @@ Feature: Listing items with the REST API
 		Then the status will be "200"
 		And I will receive an "item"
 		And the body will be JSON
-		And there will be 1 item in "one":
+		And there will be this item in "one":
 		|slug				|name        	|description			|version|collection|
 		| i 				| i 					| this is an item	|1			|one			 |
 		And all the timestamps will be matching parseable dates
@@ -105,7 +105,7 @@ Feature: Listing items with the REST API
 	  Then the status will be "200"
 	  And I will receive an "item"
 	  And the body will be JSON
-	  And there will be 1 item in "one":
+	  And there will be this item in "one":
 	  |slug				|name        	|description			|version|collection|
 	  | i 				| i 					| this is an item	|1			|one			 |
 	  And all the timestamps will be matching parseable dates
