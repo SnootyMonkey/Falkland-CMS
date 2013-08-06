@@ -8,10 +8,7 @@
 
 *item* - any resource that's been collected in your repository, often organized into many orthogonal taxonomies.
 
-*taxonomy* - a means of organizing items into hierarchical categories.
-??? needed, or just use a category with no parent?
-
-*category* - a hierarchical organization structure in a taxonomy.
+*taxonomy* - a hierarchical organization of categories independent of any other taxonomies.
 
 ## From the REPL
 
@@ -45,7 +42,7 @@ Create a taxonomy:
 
 Create a category:
 
-	(item/create-category "Wikipedia Pages" {:parent "media-types/web-pages"})
+	(taxonomy/create-category "Wikipedia Pages" {:parent "media-types/web-pages"})
 
 Create a more complete item:
 
@@ -55,15 +52,15 @@ Create a more complete item:
   
 List all the items in a collection (don't do this on a very full collection!):
 
-	(item/all "mudskippers")
+	(item/all-items "mudskippers")
 
 List all items of a particular taxonomy:
 
-	(item/all "mudskippers" {:categories ["media-types/web-pages"]})
+	(item/all-items "mudskippers" {:categories ["media-types/web-pages"]})
 
 List all items of an intersection of taxonomies:
 
-	(item/all "mudskippers" {:categories ["media-types/videos" "topics/fish"]})
+	(item/all-items "mudskippers" {:categories ["media-types/videos" "topics/fish"]})
 
 Delete an item:
 

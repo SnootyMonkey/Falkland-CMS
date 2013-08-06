@@ -72,6 +72,8 @@ Falkland CMS is pre-alpha and not yet usable. A usable version is expected by th
 
 ## Quick Start - Heroku
 
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of October 2013 and quick start instructions for Heroku will be available then.
+
 ## Local Installation
 
 Most of Falkland's dependencies are internal, meaning Leiningen will handle getting them for you. There are a few exceptions:
@@ -81,35 +83,46 @@ Most of Falkland's dependencies are internal, meaning Leiningen will handle gett
 * [CouchDB](http://http://couchdb.apache.org/) - CouchDB is a schema-free, document-oriented database, ideally suited for a CMS
 * [elasticsearch](http://www.elasticsearch.org/) - elasticsearch is a schema-free, document-oriented search engine, ideally suited for CouchDB
 
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of October 2013 and detailed instructions for local installation will be available then.
+
 ## KEY CONCEPTS
 
 ### Collections
+A Falkland CMS instance support one or more collections of items. A collection is all the items that you'd like to be organized and searched on together. Taxonomical organization and searches don't span multiple collections so usually you'll have just one collection or each collection will support a website or app for experiencing the collection. There may be cases where you have multiple websites or apps supported by the same collection or one website or app accessing multiple collections, but these would be less typical.
 
 ### Items
+Items are referential in nature. They act as a catolog entry for something: a web page, a book, a product, a person, an animal, a building. The possibilities are endless and simply depend on what it is you are trying to curate.
 
 ### Taxonomies
+A taxonomy is a particular classification scheme for organizing items into hierarchical categories. Central to Falkland CMS is supporting multiple independant taxonomies. Most collections will have many different taxonomies to categorize their items by different criteria. 
 
-### Faceted Search
+### Faceted Search / Navigation
+
+[Faceted search](http://en.wikipedia.org/wiki/Faceted_search) or faceted navigation is full-text search blended with navigation by multiple, orthogonal filters. It's possible with faceted search for example to do a full text search on "Camus" with "BBC" as the creator and limit the search to the "online video" media taxonomy, the "United States" geography taxonomy. Faceted search and navigation is a powerful technique for quickly exploring a large catalog of items.
 
 ### Pages
 
 There are 3 types of pages:
 
-* **exhibit** - An exhibit page is a CMS page, it may reference many named or searched for resources, but it could also be made up of just static content. A home page, about page, or terms of use page is a good example of the latter.
-* **item** - An item page displays a single particular item of a particular item type
-* **taxonomy** - A taxonomy page ...
+* **item** - an item page displays a single particular item from the collection.
+* **taxonomy** - a taxonomy page page displays a list of items in a particular category of a particular taxonomy.
+* **exhibit** - An exhibit page may reference many named or searched for resources, but could also be made up of just static content. A home page is a good example of a dynamic exhibit page, and an about page, or terms of use page is a good example of a completely static exhibit page.
 
 ### <a name="security"/> Security Model
 
 Users of Falkland CMS are one of three types:
 
-* **Administrator** - named users that can administer the configuration of the system and all items
-* **User** - named users that can create, update, and delete all items in the system, but not administer the configuration of the system
-* **The General Public** - everyone accessing the system anonymously with their web browser
+* **Administrator** - named users that can administer the configuration of the system and all items.
+* **User** - named users that can create, update, and delete all items in the system, but not administer the configuration of the system.
+* **The General Public** - everyone accessing the system anonymously with their web browser.
 
 ## DEVELOPMENT AND CONTRIBUTING
 
+Please fork Falkland CMS on GitHub if you'd like to enhance it. Submit your pull requests if you'd like to contribute back your enhancements. I promise to look at every pull request and incorporate it, or at least provide feedback on why if I won't.
+
 ## GETTING HELP
+
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of October 2013 and instructions for getting help will be available then.
 
 ## LICENSE
 
