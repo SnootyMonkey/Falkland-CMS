@@ -105,7 +105,7 @@ Falkland CMS is pre-alpha and not yet usable. A usable version is expected by th
 
 ## Quick Start - Heroku
 
-Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of October 2013 and quick start instructions for Heroku will be available then.
+Quick start instructions for Heroku are expected by the end of September 2013.
 
 ## Local Installation
 
@@ -116,7 +116,7 @@ Most of Falkland's dependencies are internal, meaning Leiningen will handle gett
 * [CouchDB](http://http://couchdb.apache.org/) - CouchDB is a schema-free, document-oriented database, ideally suited for a CMS
 * [elasticsearch](http://www.elasticsearch.org/) - elasticsearch is a schema-free, document-oriented search engine, ideally suited for CouchDB
 
-Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of October 2013 and detailed instructions for local installation will be available then.
+Detailed instructions for local installation are expected by the end of September 2013.
 
 ## DEVELOPMENT AND CONTRIBUTING
 
