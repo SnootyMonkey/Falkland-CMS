@@ -87,6 +87,8 @@ Falkland CMS is pre-alpha and not yet usable. A usable version is expected by th
 
 ## KEY CONCEPTS
 
+![FCMS Key Concepts](./docs/images/FCMS-High-level.png "FCMS Key Concepts")
+
 ### Collections
 A Falkland CMS instance support one or more collections of items. A collection is all the items that you'd like to be organized and searched on together. Taxonomical organization and searches don't span multiple collections so usually you'll have just one collection or each collection will support a website or app for experiencing the collection. There may be cases where you have multiple websites or apps supported by the same collection or one website or app accessing multiple collections, but these would be less typical.
 
@@ -98,7 +100,7 @@ A taxonomy is a particular classification scheme for organizing items into hiera
 
 ### Faceted Search / Navigation
 
-[Faceted search](http://en.wikipedia.org/wiki/Faceted_search) or faceted navigation is full-text search blended with navigation by multiple, orthogonal filters. It's possible with faceted search for example to do a full text search on "Camus" with "BBC" as the creator and limit the search to the "online video" media taxonomy, the "United States" geography taxonomy. Faceted search and navigation is a powerful technique for quickly exploring a large catalog of items.
+[Faceted search](http://en.wikipedia.org/wiki/Faceted_search) or faceted navigation is full-text search blended with navigation by multiple, orthogonal filters. It's possible with faceted search for example to do a full text search on "Camus BBC" and then drill down into the search results limiting them to the "online video" in the media taxonomy, and the "United States" in the geography taxonomy. Faceted search and navigation is a powerful technique for quickly exploring a large catalog of items.
 
 ### Pages
 
