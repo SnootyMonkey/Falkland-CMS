@@ -106,9 +106,9 @@ A taxonomy is a particular classification scheme for organizing items into hiera
 
 There are 3 types of pages:
 
-* **item** - an item page displays a single particular item from the collection.
-* **taxonomy** - a taxonomy page page displays a list of items in a particular category of a particular taxonomy.
-* **exhibit** - An exhibit page may reference many named or searched for resources, but could also be made up of just static content. A home page is a good example of a dynamic exhibit page, and an about page, or terms of use page is a good example of a completely static exhibit page.
+* **item** - displays a single item from the collection.
+* **category** - displays the items in a particular category of a particular taxonomy.
+* **exhibit** - may reference many named or searched for resources, but could also be made up of just static content. A home page is a good example of a dynamic exhibit page, and an about page, or terms of use page is a good example of a completely static exhibit page.
 
 ### <a name="security"/> Security Model
 
