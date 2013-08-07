@@ -64,27 +64,6 @@ Ideal uses:
 
 Falkland CMS was built to support the [Falklandsophile](http://falklandsophile.com) website. So the name seemed fitting.
 
-## STATUS
-
-Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of October 2013.
-
-## INSTALLATION
-
-## Quick Start - Heroku
-
-Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of October 2013 and quick start instructions for Heroku will be available then.
-
-## Local Installation
-
-Most of Falkland's dependencies are internal, meaning Leiningen will handle getting them for you. There are a few exceptions:
-
-* [Java 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html) - a Java 7 JRE is needed to run Clojure
-* [Leiningen](https://github.com/technomancy/leiningen) - Clojure's build and package management tool
-* [CouchDB](http://http://couchdb.apache.org/) - CouchDB is a schema-free, document-oriented database, ideally suited for a CMS
-* [elasticsearch](http://www.elasticsearch.org/) - elasticsearch is a schema-free, document-oriented search engine, ideally suited for CouchDB
-
-Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of October 2013 and detailed instructions for local installation will be available then.
-
 ## KEY CONCEPTS
 
 ![FCMS Key Concepts](./docs/images/FCMS-High-level.png "FCMS Key Concepts")
@@ -117,6 +96,27 @@ Users of Falkland CMS are one of three types:
 * **Administrator** - named users that can administer the configuration of the system and all items.
 * **User** - named users that can create, update, and delete all items in the system, but not administer the configuration of the system.
 * **The General Public** - everyone accessing the system anonymously with their web browser.
+
+## STATUS
+
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of October 2013.
+
+## INSTALLATION
+
+## Quick Start - Heroku
+
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of October 2013 and quick start instructions for Heroku will be available then.
+
+## Local Installation
+
+Most of Falkland's dependencies are internal, meaning Leiningen will handle getting them for you. There are a few exceptions:
+
+* [Java 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html) - a Java 7 JRE is needed to run Clojure
+* [Leiningen](https://github.com/technomancy/leiningen) - Clojure's build and package management tool
+* [CouchDB](http://http://couchdb.apache.org/) - CouchDB is a schema-free, document-oriented database, ideally suited for a CMS
+* [elasticsearch](http://www.elasticsearch.org/) - elasticsearch is a schema-free, document-oriented search engine, ideally suited for CouchDB
+
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of October 2013 and detailed instructions for local installation will be available then.
 
 ## DEVELOPMENT AND CONTRIBUTING
 
