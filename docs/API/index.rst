@@ -1,5 +1,5 @@
-Falkland CMS API Documentation
-==============================
+Falkland CMS API
+================
 
 Resources:
 
