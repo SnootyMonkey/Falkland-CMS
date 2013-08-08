@@ -1,11 +1,11 @@
 Falkland CMS API Documentation
 ==============================
 
-Contents:
+Resources:
 
 .. toctree::
    :maxdepth: 1
-   
+
    item
 
 
