@@ -4,8 +4,9 @@ Falkland CMS API Documentation
 Contents:
 
 .. toctree::
-   :maxdepth: 2
-
+   :maxdepth: 1
+   
+   item
 
 
 Indices and tables
