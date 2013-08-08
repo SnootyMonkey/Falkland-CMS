@@ -1,12 +1,3 @@
-Resources for helping create the docs (REMOVE LATER)
-
-* [Markdown Cheat Sheet](http://packetlife.net/media/library/16/Markdown.pdf)
-* [Github Flavored Markdown](http://github.github.com/github-flavored-markdown/)
-* [Full Markdown Syntax](http://daringfireball.net/projects/markdown/syntax)
-* [JSON formatter](http://jsonformatter.curiousconcept.com/)
-* [cURL help](http://blogs.plexibus.com/2009/01/15/rest-esting-with-curl/)
-
-
 # Falkland CMS Hypermedia API
 
 This is the documentation for using the Falkland CMS Hypermedia (REST) API.
