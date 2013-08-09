@@ -1,4 +1,5 @@
 :tocdepth: 2
+
 Items
 #####
 
@@ -26,7 +27,7 @@ Some examples of items:
 List Items in a Collection
 --------------------------
 
-Get all the items in a collection.
+List all the items in a collection.
 
 Request
 ~~~~~~~
@@ -42,7 +43,6 @@ Request
 Parameters
 ^^^^^^^^^^
 
- - **collection-slug**: the slug of the collection
  - **num**: how many items to return, optional, defaults to 50
  - **start**: 0-based index of the 1st item to return, optional, defaults to 0
 
@@ -68,8 +68,8 @@ Response
 
 The response has a JSON array called items which contains each item in the collection. The response also contains a link for creating new items in the collection and pagination links.
 
-Response Status
-^^^^^^^^^^^^^^^
+Status
+^^^^^^
 
 - **200**: OK
 - **404**: collection was not found
@@ -215,12 +215,6 @@ Request
 
    GET /:collection-slug/:item-slug
 
-Parameters
-^^^^^^^^^^
-
-- **collection-slug**: the slug of the collection
-- **item-slug**: the slug of the item
-
 Headers
 ^^^^^^^
 
@@ -309,13 +303,10 @@ Request
 
    POST /:collection-slug
 
-Pass in details for the new item as a JSON representation. The name is required and will be used to create the slug.
-
-
 Parameters
 ^^^^^^^^^^
 
-- **collection-slug**: the slug of the collection
+Pass in details for the new item as a JSON representation. The name is required and will be used to create the slug.
 
 Here is a minimal representation of a JSON body:
 
@@ -436,10 +427,9 @@ Request
 Parameters
 ^^^^^^^^^^
 
-- **collection-slug**: the slug of the collection
-- **item-slug**: the slug of the item
+Pass in details for the updated item as a JSON representation. The name is required.
 
-Pass in details for the updated item as a JSON representation.
+If no slug is provided in the JSON representation, the existing slug will be used.
 
 .. code-block:: json
 
@@ -549,12 +539,6 @@ Request
 .. code-block:: http
 
    DELETE /:collection-slug/:item-slug
-
-Parameters
-^^^^^^^^^^
-
-- **collection-slug**: the slug of the collection
-- **item-slug**: the slug of the item
 
 Example
 ^^^^^^^
