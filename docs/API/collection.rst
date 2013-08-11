@@ -16,8 +16,8 @@ Some examples of collection:
 - All Atari 7800 games for 8-bit.com
 - Collected Buccaneer quotes for pitifulpirates.com
 
-List Collections in the System
-------------------------------
+List Collections
+----------------
 
 List all the collections in the system.
 

@@ -24,8 +24,8 @@ Some examples of items:
 * an Atari 7800 game for 8-bit.com
 * a John McKay quote for pitifulpirates.com
 
-List Items in a Collection
---------------------------
+List Items
+----------
 
 List all the items in a collection.
 
