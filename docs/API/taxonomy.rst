@@ -1,6 +1,66 @@
 :tocdepth: 2
+
 Taxonomies
 ##########
+
+A `taxonomy <http://www.wordnik.com/words/taxonomy>`_ is a hierarchical classification of items
+in a collection. A taxonomy is made up of a tree of categories from the more general at the root
+of the taxonomy to the more specific at the leaves of the taxonomy. Here is a simple abbreviated example
+of a taxonomy of US locations:
+
+![US Locations Taxonomy](./docs/images/US-Location-Taxonomy.png "Sample US Locations Taxonomy")
+
+In the example the taxonomy is called "Location" and it consists of categories such as "Continental US" and
+"Florida".
+
+An item classified in a category in a taxonomy is a member of that category and all of that category's
+parents. As an illustrative example, imagine an item classified as "Nort Carolina". It's also a member of
+"South East", "Continental US" and the "Location" taxonomy as a whole.
+
+![US Locations Taxonomy](./docs/images/Sample-Item-US-Location-Taxonomy.png "Sample Item in US Locations Taxonomy")
+
+With Falkland CMS, it is typical to have multiple orthogonal taxonomies categorizing the items in a collection. 
+
+Items can be categorized in more than 1 category in the same taxonomy. In fact, as has been pointed out above,
+it is rare for items to be categorized in just one category in a taxonomy since they are members of their categories' parent
+categories as well.
+
+Categories have a slug and a path. The simple slug must follow all the standard rules for slugs in Falkland-CMS and
+must be unique to all other categories *at the same level and location in the taxonomy*. The path to a category is
+made up of the collection, the taxonomy slug, all the parent slugs and finally the category slug. In our sample taxonomy
+for example, the slug for the "North Carolina" category is "north-carolina" and the path is:
+
+	/founding-documents/location/continental-us/south-east/north-carolina/
+
+Listing items at the path above means the "Mecklenburg Declaration of Independence" will be listed since it is classified
+in the "North Carolina" category, and listing the items in the following paths would also include the "Mecklenburg Declaration of Independence":
+
+- /founding-documents/location/continental-us/south-east/
+- /founding-documents/location/continental-us/
+- /founding-documents/location/
+- /founding-documents/
+
+Some examples of taxonomies:
+
+* type of media
+* type of document
+* geographic location
+* topic
+* time period
+* biological classification
+* chemical classification
+* dewey decimal classification
+* folk taxonomies
+
+There is an extensive [list of taxonomies](http://www.taxonomywarehouse.com/headword_list_new.aspx?vObject=10076&stype=ab) at the Taxonomy Warehouse.
+
+List Taxonomies
+---------------
+
+List all the taxonomies in a collection.
+
+
+
 
 How to distinguish between?
 
