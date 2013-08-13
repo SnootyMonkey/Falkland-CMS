@@ -56,40 +56,45 @@ Some examples of taxonomies:
 
 There is an extensive `list of taxonomies <http://www.taxonomywarehouse.com/headword_list_new.aspx?vObject=10076&stype=ab>`_ at the Taxonomy Warehouse.
 
-List Taxonomies
----------------
+The categories in a taxonomy are represented as name/value pairs with the name being the category slug and the value being the category name. The structure
+of the taxonomy is represented as name/value pairs with the name being the word "categories" and the value being an array of categories.
 
-List all the taxonomies in a collection.
+Here is a fragmentary example of the JSON representation of the sample taxonomy depicted above:
 
+.. code-block:: json
 
+	{
+	  "name":"Location",
+	  "slug":"location",
+	  "collection":"founding-documents",
+	  "description":"US Location",
+	  "categories": [
+	  	{"continental-us": "Continental US", "categories": [
+	  		{"north-east": "North East"},
+	  		{"south-east": "South East", "categories": [
+	  			{"florida": "Florida"},
+	  			{"georgia": "Georgia"},
+	  			{"north-carolina": "North Carolina"},
+	  			{"south-carolina": "South Carolina"},
+	  			{"tenessee": "Tenessee"},
+	  			{"alabama": "Alabama"}
+	  		]},
+	  		{"midwest": "Midwest"},
+	  		{"south": "South"},
+	  		{"southwest": "Southwest"},
+	  		{"west": "West"}]},
+	  	{"non-continental-us": "Outiside Continental US"}
+	  ]
+	}
 
-
-How to distinguish between?
-
-GET /:collection-slug/:taxonomy-slug - with item mime-type, get an item list
-GET /:collection-slug/:item-slug - with item mime-type, get an item
-
-Do we need an array-of indicator on the mime-type?
-
-
-POST /:collection-slug - create a taxonomy
-GET /:collection-slug - list taxonomies
-
-GET /:collection-slug/:taxonomy-slug - with taxonomy mime-type, get a taxonomy
-PUT /:collection-slug/:taxonomy-slug - update a taxonomy
-DELETE /:collection-slug/:taxonomy-slug - delete a taxonomy
-GET /:collection-slug/:taxonomy-slug - with item mime-type, get an item list
-GET /:collection-slug/:taxonomy-slug/:category-slug/:category-slug - get an item list
-
-
-Here is an example of an extensive topic taxonomy:
+Here is a more complete example of the entire JSON representation of a taxonomy:
 
 .. code-block:: json
 
 	{
 	  "name":"Topics",
-	  "created_at":"2013-04-23T14:30:50Z",
-	  "updated_at":"2013-04-23T14:30:50Z",
+	  "created_at":"2013-06-23T05:30:50Z",
+	  "updated_at":"2013-06-23T05:30:50Z",
 	  "slug":"topics",
 	  "collection":"falkland-islands",
 	  "description":"",
@@ -99,21 +104,25 @@ Here is an example of an extensive topic taxonomy:
 				{"insects": "Insects"},
 				{"fishes": "Fishes"},
 				{"birds": "Birds", "categories": [
-					{"penguins": "Penguins"}]},
+					{"penguins": "Penguins"}
+				]},
 				{"mammals": "Mammals"}]},
 			{"pre-20th-century-history": "Pre-20th Century History", "categories": [
 	  		{"naval": "Naval"},
 				{"legal-political": "Legal / Political"},
-				{"darwin": "Charles Darwin"}]},
+				{"darwin": "Charles Darwin"}
+			]},
 			{"modern-history": "Modern History", "categories": [
 	 			{"naval": "Naval"},
-	 			{"legal-political": "Legal / Political"}]},
+	 			{"legal-political": "Legal / Political"}
+	 		]},
 			{"military-history": "Military History", "categories": [
 	 			{"ww1": "World War I"},
 	 			{"ww2": "WW II History"},
 	 			{"1982": "1982 Falklands War", "categories": [
 	 				{"political": "Political", "categories": [
-	 					{"thatcher": "Margaret Thatcher"}]},
+	 					{"thatcher": "Margaret Thatcher"}
+	 				]},
 	 				{"naval": "Naval", "categories": [
 	 					{"uk": "UK", "categories": [
 	 						{"sheffield": "HMS Sheffield"},
@@ -122,13 +131,17 @@ Here is an example of an extensive topic taxonomy:
 	 						{"conqueror": "HMS Conqueror"},
 	 						{"canberra": "SS Canberra"},
 	 						{"qe2": "HMS Queen Elizabeth 2"},
-	 						{"galahad-tristram": "RFA Sir Galahad & RFA Sir Tristram"}]},
+	 						{"galahad-tristram": "RFA Sir Galahad & RFA Sir Tristram"}
+	 					]},
 	 					{"argentina": "Argentina", "categories": [
-	 						{"belgrano": "ARA General Belgrano"}]}]},
+	 						{"belgrano": "ARA General Belgrano"}
+	 					]}
+	 				]},
 	 				{"air": "Air", "categories": [
 	 					{"uk": "UK", "categories": [
 	 						{"harrier": "Harrier"},
-	 						{"Vulcan": "Vulcan"}]},
+	 						{"Vulcan": "Vulcan"}
+	 					]},
 	 					{"argentina": "Argentina"}]},
 	 				{"ground": "Ground", "categories": [
 	 					{"uk": "UK", "categories": [
@@ -138,13 +151,19 @@ Here is an example of an extensive topic taxonomy:
 	 							{"42-commando": "42 Commando, Royal Marines"},
 	 							{"45-commando": "45 Commando, Royal Marines"},
 	 							{"2-para": "2nd Battalion, Parachute Regiment"},
-	 							{"3-para": "3rd Battalion, Parachute Regiment"}]},
+	 							{"3-para": "3rd Battalion, Parachute Regiment"}
+	 						]},
 	 						{"5-infantry": "5th Infantry Brigade",  "categories": [
 	 							{"welsh-guards": "Welsh Guards"},
 	 							{"scots-guards": "Scots Guards"},
-	 							{"gurkhas": "Gurkta Rifles"}]}]},
-	 					{"argentina": "Argentian"}]},
-	 				{"Civilian": "civilian"}]}]},
+	 							{"gurkhas": "Gurkta Rifles"}
+	 						]}
+	 					]},
+	 					{"argentina": "Argentian"}
+	 				]},
+	 				{"Civilian": "civilian"}
+	 			]}
+	 		]},
 	   	{"society": "Society", "categories": [
 	  		{"people": "People"},
 	  		{"sports": "Sports"},
@@ -152,18 +171,23 @@ Here is an example of an extensive topic taxonomy:
 	  		{"industry": "Industry", "categories": [
 		  		{"agriculture": "Agriculture"},
 				  {"fisheries": "Fisheries"},
-				  {"hydrocarbons": "Oil & Gas"}]},
+				  {"hydrocarbons": "Oil & Gas"}
+				]},
 	  		{"government": "Government", "categories": [
 	  			{"constitution": "Constitution"},
-	  			{"la": "Legislative Assembly", "categories": [
-	  				{"ec": "Executive Council"}]},
+	  			{"legislative-assembly": "Legislative Assembly", "categories": [
+	  				{"executive-council": "Executive Council"}
+	  			]},
 	  			{"judiciary": "Judiciary"},
 	  			{"police": "Police"},
-	  			{"governor": "Governor"}]},
+	  			{"governor": "Governor"}
+	  		]},
 	  		{"tourism": "Tourism", "categories": [
 	  			{"lodging": "Lodging"},
 	  			{"tours": "Tours"},
-		 			{"guides": "Guides"}]}]},
+		 			{"guides": "Guides"}
+		 		]}
+		 	]},
 	  	{"fiction": "Fiction"}
 	  ],
 	  "links":[
@@ -182,13 +206,13 @@ Here is an example of an extensive topic taxonomy:
 	      {
 	         "rel":"delete",
 	         "method":"delete",
-	         "href":"/falkland-islands/topics",
+	         "href":"/falkland-islands/topics"
 	      },
 	      {
 	         "rev":"collection",
 	         "method":"get",
 	         "href":"/falkland-islands",
-	         "type":"application/vnd.fcms.collection+json;version=1",
+	         "type":"application/vnd.fcms.collection+json;version=1"
 	      },
 	      {
 	         "rev":"browse",
@@ -227,3 +251,28 @@ Here is an example of an extensive topic taxonomy:
 	      }
 	   ]
 	}
+
+List Taxonomies
+---------------
+
+List all the taxonomies in a collection.
+
+
+
+
+How to distinguish between?
+
+GET /:collection-slug/:taxonomy-slug - with item mime-type, get an item list
+GET /:collection-slug/:item-slug - with item mime-type, get an item
+
+Do we need an array-of indicator on the mime-type?
+
+
+POST /:collection-slug - create a taxonomy
+GET /:collection-slug - list taxonomies
+
+GET /:collection-slug/:taxonomy-slug - with taxonomy mime-type, get a taxonomy
+PUT /:collection-slug/:taxonomy-slug - update a taxonomy
+DELETE /:collection-slug/:taxonomy-slug - delete a taxonomy
+GET /:collection-slug/:taxonomy-slug - with item mime-type, get an item list
+GET /:collection-slug/:taxonomy-slug/:category-slug/:category-slug - get an item list
