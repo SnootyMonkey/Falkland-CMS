@@ -51,7 +51,7 @@ Some examples of taxonomies:
 - time period
 - biological classification
 - chemical classification
-- dewey decimal classification
+- Dewey Decimal Classification
 - folk taxonomies
 
 There is an extensive `list of taxonomies <http://www.taxonomywarehouse.com/headword_list_new.aspx?vObject=10076&stype=ab>`_ at the Taxonomy Warehouse.
@@ -76,7 +76,7 @@ Here is a fragmentary example of the JSON representation of the sample taxonomy 
 	  			{"georgia": "Georgia"},
 	  			{"north-carolina": "North Carolina"},
 	  			{"south-carolina": "South Carolina"},
-	  			{"tenessee": "Tenessee"},
+	  			{"tennessee": "Tennessee"},
 	  			{"alabama": "Alabama"}
 	  		]},
 	  		{"midwest": "Midwest"},
@@ -296,7 +296,7 @@ Example
 Response
 ~~~~~~~~
 
-The response has a complete JSON representation of the taxonomy which contains the hierarchial structure of the
+The response has a complete JSON representation of the taxonomy which contains the hierarchical structure of the
 categories in the taxonomy, links to available actions on the taxonomy, a reverse link to the collection containing
 the taxonomy, and links to listings items categorized in the taxonomy.
 
@@ -326,7 +326,7 @@ Example
 	  			{"georgia": "Georgia"},
 	  			{"north-carolina": "North Carolina"},
 	  			{"south-carolina": "South Carolina"},
-	  			{"tenessee": "Tenessee"},
+	  			{"tennessee": "Tennessee"},
 	  			{"alabama": "Alabama"}
 	  		]},
 	  		{"midwest": "Midwest"},

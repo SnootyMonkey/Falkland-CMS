@@ -75,7 +75,7 @@ A slug is just a unique identifier that's suitable for use in a URL. Slugs in Fa
 
 - alphanumeric (no white space, unicode or special characters)
 - lower case
-- internally seperated by a single dash
+- internally separated by a single dash
 - without a prefixed or trailing dash
 - 256 characters or less
 
