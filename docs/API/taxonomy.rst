@@ -87,7 +87,7 @@ Here is a fragmentary example of the JSON representation of the sample taxonomy 
 	  ]
 	}
 
-Here is a more complete example of the entire JSON representation of a taxonomy:
+Here is complete example of the entire JSON representation of a taxonomy:
 
 .. code-block:: json
 
@@ -217,35 +217,42 @@ Here is a more complete example of the entire JSON representation of a taxonomy:
 	      {
 	         "rev":"browse",
 	         "method":"get",
-	         "href":"/falkland-islands/natural-history",
+	         "href":"/falkland-islands/topics/",
+	         "type":"application/vnd.fcms.item+json;version=1",
+	         "name": "Topics"
+	      },
+	      {
+	         "rev":"browse",
+	         "method":"get",
+	         "href":"/falkland-islands/topics/natural-history/",
 	         "type":"application/vnd.fcms.item+json;version=1",
 	         "name": "Natural History"
 	      },
 	      {
 	         "rev":"browse",
 	         "method":"get",
-	         "href":"/falkland-islands/modern-history",
+	         "href":"/falkland-islands/topics/modern-history/",
 	         "type":"application/vnd.fcms.item+json;version=1",
 	         "name": "Modern History"
 	      },
 	      {
 	         "rev":"browse",
 	         "method":"get",
-	         "href":"/falkland-islands/military-history",
+	         "href":"/falkland-islands/topics/military-history/",
 	         "type":"application/vnd.fcms.item+json;version=1",
 	         "name": "Militiary History"
 	      },
 	      {
 	         "rev":"browse",
 	         "method":"get",
-	         "href":"/falkland-islands/society",
+	         "href":"/falkland-islands/topics/society/",
 	         "type":"application/vnd.fcms.item+json;version=1",
 	         "name": "Society"
 	      },
 	      {
 	         "rev":"browse",
 	         "method":"get",
-	         "href":"/falkland-islands/fiction",
+	         "href":"/falkland-islands/topics/fiction/",
 	         "type":"application/vnd.fcms.item+json;version=1",
 	         "name": "Fiction"
 	      }
@@ -258,21 +265,170 @@ List Taxonomies
 List all the taxonomies in a collection.
 
 
+TODO
 
 
-How to distinguish between?
+Get a Taxonomy
+--------------
 
-GET /:collection-slug/:taxonomy-slug - with item mime-type, get an item list
-GET /:collection-slug/:item-slug - with item mime-type, get an item
+Get a particular taxonomy.
 
-Do we need an array-of indicator on the mime-type?
+Request
+~~~~~~~
+
+.. code-block:: http
+
+   GET /:collection-slug/:taxonomy-slug
+
+Headers
+^^^^^^^
+
+- **Accept**: application/vnd.fcms.taxonomy+json;version=1
+- **Accept-Charset**: utf-8
+
+Example
+^^^^^^^
+
+.. code-block:: bash
+
+   curl -i --header "Accept: application/vnd.fcms.taxonomy+json;version=1" --header "Accept-Charset: utf-8" -X GET http://{host:port}/founding-documents/location
+
+Response
+~~~~~~~~
+
+The response has a complete JSON representation of the taxonomy which contains the hierarchial structure of the
+categories in the taxonomy, links to available actions on the taxonomy, a reverse link to the collection containing
+the taxonomy, and links to listings items categorized in the taxonomy.
+
+Status
+^^^^^^
+
+- **200**: OK
+- **404**: collection or taxonomy was not found
+
+Example
+^^^^^^^
+
+.. code-block:: json
+
+	{
+	  "name":"Location",
+	  "created_at":"2013-08-14T05:43:07Z",
+	  "updated_at":"2013-08-14T05:43:07Z",
+	  "slug":"location",
+	  "collection":"founding-documents",
+	  "description":"US Location",
+	  "categories": [
+	  	{"continental-us": "Continental US", "categories": [
+	  		{"north-east": "North East"},
+	  		{"south-east": "South East", "categories": [
+	  			{"florida": "Florida"},
+	  			{"georgia": "Georgia"},
+	  			{"north-carolina": "North Carolina"},
+	  			{"south-carolina": "South Carolina"},
+	  			{"tenessee": "Tenessee"},
+	  			{"alabama": "Alabama"}
+	  		]},
+	  		{"midwest": "Midwest"},
+	  		{"south": "South"},
+	  		{"southwest": "Southwest"},
+	  		{"west": "West"}]},
+	  	{"non-continental-us": "Outiside Continental US"}
+	  ],
+	  "links":[
+	      {
+	         "rel":"self",
+	         "method":"get",
+	         "href":"/founding-documents/location",
+	         "type":"application/vnd.fcms.taxonomy+json;version=1"
+	      },
+	      {
+	         "rel":"update",
+	         "method":"put",
+	         "href":"/founding-documents/location",
+	         "type":"application/vnd.fcms.taxonomy+json;version=1"
+	      },
+	      {
+	         "rel":"delete",
+	         "method":"delete",
+	         "href":"/founding-documents/location"
+	      },
+	      {
+	         "rev":"collection",
+	         "method":"get",
+	         "href":"/founding-documents",
+	         "type":"application/vnd.fcms.collection+json;version=1"
+	      },
+	      {
+	         "rev":"browse",
+	         "method":"get",
+	         "href":"/founding-documents/location/",
+	         "type":"application/vnd.fcms.item+json;version=1",
+	         "name": "Topics"
+	      },
+	      {
+	         "rev":"browse",
+	         "method":"get",
+	         "href":"/founding-documents/location/continental-us/",
+	         "type":"application/vnd.fcms.item+json;version=1",
+	         "name": "Continental US"
+	      },
+	      {
+	         "rev":"browse",
+	         "method":"get",
+	         "href":"/founding-documents/location/non-continental-us/",
+	         "type":"application/vnd.fcms.item+json;version=1",
+	         "name": "Outside Continental US"
+	      }
+	   ]
+	}
+
+Create an Taxonomy
+------------------
+
+Create a new taxonomy in a collection.
 
 
-POST /:collection-slug - create a taxonomy
-GET /:collection-slug - list taxonomies
+TODO
 
-GET /:collection-slug/:taxonomy-slug - with taxonomy mime-type, get a taxonomy
-PUT /:collection-slug/:taxonomy-slug - update a taxonomy
-DELETE /:collection-slug/:taxonomy-slug - delete a taxonomy
-GET /:collection-slug/:taxonomy-slug - with item mime-type, get an item list
-GET /:collection-slug/:taxonomy-slug/:category-slug/:category-slug - get an item list
+
+
+Update an Item
+--------------
+
+Update an existing taxonomy.
+
+
+TODO
+
+
+
+Delete a Taxonomy
+-----------------
+
+Delete an existing taxonomy.
+
+Request
+~~~~~~~
+
+.. code-block:: http
+
+   DELETE /:collection-slug/:taxonomy-slug
+
+Example
+^^^^^^^
+
+.. code-block:: bash
+
+   curl -i -X DELETE http://{host:port}/founding-documents/location
+
+Response
+~~~~~~~~
+
+There is no response body, just a status.
+
+Status
+^^^^^^
+
+- **204**: deleted
+- **404**: collection or taxonomy was not found

@@ -21,26 +21,6 @@ Feature: Creating Items with the REST API
   slug specified in body is already used
   slug specified in body is invalid
 
-  PUT
-  all good - no slug
-  all good - generated slug is different than the name
-  all good - with slug
-  all good - unicode in the body
-  slug conflicting with URL
-  no accept
-  wrong accept
-  no content header
-  wrong content header
-  no charset
-  wrong charset
-  no body
-  body, but not valid JSON
-  collection doesn't exist
-  no name in body
-  slug specified in body is already used
-  slug specified in body is invalid
-  slug specified in URL is invalid
-
   Background:
     Given I had an empty collection "c"
     And the collection "c" had an item count of 0

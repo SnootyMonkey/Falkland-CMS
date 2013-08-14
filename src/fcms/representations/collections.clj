@@ -47,6 +47,6 @@
   (let [coll-props (dissoc coll :id)]
     (json/generate-string
       (-> coll-props 
-        (common/ordered ,,, ordered-keys)
-        (common/append-sorted ,,, (common/remaining-keys coll-props ordered-keys))
+        (common/ordered ordered-keys)
+        (common/append-sorted (common/remaining-keys coll-props ordered-keys))
         links))))
