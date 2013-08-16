@@ -41,7 +41,7 @@
     "cucumber" ["with-profile" "test" "cucumber"]
     "test" ["with-profile" "test" "do" "test"]
     "test-all" ["do" "midje," "test," "cucumber"]
-    "test!" ["do" "build,", "test-all"]
+    "test!" ["with-profile", "test" "do" "build,", "test-all"]
     "spell" ["spell" "-n"]
     "ancient" ["with-profile" "test" "ancient"]
   }
