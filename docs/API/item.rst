@@ -49,7 +49,7 @@ Parameters
 Headers
 ^^^^^^^
 
-- **Accept**: application/vnd.fcms.item+json;version=1
+- **Accept**: application/vnd.collection+vnd.fcms.item+json;version=1
 - **Accept-Charset**: utf-8
 
 Example
@@ -57,16 +57,19 @@ Example
 
 .. code-block:: bash
 
-   curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://{host:port}/mudskippers/
+   curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://{host:port}/mudskippers/
 
-   curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://{host:port}/mudskippers/?num=100
+   curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://{host:port}/mudskippers/?num=100
 
-   curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://{host:port}/mudskippers/?num=10&start=10
+   curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://{host:port}/mudskippers/?num=10&start=10
 
 Response
 ~~~~~~~~
 
-The response has a JSON array called items which contains each item in the collection. The response also contains a link for creating new items in the collection and pagination links.
+The response is a `Collection+JSON <http://amundsen.com/media-types/collection/>`_ collection hash (not to be confused with an FCMS collection) 
+which contains an array called items with each item in the collection. The collection hash contains an array of links for creating new items in
+the collection and for pagination. The collection hash also contains a template in `JSON Schema <http://json-schema.org/>`_ format for creating
+new items in the collection.
 
 Status
 ^^^^^^
@@ -80,126 +83,172 @@ Example
 .. code-block:: json
 
    {
-      "items":[
-         {
-            "name":"Amazing animals - Mudskipper",
-            "URL":"http://www.youtube.com/watch?v=mJhUKzEq47U",
-            "created_at":"2013-04-23T14:30:50Z",
-            "updated_at":"2013-04-23T14:30:50Z",
-            "slug":"amazing-animals-mudskipper",
-            "collection":"mudskippers",
-            "description":"Excerpt from David Attenborough's BBC Life series episode 04",
-            "links":[
-               {
-                  "rel":"self",
-                  "method":"get",
-                  "href":"/mudskippers/amazing-animals-mudskipper",
-                  "type":"application/vnd.fcms.item+json;version=1"
+      "collection": {
+         "version": "1.0",
+         "href": "/mudskippers?num=2&start=4",
+         "links":[
+            {
+               "rel":"create",
+               "method":"post",
+               "href":"/mudskippers",
+               "type":"application/vnd.fcms.item+json;version=1"
+            },
+            {
+               "rel":"first",
+               "method":"get",
+               "href":"/mudskippers?num=2",
+               "type":"application/vnd.fcms.item+json;version=1"
+            },
+            {
+               "rel":"prev",
+               "method":"get",
+               "href":"/mudskippers?num=2&start=2",
+               "type":"application/vnd.fcms.item+json;version=1"
+            },
+            {
+               "rel":"next",
+               "method":"get",
+               "href":"/mudskippers?num=2&start=6",
+               "type":"application/vnd.fcms.item+json;version=1"
+            }
+         ],
+         "items":[
+            {
+               "name":"Amazing animals - Mudskipper",
+               "URL":"http://www.youtube.com/watch?v=mJhUKzEq47U",
+               "created_at":"2013-04-23T14:30:50Z",
+               "updated_at":"2013-04-23T14:30:50Z",
+               "slug":"amazing-animals-mudskipper",
+               "collection":"mudskippers",
+               "description":"Excerpt from David Attenborough's BBC Life series episode 04",
+               "links":[
+                  {
+                     "rel":"self",
+                     "method":"get",
+                     "href":"/mudskippers/amazing-animals-mudskipper",
+                     "type":"application/vnd.fcms.item+json;version=1"
+                  },
+                  {
+                     "rel":"update",
+                     "method":"put",
+                     "href":"/mudskippers/amazing-animals-mudskipper",
+                     "type":"application/vnd.fcms.item+json;version=1"
+                  },
+                  {
+                     "rel":"delete",
+                     "method":"delete",
+                     "href":"/mudskippers/amazing-animals-mudskipper"
+                  },
+                  {
+                     "rel":"category",
+                     "method":"get",
+                     "href":"/mudskippers/media-types/videos/online",
+                     "type":"application/vnd.fcms.category+json;version=1"
+                  },
+                  {
+                     "rel":"category",
+                     "method":"get",
+                     "href":"/mudskippers/topics/reproduction",
+                     "type":"application/vnd.fcms.category+json;version=1"
+                  },
+                  {
+                     "rev":"collection",
+                     "method":"get",
+                     "href":"/mudskippers",
+                     "type":"application/vnd.fcms.collection+json;version=1"
+                  }
+               ]
+            },
+            {
+               "name":"Mudskipper's Habitat",
+               "URL": "http://animal.discovery.com/tv-shows/animal-planet-presents/videos/whats-to-love-mudskippers-habitat.htm",
+               "created_at":"2011-04-23T14:32:17Z",
+               "updated_at":"2011-04-23T14:32:17Z",
+               "slug":"mudskippers-habitat",
+               "collection":"mudskippers",
+               "description":"Animal Planet Presents Mudskipper's Habitat",
+               "links":[
+                  {
+                     "rel":"self",
+                     "method":"get",
+                     "href":"/mudskippers/mudskippers-habitat",
+                     "type":"application/vnd.fcms.item+json;version=1"
+                  },
+                  {
+                     "rel":"update",
+                     "method":"put",
+                     "href":"/mudskippers/mudskippers-habitat",
+                     "type":"application/vnd.fcms.item+json;version=1"
+                  },
+                  {
+                     "rel":"delete",
+                     "method":"delete",
+                     "href":"/mudskippers/mudskippers-habitat"
+                  },
+                  {
+                     "rel":"category",
+                     "method":"get",
+                     "href":"/mudskippers/media-types/videos/online",
+                     "type":"application/vnd.fcms.category+json;version=1"
+                  },
+                  {
+                     "rel":"category",
+                     "method":"get",
+                     "href":"/mudskippers/topics/habitat",
+                     "type":"application/vnd.fcms.category+json;version=1"
+                  },
+                  {
+                     "rev":"collection",
+                     "method":"get",
+                     "href":"/mudskippers",
+                     "type":"application/vnd.fcms.collection+json;version=1"
+                  }
+               ]
+            }
+         ],
+         "template":{
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "title": "Item",
+            "description": "A single entry in the Mudskippers collection.",
+            "type": "object",
+            "properties": {
+               "name": {
+                  "prompt": "Name",
+                  "description": "A natural language identifier for the item, does not need to be unique.",
+                  "type": "string"
+               },
+               "url": {
+                  "prompt": "Link",
+                  "description": "A natural language identifier for an item, does not need to be unique.",
+                  "type": "string"
+               },
+               "slug": {
+                  "prompt": "Slug",
+                  "description": "An identifier for the item, must be unique in the collection, will be derived from name if not provided.",
+                  "type": "string",
+                  "maxLength": 256
+               },
+               "description": {
+                  "prompt": "Description",
+                  "description": "A natural language description of the item.",
+                  "type": "string"
+               },
+               "categories": {
+                  "prompt": "Categories",
+                  "description": "The leaf categories this item is a member of.",
+                  "type": "array",
+                  "items": {
+                     "prompt": "Path",
+                     "description": "The forward slash delimitted path to the category",
+                     "type": "string"
+                  },
+                  "minItems": 0,
+                  "uniqueItems": true
                }
-               {
-                  "rel":"update",
-                  "method":"put",
-                  "href":"/mudskippers/amazing-animals-mudskipper",
-                  "type":"application/vnd.fcms.item+json;version=1"
-               },
-               {
-                  "rel":"delete",
-                  "method":"delete",
-                  "href":"/mudskippers/amazing-animals-mudskipper",
-               },
-               {
-                  "rel":"category",
-                  "method":"get",
-                  "href":"/mudskippers/media-types/videos/online",
-                  "type":"application/vnd.fcms.category+json;version=1"
-               },
-               {
-                  "rel":"category",
-                  "method":"get",
-                  "href":"/mudskippers/topics/reproduction",
-                  "type":"application/vnd.fcms.category+json;version=1"
-               },
-               {
-                  "rev":"collection",
-                  "method":"get",
-                  "href":"/mudskippers",
-                  "type":"application/vnd.fcms.collection+json;version=1"
-               }
-            ]
-         },
-         {
-            "name":"Mudskipper's Habitat",
-            "URL": "http://animal.discovery.com/tv-shows/animal-planet-presents/videos/whats-to-love-mudskippers-habitat.htm",
-            "created_at":"2011-04-23T14:32:17Z",
-            "updated_at":"2011-04-23T14:32:17Z",
-            "slug":"mudskippers-habitat",
-            "collection":"mudskippers",
-            "description":"Animal Planet Presents Mudskipper's Habitat",
-            "links":[
-               {
-                  "rel":"self",
-                  "method":"get",
-                  "href":"/mudskippers/mudskippers-habitat"
-                  "type":"application/vnd.fcms.item+json;version=1"
-               }
-               {
-                  "rel":"update",
-                  "method":"put",
-                  "href":"/mudskippers/mudskippers-habitat",
-                  "type":"application/vnd.fcms.item+json;version=1"
-               },
-               {
-                  "rel":"delete",
-                  "method":"delete",
-                  "href":"/mudskippers/mudskippers-habitat",
-               },
-               {
-                  "rel":"category",
-                  "method":"get",
-                  "href":"/mudskippers/media-types/videos/online",
-                  "type":"application/vnd.fcms.category+json;version=1"
-               },
-               {
-                  "rel":"category",
-                  "method":"get",
-                  "href":"/mudskippers/topics/habitat",
-                  "type":"application/vnd.fcms.category+json;version=1"
-               },
-               {
-                  "rev":"collection",
-                  "method":"get",
-                  "href":"/mudskippers",
-                  "type":"application/vnd.fcms.collection+json;version=1"
-               }
-            ]
+            },
+            "required": ["name"]
          }
-      ],
-      "links":[
-         {
-            "rel":"create",
-            "method":"post",
-            "href":"/mudskippers",
-            "type":"application/vnd.fcms.item+json;version=1"
-         },
-         {
-            "rel":"first",
-            "method":"get",
-            "href":"/mudskippers?num=2",
-            "type":"application/vnd.fcms.item+json;version=1"
-         },
-         {
-            "rel":"prev",
-            "method":"get",
-            "href":"/mudskippers?num=2&start=2",
-            "type":"application/vnd.fcms.item+json;version=1"
-         },
-         {
-            "rel":"next",
-            "method":"get",
-            "href":"/mudskippers?num=2&start=4",
-            "type":"application/vnd.fcms.item+json;version=1"
-         }
-      ]
+      }
    }
 
 
@@ -324,8 +373,10 @@ Here is a more complete representation of a JSON body:
    {
       "name":"Mudskipper",
       "URL":"http://en.wikipedia.org/wiki/Mudskipper",
-      "category":"/mudskippers/media-types/articles/online",
-      "category":"/mudskippers/topics/general",
+      "categories": [
+         "/mudskippers/media-types/articles/online",
+         "/mudskippers/topics/general"
+      ],
       "description":"Mudskipper entry from Wikipedia, the free encyclopedia"
    }
 
@@ -437,7 +488,9 @@ If no slug is provided in the JSON representation, the existing slug will be use
       "name":"Mudskipper",
       "slug":"wiki-mud",
       "URL":"http://en.wikipedia.org/wiki/Mudskipper",
-      "category":"/mudskippers/topics/general",
+      "categories": [
+         "/mudskippers/topics/general"
+      ]
       "description":"Mudskipper entry from Wikipedia, the free encyclopedia"
    }
 

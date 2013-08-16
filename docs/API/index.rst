@@ -26,7 +26,7 @@ Provide the custom `Internet media type <http://en.wikipedia.org/wiki/Internet_m
 (formerly MIME type) saying you want Falkland CMS `JSON <http://www.json.org/>`_ data and the
 version of the API you are using in the header of your API requests.
 
-		Accept: application/vnd.fcms.\ **{type}**+json;version=\ **version**
+		Accept: application/vnd.fcms.\ **{type}** +json;version=\ **version**
 
 		Example:  Accept: aapplication/vnd.fcms.item+json;version=1
 
