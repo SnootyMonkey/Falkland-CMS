@@ -17,7 +17,10 @@
 (defn next-slug 
   "Generate the next possible slug to attempt by removing the old counter suffix and adding the new counter suffix."
   [slug counter]
-  (str (s/replace slug (java.util.regex.Pattern/compile (str "-" counter "$")) "") "-" (inc counter)))
+    ;; if the slug is blank then it's just the counter
+    (if (= slug "")
+      (str (inc counter))
+      (str (s/replace slug (java.util.regex.Pattern/compile (str "-" counter "$")) "") "-" (inc counter))))
 
 (defn delete-map
   "Given an array of the id and rev of a document, return the map needed to delete the document in a bulk update"

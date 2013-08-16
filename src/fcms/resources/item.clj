@@ -18,7 +18,7 @@
   numeral until you have a unique item slug."
   ([coll-id slug] (unique-slug coll-id slug 0))
   ([coll-id slug counter] 
-    (if-not (item-doc coll-id slug)
+    (if-not (or (item-doc coll-id slug) (= slug ""))
       slug
       ;; recur with the next possible slug
       (recur coll-id (common/next-slug slug counter) (inc counter)))))
@@ -42,16 +42,20 @@
   item name and an optional map of properties. If :slug is included in the properties
   it will be used as the item's slug, otherwise the slug will be created from
   the name. If a :slug is included in the properties and an item already exists
-  in the collection with that slug, a :slug-conflict will be returned."
+  in the collection with that slug, a :slug-conflict will be returned.
+  If a :slug is included in the properties and it's not valid,
+  :invalid-slug will be returned."
   ([coll-slug item-name] (create-item coll-slug item-name {}))
   ([coll-slug item-name props]
-    (if (and (:slug props) (get-item coll-slug (:slug props)))
-      :slug-conflict
-      (collection/with-collection coll-slug
-        (let [slug (unique-slug (:id collection) (or (:slug props) (slugify item-name)))]
-          (when-let [item (common/create-with-db
-            (merge props {:slug slug :collection (:id collection) :name item-name}) :item)]
-            (item-from-db coll-slug item)))))))
+    (cond 
+      (and (:slug props) (get-item coll-slug (:slug props))) :slug-conflict
+      (and (:slug props) (not (common/valid-slug? (:slug props)))) :invalid-slug
+      :else
+        (collection/with-collection coll-slug
+          (let [slug (unique-slug (:id collection) (or (:slug props) (slugify item-name)))]
+            (when-let [item (common/create-with-db
+              (merge props {:slug slug :collection (:id collection) :name item-name}) :item)]
+              (item-from-db coll-slug item)))))))
 
 (defn delete-item
   "Given the slug of the collection containing the item and the slug of the item,

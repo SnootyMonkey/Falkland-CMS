@@ -35,13 +35,15 @@
     }]
   }
   :aliases {
-    "spell" ["spell" "-n"]
     "init-db" ["run" "-m" "fcms.db.views"]
-    "ancient" ["with-profile" "test" "ancient"]
-    "test" ["with-profile" "test" "do" "midje," "cucumber"]
-    "test!" ["with-profile" "test" "do" "clean," "deps," "git-deps,", "init-db," "midje," "cucumber"]
+    "build" ["do" "clean," "deps," "git-deps,", "init-db"]
     "midje" ["with-profile" "test" "midje"]    
     "cucumber" ["with-profile" "test" "cucumber"]
+    "test" ["with-profile" "test" "do" "test"]
+    "test-all" ["do" "midje," "test," "cucumber"]
+    "test!" ["do" "build,", "test-all"]
+    "spell" ["spell" "-n"]
+    "ancient" ["with-profile" "test" "ancient"]
   }
   :git-dependencies [
     ["https://github.com/clojure-liberator/liberator.git"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator

@@ -239,7 +239,7 @@ Example
                   "type": "array",
                   "items": {
                      "prompt": "Path",
-                     "description": "The forward slash delimitted path to the category",
+                     "description": "The forward slash delimited path to the category",
                      "type": "string"
                   },
                   "minItems": 0,
