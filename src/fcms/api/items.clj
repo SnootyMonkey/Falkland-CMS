@@ -40,6 +40,7 @@
     :bad-collection common/missing-collection-response
     :bad-item missing-item-response
     :no-name "Name is required."
+    :property-conflict "A reserved property was used."
     :slug-conflict "Slug already used in collection."
     :invalid-slug "Invalid slug."
     :else "Not processable."))
@@ -111,7 +112,7 @@
   :handle-unsupported-media-type (fn [ctx] (common/only-accept item/item-media-type))
   :processable? (by-method {
     :get true
-    :post (fn [ctx] (common/check-input (item/valid-new-item? coll-slug (get-in ctx [:data :name]) (:data ctx))))})
+    :post (fn [ctx] (common/check-input (item/valid-new-item coll-slug (get-in ctx [:data :name]) (:data ctx))))})
   :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
   :post! (fn [ctx] (create-item coll-slug (:data ctx)))
   :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))

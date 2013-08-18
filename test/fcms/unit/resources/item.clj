@@ -30,6 +30,7 @@
 
 (deftest new-item-validity)
 
+;; TODO error for reserved props (created-at, updated-at, collection, links, id, version, name)
 (deftest item-creation
   (testing "item creation"
 

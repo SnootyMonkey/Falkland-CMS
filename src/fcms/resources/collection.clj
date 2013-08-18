@@ -73,7 +73,7 @@
   "Update a collection retaining it's manufactured properties and replacing the rest with the provided properties"
   [slug updated-props]
   (if-let [coll (:doc (first (common/doc-from-view :collection :all-ids-by-slug slug)))]
-    (let [retained-props (select-keys (:data coll) common/properties)]
+    (let [retained-props (select-keys (:data coll) (conj common/retained-properties :version))]
       (common/map-from-db (common/update coll (merge retained-props updated-props))))
     :bad-collection))
 
