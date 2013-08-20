@@ -6,6 +6,7 @@ Feature: Updating Items with the REST API
   all good - with same slug
   all good - with different slug
   all good - unicode in the body
+  all good - no name in body
   no accept
   wrong accept
   no content header
@@ -16,7 +17,6 @@ Feature: Updating Items with the REST API
   body, but not valid JSON
   collection doesn't exist
   item doesn't exist
-  no name in body
   different slug specified in body is already used
   different slug specified in body is invalid
 
@@ -133,6 +133,21 @@ Feature: Updating Items with the REST API
 	  And the updated item "another-i" in collection "c" will be named "私"
 	  And the "description" will be "Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło"
 	  And the "i" will be "i"
+
+  # all good, no "name" in body - 200 OK
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{description":"a no name i", "i":"i"}' http://localhost:3000/c/i
+  Scenario: Attempt to update an item without a name
+    When I have a "PUT" request to URL "/c/i"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "description" to "a no name i"
+    And I set the "i" to "i"
+    Then the status will be "200"
+    And I will receive an "item"
+    And the body will be JSON
+    And the updated item "i" in collection "c" will be named "i"
+    And the "description" will be "a no name i"
+    And the "i" will be "i"
 
 	# no accept type - 200 OK
 	# curl -i --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i
@@ -361,27 +376,6 @@ Feature: Updating Items with the REST API
 	  And I set the "i" to "i"
 	  Then the status will be "404"
 	  And the body will be empty
-	  And the collection "c" has an item count of 2
-	  When I have a "GET" request to URL "/c/i"
-	  And I accept an "item"
-	  Then the status will be "200"
-	  And I will receive an "item"
-	  And the body will be JSON
-	  And the item "i" in collection "c" will be named "i"
-	  And the "description" will be "this is an item"
-	  And the "i" will not exist
-
-	# no "name" in body - 422 Unprocessable Entity
-	# curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{description":"a no name i", "i":"i"}' http://localhost:3000/c/i
-	Scenario: Attempt to update an item without a name
-	  When I have a "PUT" request to URL "/c/i"
-	  And I provide an "item"
-	  And I accept an "item"
-	  And I set the "description" to "a no name i"
-	  And I set the "i" to "i"
-	  Then the status will be "422"
-	  And the body will be text
-	  And the body contents will be "Name is required."
 	  And the collection "c" has an item count of 2
 	  When I have a "GET" request to URL "/c/i"
 	  And I accept an "item"

@@ -5,7 +5,7 @@
          '[print.foo :refer (print->)]
          '[ring.mock.request :refer (request body content-type header)]
          '[fcms.lib.http-mock :as http-mock]
-         '[fcms.lib.checks :refer (check)]
+         '[fcms.lib.checks :refer (check check-not)]
          '[fcms.app :refer (app)]
          '[fcms.resources.collection :refer (collection-media-type)]
          '[fcms.resources.item :refer (item-media-type)])
@@ -108,4 +108,4 @@
 
 (Then #"^the \"([^\"]*)\" will not exist$" [property]
   (check (map? (http-mock/body)))
-  (check (not (contains? (http-mock/body) (keyword property)))))
+  (check-not (contains? (http-mock/body) (keyword property))))

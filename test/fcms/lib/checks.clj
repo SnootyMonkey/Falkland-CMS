@@ -6,6 +6,9 @@
 (defmacro check [forms]
   `(assert (is ~forms)))
 
+(defmacro check-not [forms]
+  `(assert (is (not ~forms))))
+
 (defn about-now? [timestamp]
   (check
     (when-let [time (parse timestamp)]
