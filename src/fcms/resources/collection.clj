@@ -63,7 +63,6 @@
     (let [id (:id (get-collection slug))]
       (cond
         (nil? id) :bad-collection
-        (not coll-name) :no-name
         (not provided-slug) true
         (not (common/valid-slug? provided-slug)) :invalid-slug
         (= slug provided-slug) true

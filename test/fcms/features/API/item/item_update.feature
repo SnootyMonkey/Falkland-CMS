@@ -7,6 +7,7 @@ Feature: Updating Items with the REST API
   all good - with different slug
   all good - unicode in the body
   all good - no name in body
+  conflicting reserved properties
   no accept
   wrong accept
   no content header
@@ -148,6 +149,84 @@ Feature: Updating Items with the REST API
     And the updated item "i" in collection "c" will be named "i"
     And the "description" will be "a no name i"
     And the "i" will be "i"
+
+  # conflicting reserved properties - 422 Unprocessable Entity
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "version":"foo", "i":"i"}' http://localhost:3000/c/i
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "collection":"foo", "i":"i"}' http://localhost:3000/c/i
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "id":"foo", "i":"i"}' http://localhost:3000/c/i
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "type":"foo", "i":"i"}' http://localhost:3000/c/i
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "created-at":"foo", "i":"i"}' http://localhost:3000/c/i
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "updated-at":"foo", "i":"i"}' http://localhost:3000/c/i
+  Scenario: Attempt to update an item with a property that conflict with a reserved property
+  	# version
+    When I have a "PUT" request to URL "/c/i"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to "i-prime"
+    And I set the "i" to "i"
+    And I set the "version" to "foo"
+    Then the status will be "422"
+    And the body will be text
+    And the body contents will be "A reserved property was used."
+    # collection
+    When I have a "PUT" request to URL "/c/i"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to "i-prime"
+    And I set the "i" to "i"
+    And I set the "collection" to "foo"
+    Then the status will be "422"
+    And the body will be text
+    And the body contents will be "A reserved property was used."
+    # id
+    When I have a "PUT" request to URL "/c/i"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to "i-prime"
+    And I set the "i" to "i"
+    And I set the "id" to "foo"
+    Then the status will be "422"
+    And the body will be text
+    And the body contents will be "A reserved property was used."
+    # type
+    When I have a "PUT" request to URL "/c/i"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to "i-prime"
+    And I set the "i" to "i"
+    And I set the "type" to "foo"
+    Then the status will be "422"
+    And the body will be text
+    And the body contents will be "A reserved property was used."
+    # created-at
+    When I have a "PUT" request to URL "/c/i"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to "i-prime"
+    And I set the "i" to "i"
+    And I set the "created-at" to "foo"
+    Then the status will be "422"
+    And the body will be text
+    And the body contents will be "A reserved property was used."
+    # updated-at
+    When I have a "PUT" request to URL "/c/i"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to "i-prime"
+    And I set the "i" to "i"
+    And I set the "updated-at" to "foo"
+    Then the status will be "422"
+    And the body will be text
+    And the body contents will be "A reserved property was used."
+    # unchanged?
+    And the collection "c" has an item count of 2
+    When I have a "GET" request to URL "/c/i"
+    And I accept an "item"
+    Then the status will be "200"
+    And I will receive an "item"
+    And the body will be JSON
+    And the item "i" in collection "c" will be named "i"
+    And the "i" will not exist
 
 	# no accept type - 200 OK
 	# curl -i --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i

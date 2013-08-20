@@ -36,6 +36,7 @@
   }
   :aliases {
     "init-db" ["run" "-m" "fcms.db.views"]
+    "test-db-init" ["with-profile" "test" "run" "-m" "fcms.db.views"]
     "build" ["do" "clean," "deps," "git-deps,", "init-db"]
     "midje" ["with-profile" "test" "midje"]    
     "cucumber" ["with-profile" "test" "cucumber"]

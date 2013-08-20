@@ -8,6 +8,7 @@ Feature: Creating Items with the REST API
   all good - generated slug is already used
   all good - with slug
   all good - unicode in the body
+  conflicting reserved properties
   no accept
   wrong accept
   no content type
@@ -163,6 +164,75 @@ Feature: Creating Items with the REST API
     And the body will be JSON
     And the new item "i" in collection "c" will be named "私はガラスを食"
     And the "description" will be "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €"
+
+  # conflicting reserved properties - 422 Unprocessable Entity
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i", "version":"foo"}' http://localhost:3000/c/
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i", "collection":"foo"}' http://localhost:3000/c/
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i", "id":"foo"}' http://localhost:3000/c/
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i", "type":"foo"}' http://localhost:3000/c/
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i", "updated-at":"foo"}' http://localhost:3000/c/
+  # curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i", "created-at":"foo"}' http://localhost:3000/c/
+  Scenario: Attempt to create an item with a property that conflict with a reserved property
+    # version
+    When I have a "POST" request to URL "/c/"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to "i"
+    And I set the "version" to "foo"
+    Then the status will be "422"
+    And the body will be text
+    And the body contents will be "A reserved property was used."
+    # collection
+    When I have a "POST" request to URL "/c/"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to "i"
+    And I set the "collection" to "foo"
+    Then the status will be "422"
+    And the body will be text
+    And the body contents will be "A reserved property was used."
+    # id
+    When I have a "POST" request to URL "/c/"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to "i"
+    And I set the "id" to "foo"
+    Then the status will be "422"
+    And the body will be text
+    And the body contents will be "A reserved property was used."
+    # type
+    When I have a "POST" request to URL "/c/"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to "i"
+    And I set the "type" to "foo"
+    Then the status will be "422"
+    And the body will be text
+    And the body contents will be "A reserved property was used."
+    # created-at
+    When I have a "POST" request to URL "/c/"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to "i"
+    And I set the "created-at" to "foo"
+    Then the status will be "422"
+    And the body will be text
+    And the body contents will be "A reserved property was used."
+    # updated-at
+    When I have a "POST" request to URL "/c/"
+    And I provide an "item"
+    And I accept an "item"
+    And I set the "name" to "i"
+    And I set the "updated-at" to "foo"
+    Then the status will be "422"
+    And the body will be text
+    And the body contents will be "A reserved property was used."
+    # still empty?
+    And the collection "c" has an item count of 0
+    When I have a "GET" request to URL "/c/i"
+    And I accept an "item"
+    Then the status will be "404"
+    And the body will be empty
 
   # no accept type - 201 Created
   # curl -i --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
