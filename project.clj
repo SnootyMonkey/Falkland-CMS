@@ -7,7 +7,8 @@
     [org.clojure/clojure "1.5.1"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.incubator "0.1.3"] ; functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [org.clojure/core.match "0.2.0-rc3"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
-    [org.clojure/clojurescript "0.0-1859"] ; ClojureScript compiler https://github.com/clojure/clojurescript
+    ;[org.clojure/clojurescript "0.0-1859"] ; ClojureScript compiler https://github.com/clojure/clojurescript
+    [ibdknox/clojurescript "0.0-1534"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     [ring/ring-jetty-adapter "1.2.0"] ; Web Server https://github.com/ring-clojure/ring
     [compojure "1.1.5"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.9.0"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
@@ -36,7 +37,7 @@
   }
   :aliases {
     "init-db" ["run" "-m" "fcms.db.views"]
-    "test-db-init" ["with-profile" "test" "run" "-m" "fcms.db.views"]
+    "init-test-db" ["with-profile" "test" "run" "-m" "fcms.db.views"]
     "build" ["do" "clean," "deps," "git-deps,", "init-db"]
     "midje" ["with-profile" "test" "midje"]    
     "cucumber" ["with-profile" "test" "cucumber"]
