@@ -4,6 +4,8 @@
 
 (def taxonomy-media-type "application/vnd.fcms.taxonomy+json;version=1")
 
+(def structure-msg "Not a valid category structure.")
+
 (def reserved-properties
   "Properties that can't be specified during a create or update."
   (reduce conj common/reserved-properties [:collection :categories])) 
@@ -17,6 +19,11 @@
   nil if there is no taxonomy with that slug."
   [coll-slug slug]
     (resource/get-resource coll-slug slug :taxonomy))
+
+(defn valid-categories [categories]
+  (cond
+    (not (vector? categories)) [:invalid-structure structure-msg]
+    :else true))
 
 ;; TODO if a taxonomy structure is provided, make sure it's valid
 (defn valid-new-taxonomy
@@ -33,6 +40,7 @@
     (resource/valid-new-resource coll-slug taxonomy-name reserved-properties type props)))
 
 ;; TODO if no taxonomy structure is provided create the initial empty one
+;; TODO if a taxonomy structure is provided, make sure it's valid
 (defn create-taxonomy
   "Create a new taxonomy in the collection specified by its slug, using the specified
   taxonomy name and an optional map of properties.
