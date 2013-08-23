@@ -11,6 +11,7 @@ pom.xml
 *.jar
 *.class
 
+.nrepl-port
 .lein-git-deps
 .lein-deps-sum
 .lein-failures

@@ -39,7 +39,7 @@
 
 (defn valid-slug? [provided-slug]
   ;; if the slug is the same one we'd provide for a resource with that name, then it's valid 
-  (and (= provided-slug (slugify provided-slug)) (not (s/blank? provided-slug))))
+  (and (string? provided-slug) (= provided-slug (slugify provided-slug)) (not (s/blank? provided-slug))))
 
 (defn slug-in-collection? [coll-id slug]
   (if (first (doc-from-view-with-db :fcms :all-ids-by-coll-id-and-slug [coll-id slug]))

@@ -23,6 +23,7 @@
     :dev {
       :env {:liberator-trace true}
       :dependencies [
+        [org.clojure/tools.trace "0.7.5"] ; Tracing macros/fns https://github.com/clojure/tools.trace
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
         [midje "1.6-alpha2"] ; Example-based testing https://github.com/marick/Midje
       ]
