@@ -15,7 +15,7 @@
     [com.ashafa/clutch "0.4.0-RC1"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "1.2.0"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    [com.taoensso/timbre "2.6.0"] ; Logging https://github.com/ptaoussanis/timbre
+    [com.taoensso/timbre "2.6.1"] ; Logging https://github.com/ptaoussanis/timbre
     [clj-json "0.5.3"] ; JSON de/encoding https://github.com/mmcgrana/clj-json/
     [print-foo "0.3.7"] ; Old school print debugging https://github.com/danielribeiro/print-foo
   ]
@@ -23,7 +23,7 @@
     :dev {
       :env {:liberator-trace true}
       :dependencies [
-        [org.clojure/tools.trace "0.7.5"] ; Tracing macros/fns https://github.com/clojure/tools.trace
+        [org.clojure/tools.trace "0.7.6"] ; Tracing macros/fns https://github.com/clojure/tools.trace
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
         [midje "1.6-alpha2"] ; Example-based testing https://github.com/marick/Midje
       ]
