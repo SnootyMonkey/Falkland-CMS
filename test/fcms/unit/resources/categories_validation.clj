@@ -1,9 +1,9 @@
-(ns fcms.unit.resources.taxonomy
+(ns fcms.unit.resources.categories-validation
   (:require [clojure.test :refer :all]
             [midje.sweet :refer :all]
             [fcms.resources.taxonomy :refer :all]))
 
-(facts "about valid category trees"
+(facts "about valid and invalid category trees"
 
   (fact "anything but a vector is invalid"
     (valid-categories nil) => :invalid-structure
