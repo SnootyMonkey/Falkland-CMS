@@ -94,4 +94,11 @@
           validity))
       (recur coll-slug taxonomy-name (assoc props :categories [])))))
 
+(defn delete-taxonomy
+  "Given the slug of the collection containing the taxonomy and the slug of the taxonomy,
+  delete the taxonomy, or return :bad-collection if there's no collection with that slug, or
+  :bad-taxonomy if there is no taxonomy with that slug."
+  [coll-slug slug]
+  (resource/delete-resource coll-slug slug :taxonomy))
+
 (defn all-taxonomies [])

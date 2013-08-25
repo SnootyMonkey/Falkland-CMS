@@ -1,6 +1,7 @@
 (ns fcms.resources.collection-resource
   (:require [clojure.set :refer (intersection)]
             [clojure.string :refer (blank?)]
+            [com.ashafa.clutch :as clutch]
             [fcms.resources.common :as common]
             [fcms.resources.collection :as collection]
             [fcms.lib.slugify :refer (slugify)]))
@@ -57,3 +58,14 @@
               (merge props {:slug slug :collection (:id collection) :name resource-name}) type)]
               (common/resource-from-db coll-slug resource))))
         validity))))
+
+(defn delete-resource
+  "Given the slug of the collection containing the resource and the slug of the resource,
+  delete the resource, or return :bad-collection if there's no collection with that slug, or
+  the provided bad resource keyword if there is no resource with that slug."
+  [coll-slug slug type]
+  (if-let [coll-id (:id (collection/get-collection coll-slug))]
+    (if-let [resource (clutch/with-db (common/db) (common/resource-doc coll-id slug type))]
+      (common/delete resource)
+      (keyword (str "bad-" (name type))))
+    :bad-collection))

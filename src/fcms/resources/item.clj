@@ -1,10 +1,8 @@
 (ns fcms.resources.item
   (:require [clojure.set :refer (intersection)]
-            [com.ashafa.clutch :as clutch]
             [fcms.resources.common :as common]
             [fcms.resources.collection-resource :as resource]
-            [fcms.resources.collection :as collection]
-            [fcms.lib.slugify :refer (slugify)]))
+            [fcms.resources.collection :as collection]))
 
 (def item-media-type "application/vnd.fcms.item+json;version=1")
 
@@ -55,11 +53,7 @@
   delete the item, or return :bad-collection if there's no collection with that slug, or
   :bad-item if there is no item with that slug."
   [coll-slug slug]
-  (if-let [coll-id (:id (collection/get-collection coll-slug))]
-    (if-let [item (clutch/with-db (common/db) (common/resource-doc coll-id slug :item))]
-      (common/delete item)
-      :bad-item)
-    :bad-collection))
+  (resource/delete-resource coll-slug slug :item))
 
 (defn valid-item-update?
   "Given the slug of the collection, the slug of the item,
