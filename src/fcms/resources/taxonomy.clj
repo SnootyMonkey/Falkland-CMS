@@ -7,7 +7,7 @@
 
 (def reserved-properties
   "Properties that can't be specified during a create or update."
-  (reduce conj common/reserved-properties [:collection :categories])) 
+  (reduce conj common/reserved-properties [:collection])) 
 (def retained-properties
   "Properties that are retained during an update even if they aren't in the updated property set."
   (reduce conj common/retained-properties [:collection :categories]))
@@ -54,7 +54,6 @@
             true
             (recur (first non-leaves) (vec (rest non-leaves))))))))
 
-;; TODO if a taxonomy structure is provided, make sure it's valid
 (defn valid-new-taxonomy
   "Given the slug of the collection, the name of the taxonomy, and a map of a potential new taxonomy,
   check if the everything is in order to create the new taxonomy.
@@ -63,13 +62,16 @@
   Ensure the slug is valid and doesn't already exist if it's specified,
   or return :invalid-slug or :slug-conflict respectively.
   If a property is included in the map of properties that is in the reserved-properties
-  set, :property-conflict will be returned."
+  set, :property-conflict will be returned.
+  If a tree of categories is provided in the :categories property, it is validated and the
+  following errors may be returned: invalid-structure, :invalid-category-name, :invalid-category-slug"
   ([coll-slug taxonomy-name] (valid-new-taxonomy coll-slug taxonomy-name {}))
   ([coll-slug taxonomy-name props]
-    (resource/valid-new-resource coll-slug taxonomy-name reserved-properties type props)))
+    (let [validity (if (:categories props) (valid-categories (:categories props)) true)]
+      (if (true? validity)
+        (resource/valid-new-resource coll-slug taxonomy-name reserved-properties type props)
+        validity))))
 
-;; TODO if no taxonomy structure is provided create the initial empty one
-;; TODO if a taxonomy structure is provided, make sure it's valid
 (defn create-taxonomy
   "Create a new taxonomy in the collection specified by its slug, using the specified
   taxonomy name and an optional map of properties.
@@ -80,9 +82,16 @@
   If a :slug is included in the properties and it's not valid,
   :invalid-slug will be returned.
   If a property is included in the map of properties that is in the reserved-properties
-  set, :property-conflict will be returned."
+  set, :property-conflict will be returned.
+  If a tree of categories is provided in the :categories property, it is validated and the
+  following errors may be returned: invalid-structure, :invalid-category-name, :invalid-category-slug"
   ([coll-slug taxonomy-name] (create-taxonomy coll-slug taxonomy-name {}))
   ([coll-slug taxonomy-name props]
-    (resource/create-resource coll-slug taxonomy-name :taxonomy reserved-properties props)))
+    (if (:categories props)
+      (let [validity (valid-categories (:categories props))]
+        (if (true? validity) 
+          (resource/create-resource coll-slug taxonomy-name :taxonomy reserved-properties props)
+          validity))
+      (recur coll-slug taxonomy-name (assoc props :categories [])))))
 
 (defn all-taxonomies [])
