@@ -1,7 +1,8 @@
 :tocdepth: 3
 
+***************************
 Falkland CMS Hypermedia API
-===========================
+***************************
 
 This is the documentation for using the Falkland CMS Hypermedia (REST) API.
 
@@ -20,7 +21,7 @@ style. You can help with that by pointing out anything you perceive as a deviati
 	own preferred HTTP client.
 
 Request Headers
----------------
+===============
 
 Provide the custom `Internet media type <http://en.wikipedia.org/wiki/Internet_media_type>`_ 
 (formerly MIME type) saying you want Falkland CMS `JSON <http://www.json.org/>`_ data and the
@@ -43,8 +44,6 @@ TBD.
 
 Sessions
 ~~~~~~~~
-
-TBD.
 
 Access Control
 ~~~~~~~~~~~~~~

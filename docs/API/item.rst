@@ -1,7 +1,8 @@
 :tocdepth: 2
 
+*****
 Items
-#####
+*****
 
 An `item <http://www.wordnik.com/words/item>`_ is a single entry in a collection. An item
 is not itself THE member of the collection, but is a pointer TO the member of the collection.
@@ -25,12 +26,12 @@ Some examples of items:
 * a John McKay quote for pitifulpirates.com
 
 List Items
-----------
+==========
 
 List all the items in a collection.
 
 Request
-~~~~~~~
+-------
 
 .. code-block:: http
 
@@ -41,19 +42,19 @@ Request
    The trailing slash after the collection slug is important and must be included in the request.
 
 Parameters
-^^^^^^^^^^
+~~~~~~~~~~
 
  - **num**: how many items to return, optional, defaults to 50
  - **start**: 0-based index of the 1st item to return, optional, defaults to 0
 
 Headers
-^^^^^^^
+~~~~~~~
 
 - **Accept**: application/vnd.collection+vnd.fcms.item+json;version=1
 - **Accept-Charset**: utf-8
 
 Example
-^^^^^^^
+~~~~~~~
 
 .. code-block:: bash
 
@@ -64,7 +65,7 @@ Example
    curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://{host:port}/mudskippers/?num=10&start=10
 
 Response
-~~~~~~~~
+--------
 
 The response is a `Collection+JSON <http://amundsen.com/media-types/collection/>`_ collection hash (not to be confused with an FCMS collection) 
 which contains an array called items with each item in the collection. The collection hash contains an array of links for creating new items in
@@ -72,13 +73,13 @@ the collection and for pagination. The collection hash also contains a template 
 new items in the collection.
 
 Status
-^^^^^^
+~~~~~~
 
 - **200**: OK
 - **404**: collection was not found
 
 Example
-^^^^^^^
+~~~~~~~
 
 .. code-block:: json
 
@@ -253,43 +254,43 @@ Example
 
 
 Get an Item
------------
+===========
 
 Get a particular item.
 
 Request
-~~~~~~~
+-------
 
 .. code-block:: http
 
    GET /:collection-slug/:item-slug
 
 Headers
-^^^^^^^
+~~~~~~~
 
 - **Accept**: application/vnd.fcms.item+json;version=1
 - **Accept-Charset**: utf-8
 
 Example
-^^^^^^^
+~~~~~~~
 
 .. code-block:: bash
 
    curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://{host:port}/mudskippers/amazing-animals-mudskipper
 
 Response
-~~~~~~~~
+--------
 
 The response has a complete JSON representation of the item which contains links to available actions on the item, a reverse link to the collection containing the item, and links to any categories the item is a member of.
 
 Status
-^^^^^^
+~~~~~~
 
 - **200**: OK
 - **404**: collection or item was not found
 
 Example
-^^^^^^^
+~~~~~~~
 
 .. code-block:: json
 
@@ -341,19 +342,19 @@ Example
    }
 
 Create an Item
---------------
+==============
 
 Create a new item in a collection.
 
 Request
-~~~~~~~
+-------
 
 .. code-block:: http
 
    POST /:collection-slug
 
 Parameters
-^^^^^^^^^^
+~~~~~~~~~~
 
 Pass in details for the new item as a JSON representation. The name is required and will be used to create the slug.
 
@@ -381,38 +382,38 @@ Here is a more complete representation of a JSON body:
    }
 
 Headers
-^^^^^^^
+~~~~~~~
 
 - **Accept**: application/vnd.fcms.item+json;version=1
 - **Accept-Charset**: utf-8
 - **Content-type**: application/vnd.fcms.item+json;version=1
 
 Example
-^^^^^^^
+~~~~~~~
 
 .. code-block:: bash
 
    curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"Mudskipper","URL":"http://en.wikipedia.org/wiki/Mudskipper","category":"/mudskippers/media-types/articles/online","category":"/mudskippers/topics/general","description":"Mudskipper entry from Wikipedia, the free encyclopedia"}' http://{host:port}/mudskippers/
 
 Response
-~~~~~~~~
+--------
 
 The new item is at the location provided in the location in the header. A representation of the new item is also returned.
 
 Status
-^^^^^^
+~~~~~~
 
 - **201**: created
 - **404**: the collection is not found
 - **422**: the item entity you passed in is not valid
 
 Headers
-^^^^^^^
+~~~~~~~
 
 - **Location**: the URL of the newly created item
 
 Example
-^^^^^^^
+~~~~~~~
 
 .. code-block:: json
 
@@ -464,19 +465,19 @@ Example
    }
 
 Update an Item
---------------
+==============
 
 Update an existing item.
 
 Request
-~~~~~~~
+-------
 
 .. code-block:: http
 
    PUT /:collection-slug/:item-slug
 
 Parameters
-^^^^^^^^^^
+~~~~~~~~~~
 
 Pass in details for the updated item as a JSON representation. The name is required.
 
@@ -499,38 +500,38 @@ If no slug is provided in the JSON representation, the existing slug will be use
    Provide a new slug in the JSON body to move an item.
 
 Headers
-^^^^^^^
+~~~~~~~
 
 - **Accept**: application/vnd.fcms.item+json;version=1
 - **Accept-Charset**: utf-8
 - **Content-type**: application/vnd.fcms.item+json;version=1
 
 Example
-^^^^^^^
+~~~~~~~
 
 .. code-block:: bash
 
    curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"Mudskipper","slug":"wiki-mud","URL":"http://en.wikipedia.org/wiki/Mudskipper","category":"/mudskippers/topics/general","description":"Mudskipper entry from Wikipedia, the free encyclopedia"}' http://{host:port}/mudskippers/media-types/articles/online/wikipedia-mudskipper
 
 Response
-~~~~~~~~
+--------
 
 The representation of the updated item is at the specified location, which is echoed in the location in the header. A representation of the updated item is also returned.
 
 Status
-^^^^^^
+~~~~~~
 
 - **200**: update successful
 - **404**: the collection, taxonomy or category is not found
 - **422**: the item entity you passed in is not valid
 
 Headers
-^^^^^^^
+~~~~~~~
 
 - **Location**: the URL of the newly created item
 
 Examples
-^^^^^^^^
+~~~~~~~~
 
 .. code-block:: json
 
@@ -582,31 +583,31 @@ Examples
    }
 
 Delete an Item
---------------
+==============
 
 Delete an existing item.
 
 Request
-~~~~~~~
+-------
 
 .. code-block:: http
 
    DELETE /:collection-slug/:item-slug
 
 Example
-^^^^^^^
+~~~~~~~
 
 .. code-block:: bash
 
    curl -i -X DELETE http://{host:port}/mudskippers/amazing-animals-mudskipper
 
 Response
-~~~~~~~~
+--------
 
 There is no response body, just a status.
 
 Status
-^^^^^^
+~~~~~~
 
 - **204**: deleted
 - **404**: collection or item was not found

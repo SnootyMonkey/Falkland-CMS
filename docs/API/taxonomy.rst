@@ -1,7 +1,8 @@
 :tocdepth: 2
 
+**********
 Taxonomies
-##########
+**********
 
 A `taxonomy <http://www.wordnik.com/words/taxonomy>`_ is a hierarchical classification of items
 in a collection. A taxonomy is made up of a tree of categories from the more general at the root
@@ -260,7 +261,7 @@ Here is complete example of the entire JSON representation of a taxonomy:
 	}
 
 List Taxonomies
----------------
+===============
 
 List all the taxonomies in a collection.
 
@@ -269,45 +270,45 @@ TODO
 
 
 Get a Taxonomy
---------------
+==============
 
 Get a particular taxonomy.
 
 Request
-~~~~~~~
+-------
 
 .. code-block:: http
 
    GET /:collection-slug/:taxonomy-slug
 
 Headers
-^^^^^^^
+~~~~~~~
 
 - **Accept**: application/vnd.fcms.taxonomy+json;version=1
 - **Accept-Charset**: utf-8
 
 Example
-^^^^^^^
+~~~~~~~
 
 .. code-block:: bash
 
    curl -i --header "Accept: application/vnd.fcms.taxonomy+json;version=1" --header "Accept-Charset: utf-8" -X GET http://{host:port}/founding-documents/location
 
 Response
-~~~~~~~~
+--------
 
 The response has a complete JSON representation of the taxonomy which contains the hierarchical structure of the
 categories in the taxonomy, links to available actions on the taxonomy, a reverse link to the collection containing
 the taxonomy, and links to listings items categorized in the taxonomy.
 
 Status
-^^^^^^
+~~~~~~
 
 - **200**: OK
 - **404**: collection or taxonomy was not found
 
 Example
-^^^^^^^
+~~~~~~~
 
 .. code-block:: json
 
@@ -384,7 +385,7 @@ Example
 	}
 
 Create an Taxonomy
-------------------
+==================
 
 Create a new taxonomy in a collection.
 
@@ -394,7 +395,7 @@ TODO
 
 
 Update an Item
---------------
+==============
 
 Update an existing taxonomy.
 
@@ -404,31 +405,31 @@ TODO
 
 
 Delete a Taxonomy
------------------
+=================
 
 Delete an existing taxonomy.
 
 Request
-~~~~~~~
+-------
 
 .. code-block:: http
 
    DELETE /:collection-slug/:taxonomy-slug
 
 Example
-^^^^^^^
+~~~~~~~
 
 .. code-block:: bash
 
    curl -i -X DELETE http://{host:port}/founding-documents/location
 
 Response
-~~~~~~~~
+--------
 
 There is no response body, just a status.
 
 Status
-^^^^^^
+~~~~~~
 
 - **204**: deleted
 - **404**: collection or taxonomy was not found
