@@ -84,7 +84,7 @@
   If a property is included in the map of properties that is in the reserved-properties
   set, :property-conflict will be returned.
   If a tree of categories is provided in the :categories property, it is validated and the
-  following errors may be returned: invalid-structure, :invalid-category-name, :invalid-category-slug"
+  following errors may be returned: :invalid-structure, :invalid-category-name, :invalid-category-slug"
   ([coll-slug taxonomy-name] (create-taxonomy coll-slug taxonomy-name {}))
   ([coll-slug taxonomy-name props]
     (if (:categories props)
@@ -100,5 +100,34 @@
   :bad-taxonomy if there is no taxonomy with that slug."
   [coll-slug slug]
   (resource/delete-resource coll-slug slug :taxonomy))
+
+(defn valid-taxonomy-update
+  "Given the slug of the collection, the slug of the taxonomy,
+  and a map of updated properties for the taxonomy,
+  check if the everything is in order to update the taxonomy.
+  Ensure the collection exists or return :bad-collection.
+  Ensure the item exists or return :bad-taxonomy.
+  If a new slug is provided in the properties, ensure it is
+  valid or return :invalid-slug and ensure it is unused or
+  return :slug-conflict. If no item slug is specified in
+  the properties it will be retain its current slug.
+  If a tree of categories is provided in the :categories property, it is validated and the
+  following errors may be returned: :invalid-structure, :invalid-category-name, :invalid-category-slug"
+  [coll-slug slug props]
+  (let [validity (if (:categories props) (valid-categories (:categories props)) true)]
+    (if (true? validity)
+      (resource/valid-resource-update coll-slug slug reserved-properties props :taxonomy)
+      validity)))
+
+(defn update-taxonomy
+  "Update a taxonomy in the collection specified by its slug using the specified
+  map of properties. If :slug is included in the properties
+  the taxonomy will be moved to the new slug, otherwise the slug will remain the same.
+  The same validity conditions and invalid return values as valid-taxonomy-update? apply."
+  [coll-slug slug props]
+    (let [reason (valid-taxonomy-update coll-slug slug props)]
+      (if (true? reason)
+        (resource/update-resource coll-slug slug retained-properties props :taxonomy)
+        reason)))
 
 (defn all-taxonomies [])

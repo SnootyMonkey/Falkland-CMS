@@ -85,8 +85,8 @@
   :processable? (by-method {
     :get true
     :delete true
-    :post (fn [ctx] (common/check-input (item/valid-item-update? coll-slug item-slug (:data ctx))))
-    :put (fn [ctx] (common/check-input (item/valid-item-update? coll-slug item-slug (:data ctx))))})
+    :post (fn [ctx] (common/check-input (item/valid-item-update coll-slug item-slug (:data ctx))))
+    :put (fn [ctx] (common/check-input (item/valid-item-update coll-slug item-slug (:data ctx))))})
   :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
   :can-put-to-missing? (fn [_] false) ; temporarily only use PUT for update
   :conflict? (fn [_] false)

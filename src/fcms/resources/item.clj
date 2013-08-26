@@ -55,7 +55,7 @@
   [coll-slug slug]
   (resource/delete-resource coll-slug slug :item))
 
-(defn valid-item-update?
+(defn valid-item-update
   "Given the slug of the collection, the slug of the item,
   and a map of updated properties for the item,
   check if the everything is in order to update the item.
@@ -65,36 +65,18 @@
   valid or return :invalid-slug and ensure it is unused or
   return :slug-conflict. If no item slug is specified in
   the properties it will be retain its current slug."
-  [coll-slug slug {item-name :name provided-slug :slug :as props}]
-    (let [coll-id (:id (collection/get-collection coll-slug))
-          item-id (:id (get-item coll-slug slug))]
-      (cond
-        (nil? coll-id) :bad-collection
-        (nil? item-id) :bad-item
-        (not-empty (intersection (set (keys props)) reserved-properties)) :property-conflict
-        (not provided-slug) true
-        (not (common/valid-slug? provided-slug)) :invalid-slug
-        (= slug provided-slug) true
-        :else (if (nil? (get-item coll-slug provided-slug)) true :slug-conflict))))
-
-(defn- update
-  "Update an item retaining it's manufactured properties and replacing the rest with the provided properties"
-  [coll-slug slug updated-props]
-  (collection/with-collection coll-slug
-    (if-let [item (common/resource-doc (:id collection) slug :item)]
-      (let [retained-props (select-keys (:data item) (conj retained-properties :version))]
-        (common/resource-from-db coll-slug (common/update-with-db item (merge retained-props updated-props))))
-      :bad-item)))
+  [coll-slug slug props]
+    (resource/valid-resource-update coll-slug slug reserved-properties props :item))
 
 (defn update-item
   "Update an item in the collection specified by its slug using the specified
   map of properties. If :slug is included in the properties
   the item will be moved to the new slug, otherwise the slug will remain the same.
-  The same validity conditions and invalid return values as valid-item-update? apply."
+  The same validity conditions and invalid return values as valid-item-update apply."
   [coll-slug slug props]
-    (let [reason (valid-item-update? coll-slug slug props)]
-      (if (= reason true)
-        (update coll-slug slug props)
+    (let [reason (resource/valid-resource-update coll-slug slug reserved-properties props :item)]
+      (if (true? reason)
+        (resource/update-resource coll-slug slug retained-properties props :item)
         reason)))
 
 (defn all-items

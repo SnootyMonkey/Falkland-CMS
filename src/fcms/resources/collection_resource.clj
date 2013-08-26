@@ -69,3 +69,34 @@
       (common/delete resource)
       (keyword (str "bad-" (name type))))
     :bad-collection))
+
+(defn valid-resource-update
+  "Given the slug of the collection, the slug of the resource,
+  and a map of updated properties for the resource,
+  check if the everything is in order to update the resource.
+  Ensure the collection exists or return :bad-collection.
+  Ensure the resource exists or return :bad-<resource>.
+  If a new slug is provided in the properties, ensure it is
+  valid or return :invalid-slug and ensure it is unused or
+  return :slug-conflict. If no item slug is specified in
+  the properties it will be retain its current slug."
+  [coll-slug slug reserved-properties {item-name :name provided-slug :slug :as props} type]
+    (let [coll-id (:id (collection/get-collection coll-slug))
+          resource-id (:id (get-resource coll-slug slug type))]
+      (cond
+        (nil? coll-id) :bad-collection
+        (nil? resource-id) (keyword (str "bad-" (name type)))
+        (not-empty (intersection (set (keys props)) reserved-properties)) :property-conflict
+        (not provided-slug) true
+        (not (common/valid-slug? provided-slug)) :invalid-slug
+        (= slug provided-slug) true
+        :else (if (nil? (get-resource coll-slug provided-slug type)) true :slug-conflict))))
+
+(defn update-resource
+  "Update a resource retaining it's manufactured properties and replacing the rest with the provided properties"
+  [coll-slug slug retained-properties updated-props type]
+  (collection/with-collection coll-slug
+    (if-let [resource (common/resource-doc (:id collection) slug type)]
+      (let [retained-props (select-keys (:data resource) (conj retained-properties :version))]
+        (common/resource-from-db coll-slug (common/update-with-db resource (merge retained-props updated-props))))
+      (keyword (str "bad-" (name type))))))
