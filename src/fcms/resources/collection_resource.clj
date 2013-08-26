@@ -100,3 +100,11 @@
       (let [retained-props (select-keys (:data resource) (conj retained-properties :version))]
         (common/resource-from-db coll-slug (common/update-with-db resource (merge retained-props updated-props))))
       (keyword (str "bad-" (name type))))))
+
+(defn all-resources
+  "Given the slug of the collection, return all the resources it contains of the type specified
+  as a sequence of maps, or return :bad-collection if there's no collection with that slug."
+  [coll-slug type]
+  (collection/with-collection coll-slug
+    (when-let [results (common/doc-from-view-with-db type :all-slugs-by-coll-id (:id collection))]
+      (map #(common/resource-from-db coll-slug (:doc %)) results))))

@@ -130,4 +130,8 @@
         (resource/update-resource coll-slug slug retained-properties props :taxonomy)
         reason)))
 
-(defn all-taxonomies [])
+(defn all-taxonomies
+  "Given the slug of the collection, return all the taxonomies it contains as a sequence of maps,
+  or return :bad-collection if there's no collection with that slug."
+  [coll-slug]
+  (resource/all-resources coll-slug :taxonomy))

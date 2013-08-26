@@ -83,6 +83,4 @@
   "Given the slug of the collection, return all the items it contains as a sequence of maps,
   or return :bad-collection if there's no collection with that slug."
   [coll-slug]
-  (collection/with-collection coll-slug
-    (when-let [results (common/doc-from-view-with-db :item :all-slugs-by-coll-id (:id collection))]
-      (map #(common/resource-from-db coll-slug (:doc %)) results))))
+  (resource/all-resources coll-slug :item))
