@@ -1,7 +1,8 @@
 (ns fcms.resources.taxonomy
-  (:require [clojure.string :refer (blank?)]
+  (:require [clojure.string :refer (blank? split)]
             [fcms.resources.common :as common]
-            [fcms.resources.collection-resource :as resource]))
+            [fcms.resources.collection-resource :as resource]
+            [fcms.resources.collection :as collection]))
 
 (def taxonomy-media-type "application/vnd.fcms.taxonomy+json;version=1")
 
@@ -135,3 +136,28 @@
   or return :bad-collection if there's no collection with that slug."
   [coll-slug]
   (resource/all-resources coll-slug :taxonomy))
+
+(defn taxonomy-slug-from-path [category-path]
+  "Return the taxonomy slug given a category path such as: /taxonomy-slug/cat-a/cat-b"
+  (if (or (nil? category-path) (not (string? category-path)))
+    ""
+    (let [path-parts (split category-path #"/")]
+      (if (and (> (count path-parts) 1) (= (first path-parts) ""))
+        (nth path-parts 1)
+        (first path-parts)))))
+
+(defn create-category
+  "Given the slug of the collection, a path to a new category, add an optional name for the category, create
+  the category. For example, a path: /taxonomy-slug/existing-a/existing-b/new-category
+  would result in creating a new category with the slug new-a.
+  The slug from the category path is also used as the name if none is provided.
+  :bad-collection is returned if there's no collection with that slug.
+  :bad-taxonomy is returned if there's no taxonomy with that slug from the start of the category path.
+  :bad-category is returned if any but the last category in the path, specified by the slug, does not exist."
+  ([coll-slug category-path] (create-category coll-slug category-path (taxonomy-slug-from-path category-path)))
+  ([coll-slug category-path category-name]
+    (let [result (get-taxonomy coll-slug (taxonomy-slug-from-path category-path))]
+      (cond 
+        (nil? result) :bad-taxonomy
+        (keyword? result) result
+        :else true))))

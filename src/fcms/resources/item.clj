@@ -1,8 +1,7 @@
 (ns fcms.resources.item
   (:require [clojure.set :refer (intersection)]
             [fcms.resources.common :as common]
-            [fcms.resources.collection-resource :as resource]
-            [fcms.resources.collection :as collection]))
+            [fcms.resources.collection-resource :as resource]))
 
 (def item-media-type "application/vnd.fcms.item+json;version=1")
 
