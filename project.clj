@@ -17,41 +17,44 @@
     [environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [com.taoensso/timbre "2.6.1"] ; Logging https://github.com/ptaoussanis/timbre
     [clj-json "0.5.3"] ; JSON de/encoding https://github.com/mmcgrana/clj-json/
-    [print-foo "0.3.7"] ; Old school print debugging https://github.com/danielribeiro/print-foo
   ]
   :profiles {
     :dev {
       :env {:liberator-trace true}
       :dependencies [
+        [print-foo "0.3.7"] ; Old school print debugging https://github.com/danielribeiro/print-foo
         [org.clojure/tools.trace "0.7.6"] ; Tracing macros/fns https://github.com/clojure/tools.trace
-        [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
-        [midje "1.6-alpha2"] ; Example-based testing https://github.com/marick/Midje
       ]
     }
-    :test [:dev {
+    :qa {
       :env {
         :db-name "falklandcms-test"
         :liberator-trace false
       }
+      :dependencies [
+        [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
+        [midje "1.6-alpha2"] ; Example-based testing https://github.com/marick/Midje
+      ]
       :cucumber-feature-paths ["test/fcms/features"]
-    }]
+    }
   }
   :aliases {
     "init-db" ["run" "-m" "fcms.db.views"]
-    "init-test-db" ["with-profile" "test" "run" "-m" "fcms.db.views"]
+    "init-test-db" ["with-profile" "qa" "run" "-m" "fcms.db.views"]
     "build" ["do" "clean," "deps," "git-deps,", "init-db"]
-    "midje" ["with-profile" "test" "midje"]    
-    "cucumber" ["with-profile" "test" "cucumber"]
-    "test" ["with-profile" "test" "do" "test"]
+    "midje" ["with-profile" "qa" "midje"]    
+    "cucumber" ["with-profile" "qa" "cucumber"]
+    "test" ["with-profile" "qa" "do" "test"]
     "test-all" ["do" "midje," "test," "cucumber"]
-    "test!" ["with-profile", "test" "do" "build,", "test-all"]
+    "test!" ["with-profile", "qa" "do" "build,", "test-all"]
     "spell" ["spell" "-n"]
-    "ancient" ["with-profile" "test" "ancient"]
+    "ancient" ["with-profile" "qa" "ancient"]
   }
   :git-dependencies [
     ["https://github.com/clojure-liberator/liberator.git"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
   ]
   :plugins [
+    [lein-pprint "1.1.1"]
     [lein-ring "0.8.3"] ; common ring tasks https://github.com/weavejester/lein-ring
     [lein-environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [lein-git-deps "0.0.1-SNAPSHOT"] ; dependencies from GitHub https://github.com/tobyhede/lein-git-deps
