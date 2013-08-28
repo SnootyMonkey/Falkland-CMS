@@ -6,7 +6,7 @@
 (def item-media-type "application/vnd.fcms.item+json;version=1")
 
 (def reserved-properties
-  "Properties that can't be specified during a create or update."
+  "Properties that can't be specified during a create and are ignored during an update."
   (conj common/reserved-properties :collection)) 
 (def retained-properties
   "Properties that are retained during an update even if they aren't in the updated property set."
@@ -75,7 +75,10 @@
   [coll-slug slug props]
     (let [reason (resource/valid-resource-update coll-slug slug reserved-properties props :item)]
       (if (true? reason)
-        (resource/update-resource coll-slug slug retained-properties props :item)
+        (resource/update-resource coll-slug slug 
+          {:reserved reserved-properties
+          :retained retained-properties 
+          :updated props} :item)
         reason)))
 
 (defn all-items

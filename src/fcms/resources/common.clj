@@ -7,7 +7,7 @@
             [fcms.config :refer (db-resource)]))
 
 (def reserved-properties
-  "Properties that can't be specified during a create or update."
+  "Properties that can't be specified during a create and are ignored during an update."
   #{:id :created-at :updated-at :type :version :links}) 
 (def retained-properties
   "Properties that are retained during an update even if they aren't in the updated property set."

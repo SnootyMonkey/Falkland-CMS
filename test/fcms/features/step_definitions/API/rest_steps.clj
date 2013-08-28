@@ -2,7 +2,6 @@
          '[clojure.walk :refer (keywordize-keys)]
          '[clj-json.core :as json]
          '[clojure.core.incubator :refer (dissoc-in)]
-         '[print.foo :refer (print->)]
          '[ring.mock.request :refer (request body content-type header)]
          '[fcms.lib.http-mock :as http-mock]
          '[fcms.lib.checks :refer (check check-not)]

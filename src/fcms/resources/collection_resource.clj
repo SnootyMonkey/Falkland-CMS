@@ -6,14 +6,17 @@
             [fcms.resources.collection :as collection]
             [fcms.lib.slugify :refer (slugify)]))
 
+(defn- get-resource-with-db [coll-id coll-slug slug type]
+  (when-let [resource (common/resource-doc coll-id slug type)]
+    (common/resource-from-db coll-slug resource)))
+
 (defn get-resource
   "Given the slug of the collection containing the resource and the slug of the resource,
   return the resource as a map, or return :bad-collection if there's no collection with that slug, or
   nil if there is no resource with that slug."
   [coll-slug slug type]
     (collection/with-collection coll-slug
-      (when-let [resource (common/resource-doc (:id collection) slug type)]
-        (common/resource-from-db coll-slug resource))))
+      (get-resource-with-db (:id collection) coll-slug slug type)))
 
 (defn valid-new-resource
   "Given the slug of the collection, the name of the resource, a map of a potential new resource,
@@ -86,7 +89,6 @@
       (cond
         (nil? coll-id) :bad-collection
         (nil? resource-id) (keyword (str "bad-" (name type)))
-        (not-empty (intersection (set (keys props)) reserved-properties)) :property-conflict
         (not provided-slug) true
         (not (common/valid-slug? provided-slug)) :invalid-slug
         (= slug provided-slug) true
@@ -94,11 +96,14 @@
 
 (defn update-resource
   "Update a resource retaining it's manufactured properties and replacing the rest with the provided properties"
-  [coll-slug slug retained-properties updated-props type]
+  [coll-slug slug properties type]
   (collection/with-collection coll-slug
     (if-let [resource (common/resource-doc (:id collection) slug type)]
-      (let [retained-props (select-keys (:data resource) (conj retained-properties :version))]
-        (common/resource-from-db coll-slug (common/update-with-db resource (merge retained-props updated-props))))
+      (let [retained-props (select-keys (:data resource) (conj (:retained properties) :version))
+            updated-props (apply dissoc (:updated properties) (:reserved properties))
+            new-props (merge retained-props updated-props)]
+        (common/resource-from-db coll-slug (common/update-with-db resource new-props))
+        (get-resource-with-db (:id collection) coll-slug (:slug new-props) type))
       (keyword (str "bad-" (name type))))))
 
 (defn all-resources

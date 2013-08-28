@@ -7,7 +7,7 @@
 (def taxonomy-media-type "application/vnd.fcms.taxonomy+json;version=1")
 
 (def reserved-properties
-  "Properties that can't be specified during a create or update."
+  "Properties that can't be specified during a create and are ignored during an update."
   (reduce conj common/reserved-properties [:collection])) 
 (def retained-properties
   "Properties that are retained during an update even if they aren't in the updated property set."
@@ -128,7 +128,10 @@
   [coll-slug slug props]
     (let [reason (valid-taxonomy-update coll-slug slug props)]
       (if (true? reason)
-        (resource/update-resource coll-slug slug retained-properties props :taxonomy)
+        (resource/update-resource coll-slug slug 
+          {:reserved reserved-properties
+          :retained retained-properties 
+          :updated props} :taxonomy)
         reason)))
 
 (defn all-taxonomies
@@ -137,27 +140,49 @@
   [coll-slug]
   (resource/all-resources coll-slug :taxonomy))
 
-(defn taxonomy-slug-from-path [category-path]
-  "Return the taxonomy slug given a category path such as: /taxonomy-slug/cat-a/cat-b"
+(defn- taxonomy-slug-from-path [category-path]
+  "Return the taxonomy slug given a category path such as: /taxonomy-slug/category-a/category-b"
   (if (or (nil? category-path) (not (string? category-path)))
     ""
     (let [path-parts (split category-path #"/")]
-      (if (and (> (count path-parts) 1) (= (first path-parts) ""))
+      (if (and (> (count path-parts) 1) (blank? (first path-parts)))
         (nth path-parts 1)
         (first path-parts)))))
 
+(defn- category-slugs-from-path [category-path]
+  "Return a sequence of the category slugs given a category path such as: /taxonomy-slug/cat-a/cat-b"
+  (if (or (nil? category-path) (not (string? category-path)))
+    []
+    (let [path-parts (split category-path #"/")]
+        ;; "" => []
+        ;; "tax" => []
+        ;; "" "tax" => []
+        ;; "" "tax" "cat-a" "cat-b" => ["cat-a" "cat-b"]
+        ;; "tax" "cat-a" "cat-b" => ["cat-a" "cat-b"]
+      (cond 
+        (= (count path-parts) 1) []
+        (blank? (first path-parts)) (vec (rest (rest path-parts)))
+        :else (vec (rest path-parts))))))
+
 (defn create-category
   "Given the slug of the collection, a path to a new category, add an optional name for the category, create
-  the category. For example, a path: /taxonomy-slug/existing-a/existing-b/new-category
-  would result in creating a new category with the slug new-a.
-  The slug from the category path is also used as the name if none is provided.
+  the category and any missing categories in the path to the category.
+  For example, a path: /taxonomy-slug/existing-a/new-category-a/new-category-b
+  would result in creating two new categories with the slugs new-category-a and new-category-b. If a name
+  was provided it would be the name for the category with the slug new-category-b.
+  The slug from the category path is used as the name if none is provided.
   :bad-collection is returned if there's no collection with that slug.
-  :bad-taxonomy is returned if there's no taxonomy with that slug from the start of the category path.
-  :bad-category is returned if any but the last category in the path, specified by the slug, does not exist."
+  :bad-taxonomy is returned if there's no taxonomy with that slug from the start of the category path."
   ([coll-slug category-path] (create-category coll-slug category-path (taxonomy-slug-from-path category-path)))
   ([coll-slug category-path category-name]
-    (let [result (get-taxonomy coll-slug (taxonomy-slug-from-path category-path))]
+    (let [taxonomy-slug (taxonomy-slug-from-path category-path)
+          result (get-taxonomy coll-slug taxonomy-slug)]
       (cond 
         (nil? result) :bad-taxonomy
         (keyword? result) result
-        :else true))))
+        :else true
+          ;get an updated categories
+          ;update the taxonomy with the updated categories
+          ;update the taxonomy
+          ;(update-taxonomy coll-slug taxonomy-slug taxonomy))
+        ))))
