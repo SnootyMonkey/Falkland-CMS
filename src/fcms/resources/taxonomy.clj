@@ -164,9 +164,13 @@
         (blank? (first path-parts)) (vec (rest (rest path-parts)))
         :else (vec (rest path-parts))))))
 
+(defn- hash-category-slugs [categories]
+  "Replace all the vectors of maps with ordered maps of maps keyed by the category slug"
+  true)
+
 ;; ToDo - hide from docs (needs to be public for testing)
 (defn create-categories
-   ([category-slugs categories] (create-categories category-slugs categories categories))
+   ([category-slugs categories] (create-categories category-slugs (hash-category-slugs categories)))
    ([category-slugs category categories]
     true))
 

@@ -6,10 +6,11 @@
   :dependencies [
     [org.clojure/clojure "1.5.1"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.incubator "0.1.3"] ; functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
-    [org.clojure/core.match "0.2.0-rc3"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
+    [org.clojure/core.match "0.2.0-rc5"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [org.clojure/data.json "0.2.3"] ; JSON de/encoding https://github.com/clojure/data.json
     ;[org.clojure/clojurescript "0.0-1859"] ; ClojureScript compiler https://github.com/clojure/clojurescript
-    [org.clojure/clojurescript "0.0-1847"] ; ClojureScript compiler https://github.com/clojure/clojurescript
+    ;[org.clojure/clojurescript "0.0-1847"] ; ClojureScript compiler https://github.com/clojure/clojurescript
+    [org.clojure/clojurescript "0.0-1535"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     [org.flatland/ordered "1.5.1"] ; Ordered hash map https://github.com/flatland/ordered
     [ring/ring-jetty-adapter "1.2.0"] ; Web Server https://github.com/ring-clojure/ring
     [compojure "1.1.5"] ; Web routing https://github.com/weavejester/compojure
@@ -34,7 +35,7 @@
       }
       :dependencies [
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
-        [midje "1.6-alpha2"] ; Example-based testing https://github.com/marick/Midje
+        [midje "1.6-beta1"] ; Example-based testing https://github.com/marick/Midje
       ]
       :cucumber-feature-paths ["test/fcms/features"]
     }
@@ -49,20 +50,20 @@
     "test-all" ["do" "midje," "test," "cucumber"]
     "test!" ["with-profile", "qa" "do" "build,", "test-all"]
     "spell" ["spell" "-n"]
-    "ancient" ["with-profile" "qa" "ancient"]
+    "ancient" ["with-profile" "qa" "do" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"]
   }
   :git-dependencies [
     ["https://github.com/clojure-liberator/liberator.git"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
   ]
   :plugins [
     [lein-pprint "1.1.1"]
-    [lein-ring "0.8.3"] ; common ring tasks https://github.com/weavejester/lein-ring
+    [lein-ring "0.8.7"] ; common ring tasks https://github.com/weavejester/lein-ring
     [lein-environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [lein-git-deps "0.0.1-SNAPSHOT"] ; dependencies from GitHub https://github.com/tobyhede/lein-git-deps
     [lein-cljsbuild "0.3.2"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
     [lein-cucumber "1.0.2"] ; BDD testing https://github.com/nilswloka/lein-cucumber
-    [lein-midje "3.0.0"] ; Example-based testing https://github.com/marick/Midje
-    [lein-ancient "0.4.0"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
+    [lein-midje "3.1.1"] ; Example-based testing https://github.com/marick/Midje
+    [lein-ancient "0.4.4"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
     [lein-spell "0.1.0"] ; Catch spelling mistakes in docs and docstrings https://github.com/cldwalker/lein-spell
   ]
   :source-paths [
