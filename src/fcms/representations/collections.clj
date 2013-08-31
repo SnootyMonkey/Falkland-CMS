@@ -1,5 +1,5 @@
 (ns fcms.representations.collections
-  (:require [clj-json.core :as json]
+  (:require [clojure.data.json :as json]
             [fcms.representations.common :as common]
             [fcms.resources.collection :as collection]
             [fcms.resources.item :refer (item-media-type)]))
@@ -45,7 +45,7 @@
   ;; 3) adding a sorted hash of any remaining keys
   ;; 4) adding the HATEAOS links to the array hash
   (let [coll-props (dissoc coll :id)]
-    (json/generate-string
+    (json/write-str
       (-> coll-props 
         (common/ordered ordered-keys)
         (common/append-sorted (common/remaining-keys coll-props ordered-keys))

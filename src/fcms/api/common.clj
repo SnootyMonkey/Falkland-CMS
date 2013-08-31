@@ -1,8 +1,7 @@
 (ns fcms.api.common
   (:require [taoensso.timbre :refer (debug info warn error fatal spy)]
             [clojure.string :refer (join)]
-            [clojure.walk :refer (keywordize-keys)]
-            [clj-json.core :as json]
+            [clojure.data.json :as json]
             [liberator.representation :refer (ring-response)]))
 
 (def UTF8 "utf-8")
@@ -31,7 +30,7 @@
   with the first value indicating it's not malformed. Otherwise just indicate it's malformed."
   [ctx]
   (try
-    (if-let [data (-> (get-in ctx [:request :body]) slurp json/parse-string keywordize-keys)]
+    (if-let [data (-> (get-in ctx [:request :body]) slurp (json/read-str :key-fn keyword))]
       ; handle case of a string which is valid JSON, but still malformed for us
       (do (when-not (map? data) (throw (Exception.)))
         [good-json {:data data}])

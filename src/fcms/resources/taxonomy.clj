@@ -166,18 +166,20 @@
 
 ;; ToDo - hide from docs (needs to be public for testing)
 (defn create-categories
-  ([category-slugs categories] (create-categories category-slugs categories categories)
-  ([category-slugs category categories]
-    (let category-slug [(first category-slugs)]
-      (if (nil? category-slug)
-        categories
+   ([category-slugs categories] (create-categories category-slugs categories categories))
+   ([category-slugs category categories]
+    true))
 
-      ; it doesn't exist and this is the last one - add w/ name and w/o categories
-      ; it doesn't exist and there are more - add w/ categories
-      ; it exists and this is the last one - done
-      ; it exists and there are more and it has categories - move on
-      ; it exists and there are more and it doesn't have categories - add categories
-        (recur (rest category-slugs) next-category updated-categories)))))))
+;     (let category-slug [(first category-slugs)]
+;       (if (nil? category-slug)
+;         categories
+
+;       ; it doesn't exist and this is the last one - add w/ name and w/o categories
+;       ; it doesn't exist and there are more - add w/ categories
+;       ; it exists and this is the last one - done
+;       ; it exists and there are more and it has categories - move on
+;       ; it exists and there are more and it doesn't have categories - add categories
+;         (recur (rest category-slugs) next-category updated-categories)))))))
 
 (defn create-category
   "Given the slug of the collection, a path to a new category, add an optional name for the category, create
