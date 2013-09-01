@@ -42,7 +42,7 @@
   (and (string? provided-slug) (= provided-slug (slugify provided-slug)) (not (s/blank? provided-slug))))
 
 (defn slug-in-collection? [coll-id slug]
-  (if (first (doc-from-view-with-db :fcms :all-ids-by-coll-id-and-slug [coll-id slug]))
+  (if (first (doc-from-view-with-db :resource :all-ids-by-coll-id-and-slug [coll-id slug]))
     true
     false))
 
