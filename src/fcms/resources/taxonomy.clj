@@ -1,5 +1,6 @@
 (ns fcms.resources.taxonomy
   (:require [clojure.string :refer (blank? split)]
+            [fcms.lib.ordered-map :refer (zip-ordered-map)]
             [fcms.resources.common :as common]
             [fcms.resources.collection-resource :as resource]
             [fcms.resources.collection :as collection]))
@@ -164,9 +165,22 @@
         (blank? (first path-parts)) (vec (rest (rest path-parts)))
         :else (vec (rest path-parts))))))
 
-(defn- hash-category-slugs [categories]
+(defn hash-category-slugs
   "Replace all the vectors of maps with ordered maps of maps keyed by the category slug"
-  true)
+  [category-vector]
+    ; create an ordered map with the slug as the key and the name and categories as values
+    (zip-ordered-map 
+      (map #(first (keys (dissoc % :categories))) category-vector)
+      category-vector))
+
+  ; TODO recursion
+  
+  ; (let [non-leaves (reduce conj child-categories (map :categories (filter :categories categories)))]
+  ; (if (empty? non-leaves)
+  ;   true
+  ;   (recur (first non-leaves) (vec (rest non-leaves))))))))
+
+
 
 ;; ToDo - hide from docs (needs to be public for testing)
 (defn create-categories
