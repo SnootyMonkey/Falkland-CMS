@@ -7,10 +7,10 @@
     [org.clojure/clojure "1.5.1"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.incubator "0.1.3"] ; functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [org.clojure/core.match "0.2.0-rc5"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
-    [org.clojure/data.json "0.2.3"] ; JSON de/encoding https://github.com/clojure/data.json
     ;[org.clojure/clojurescript "0.0-1859"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     ;[org.clojure/clojurescript "0.0-1847"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     [org.clojure/clojurescript "0.0-1535"] ; ClojureScript compiler https://github.com/clojure/clojurescript
+    [cheshire "5.2.0"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.1"] ; Ordered hash map https://github.com/flatland/ordered
     [ring/ring-jetty-adapter "1.2.0"] ; Web Server https://github.com/ring-clojure/ring
     [compojure "1.1.5"] ; Web routing https://github.com/weavejester/compojure
@@ -41,6 +41,7 @@
     }
   }
   :aliases {
+    "deps" ["do" "with-profile" "dev" "deps," "with-profile" "qa" "deps"]
     "init-db" ["run" "-m" "fcms.db.views"]
     "init-test-db" ["with-profile" "qa" "run" "-m" "fcms.db.views"]
     "build" ["do" "clean," "deps," "git-deps,", "init-db"]
@@ -50,7 +51,7 @@
     "test-all" ["do" "midje," "test," "cucumber"]
     "test!" ["with-profile", "qa" "do" "build,", "test-all"]
     "spell" ["spell" "-n"]
-    "ancient" ["with-profile" "qa" "do" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"]
+    "ancient" ["do" "with-profile" "dev" "ancient" ":allow-qualified," "with-profile" "qa" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"]
   }
   :git-dependencies [
     ["https://github.com/clojure-liberator/liberator.git"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator

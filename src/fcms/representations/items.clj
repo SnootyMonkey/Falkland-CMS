@@ -1,5 +1,5 @@
 (ns fcms.representations.items
-  (:require [clojure.data.json :as json]
+  (:require [cheshire.core :as json]
             [fcms.representations.common :as common]
             [fcms.resources.item :as item]
             [fcms.resources.collection :refer (collection-media-type)]))
@@ -54,11 +54,11 @@
 (defn render-items
   "Create a JSON representation of a group of items for the REST API"
   [coll-slug items]
-  (json/write-str {
+  (json/generate-string {
     :items (map item-to-json-map items)
-    :links (item-list-links coll-slug)}))
+    :links (item-list-links coll-slug)} {:pretty true}))
 
 (defn render-item 
   "Create a JSON representation of an item for the REST API"
   [item]
-  (json/write-str (item-to-json-map item)))
+  (json/generate-string (item-to-json-map item) {:pretty true}))

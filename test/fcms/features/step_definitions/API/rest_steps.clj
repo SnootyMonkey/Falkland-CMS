@@ -1,5 +1,5 @@
 (require '[clojure.string :refer (lower-case blank?)]
-         '[clojure.data.json :as json]
+         '[cheshire.core :as json]
          '[clojure.core.incubator :refer (dissoc-in)]
          '[ring.mock.request :refer (request body content-type header)]
          '[fcms.lib.http-mock :as http-mock]
@@ -24,7 +24,7 @@
 (defn- body-from-response [resp-map]
   (try
     ;; treat the body as JSON
-    (json/read-str (:body resp-map) :key-fn keyword)
+    (json/parse-string (:body resp-map) true)
     (catch Exception e
       ;; must not be valid JSON
       (:body resp-map))))
@@ -59,7 +59,7 @@
 
 ;; pretends to execute the request, then checks the HTTP status code
 (Then #"^the status will be \"([^\"]*)\"$" [status]
-  (http-mock/response (app (body (http-mock/request) (json/write-str (http-mock/body)))))
+  (http-mock/response (app (body (http-mock/request) (json/generate-string (http-mock/body) {:pretty true}))))
   (check (= (read-string status) (:status (http-mock/response)))))
 
 (When #"^I delay a moment$" []
