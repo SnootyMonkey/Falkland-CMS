@@ -1,5 +1,8 @@
 (ns fcms.resources.taxonomy
-  (:require [clojure.string :refer (blank? split)]
+  (:require [clojure.core.match :refer (match)]
+            [clojure.string :refer (blank? split)]
+            [print.foo :refer (print-> print-defn-)]
+            [flatland.ordered.map :refer (ordered-map)]
             [fcms.lib.ordered-map :refer (zip-ordered-map)]
             [fcms.resources.common :as common]
             [fcms.resources.collection-resource :as resource]
@@ -9,10 +12,13 @@
 
 (def reserved-properties
   "Properties that can't be specified during a create and are ignored during an update."
-  (reduce conj common/reserved-properties [:collection])) 
+  (reduce conj common/reserved-properties [:collection :categories])) 
 (def retained-properties
   "Properties that are retained during an update even if they aren't in the updated property set."
   (reduce conj common/retained-properties [:collection :categories]))
+
+(defn- allow-category-reserved-properties []
+  (vec (remove #(= :categories %) reserved-properties)))
 
 (defn get-taxonomy
   "Given the slug of the collection containing the taxonomy and the slug of the taxonomy,
@@ -20,41 +26,6 @@
   nil if there is no taxonomy with that slug."
   [coll-slug slug]
     (resource/get-resource coll-slug slug :taxonomy))
-
-(defn- valid-category-structure? [category]
-  (= 1 (count (dissoc category :categories))))
-
-(defn- valid-category-slug? [category]
-  (common/valid-slug? (first (keys (dissoc category :categories)))))
-
-(defn- valid-category-name? [category]
-  (let [cat-name (first (vals (dissoc category :categories)))]
-    (and (string? cat-name) (not (blank? cat-name)))))
-
-;; Validate the category tree with the following logic:
-;; is it a vector?
-;; is everything in it a map (the representation of a category)?
-;; are categories structured as valid categories?
-;; are the slugs of the categories valid?
-;; are the names of the categories valid?
-;; gather all the categories with children and add the children to the accumulator
-;; is the accumulator empty? then it's all valid
-;; otherwise recurse on the first child in the accumulator
-(defn valid-categories 
-  ([categories] (valid-categories categories []))
-  ([categories child-categories]
-    (cond
-      (not (vector? categories)) :invalid-structure
-      (empty? categories) true
-      (not-every? map? categories) :invalid-structure
-      (not-every? valid-category-structure? categories) :invalid-structure
-      (not-every? valid-category-slug? categories) :invalid-category-slug
-      (not-every? valid-category-name? categories) :invalid-category-name
-      :else
-        (let [non-leaves (reduce conj child-categories (map :categories (filter :categories categories)))]
-          (if (empty? non-leaves)
-            true
-            (recur (first non-leaves) (vec (rest non-leaves))))))))
 
 (defn valid-new-taxonomy
   "Given the slug of the collection, the name of the taxonomy, and a map of a potential new taxonomy,
@@ -64,15 +35,10 @@
   Ensure the slug is valid and doesn't already exist if it's specified,
   or return :invalid-slug or :slug-conflict respectively.
   If a property is included in the map of properties that is in the reserved-properties
-  set, :property-conflict will be returned.
-  If a tree of categories is provided in the :categories property, it is validated and the
-  following errors may be returned: invalid-structure, :invalid-category-name, :invalid-category-slug"
+  set, :property-conflict will be returned."
   ([coll-slug taxonomy-name] (valid-new-taxonomy coll-slug taxonomy-name {}))
   ([coll-slug taxonomy-name props]
-    (let [validity (if (:categories props) (valid-categories (:categories props)) true)]
-      (if (true? validity)
-        (resource/valid-new-resource coll-slug taxonomy-name reserved-properties type props)
-        validity))))
+    (resource/valid-new-resource coll-slug taxonomy-name reserved-properties type props)))
 
 (defn create-taxonomy
   "Create a new taxonomy in the collection specified by its slug, using the specified
@@ -84,17 +50,10 @@
   If a :slug is included in the properties and it's not valid,
   :invalid-slug will be returned.
   If a property is included in the map of properties that is in the reserved-properties
-  set, :property-conflict will be returned.
-  If a tree of categories is provided in the :categories property, it is validated and the
-  following errors may be returned: :invalid-structure, :invalid-category-name, :invalid-category-slug"
+  set, :property-conflict will be returned."
   ([coll-slug taxonomy-name] (create-taxonomy coll-slug taxonomy-name {}))
   ([coll-slug taxonomy-name props]
-    (if (:categories props)
-      (let [validity (valid-categories (:categories props))]
-        (if (true? validity) 
-          (resource/create-resource coll-slug taxonomy-name :taxonomy reserved-properties props)
-          validity))
-      (create-taxonomy coll-slug taxonomy-name (assoc props :categories [])))))
+    (resource/create-resource coll-slug taxonomy-name :taxonomy (allow-category-reserved-properties) (assoc props :categories []))))
 
 (defn delete-taxonomy
   "Given the slug of the collection containing the taxonomy and the slug of the taxonomy,
@@ -112,14 +71,9 @@
   If a new slug is provided in the properties, ensure it is
   valid or return :invalid-slug and ensure it is unused or
   return :slug-conflict. If no item slug is specified in
-  the properties it will be retain its current slug.
-  If a tree of categories is provided in the :categories property, it is validated and the
-  following errors may be returned: :invalid-structure, :invalid-category-name, :invalid-category-slug"
+  the properties it will be retain its current slug."
   [coll-slug slug props]
-  (let [validity (if (:categories props) (valid-categories (:categories props)) true)]
-    (if (true? validity)
-      (resource/valid-resource-update coll-slug slug reserved-properties props :taxonomy)
-      validity)))
+  (resource/valid-resource-update coll-slug slug reserved-properties props :taxonomy))
 
 (defn update-taxonomy
   "Update a taxonomy in the collection specified by its slug using the specified
@@ -141,6 +95,47 @@
   [coll-slug]
   (resource/all-resources coll-slug :taxonomy))
 
+;; Category functions
+
+(defn- valid-category-slug? [category]
+  (common/valid-slug? (:slug category)))
+
+(defn- valid-category-structure? [category]
+  (and (contains? :slug) (contains? :name)
+    (= 2 (count (dissoc category :categories)))))
+
+(defn- valid-category-name? [category]
+  (let [cat-name (:name category)]
+    (and (string? cat-name) (not (blank? cat-name)))))
+
+;; ToDo - hide from docs (needs to be public for testing)
+(defn valid-categories
+  "Validate a tree of categories, the following errors may be returned:
+  invalid-structure, :invalid-category-name, :invalid-category-slug"
+  ([categories] (valid-categories categories []))
+  ([categories child-categories]
+    ;; Validate a category tree with the following logic:
+    ;; is it a vector?
+    ;; is everything in it a map (the representation of a category)?
+    ;; are categories structured as valid categories?
+    ;; are the slugs of the categories valid?
+    ;; are the names of the categories valid?
+    ;; gather all the categories with children and add the children to the accumulator
+    ;; is the accumulator empty? then it's all valid
+    ;; otherwise recurse on the first child in the accumulator
+    (cond
+      (not (vector? categories)) :invalid-structure
+      (empty? categories) true
+      (not-every? map? categories) :invalid-structure
+      (not-every? valid-category-structure? categories) :invalid-structure
+      (not-every? valid-category-slug? categories) :invalid-category-slug
+      (not-every? valid-category-name? categories) :invalid-category-name
+      :else
+        (let [non-leaves (reduce conj child-categories (map :categories (filter :categories categories)))]
+          (if (empty? non-leaves)
+            true
+            (recur (first non-leaves) (vec (rest non-leaves))))))))
+
 (defn- taxonomy-slug-from-path [category-path]
   "Return the taxonomy slug given a category path such as: /taxonomy-slug/category-a/category-b"
   (if (or (nil? category-path) (not (string? category-path)))
@@ -150,7 +145,7 @@
         (nth path-parts 1)
         (first path-parts)))))
 
-(defn- category-slugs-from-path [category-path]
+(defn category-slugs-from-path [category-path]
   "Return a sequence of the category slugs given a category path such as: /taxonomy-slug/cat-a/cat-b"
   (if (or (nil? category-path) (not (string? category-path)))
     []
@@ -165,49 +160,80 @@
         (blank? (first path-parts)) (vec (rest (rest path-parts)))
         :else (vec (rest path-parts))))))
 
-(defn hash-category-slugs
-  "Replace all the vectors of maps with ordered maps of maps keyed by the category slug"
-  [category-vector]
+(declare hash-category-slugs)
+
+(defn- category-from-map [m]
+  "Return the category map with its :categories vector replaced by an ordered map (if it has one)"
+  (if-let [categories (:categories m)]
+    (assoc m :categories (hash-category-slugs categories))
+    m))
+
+(defn- hash-category-slugs
+  "Replace all the vectors of maps in the category tree with ordered maps of maps keyed by the category slug"
+  [categories]
     ; create an ordered map with the slug as the key and the name and categories as values
-    (zip-ordered-map 
-      (map #(first (keys (dissoc % :categories))) category-vector)
-      category-vector))
+    (zip-ordered-map (map :slug categories) (map category-from-map categories)))
 
-  ; TODO recursion
-  
-  ; (let [non-leaves (reduce conj child-categories (map :categories (filter :categories categories)))]
-  ; (if (empty? non-leaves)
-  ;   true
-  ;   (recur (first non-leaves) (vec (rest non-leaves))))))))
+(defn- new-categories [slugs category-name]
+  ""
+  (let [slug (first slugs)
+        tail (rest slugs)]
+    (if (empty? tail)
+      {:slug slug :name category-name}
+      {:slug slug :name slug :categories (ordered-map (first tail) (new-categories tail category-name))})))
 
+(declare vectorize-category-slugs)
 
+(defn- categories-vector-from-map [m]
+  ""
+  (if-let [categories (:categories m)]
+    (assoc m :categories (vectorize-category-slugs categories))
+    m))
 
-;; ToDo - hide from docs (needs to be public for testing)
-(defn create-categories
-   ([category-slugs categories] (create-categories category-slugs (hash-category-slugs categories)))
-   ([category-slugs category categories]
-    true))
+(defn- vectorize-category-slugs
+  "Replace all the ordered maps of maps in the category tree with vectors of maps"
+  [categories]
+  (vec (map categories-vector-from-map (vec (vals categories)))))
 
-;     (let category-slug [(first category-slugs)]
-;       (if (nil? category-slug)
-;         categories
+(defn- create-categories
+  ""
+  ([category-name category-slugs categories] 
+    (vectorize-category-slugs (create-categories category-name [] category-slugs (hash-category-slugs categories))))
+ 
+  ([category-name category-path category-slugs categories]
+    (let [category-slug (first category-slugs)
+          category (get-in categories (conj category-path category-slug))
+          remaining-path (vec (rest category-slugs))]
+      (match [category-slug remaining-path category]
+        ;; the category exists and its the last one in the path we are adding
+        [_ [] {}] categories ; all done with the existing categories as they are
 
-;       ; it doesn't exist and this is the last one - add w/ name and w/o categories
-;       ; it doesn't exist and there are more - add w/ categories
-;       ; it exists and this is the last one - done
-;       ; it exists and there are more and it has categories - move on
-;       ; it exists and there are more and it doesn't have categories - add categories
-;         (recur (rest category-slugs) next-category updated-categories)))))))
+        ;; the category doesn't exist
+        [_ _ nil] 
+          ; add it
+          (assoc-in categories (conj category-path category-slug) 
+                               (new-categories (vec (cons category-slug remaining-path)) category-name)) 
+        
+        ;; the category exists and it has categories already
+        [_ _ ({} :guard :categories)] 
+          ; recurse (not tail recursion)
+          (create-categories category-name (conj category-path category-slug :categories) remaining-path categories)
+        
+        ;; else, the category exists but it doesn't have categories
+        :else
+          ; add categories
+          (assoc-in categories (conj category-path category-slug :categories) 
+                               (ordered-map (first remaining-path) (new-categories remaining-path category-name)))))))
 
 (defn create-category
   "Given the slug of the collection, a path to a new category, add an optional name for the category, create
   the category and any missing categories in the path to the category.
   For example, a path: /taxonomy-slug/existing-a/new-category-a/new-category-b
   would result in creating two new categories with the slugs new-category-a and new-category-b. If a name
-  was provided it would be the name for the category with the slug new-category-b.
-  The slug from the category path is used as the name if none is provided.
+  is provided, it is the name for the last new category, in this case the new category with the slug new-category-b.
+  The slug from the category path is used as the name where none is provided.
   :bad-collection is returned if there's no collection with that slug.
-  :bad-taxonomy is returned if there's no taxonomy with that slug from the start of the category path."
+  :bad-taxonomy is returned if there's no taxonomy with that slug at the start of the category path."
   ([coll-slug category-path] (create-category coll-slug category-path (taxonomy-slug-from-path category-path)))
   ([coll-slug category-path category-name]
     (let [taxonomy-slug (taxonomy-slug-from-path category-path)
@@ -215,5 +241,8 @@
       (cond 
         (nil? result) :bad-taxonomy
         (keyword? result) result
-        :else (update-taxonomy coll-slug taxonomy-slug 
-          (assoc result :categories (create-categories (category-slugs-from-path category-path) (:categories result))))))))
+        :else (resource/update-resource coll-slug taxonomy-slug
+                {:reserved (allow-category-reserved-properties)
+                 :retained retained-properties
+                 :updated (assoc result :categories (create-categories category-name (category-slugs-from-path category-path) (:categories result)))}
+                :taxonomy)))))

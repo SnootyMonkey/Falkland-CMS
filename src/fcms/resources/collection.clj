@@ -109,4 +109,4 @@
   "Return all the collections in the system as a sequence of maps."
   []
   (when-let [collections (common/doc-from-view :collection :all-ids-by-slug)]
-    (map #(common/map-from-db (:doc %)) collections)))
+    (vec (map #(common/map-from-db (:doc %)) collections))))

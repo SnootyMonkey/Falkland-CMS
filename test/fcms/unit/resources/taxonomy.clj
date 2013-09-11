@@ -34,6 +34,15 @@
     	(is (= :bad-taxonomy (create-category "c" "/not-here/new")))
     	(is (= :bad-taxonomy (create-category "c" "/not-here/new" "New"))))
 
+    ; empty to new
+    ; empty to new nested
+    ; 1 to new peer
+    ; 1 to new child
+    ; 1 to new nested child
+    ; 1 nested to new nested peer
+    ; 1 nested to new child
+    ; 1 nested to new nested child
+
     ; (testing "creating new top level categories"
     ;     (is (true? (create-category "c" "/t/new-a")))
     ;     (let [categories (:categories (get-taxonomy "c" "t"))]

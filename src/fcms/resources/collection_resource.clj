@@ -112,4 +112,4 @@
   [coll-slug type]
   (collection/with-collection coll-slug
     (when-let [results (common/doc-from-view-with-db type :all-slugs-by-coll-id (:id collection))]
-      (map #(common/resource-from-db coll-slug (:doc %)) results))))
+      (vec (map #(common/resource-from-db coll-slug (:doc %)) results)))))
