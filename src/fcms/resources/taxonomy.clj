@@ -1,7 +1,6 @@
 (ns fcms.resources.taxonomy
   (:require [clojure.core.match :refer (match)]
             [clojure.string :refer (blank? split)]
-            [print.foo :refer (print-> print-defn-)]
             [flatland.ordered.map :refer (ordered-map)]
             [fcms.lib.ordered-map :refer (zip-ordered-map)]
             [fcms.resources.common :as common]
@@ -105,8 +104,7 @@
     (= 2 (count (dissoc category :categories)))))
 
 (defn- valid-category-name? [category]
-  (let [cat-name (:name category)]
-    (and (string? cat-name) (not (blank? cat-name)))))
+  (common/valid-name? (:name category)))
 
 ;; ToDo - hide from docs (needs to be public for testing)
 (defn valid-categories
@@ -233,16 +231,21 @@
   is provided, it is the name for the last new category, in this case the new category with the slug new-category-b.
   The slug from the category path is used as the name where none is provided.
   :bad-collection is returned if there's no collection with that slug.
-  :bad-taxonomy is returned if there's no taxonomy with that slug at the start of the category path."
-  ([coll-slug category-path] (create-category coll-slug category-path (taxonomy-slug-from-path category-path)))
+  :bad-taxonomy is returned if there's no taxonomy with that slug at the start of the category path.
+  :invalid-category-slug is returned if any of the slugs in the category path are not valid FCMS slugs.
+  :invalid-category-name is returned if a category name is provided and it's not a non-empty string."
+  ([coll-slug category-path] (create-category coll-slug category-path (last (category-slugs-from-path category-path))))
   ([coll-slug category-path category-name]
     (let [taxonomy-slug (taxonomy-slug-from-path category-path)
+          category-slugs (category-slugs-from-path category-path)
           result (get-taxonomy coll-slug taxonomy-slug)]
       (cond 
         (nil? result) :bad-taxonomy
         (keyword? result) result
+        (not-every? common/valid-slug? category-slugs) :invalid-category-slug
+        (not (common/valid-name? category-name)) :invalid-category-name
         :else (resource/update-resource coll-slug taxonomy-slug
                 {:reserved (allow-category-reserved-properties)
                  :retained retained-properties
-                 :updated (assoc result :categories (create-categories category-name (category-slugs-from-path category-path) (:categories result)))}
+                 :updated (assoc result :categories (create-categories category-name category-slugs (:categories result)))}
                 :taxonomy)))))

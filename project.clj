@@ -7,39 +7,41 @@
     [org.clojure/clojure "1.5.1"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.incubator "0.1.3"] ; functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [org.clojure/core.match "0.2.0-rc5"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
-    [org.clojure/clojurescript "0.0-1877"] ; ClojureScript compiler https://github.com/clojure/clojurescript
+    [org.clojure/clojurescript "0.0-1878"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     [cheshire "5.2.0"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.1"] ; Ordered hash map https://github.com/flatland/ordered
     [ring/ring-jetty-adapter "1.2.0"] ; Web Server https://github.com/ring-clojure/ring
     [compojure "1.1.5"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.9.0"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0-RC1"] ; CouchDB client https://github.com/clojure-clutch/clutch
-    [clojurewerkz/elastisch "1.2.0"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
+    [clojurewerkz/elastisch "1.3.0-beta2"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [com.taoensso/timbre "2.6.1"] ; Logging https://github.com/ptaoussanis/timbre
   ]
   :profiles {
-    :dev {
-      :env {:liberator-trace true}
-      :dependencies [
-        [print-foo "0.3.7"] ; Old school print debugging https://github.com/danielribeiro/print-foo
-        [org.clojure/tools.trace "0.7.6"] ; Tracing macros/fns https://github.com/clojure/tools.trace
-      ]
-    }
     :qa {
       :env {
         :db-name "falklandcms-test"
         :liberator-trace false
       }
       :dependencies [
-        [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
         [midje "1.6-beta1"] ; Example-based testing https://github.com/marick/Midje
+        [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
       ]
       :cucumber-feature-paths ["test/fcms/features"]
     }
+    :dev [:qa {
+      :env {
+        :db-name "falklandcms"
+        :liberator-trace true
+      }
+      :dependencies [
+        [print-foo "0.3.7"] ; Old school print debugging https://github.com/danielribeiro/print-foo
+        [org.clojure/tools.trace "0.7.6"] ; Tracing macros/fns https://github.com/clojure/tools.trace
+      ]
+    }]
   }
   :aliases {
-    "deps" ["do" "with-profile" "dev" "deps," "with-profile" "qa" "deps"]
     "init-db" ["run" "-m" "fcms.db.views"]
     "init-test-db" ["with-profile" "qa" "run" "-m" "fcms.db.views"]
     "build" ["do" "clean," "deps," "git-deps,", "init-db"]
@@ -49,7 +51,7 @@
     "test-all" ["do" "midje," "test," "cucumber"]
     "test!" ["with-profile", "qa" "do" "build,", "test-all"]
     "spell" ["spell" "-n"]
-    "ancient" ["do" "with-profile" "dev" "ancient" ":allow-qualified," "with-profile" "qa" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"]
+    "ancient" ["do" "with-profile" "dev" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"]
   }
   :git-dependencies [
     ["https://github.com/clojure-liberator/liberator.git"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator

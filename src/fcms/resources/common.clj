@@ -65,6 +65,11 @@
       ;; recur with the next possible slug
       (recur coll-id (next-slug slug counter) (inc counter)))))
 
+;; Validation functions
+
+(defn valid-name? [n]
+  (and (string? n) (not (s/blank? n))))
+
 ;; Raw resource functions
 
 (defn resource-doc [coll-id slug type]
