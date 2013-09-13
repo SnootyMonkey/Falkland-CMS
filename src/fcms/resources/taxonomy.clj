@@ -106,8 +106,7 @@
 (defn- valid-category-name? [category]
   (common/valid-name? (:name category)))
 
-;; ToDo - hide from docs (needs to be public for testing)
-(defn valid-categories
+(defn- valid-categories
   "Validate a tree of categories, the following errors may be returned:
   invalid-structure, :invalid-category-name, :invalid-category-slug"
   ([categories] (valid-categories categories []))
@@ -134,7 +133,9 @@
             true
             (recur (first non-leaves) (vec (rest non-leaves))))))))
 
-(defn- taxonomy-slug-from-path [category-path]
+(defn- 
+  ^{:testable true}
+  taxonomy-slug-from-path [category-path]
   "Return the taxonomy slug given a category path such as: /taxonomy-slug/category-a/category-b"
   (if (or (nil? category-path) (not (string? category-path)))
     ""
@@ -143,7 +144,9 @@
         (nth path-parts 1)
         (first path-parts)))))
 
-(defn category-slugs-from-path [category-path]
+(defn- 
+  ^{:testable true}
+  category-slugs-from-path [category-path]
   "Return a sequence of the category slugs given a category path such as: /taxonomy-slug/cat-a/cat-b"
   (if (or (nil? category-path) (not (string? category-path)))
     []
@@ -240,8 +243,8 @@
           category-slugs (category-slugs-from-path category-path)
           result (get-taxonomy coll-slug taxonomy-slug)]
       (cond 
-        (nil? result) :bad-taxonomy
         (keyword? result) result
+        (nil? result) :bad-taxonomy
         (not-every? common/valid-slug? category-slugs) :invalid-category-slug
         (not (common/valid-name? category-name)) :invalid-category-name
         :else (resource/update-resource coll-slug taxonomy-slug
@@ -249,3 +252,28 @@
                  :retained retained-properties
                  :updated (assoc result :categories (create-categories category-name category-slugs (:categories result)))}
                 :taxonomy)))))
+
+(defn- category-exists?
+  "Recursive function to ensure that each category in the path exists in the category tree."
+  [path-so-far remaining-path categories]
+    (if (empty? remaining-path)
+      true
+      (let [category-slug (first remaining-path)
+            category (get-in categories (conj path-so-far category-slug))]
+        (if-not category
+          false
+          (recur (conj path-so-far category-slug :categories) (rest remaining-path) categories)))))
+
+(defn category-exists
+  "Given the slug of the collection, and a path to a category return true if the category exists and false if it does not.
+  :bad-collection is returned if there's no collection with that slug.
+  :bad-taxonomy is returned if there's no taxonomy with that slug at the start of the category path."
+  [coll-slug category-path]
+  (let [taxonomy-slug (taxonomy-slug-from-path category-path)
+        category-slugs (category-slugs-from-path category-path)
+        result (get-taxonomy coll-slug taxonomy-slug)]
+    (cond 
+      (keyword? result) result
+      (nil? result) :bad-taxonomy
+      (empty? category-slugs) false
+      :else (category-exists? [] category-slugs (hash-category-slugs (:categories result))))))

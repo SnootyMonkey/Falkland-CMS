@@ -1,33 +1,10 @@
 (ns fcms.unit.resources.category-creation
-  (:require [clojure.test :refer :all]
-            [midje.sweet :refer :all]
-  			    [fcms.lib.resource :refer (c verify-new-resource)]
+  (:require [midje.sweet :refer :all]
+  			    [fcms.lib.resource :refer (c)]
+            [fcms.unit.resources.taxonomy :refer (empty-collection-c existing-categories empty-taxonomy-et existing-taxonomy-t)]
             [fcms.resources.collection :as collection]
             [fcms.resources.collection-resource :as resource]
-            [fcms.resources.taxonomy :refer :all]))
-
-(defn empty-collection-c []
-  (collection/delete-collection c)
-  (collection/create-collection c))
-
-(def existing-categories [
-  {:slug "foo" :name "Foo"}
-  {:slug "bar" :name "Bar"}
-  {:slug "fubar" :name "FUBAR" :categories [
-    {:slug "a" :name "A"}
-    {:slug "b" :name "B"}
-  ]}])
-
-(defn- empty-taxonomy-et []
-  (create-taxonomy c "Empty Taxonomy" 
-     {:slug "et"
-      :description "Categorize it."}))
-
-(defn- existing-taxonomy-t []
-  (resource/create-resource c "Taxonomy" :taxonomy [] 
-    {:slug "t"
-	   :description "Categorize it."
-	   :categories existing-categories}))
+            [fcms.resources.taxonomy :refer (create-category)]))
 
 (with-state-changes [(before :facts (do (empty-collection-c) (empty-taxonomy-et) (existing-taxonomy-t)))
                      (after :facts (collection/delete-collection c))]

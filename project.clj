@@ -30,16 +30,18 @@
       ]
       :cucumber-feature-paths ["test/fcms/features"]
     }
-    :dev [:qa {
+    :dev {
       :env {
         :db-name "falklandcms"
         :liberator-trace true
       }
       :dependencies [
+        [midje "1.6-beta1"] ; Example-based testing https://github.com/marick/Midje
+        [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
         [print-foo "0.3.7"] ; Old school print debugging https://github.com/danielribeiro/print-foo
         [org.clojure/tools.trace "0.7.6"] ; Tracing macros/fns https://github.com/clojure/tools.trace
       ]
-    }]
+    }
   }
   :aliases {
     "init-db" ["run" "-m" "fcms.db.views"]
