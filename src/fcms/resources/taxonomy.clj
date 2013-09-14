@@ -5,7 +5,8 @@
             [fcms.lib.ordered-map :refer (zip-ordered-map)]
             [fcms.resources.common :as common]
             [fcms.resources.collection-resource :as resource]
-            [fcms.resources.collection :as collection]))
+            [fcms.resources.collection :as collection]
+            [fcms.resources.item :as item]))
 
 (def taxonomy-media-type "application/vnd.fcms.taxonomy+json;version=1")
 
@@ -277,3 +278,28 @@
       (nil? result) :bad-taxonomy
       (empty? category-slugs) false
       :else (category-exists? [] category-slugs (hash-category-slugs (:categories result))))))
+
+(defn categorize-item
+  "Given the slug of the collection, a slug of an item in the collection, and a path to a category in a taxonomy,
+  categorize the item as a member of the category. This function is idempotent and categorizing the item again won't
+  change the item.
+  :bad-collection is returned if there's no collection with that slug.
+  :bad-item is returned if there's no item in the collection with that slug.
+  :bad-taxonomy is returned if there's no taxonomy with that slug at the start of the category path.
+  :bad-category is returned if there's no category in the taxonomy with that category path."
+  [coll-slug category-path item-slug]
+    (let [taxonomy-slug (taxonomy-slug-from-path category-path)
+          category-slugs (category-slugs-from-path category-path)
+          result (get-taxonomy coll-slug taxonomy-slug)
+          item (item/get-item coll-slug item-slug)]
+    (cond 
+      (keyword? result) result
+      (nil? item) :bad-item
+      (nil? result) :bad-taxonomy
+      (empty? category-slugs) :bad-category
+      (not (true? (category-exists coll-slug category-path))) :bad-category
+      :else true)))
+
+(defn uncategorize-item
+  ""
+  [coll-slug category-path item-slug])

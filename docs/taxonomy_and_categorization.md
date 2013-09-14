@@ -37,9 +37,9 @@ move-category coll-slug, old-category-path, new-category-path
 delete-category coll-slug, category-path
 
 
-categorize-item coll-slug tax-path item
+categorize-item coll-slug category-path item-slug
 
-uncategorize-item coll-slug tax-path item
+uncategorize-item coll-slug category-path item-slug
 
 	Item categorized with A/B/C
 
