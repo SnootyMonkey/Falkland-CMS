@@ -6,6 +6,17 @@
             [fcms.resources.collection :as collection]
             [fcms.lib.slugify :refer (slugify)]))
 
+(def reserved-properties
+  "Properties that can't be specified during a create and are ignored during an update."
+  (conj common/reserved-properties :collection :categories)) 
+(def retained-properties
+  "Properties that are retained during an update even if they aren't in the updated property set."
+  (conj common/retained-properties :collection :categories))
+
+;; ToDo hide in docs
+(defn allow-category-reserved-properties []
+  (vec (remove #(= :categories %) reserved-properties)))
+
 (defn- get-resource-with-db [coll-id coll-slug slug type]
   (when-let [resource (common/resource-doc coll-id slug type)]
     (common/resource-from-db coll-slug resource)))

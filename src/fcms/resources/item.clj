@@ -5,13 +5,6 @@
 
 (def item-media-type "application/vnd.fcms.item+json;version=1")
 
-(def reserved-properties
-  "Properties that can't be specified during a create and are ignored during an update."
-  (conj common/reserved-properties :collection)) 
-(def retained-properties
-  "Properties that are retained during an update even if they aren't in the updated property set."
-  (conj common/retained-properties :collection))
-
 (defn get-item
   "Given the slug of the collection containing the item and the slug of the item,
   return the item as a map, or return :bad-collection if there's no collection with that slug, or
@@ -30,7 +23,7 @@
   set, :property-conflict will be returned."
   ([coll-slug item-name] (valid-new-item coll-slug item-name {}))
   ([coll-slug item-name props]
-    (resource/valid-new-resource coll-slug item-name reserved-properties :item props)))
+    (resource/valid-new-resource coll-slug item-name resource/reserved-properties :item props)))
 
 (defn create-item
   "Create a new item in the collection specified by its slug, using the specified
@@ -45,7 +38,7 @@
   set, :property-conflict will be returned."
   ([coll-slug item-name] (create-item coll-slug item-name {}))
   ([coll-slug item-name props]
-    (resource/create-resource coll-slug item-name :item reserved-properties props)))
+    (resource/create-resource coll-slug item-name :item resource/reserved-properties props)))
 
 (defn delete-item
   "Given the slug of the collection containing the item and the slug of the item,
@@ -65,7 +58,7 @@
   return :slug-conflict. If no item slug is specified in
   the properties it will be retain its current slug."
   [coll-slug slug props]
-    (resource/valid-resource-update coll-slug slug reserved-properties props :item))
+    (resource/valid-resource-update coll-slug slug resource/reserved-properties props :item))
 
 (defn update-item
   "Update an item in the collection specified by its slug using the specified
@@ -73,11 +66,11 @@
   the item will be moved to the new slug, otherwise the slug will remain the same.
   The same validity conditions and invalid return values as valid-item-update apply."
   [coll-slug slug props]
-    (let [reason (resource/valid-resource-update coll-slug slug reserved-properties props :item)]
+    (let [reason (resource/valid-resource-update coll-slug slug resource/reserved-properties props :item)]
       (if (true? reason)
         (resource/update-resource coll-slug slug 
-          {:reserved reserved-properties
-          :retained retained-properties 
+          {:reserved resource/reserved-properties
+          :retained resource/retained-properties 
           :updated props} :item)
         reason)))
 

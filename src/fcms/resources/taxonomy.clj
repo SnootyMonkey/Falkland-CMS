@@ -1,6 +1,6 @@
 (ns fcms.resources.taxonomy
   (:require [clojure.core.match :refer (match)]
-            [clojure.string :refer (blank? split)]
+            [clojure.string :as s]
             [flatland.ordered.map :refer (ordered-map)]
             [fcms.lib.ordered-map :refer (zip-ordered-map)]
             [fcms.resources.common :as common]
@@ -9,16 +9,6 @@
             [fcms.resources.item :as item]))
 
 (def taxonomy-media-type "application/vnd.fcms.taxonomy+json;version=1")
-
-(def reserved-properties
-  "Properties that can't be specified during a create and are ignored during an update."
-  (reduce conj common/reserved-properties [:collection :categories])) 
-(def retained-properties
-  "Properties that are retained during an update even if they aren't in the updated property set."
-  (reduce conj common/retained-properties [:collection :categories]))
-
-(defn- allow-category-reserved-properties []
-  (vec (remove #(= :categories %) reserved-properties)))
 
 (defn get-taxonomy
   "Given the slug of the collection containing the taxonomy and the slug of the taxonomy,
@@ -38,7 +28,7 @@
   set, :property-conflict will be returned."
   ([coll-slug taxonomy-name] (valid-new-taxonomy coll-slug taxonomy-name {}))
   ([coll-slug taxonomy-name props]
-    (resource/valid-new-resource coll-slug taxonomy-name reserved-properties type props)))
+    (resource/valid-new-resource coll-slug taxonomy-name resource/reserved-properties type props)))
 
 (defn create-taxonomy
   "Create a new taxonomy in the collection specified by its slug, using the specified
@@ -53,7 +43,7 @@
   set, :property-conflict will be returned."
   ([coll-slug taxonomy-name] (create-taxonomy coll-slug taxonomy-name {}))
   ([coll-slug taxonomy-name props]
-    (resource/create-resource coll-slug taxonomy-name :taxonomy (allow-category-reserved-properties) (assoc props :categories []))))
+    (resource/create-resource coll-slug taxonomy-name :taxonomy (resource/allow-category-reserved-properties) (assoc props :categories []))))
 
 (defn delete-taxonomy
   "Given the slug of the collection containing the taxonomy and the slug of the taxonomy,
@@ -73,7 +63,7 @@
   return :slug-conflict. If no item slug is specified in
   the properties it will be retain its current slug."
   [coll-slug slug props]
-  (resource/valid-resource-update coll-slug slug reserved-properties props :taxonomy))
+  (resource/valid-resource-update coll-slug slug resource/reserved-properties props :taxonomy))
 
 (defn update-taxonomy
   "Update a taxonomy in the collection specified by its slug using the specified
@@ -84,8 +74,8 @@
     (let [reason (valid-taxonomy-update coll-slug slug props)]
       (if (true? reason)
         (resource/update-resource coll-slug slug 
-          {:reserved reserved-properties
-          :retained retained-properties 
+          {:reserved resource/reserved-properties
+          :retained resource/retained-properties 
           :updated props} :taxonomy)
         reason)))
 
@@ -140,8 +130,8 @@
   "Return the taxonomy slug given a category path such as: /taxonomy-slug/category-a/category-b"
   (if (or (nil? category-path) (not (string? category-path)))
     ""
-    (let [path-parts (split category-path #"/")]
-      (if (and (> (count path-parts) 1) (blank? (first path-parts)))
+    (let [path-parts (s/split category-path #"/")]
+      (if (and (> (count path-parts) 1) (s/blank? (first path-parts)))
         (nth path-parts 1)
         (first path-parts)))))
 
@@ -151,7 +141,7 @@
   "Return a sequence of the category slugs given a category path such as: /taxonomy-slug/cat-a/cat-b"
   (if (or (nil? category-path) (not (string? category-path)))
     []
-    (let [path-parts (split category-path #"/")]
+    (let [path-parts (s/split category-path #"/")]
         ;; "" => []
         ;; "tax" => []
         ;; "" "tax" => []
@@ -159,7 +149,7 @@
         ;; "tax" "cat-a" "cat-b" => ["cat-a" "cat-b"]
       (cond 
         (= (count path-parts) 1) []
-        (blank? (first path-parts)) (vec (rest (rest path-parts)))
+        (s/blank? (first path-parts)) (vec (rest (rest path-parts)))
         :else (vec (rest path-parts))))))
 
 (declare hash-category-slugs)
@@ -249,8 +239,8 @@
         (not-every? common/valid-slug? category-slugs) :invalid-category-slug
         (not (common/valid-name? category-name)) :invalid-category-name
         :else (resource/update-resource coll-slug taxonomy-slug
-                {:reserved (allow-category-reserved-properties)
-                 :retained retained-properties
+                {:reserved (resource/allow-category-reserved-properties)
+                 :retained resource/retained-properties
                  :updated (assoc result :categories (create-categories category-name category-slugs (:categories result)))}
                 :taxonomy)))))
 
@@ -279,26 +269,50 @@
       (empty? category-slugs) false
       :else (category-exists? [] category-slugs (hash-category-slugs (:categories result))))))
 
+(defn- normalize-category-path
+  "Remove the prefix slash and trailing slash if they are present."
+  [category-path]
+  ;; "/tax/cat/cat/" => "tax/cat/cat"
+  (s/replace (s/replace category-path #"^/" "") #"/$" ""))
+
+(defn- duplicate-category?
+  "Determine if the item as already categorized by this category, or by one of its children."
+  [category-path categories]
+  (let [path (normalize-category-path category-path)]
+    (if (some #(re-find (re-pattern (str "^" path)) %) categories) true false)))
+
 (defn categorize-item
   "Given the slug of the collection, a slug of an item in the collection, and a path to a category in a taxonomy,
   categorize the item as a member of the category. This function is idempotent and categorizing the item again won't
   change the item.
+  If this request is to categorize the item with a child of a parent category that is already categorized on the item,
+  then the parent categorization will be removed.
   :bad-collection is returned if there's no collection with that slug.
   :bad-item is returned if there's no item in the collection with that slug.
   :bad-taxonomy is returned if there's no taxonomy with that slug at the start of the category path.
-  :bad-category is returned if there's no category in the taxonomy with that category path."
+  :bad-category is returned if there's no category in the taxonomy with that category path.
+  :duplicate-category is returned if item is already a member of the category provided or one of its children."
   [coll-slug category-path item-slug]
-    (let [taxonomy-slug (taxonomy-slug-from-path category-path)
-          category-slugs (category-slugs-from-path category-path)
+    (let [path (normalize-category-path category-path)
+          taxonomy-slug (taxonomy-slug-from-path path)
+          category-slugs (category-slugs-from-path path)
           result (get-taxonomy coll-slug taxonomy-slug)
           item (item/get-item coll-slug item-slug)]
-    (cond 
-      (keyword? result) result
-      (nil? item) :bad-item
-      (nil? result) :bad-taxonomy
-      (empty? category-slugs) :bad-category
-      (not (true? (category-exists coll-slug category-path))) :bad-category
-      :else true)))
+      (cond 
+        (keyword? result) result
+        (nil? item) :bad-item
+        (nil? result) :bad-taxonomy
+        (empty? category-slugs) :bad-category
+        (not (true? (category-exists coll-slug path))) :bad-category
+        :else
+          (if (duplicate-category? path (:categories item))
+            :duplicate-category
+            ;; add the category to the categories vector and update the item
+            (resource/update-resource coll-slug item-slug
+                {:reserved (resource/allow-category-reserved-properties)
+                 :retained resource/retained-properties
+                 :updated (assoc item :categories (vec (conj (:categories item) path)))}
+                :item)))))
 
 (defn uncategorize-item
   ""
