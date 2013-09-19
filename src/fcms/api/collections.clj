@@ -1,6 +1,6 @@
 (ns fcms.api.collections
   (:require [compojure.core :refer (defroutes ANY)]
-            [liberator.core :refer (defresource)]            
+            [liberator.core :refer (defresource)]
             [taoensso.timbre :refer (debug info warn error fatal spy)]
             [fcms.api.common :as common]
             [fcms.resources.collection :as collection]

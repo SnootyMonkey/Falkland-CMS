@@ -3,6 +3,9 @@
   :url "https://github.com/SnootyMonkey/Falkland-CMS/"
   :license {:name "Mozilla Public License v2.0"
             :url "http://www.mozilla.org/MPL/2.0/"}
+  
+  :min-lein-version "2.3"
+
   :dependencies [
     [org.clojure/clojure "1.5.1"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.incubator "0.1.3"] ; functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
@@ -18,6 +21,7 @@
     [environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [com.taoensso/timbre "2.6.1"] ; Logging https://github.com/ptaoussanis/timbre
   ]
+  
   :profiles {
     :qa {
       :env {
@@ -40,54 +44,100 @@
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
         [print-foo "0.3.7"] ; Old school print debugging https://github.com/danielribeiro/print-foo
         [org.clojure/tools.trace "0.7.6"] ; Tracing macros/fns https://github.com/clojure/tools.trace
+        [com.cemerick/piggieback "0.1.0"] ; ClojureScript bREPL from the nREPL https://github.com/cemerick/piggieback
         [clj-ns-browser "1.3.1"] ; Doc browser https://github.com/franks42/clj-ns-browser
       ]
+      :injections [
+        (require '[clojure.pprint :refer :all]
+                 '[clojure.stacktrace :refer (print-stack-trace)]
+                 '[clojure.test :refer :all]
+                 '[print.foo :refer :all]
+                 '[clj-time.format :as t]
+                 '[clojure.string :as s]
+                 '[cljs.repl.browser :as b-repl]
+                 '[cemerick.piggieback :as pb])
+        (defn brepl [] (pb/cljs-repl :repl-env (b-repl/repl-env :port 9000)))
+      ]
+    }
+    :prod {
+      :env {
+        :db-name "falklandcms"
+        :liberator-trace false
+      }
     }
   }
+
   :aliases {
     "init-db" ["run" "-m" "fcms.db.views"]
     "init-test-db" ["with-profile" "qa" "run" "-m" "fcms.db.views"]
-    "build" ["do" "clean," "deps," "git-deps,", "init-db"]
+    "build" ["do" "clean," "deps," "git-deps,", "compile," "init-db"]
     "midje" ["with-profile" "qa" "midje"]    
     "cucumber" ["with-profile" "qa" "cucumber"]
     "test" ["with-profile" "qa" "do" "test"]
     "test-all" ["do" "midje," "test," "cucumber"]
-    "test!" ["with-profile", "qa" "do" "build,", "test-all"]
+    "test-all!" ["with-profile", "qa" "do" "build,", "test-all"]
+    "start" ["do" "build," "ring" "server-headless"]
+    "start!" ["with-profile" "prod" "start"]
     "spell" ["spell" "-n"]
-    "ancient" ["do" "with-profile" "dev" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"]
+    "ancient" ["with-profile" "dev" "do" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"]
   }
+
   :git-dependencies [
     ["https://github.com/clojure-liberator/liberator.git"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
   ]
+
   :plugins [
-    [lein-pprint "1.1.1"] ; pretty-print the lein project map https://github.com/technomancy/leiningen/tree/master/lein-pprint
     [lein-ring "0.8.7"] ; common ring tasks https://github.com/weavejester/lein-ring
     [lein-environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [lein-git-deps "0.0.1-SNAPSHOT"] ; dependencies from GitHub https://github.com/tobyhede/lein-git-deps
     [lein-cljsbuild "0.3.3"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
     [lein-cucumber "1.0.2"] ; BDD testing https://github.com/nilswloka/lein-cucumber
     [lein-midje "3.1.1"] ; Example-based testing https://github.com/marick/Midje
+    [lein-bikeshed "0.1.3"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
+    [lein-pprint "1.1.1"] ; pretty-print the lein project map https://github.com/technomancy/leiningen/tree/master/lein-pprint
     [lein-ancient "0.4.4"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
     [lein-spell "0.1.0"] ; Catch spelling mistakes in docs and docstrings https://github.com/cldwalker/lein-spell
   ]
+
   :source-paths [
     ".lein-git-deps/liberator/src/"
     "src/"
   ]
+
+  ;; ClojureScript
+
+  :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
+
   :cljsbuild {
     :crossovers [] ; compile for both Clojure and ClojureScript
-    :builds
-      [{
-      :source-paths ["src/fcms/cljs" "src"] ; CLJS source code path
-      ;; Google Closure (CLS) options configuration
-      :compiler {
-        :output-to "resources/public/js/fcms.js" ; generated JS script filename
-        :optimizations :simple ; JS optimization directive
-        :pretty-print false ; generated JS code prettyfication
-      }}]
+    :builds {
+      :dev {
+        :source-paths ["src/fcms/cljs" "src/brepl"] ; CLJS source code path
+        ;; Google Closure (CLS) options configuration
+        :compiler {
+          :output-to "resources/public/js/fcms.js"
+          :optimizations :whitespace
+          :pretty-print true
+        }
+      }
+      :prod {
+        :source-paths ["src/fcms/cljs"] ; CLJS source code path
+        ;; Google Closure (CLS) options configuration
+        :compiler {
+          :output-to "resources/public/js/fcms.js"
+          :optimizations :advanced
+          :pretty-print false
+        }
+      }
+    }
   }
+
+  ;; Web Application
+
   :ring {
     :handler fcms.app/app
-    :init fcms.db.views/init}
-  :min-lein-version "2.2"
-  :main fcms.app)
+    :init fcms.db.views/init
+  }
+
+  :main fcms.app
+)

@@ -6,11 +6,13 @@
 /out
 /docs/test-urls.txt
 _build/
+/resources/public/js/*
 REPL_prep.clj
 pom.xml
 *.jar
 *.class
 
+.repl
 .nrepl-port
 .lein-git-deps
 .lein-deps-sum
