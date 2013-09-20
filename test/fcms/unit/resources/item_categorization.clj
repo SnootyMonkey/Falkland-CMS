@@ -52,6 +52,23 @@
 (defn- categorize-e [expectation coll-slug category-paths]
 	(categorize expectation coll-slug category-paths e))
 
+(defn- categorize-foo
+  "Create a new item and categorize it by each category in the vector, validating with each add and then with a
+  final check on the categories after getting the item."
+  ([category-paths category-validations] (categorize-foo category-paths [] category-validations []))
+  ([category-paths added-paths category-validations added-validations]
+    (let [category (first category-paths)
+          validation (first category-validations)
+          validations (vec (conj added-validations validation))]
+      (if category
+        (do
+          (item/create-item c foo)
+          (is (= (:categories (taxonomy/categorize-item c category foo)) validations))
+          (categorize-foo (rest category-paths) (vec (conj added-paths category)) (rest category-validations) validations))
+        (do
+          (is (= (:categories (item/get-item c foo)) added-validations))
+          (item/delete-item c foo))))))
+
 (deftest item-categorization
   (testing "item categorization failures"
 
@@ -81,74 +98,35 @@
 
   (testing "item categorization sucesses"
   	(testing "item categorization with a single root category"
-  		(item/create-item c foo)
-  		(is (= (:categories (taxonomy/categorize-item c "t/bar" foo)) ["t/bar"]))
-  		(is (= (:categories (item/get-item c foo)) ["t/bar"]))
-  		(item/delete-item c foo)
-
-  		(item/create-item c foo)
-  		(is (= (:categories (taxonomy/categorize-item c "t/bar/" foo)) ["t/bar"]))
-  		(is (= (:categories (item/get-item c foo)) ["t/bar"]))
-  		(item/delete-item c foo)
-
-  		(item/create-item c foo)
-  		(is (= (:categories (taxonomy/categorize-item c "/t/bar" foo)) ["t/bar"]))
-  		(is (= (:categories (item/get-item c foo)) ["t/bar"]))
-  		(item/delete-item c foo)
-
-  		(item/create-item c foo)
-  		(is (= (:categories (taxonomy/categorize-item c "/t/bar/" foo)) ["t/bar"]))
-  		(is (= (:categories (item/get-item c foo)) ["t/bar"]))
-  		(item/delete-item c foo))
+      (categorize-foo ["t/bar"] ["t/bar"])
+      (categorize-foo ["t/bar/"] ["t/bar"])
+      (categorize-foo ["/t/bar"] ["t/bar"])
+      (categorize-foo ["/t/bar/"] ["t/bar"]))
 
   	(testing "item categorization with multiple root categories"
-  		(item/create-item c foo)
-  		(is (= (:categories (taxonomy/categorize-item c "t/bar" foo)) ["t/bar"]))
-  		(is (= (:categories (taxonomy/categorize-item c "t/foo" foo)) ["t/bar" "t/foo"]))
-  		(is (= (:categories (item/get-item c foo)) ["t/bar" "t/foo"]))
-  		(item/delete-item c foo)
-
-  		(item/create-item c foo)
-  		(is (= (:categories (taxonomy/categorize-item c "t/bar/" foo)) ["t/bar"]))
-  		(is (= (:categories (taxonomy/categorize-item c "t/foo/" foo)) ["t/bar" "t/foo"]))
-  		(is (= (:categories (item/get-item c foo)) ["t/bar" "t/foo"]))
-  		(item/delete-item c foo)
-
-  		(item/create-item c foo)
-  		(is (= (:categories (taxonomy/categorize-item c "/t/bar" foo)) ["t/bar"]))
-  		(is (= (:categories (taxonomy/categorize-item c "/t/foo" foo)) ["t/bar" "t/foo"]))
-  		(is (= (:categories (item/get-item c foo)) ["t/bar" "t/foo"]))
-  		(item/delete-item c foo)
-
-  		(item/create-item c foo)
-  		(is (= (:categories (taxonomy/categorize-item c "/t/bar/" foo)) ["t/bar"]))
-  		(is (= (:categories (taxonomy/categorize-item c "/t/foo/" foo)) ["t/bar" "t/foo"]))
-  		(is (= (:categories (item/get-item c foo)) ["t/bar" "t/foo"]))
-  		(item/delete-item c foo))
+      (categorize-foo ["t/bar" "t/foo"] ["t/bar" "t/foo"])
+      (categorize-foo ["t/bar/" "t/foo/"] ["t/bar" "t/foo"])
+      (categorize-foo ["/t/bar" "/t/foo"] ["t/bar" "t/foo"])
+      (categorize-foo ["/t/bar/" "/t/foo/"] ["t/bar" "t/foo"]))
 
   	(testing "item categorization with a single leaf category"
-  		 (item/create-item c foo)
-  		(is (= (:categories (taxonomy/categorize-item c "t/bar" foo)) ["t/bar"]))
-  		(is (= (:categories (item/get-item c foo)) ["t/bar"]))
-  		(item/delete-item c foo)
+      (categorize-foo ["t/fubar/a"] ["t/fubar/a"])
+      (categorize-foo ["t/fubar/a/"] ["t/fubar/a"])
+      (categorize-foo ["/t/fubar/a"] ["t/fubar/a"])
+      (categorize-foo ["/t/fubar/a/"] ["t/fubar/a"]))
 
-  		(item/create-item c foo)
-  		(is (= (:categories (taxonomy/categorize-item c "t/bar/" foo)) ["t/bar"]))
-  		(is (= (:categories (item/get-item c foo)) ["t/bar"]))
-  		(item/delete-item c foo)
+  	(testing "item categorization with multiple leaf categories"
+      (categorize-foo ["t/fubar/a" "t/fubar/b"] ["t/fubar/a" "t/fubar/b"])
+      (categorize-foo ["t/fubar/a/" "t/fubar/b/"] ["t/fubar/a" "t/fubar/b"])
+      (categorize-foo ["/t/fubar/a" "/t/fubar/b"] ["t/fubar/a" "t/fubar/b"])
+      (categorize-foo ["/t/fubar/a/" "/t/fubar/b/"] ["t/fubar/a" "t/fubar/b"]))
 
-  		(item/create-item c foo)
-  		(is (= (:categories (taxonomy/categorize-item c "/t/bar" foo)) ["t/bar"]))
-  		(is (= (:categories (item/get-item c foo)) ["t/bar"]))
-  		(item/delete-item c foo)
+  	(testing "item categorization with a single root category and a single leaf category"
+      (categorize-foo ["t/bar" "t/fubar/b"] ["t/bar" "t/fubar/b"])
+      (categorize-foo ["t/bar/" "t/fubar/b/"] ["t/bar" "t/fubar/b"])
+      (categorize-foo ["/t/bar" "/t/fubar/b"] ["t/bar" "t/fubar/b"])
+      (categorize-foo ["/t/bar/" "/t/fubar/b/"] ["t/bar" "t/fubar/b"]))))
 
-  		(item/create-item c foo)
-  		(is (= (:categories (taxonomy/categorize-item c "/t/bar/" foo)) ["t/bar"]))
-  		(is (= (:categories (item/get-item c foo)) ["t/bar"]))
-  		(item/delete-item c foo))
-
-  	(testing "item categorization with multiple leaf categories")
-  	(testing "item categorization with a single root category and a single leaf category")))
 
 (deftest item-uncategorization
   (testing "item uncategorization failures")
