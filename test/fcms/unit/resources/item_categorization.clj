@@ -55,16 +55,19 @@
 (defn- categorize-foo
   "Create a new item and categorize it by each category in the vector, validating with each add and then with a
   final check on the categories after getting the item."
-  ([category-paths category-validations] (categorize-foo category-paths [] category-validations []))
-  ([category-paths added-paths category-validations added-validations]
+  ([category-paths category-validations] (categorize-foo true category-paths category-validations))
+  ([incremental-validation category-paths category-validations] 
+    (item/create-item c foo)
+    (categorize-foo incremental-validation category-paths [] category-validations []))
+  ([incremental-validation category-paths added-paths category-validations added-validations]
     (let [category (first category-paths)
           validation (first category-validations)
           validations (vec (conj added-validations validation))]
       (if category
         (do
-          (item/create-item c foo)
           (is (= (:categories (taxonomy/categorize-item c category foo)) validations))
-          (categorize-foo (rest category-paths) (vec (conj added-paths category)) (rest category-validations) validations))
+          (categorize-foo incremental-validation (rest category-paths)
+            (vec (conj added-paths category)) (rest category-validations) validations))
         (do
           (is (= (:categories (item/get-item c foo)) added-validations))
           (item/delete-item c foo))))))
@@ -125,7 +128,11 @@
       (categorize-foo ["t/bar" "t/fubar/b"] ["t/bar" "t/fubar/b"])
       (categorize-foo ["t/bar/" "t/fubar/b/"] ["t/bar" "t/fubar/b"])
       (categorize-foo ["/t/bar" "/t/fubar/b"] ["t/bar" "t/fubar/b"])
-      (categorize-foo ["/t/bar/" "/t/fubar/b/"] ["t/bar" "t/fubar/b"]))))
+      (categorize-foo ["/t/bar/" "/t/fubar/b/"] ["t/bar" "t/fubar/b"])))
+
+  (testing "item categorization that subsumes a parent"
+    (testing "item categorization that subsumes a root parent")
+    (testing "item categorization that subsumes a non-root parent")))
 
 
 (deftest item-uncategorization
