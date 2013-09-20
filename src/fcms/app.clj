@@ -10,9 +10,9 @@
             [compojure.route :as route]))
 
 (defroutes routes
+  (route/resources "/")
   collection-routes
-  item-routes
-  (route/resources "/"))
+  item-routes)
 
 (def trace-app
   (-> routes (wrap-trace :header :ui)))
