@@ -99,13 +99,13 @@ Users of Falkland CMS are one of three types:
 
 ## STATUS
 
-Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of October 2013.
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of 2013.
 
 ## INSTALLATION
 
 ## Quick Start - Heroku
 
-Quick start instructions for Heroku are expected by the end of September 2013.
+Quick start instructions for Heroku are expected by the end of November 2013.
 
 ## Local Installation
 
@@ -116,7 +116,7 @@ Most of Falkland's dependencies are internal, meaning Leiningen will handle gett
 * [CouchDB](http://http://couchdb.apache.org/) - CouchDB is a schema-free, document-oriented database, ideally suited for a CMS
 * [elasticsearch](http://www.elasticsearch.org/) - elasticsearch is a schema-free, document-oriented search engine, ideally suited for CouchDB
 
-Detailed instructions for local installation are expected by the end of September 2013.
+Detailed instructions for local installation are expected by the end of November 2013.
 
 ## DEVELOPMENT AND CONTRIBUTING
 
@@ -124,7 +124,7 @@ Please fork Falkland CMS on GitHub if you'd like to enhance it. Submit your pull
 
 ## GETTING HELP
 
-Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of October 2013 and instructions for getting help will be available then.
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of 2013 and instructions for getting help will be available then.
 
 ## LICENSE
 
