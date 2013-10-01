@@ -9,17 +9,17 @@
   :dependencies [
     [org.clojure/clojure "1.5.1"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.incubator "0.1.3"] ; functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
-    [org.clojure/core.match "0.2.0-rc5"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
-    [org.clojure/clojurescript "0.0-1889"] ; ClojureScript compiler https://github.com/clojure/clojurescript
+    [org.clojure/core.match "0.2.0"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
+    [org.clojure/clojurescript "0.0-1909"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     [cheshire "5.2.0"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.1"] ; Ordered hash map https://github.com/flatland/ordered
     [ring/ring-jetty-adapter "1.2.0"] ; Web Server https://github.com/ring-clojure/ring
     [compojure "1.1.5"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.9.0"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0-RC1"] ; CouchDB client https://github.com/clojure-clutch/clutch
-    [clojurewerkz/elastisch "1.3.0-beta2"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
+    [clojurewerkz/elastisch "1.3.0-beta3"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    [com.taoensso/timbre "2.6.1"] ; Logging https://github.com/ptaoussanis/timbre
+    [com.taoensso/timbre "2.6.2"] ; Logging https://github.com/ptaoussanis/timbre
   ]
   
   :profiles {
@@ -92,10 +92,10 @@
     [lein-git-deps "0.0.1-SNAPSHOT"] ; dependencies from GitHub https://github.com/tobyhede/lein-git-deps
     [lein-cljsbuild "0.3.3"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
     [lein-cucumber "1.0.2"] ; BDD testing https://github.com/nilswloka/lein-cucumber
-    [lein-midje "3.1.1"] ; Example-based testing https://github.com/marick/Midje
+    [lein-midje "3.1.1"] ; Example-based testing https://github.com/marick/lein-midje
     [lein-bikeshed "0.1.3"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
     [lein-pprint "1.1.1"] ; pretty-print the lein project map https://github.com/technomancy/leiningen/tree/master/lein-pprint
-    [lein-ancient "0.4.4"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
+    [lein-ancient "0.5.0-RC1"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
     [lein-spell "0.1.0"] ; Catch spelling mistakes in docs and docstrings https://github.com/cldwalker/lein-spell
   ]
 
