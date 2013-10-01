@@ -128,12 +128,7 @@
       (categorize-foo ["t/bar" "t/fubar/b"] ["t/bar" "t/fubar/b"])
       (categorize-foo ["t/bar/" "t/fubar/b/"] ["t/bar" "t/fubar/b"])
       (categorize-foo ["/t/bar" "/t/fubar/b"] ["t/bar" "t/fubar/b"])
-      (categorize-foo ["/t/bar/" "/t/fubar/b/"] ["t/bar" "t/fubar/b"])))
-
-  (testing "item categorization that subsumes a parent"
-    (testing "item categorization that subsumes a root parent")
-    (testing "item categorization that subsumes a non-root parent")))
-
+      (categorize-foo ["/t/bar/" "/t/fubar/b/"] ["t/bar" "t/fubar/b"]))))
 
 (deftest item-uncategorization
   (testing "item uncategorization failures")
