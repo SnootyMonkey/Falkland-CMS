@@ -9,6 +9,7 @@
 (def t "t")
 (def i "i")
 (def e "e")
+(def u "u")
 (def foo "foo")
 
 (def existing-categories [
@@ -39,7 +40,16 @@
   (f)
   (item/delete-item c e))
 
-(use-fixtures :each empty-collection-c existing-taxonomy-t existing-item-i existing-item-e)
+(defn existing-item-u [f]
+  (item/create-item c u)
+  (taxonomy/categorize-item c "t/foo" u)
+  (taxonomy/categorize-item c "t/bar" u)
+  (taxonomy/categorize-item c "t/fubar/a" u)
+  (taxonomy/categorize-item c "t/fubar/b" u)
+  (f)
+  (item/delete-item c u))
+
+(use-fixtures :each empty-collection-c existing-taxonomy-t existing-item-i existing-item-e existing-item-u)
 
 (defn- categorize [expectation coll-slug category-paths item-slug]
 	(is (= expectation (taxonomy/categorize-item coll-slug (first category-paths) item-slug)))
@@ -71,6 +81,11 @@
         (do
           (is (= (:categories (item/get-item c foo)) added-validations))
           (item/delete-item c foo))))))
+
+(defn- uncategorize-u [expectation coll-slug category-paths]
+  (is (= expectation (taxonomy/uncategorize-item coll-slug (first category-paths) u)))
+  (let [remaining-paths (rest category-paths)]
+    (if-not (empty? remaining-paths) (recur expectation coll-slug remaining-paths))))
 
 (deftest item-categorization
   (testing "item categorization failures"
@@ -131,5 +146,27 @@
       (categorize-foo ["/t/bar/" "/t/fubar/b/"] ["t/bar" "t/fubar/b"]))))
 
 (deftest item-uncategorization
-  (testing "item uncategorization failures")
+  (testing "item uncategorization failures"
+    (testing "item uncategorization with a non-existent collection"
+      (uncategorize-u :bad-collection "not-here" ["/t/foo"]))
+
+    (testing "item uncategorization with a non-existent taxonomy"
+      (uncategorize-u :bad-taxonomy c ["not-here/foo" "not-here/foo/" "/not-here/foo" "/not-here/foo/"]))
+
+    (testing "item uncategorization with a non-existent item"
+      (is (= :bad-item (taxonomy/uncategorize-item c "/t/foo" "not-here"))))
+
+    (testing "item categorization with no category"
+      (uncategorize-u :bad-category c ["t" "t/" "/t" "/t/"]))
+
+    (testing "item categorization with a non-existent root category"
+      (uncategorize-u :bad-category c ["t/not-here" "t/not-here/" "/t/not-here" "/t/not-here/"]))
+
+    (testing "item uncategorization with a non-existent leaf category"
+      (uncategorize-u :bad-category c ["t/foo/not-here" "t/foo/not-here/" "/t/foo/not-here" "/t/foo/not-here/"])
+      (uncategorize-u :bad-category c ["t/fubar/a/not-here" "t/fubar/a/not-here/" "/t/fubar/a/not-here" "/t/fubar/a/not-here/"]))
+
+    (testing "item uncategorization with a partial category path"
+      (uncategorize-u :bad-category c ["t/fubar" "t/fubar/" "/t/fubar" "/t/fubar/"])))
+
   (testing "item uncategorization successes"))

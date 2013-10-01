@@ -291,7 +291,7 @@
   :bad-item is returned if there's no item in the collection with that slug.
   :bad-taxonomy is returned if there's no taxonomy with that slug at the start of the category path.
   :bad-category is returned if there's no category in the taxonomy with that category path.
-  :duplicate-category is returned if item is already a member of the category provided or one of its children."
+  :duplicate-category is returned if item is already a member of the provided category or one of its children."
   [coll-slug category-path item-slug]
     (let [path (normalize-category-path category-path)
           taxonomy-slug (taxonomy-slug-from-path path)
@@ -315,5 +315,21 @@
                 :item)))))
 
 (defn uncategorize-item
-  ""
-  [coll-slug category-path item-slug])
+  "Given the slug of the collection, a slug of an item in the collection, and a path to a category in a taxonomy,
+  remove the item as a member of the category.
+  :bad-collection is returned if there's no collection with that slug.
+  :bad-item is returned if there's no item in the collection with that slug.
+  :bad-taxonomy is returned if there's no taxonomy with that slug at the start of the category path.
+  :bad-category is returned if the item is not categorized with the provided category path."
+  [coll-slug category-path item-slug]
+    (let [path (normalize-category-path category-path)
+          taxonomy-slug (taxonomy-slug-from-path path)
+          result (get-taxonomy coll-slug taxonomy-slug)
+          item (item/get-item coll-slug item-slug)]
+      (cond
+        (keyword? result) result
+        (nil? item) :bad-item
+        (nil? result) :bad-taxonomy
+        (nil? (some #{path} (:categories item))) :bad-category
+        :else true ;TODO remove the category and update the item
+        )))
