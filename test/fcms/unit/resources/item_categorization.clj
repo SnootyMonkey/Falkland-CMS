@@ -83,12 +83,14 @@
 (defn- uncategorize-u 
   "Create a new categorized item and uncategorize it by each category in the vector, validating with a
   final check on the categories after getting the item."
+  ([coll-slug category-paths] (uncategorize-u map? coll-slug category-paths))
   ([expectation coll-slug category-paths] 
     (existing-item-u)
-    (uncategorize-u expectation coll-slug (set (map taxonomy/normalize-category-path category-paths)) category-paths)
+    (uncategorize-u (if (keyword? expectation) #(= expectation %) #(expectation %))
+      coll-slug (set (map taxonomy/normalize-category-path category-paths)) category-paths)
     (item/delete-item c u))
   ([expectation coll-slug removed-paths category-paths]
-    (is (= expectation (taxonomy/uncategorize-item coll-slug (first category-paths) u)))
+    (is (expectation (taxonomy/uncategorize-item coll-slug (first category-paths) u)))
     (let [remaining-paths (rest category-paths)]
       (if (empty? remaining-paths)
         (is (not-any? removed-paths (:categories (item/get-item coll-slug u))))
@@ -154,7 +156,7 @@
       (categorize-foo ["/t/bar/" "/t/fubar/b/"] ["t/bar" "t/fubar/b"]))))
 
 (deftest item-uncategorization
-  (testing "item uncategorization failures"
+   (testing "item uncategorization failures"
 
     (testing "item uncategorization with a non-existent collection"
       (uncategorize-u :bad-collection "not-here" ["/t/foo"]))
@@ -181,31 +183,31 @@
   (testing "item uncategorization successes"
 
     (testing "item uncategorization with a single root category"
-      (uncategorize-u true c ["t/foo"])
-      (uncategorize-u true c ["t/foo/"])
-      (uncategorize-u true c ["/t/foo"])
-      (uncategorize-u true c ["/t/foo/"]))
+      (uncategorize-u c ["t/foo"])
+      (uncategorize-u c ["t/foo/"])
+      (uncategorize-u c ["/t/foo"])
+      (uncategorize-u c ["/t/foo/"]))
 
-    (testing "item uncategorization with multiple root categories"
-      (uncategorize-u true c ["t/foo" "t/bar"])
-      (uncategorize-u true c ["t/foo/" "t/bar/"])
-      (uncategorize-u true c ["/t/foo" "/t/bar"])
-      (uncategorize-u true c ["/t/foo/" "/t/bar/"]))
+    (testing "item uncategorization withmultiple root categories"
+      (uncategorize-u c ["t/foo" "t/bar"])
+      (uncategorize-u c ["t/foo/" "t/bar/"])
+      (uncategorize-u c ["/t/foo" "/t/bar"])
+      (uncategorize-u c ["/t/foo/" "/t/bar/"]))
 
     (testing "item uncategorization with a single leaf category"
-      (uncategorize-u true c ["t/fubar/a"])
-      (uncategorize-u true c ["t/fubar/a/"])
-      (uncategorize-u true c ["/t/fubar/a"])
-      (uncategorize-u true c ["/t/fubar/a/"]))
+      (uncategorize-u c ["t/fubar/a"])
+      (uncategorize-u c ["t/fubar/a/"])
+      (uncategorize-u c ["/t/fubar/a"])
+      (uncategorize-u c ["/t/fubar/a/"]))
 
     (testing "item uncategorization with multiple leaf categories"
-      (uncategorize-u true c ["t/fubar/a" "t/fubar/b"])
-      (uncategorize-u true c ["t/fubar/a/" "t/fubar/b/"])
-      (uncategorize-u true c ["/t/fubar/a" "/t/fubar/b"])
-      (uncategorize-u true c ["/t/fubar/a/" "/t/fubar/b/"]))
+      (uncategorize-u c ["t/fubar/a" "t/fubar/b"])
+      (uncategorize-u c ["t/fubar/a/" "t/fubar/b/"])
+      (uncategorize-u c ["/t/fubar/a" "/t/fubar/b"])
+      (uncategorize-u c ["/t/fubar/a/" "/t/fubar/b/"]))
 
     (testing "item uncategorization with a single root category and a single leaf category"
-      (uncategorize-u true c ["t/foo" "t/fubar/a"])
-      (uncategorize-u true c ["t/foo/" "t/fubar/a/"])
-      (uncategorize-u true c ["/t/foo" "/t/fubar/a"])
-      (uncategorize-u true c ["/t/foo/" "/t/fubar/a/"]))))
+      (uncategorize-u c ["t/foo" "t/fubar/a"])
+      (uncategorize-u c ["t/foo/" "t/fubar/a/"])
+      (uncategorize-u c ["/t/foo" "/t/fubar/a"])
+      (uncategorize-u c ["/t/foo/" "/t/fubar/a/"]))))

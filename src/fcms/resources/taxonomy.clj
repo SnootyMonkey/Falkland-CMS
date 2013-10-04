@@ -331,5 +331,10 @@
         (nil? item) :bad-item
         (nil? result) :bad-taxonomy
         (nil? (some #{path} (:categories item))) :bad-category
-        :else true ;TODO remove the category and update the item
-        )))
+        :else        
+          ;; remove the category from the categories vector and update the item
+          (resource/update-resource coll-slug item-slug
+            {:reserved (resource/allow-category-reserved-properties)
+             :retained resource/retained-properties
+             :updated (assoc item :categories (filterv #(not(= path %)) (:categories item)))}
+                :item))))
