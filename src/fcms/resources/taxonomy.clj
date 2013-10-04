@@ -269,7 +269,7 @@
       (empty? category-slugs) false
       :else (category-exists? [] category-slugs (hash-category-slugs (:categories result))))))
 
-(defn- normalize-category-path
+(defn normalize-category-path
   "Remove the prefix slash and trailing slash if they are present."
   [category-path]
   ;; "/tax/cat/cat/" => "tax/cat/cat"

@@ -40,16 +40,14 @@
   (f)
   (item/delete-item c e))
 
-(defn existing-item-u [f]
+(defn existing-item-u []
   (item/create-item c u)
   (taxonomy/categorize-item c "t/foo" u)
   (taxonomy/categorize-item c "t/bar" u)
   (taxonomy/categorize-item c "t/fubar/a" u)
-  (taxonomy/categorize-item c "t/fubar/b" u)
-  (f)
-  (item/delete-item c u))
+  (taxonomy/categorize-item c "t/fubar/b" u))
 
-(use-fixtures :each empty-collection-c existing-taxonomy-t existing-item-i existing-item-e existing-item-u)
+(use-fixtures :each empty-collection-c existing-taxonomy-t existing-item-i existing-item-e)
 
 (defn- categorize [expectation coll-slug category-paths item-slug]
 	(is (= expectation (taxonomy/categorize-item coll-slug (first category-paths) item-slug)))
@@ -82,10 +80,19 @@
           (is (= (:categories (item/get-item c foo)) added-validations))
           (item/delete-item c foo))))))
 
-(defn- uncategorize-u [expectation coll-slug category-paths]
-  (is (= expectation (taxonomy/uncategorize-item coll-slug (first category-paths) u)))
-  (let [remaining-paths (rest category-paths)]
-    (if-not (empty? remaining-paths) (recur expectation coll-slug remaining-paths))))
+(defn- uncategorize-u 
+  "Create a new categorized item and uncategorize it by each category in the vector, validating with a
+  final check on the categories after getting the item."
+  ([expectation coll-slug category-paths] 
+    (existing-item-u)
+    (uncategorize-u expectation coll-slug (set (map taxonomy/normalize-category-path category-paths)) category-paths)
+    (item/delete-item c u))
+  ([expectation coll-slug removed-paths category-paths]
+    (is (= expectation (taxonomy/uncategorize-item coll-slug (first category-paths) u)))
+    (let [remaining-paths (rest category-paths)]
+      (if (empty? remaining-paths)
+        (is (not-any? removed-paths (:categories (item/get-item coll-slug u))))
+        (recur expectation coll-slug removed-paths remaining-paths)))))
 
 (deftest item-categorization
   (testing "item categorization failures"
@@ -115,6 +122,7 @@
   		(categorize-e :duplicate-category c ["t/fubar/a" "t/fubar/a/" "/t/fubar/a" "/t/fubar/a/"])))
 
   (testing "item categorization sucesses"
+
   	(testing "item categorization with a single root category"
       (categorize-foo ["t/bar"] ["t/bar"])
       (categorize-foo ["t/bar/"] ["t/bar"])
@@ -147,6 +155,7 @@
 
 (deftest item-uncategorization
   (testing "item uncategorization failures"
+
     (testing "item uncategorization with a non-existent collection"
       (uncategorize-u :bad-collection "not-here" ["/t/foo"]))
 
@@ -169,4 +178,34 @@
     (testing "item uncategorization with a partial category path"
       (uncategorize-u :bad-category c ["t/fubar" "t/fubar/" "/t/fubar" "/t/fubar/"])))
 
-  (testing "item uncategorization successes"))
+  (testing "item uncategorization successes"
+
+    (testing "item uncategorization with a single root category"
+      (uncategorize-u true c ["t/foo"])
+      (uncategorize-u true c ["t/foo/"])
+      (uncategorize-u true c ["/t/foo"])
+      (uncategorize-u true c ["/t/foo/"]))
+
+    (testing "item uncategorization with multiple root categories"
+      (uncategorize-u true c ["t/foo" "t/bar"])
+      (uncategorize-u true c ["t/foo/" "t/bar/"])
+      (uncategorize-u true c ["/t/foo" "/t/bar"])
+      (uncategorize-u true c ["/t/foo/" "/t/bar/"]))
+
+    (testing "item uncategorization with a single leaf category"
+      (uncategorize-u true c ["t/fubar/a"])
+      (uncategorize-u true c ["t/fubar/a/"])
+      (uncategorize-u true c ["/t/fubar/a"])
+      (uncategorize-u true c ["/t/fubar/a/"]))
+
+    (testing "item uncategorization with multiple leaf categories"
+      (uncategorize-u true c ["t/fubar/a" "t/fubar/b"])
+      (uncategorize-u true c ["t/fubar/a/" "t/fubar/b/"])
+      (uncategorize-u true c ["/t/fubar/a" "/t/fubar/b"])
+      (uncategorize-u true c ["/t/fubar/a/" "/t/fubar/b/"]))
+
+    (testing "item uncategorization with a single root category and a single leaf category"
+      (uncategorize-u true c ["t/foo" "t/fubar/a"])
+      (uncategorize-u true c ["t/foo/" "t/fubar/a/"])
+      (uncategorize-u true c ["/t/foo" "/t/fubar/a"])
+      (uncategorize-u true c ["/t/foo/" "/t/fubar/a/"]))))
