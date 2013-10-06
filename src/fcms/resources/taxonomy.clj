@@ -281,6 +281,19 @@
   (let [path (normalize-category-path category-path)]
     (if (some #(re-find (re-pattern (str "^" path)) %) categories) true false)))
 
+(defn- validate-category-request [coll-slug category-path item-slug f]
+  (let [path (normalize-category-path category-path)
+        taxonomy-slug (taxonomy-slug-from-path path)
+        category-slugs (category-slugs-from-path path)
+        result (get-taxonomy coll-slug taxonomy-slug)
+        item (item/get-item coll-slug item-slug)]
+    (cond 
+      (keyword? result) result
+      (nil? item) :bad-item
+      (nil? result) :bad-taxonomy
+      (empty? category-slugs) :bad-category
+      :else (f path taxonomy-slug category-slugs result item))))
+
 (defn categorize-item
   "Given the slug of the collection, a slug of an item in the collection, and a path to a category in a taxonomy,
   categorize the item as a member of the category. This function is idempotent and categorizing the item again won't
@@ -293,26 +306,18 @@
   :bad-category is returned if there's no category in the taxonomy with that category path.
   :duplicate-category is returned if item is already a member of the provided category or one of its children."
   [coll-slug category-path item-slug]
-    (let [path (normalize-category-path category-path)
-          taxonomy-slug (taxonomy-slug-from-path path)
-          category-slugs (category-slugs-from-path path)
-          result (get-taxonomy coll-slug taxonomy-slug)
-          item (item/get-item coll-slug item-slug)]
+  (validate-category-request coll-slug category-path item-slug
+    (fn [path taxonomy-slug category-slugs result item] 
       (cond 
-        (keyword? result) result
-        (nil? item) :bad-item
-        (nil? result) :bad-taxonomy
-        (empty? category-slugs) :bad-category
         (not (true? (category-exists coll-slug path))) :bad-category
+        (duplicate-category? path (:categories item)) :duplicate-category
         :else
-          (if (duplicate-category? path (:categories item))
-            :duplicate-category
-            ;; add the category to the categories vector and update the item
-            (resource/update-resource coll-slug item-slug
-                {:reserved (resource/allow-category-reserved-properties)
-                 :retained resource/retained-properties
-                 :updated (assoc item :categories (vec (conj (:categories item) path)))}
-                :item)))))
+          ;; add the category to the categories vector and update the item
+          (resource/update-resource coll-slug item-slug
+            {:reserved (resource/allow-category-reserved-properties)
+             :retained resource/retained-properties
+             :updated (assoc item :categories (vec (conj (:categories item) path)))}
+             :item)))))
 
 (defn uncategorize-item
   "Given the slug of the collection, a slug of an item in the collection, and a path to a category in a taxonomy,
@@ -322,19 +327,13 @@
   :bad-taxonomy is returned if there's no taxonomy with that slug at the start of the category path.
   :bad-category is returned if the item is not categorized with the provided category path."
   [coll-slug category-path item-slug]
-    (let [path (normalize-category-path category-path)
-          taxonomy-slug (taxonomy-slug-from-path path)
-          result (get-taxonomy coll-slug taxonomy-slug)
-          item (item/get-item coll-slug item-slug)]
-      (cond
-        (keyword? result) result
-        (nil? item) :bad-item
-        (nil? result) :bad-taxonomy
-        (nil? (some #{path} (:categories item))) :bad-category
-        :else        
-          ;; remove the category from the categories vector and update the item
-          (resource/update-resource coll-slug item-slug
-            {:reserved (resource/allow-category-reserved-properties)
-             :retained resource/retained-properties
-             :updated (assoc item :categories (filterv #(not(= path %)) (:categories item)))}
-                :item))))
+  (validate-category-request coll-slug category-path item-slug
+    (fn [path taxonomy-slug category-slugs result item] 
+      (if (nil? (some #{path} (:categories item)))
+        :bad-category
+        ;; else, remove the category from the categories vector and update the item
+        (resource/update-resource coll-slug item-slug
+          {:reserved (resource/allow-category-reserved-properties)
+           :retained resource/retained-properties
+           :updated (assoc item :categories (filterv #(not(= path %)) (:categories item)))}
+              :item)))))
