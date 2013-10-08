@@ -167,7 +167,9 @@
     (zip-ordered-map (map :slug categories) (map category-from-map categories)))
 
 (defn- new-categories [slugs category-name]
-  ""
+  "Create the new portion of a category path as an ordered-map (:name, :slug, :categories) of the slugs in
+  a vector with each subsequent slug being a child of the prior slug,
+  keyed by :categories, and the final slug getting the provided category-name."
   (let [slug (first slugs)
         tail (rest slugs)]
     (if (empty? tail)
@@ -177,7 +179,7 @@
 (declare vectorize-category-slugs)
 
 (defn- categories-vector-from-map [m]
-  ""
+  "Replace the hash map of categories at the :categories key with a vector of categories"
   (if-let [categories (:categories m)]
     (assoc m :categories (vectorize-category-slugs categories))
     m))
@@ -188,7 +190,9 @@
   (vec (map categories-vector-from-map (vec (vals categories)))))
 
 (defn- create-categories
-  ""
+  "Given a category name, a vector of the slugs of a desired category path,
+  and the categories that already exist in the taxonomy, add the portions of the 
+  desired category path that don't already exist."
   ([category-name category-slugs categories] 
     (vectorize-category-slugs (create-categories category-name [] category-slugs (hash-category-slugs categories))))
  
