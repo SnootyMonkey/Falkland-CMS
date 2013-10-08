@@ -309,7 +309,7 @@
   :bad-taxonomy is returned if there's no taxonomy with that slug at the start of the category path.
   :bad-category is returned if there's no category in the taxonomy with that category path.
   :duplicate-category is returned if item is already a member of the provided category or one of its children."
-  [coll-slug category-path item-slug]
+  [coll-slug item-slug category-path]
   (validate-category-request coll-slug category-path item-slug
     (fn [path taxonomy-slug category-slugs result item] 
       (cond 
@@ -330,7 +330,7 @@
   :bad-item is returned if there's no item in the collection with that slug.
   :bad-taxonomy is returned if there's no taxonomy with that slug at the start of the category path.
   :bad-category is returned if the item is not categorized with the provided category path."
-  [coll-slug category-path item-slug]
+  [coll-slug item-slug category-path]
   (validate-category-request coll-slug category-path item-slug
     (fn [path taxonomy-slug category-slugs result item] 
       (if (nil? (some #{path} (:categories item)))
@@ -341,3 +341,27 @@
            :retained resource/retained-properties
            :updated (assoc item :categories (filterv #(not(= path %)) (:categories item)))}
               :item)))))
+
+(defn items-for-taxonomy
+  "Given the slug of the collection, and the slug of a taxonomy, return a sequence of the
+  items categorized in the taxonomy.
+  :bad-collection is returned if there's no collection with that slug.
+  :bad-taxonomy is returned if there's no taxonomy with that slug at the start of the category path."
+  [coll-slug taxonomy-slug])
+
+(defn items-for-category
+  "Given the slug of the collection, and a path to a category in a taxonomy, return a sequence of the
+  items contained in the category.
+  :bad-collection is returned if there's no collection with that slug.
+  :bad-taxonomy is returned if there's no taxonomy with that slug at the start of the category path.
+  :bad-category is returned if any portion of the category path does not exist in the taxonomy."
+  [coll-slug category-path]
+  (let [path (normalize-category-path category-path)
+      taxonomy-slug (taxonomy-slug-from-path path)
+      category-slugs (category-slugs-from-path path)
+      result (get-taxonomy coll-slug taxonomy-slug)]
+    (cond 
+      (keyword? result) result
+      (nil? result) :bad-taxonomy
+      (empty? category-slugs) :bad-category
+      :else [])))
