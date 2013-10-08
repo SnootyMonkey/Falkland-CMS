@@ -4,6 +4,7 @@ script: lein2 test-all!
 branches:
   only:
     - master
+    - dev
 jdk:
   - oraclejdk7
 services:
