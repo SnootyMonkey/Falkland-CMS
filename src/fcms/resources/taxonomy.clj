@@ -363,5 +363,8 @@
     (cond 
       (keyword? result) result
       (nil? result) :bad-taxonomy
-      (empty? category-slugs) :bad-category
-      :else [])))
+      (not (category-exists coll-slug path)) :bad-category
+      :else 
+        (collection/with-collection coll-slug
+          (when-let [results (common/doc-from-view-with-db :item :all-slugs-by-coll-id-and-category-path [(:id collection) path])]
+            (vec (map #(common/resource-from-db coll-slug (:doc %)) results)))))))
