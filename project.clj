@@ -17,7 +17,7 @@
     [compojure "1.1.5"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.9.0"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0-RC1"] ; CouchDB client https://github.com/clojure-clutch/clutch
-    [clojurewerkz/elastisch "1.3.0-beta3"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
+    [clojurewerkz/elastisch "1.3.0-beta5"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [com.taoensso/timbre "2.6.2"] ; Logging https://github.com/ptaoussanis/timbre
   ]
@@ -92,7 +92,7 @@
     [lein-git-deps "0.0.1-SNAPSHOT"] ; dependencies from GitHub https://github.com/tobyhede/lein-git-deps
     [lein-cljsbuild "0.3.3"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
     [lein-cucumber "1.0.2"] ; BDD testing https://github.com/nilswloka/lein-cucumber
-    [lein-midje "3.1.1"] ; Example-based testing https://github.com/marick/lein-midje
+    [lein-midje "3.1.3-RC1"] ; Example-based testing https://github.com/marick/lein-midje
     [lein-bikeshed "0.1.3"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
     [lein-pprint "1.1.1"] ; pretty-print the lein project map https://github.com/technomancy/leiningen/tree/master/lein-pprint
     [lein-ancient "0.5.0-RC1"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
