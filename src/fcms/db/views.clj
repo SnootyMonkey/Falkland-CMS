@@ -58,7 +58,45 @@
       :count-by-coll-id {
         :map "function(doc) {
           if (doc.data.type == 'item') emit(doc.data.collection, 1) }"
-        :reduce "_count"}})))
+        :reduce "_count"}
+      :all-ids-by-coll-id-and-category-path {
+        :map "function(doc) {
+          if (doc.data.type == 'item') {
+            // Enumerate all the unique paths that can be built from the item's categories
+            var uniquePaths = {};
+            doc.data.categories.forEach(function(categoryPath) {
+              var parts = categoryPath.split('/');
+              for (i in parts) {
+                var path = [];
+                for (part = 0; part <= i; part++) {
+                  path.push(parts[part]);
+                }
+                uniquePaths[path.join('/')] = true;
+              }
+            });
+            for(path in uniquePaths) {
+              emit([doc.data.collection, path], doc._id);
+            }
+          }}"}
+      :all-slugs-by-coll-id-and-category-path {
+        :map "function(doc) {
+          if (doc.data.type == 'item') {
+            // Enumerate all the unique paths that can be built from the item's categories
+            var uniquePaths = {};
+            doc.data.categories.forEach(function(categoryPath) {
+              var parts = categoryPath.split('/');
+              for (i in parts) {
+                var path = [];
+                for (part = 0; part <= i; part++) {
+                  path.push(parts[part]);
+                }
+                uniquePaths[path.join('/')] = true;
+              }
+            });
+            for(path in uniquePaths) {
+              emit([doc.data.collection, path], doc.data.slug);
+            }
+          }}"}})))
 
 ;; http://localhost:5984/falklandcms/_design/taxonomy/_view/all-ids-by-coll-id-and-slug
 ;; http://localhost:5984/falklandcms/_design/taxonomy/_view/all-ids-by-coll-id-and-slug?include_docs=true
