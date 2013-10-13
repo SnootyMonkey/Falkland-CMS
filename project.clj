@@ -8,7 +8,7 @@
 
   :dependencies [
     [org.clojure/clojure "1.5.1"] ; Lisp on the JVM http://clojure.org/documentation
-    [org.clojure/core.incubator "0.1.3"] ; functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
+    [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [org.clojure/core.match "0.2.0"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [org.clojure/clojurescript "0.0-1934"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     [cheshire "5.2.0"] ; JSON de/encoding https://github.com/dakrone/cheshire
@@ -68,18 +68,18 @@
   }
 
   :aliases {
-    "init-db" ["run" "-m" "fcms.db.views"]
-    "init-test-db" ["with-profile" "qa" "run" "-m" "fcms.db.views"]
-    "build" ["do" "clean," "deps," "git-deps,", "compile," "init-db"]
-    "midje" ["with-profile" "qa" "midje"]    
-    "cucumber" ["with-profile" "qa" "cucumber"]
-    "test" ["with-profile" "qa" "do" "test"]
-    "test-all" ["do" "midje," "test," "cucumber"]
-    "test-all!" ["with-profile", "qa" "do" "build,", "test-all"]
-    "start" ["do" "build," "ring" "server-headless"]
-    "start!" ["with-profile" "prod" "start"]
-    "spell" ["spell" "-n"]
-    "ancient" ["with-profile" "dev" "do" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"]
+    "init-db" ["run" "-m" "fcms.db.views"] ; create CouchDB views
+    "init-test-db" ["with-profile" "qa" "run" "-m" "fcms.db.views"] ; create CouchDB views for test DB
+    "build" ["do" "clean," "deps," "git-deps,", "compile," "init-db"] ; clean and build
+    "test" ["with-profile" "qa" "do" "test"] ; run unit tests
+    "midje" ["with-profile" "qa" "midje"] ; run unit tests
+    "cucumber" ["with-profile" "qa" "cucumber"] ; run integration tests
+    "test-all" ["with-profile", "qa" "do" "midje," "test," "cucumber"] ; run all tests
+    "test-all!" ["with-profile", "qa" "do" "build,", "test-all"] ; clean and build and run all tests
+    "start" ["do" "build," "ring" "server-headless"] ; start an FCMS server
+    "start!" ["with-profile" "prod" "start"] ; start an FCMS server in production
+    "spell" ["spell" "-n"] ; check spelling in docs and docstrings
+    "ancient" ["with-profile" "dev" "do" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"] ; check for out of date dependencies
   }
 
   :git-dependencies [
