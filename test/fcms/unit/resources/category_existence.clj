@@ -1,6 +1,6 @@
 (ns fcms.unit.resources.category-existence
   (:require [midje.sweet :refer :all]
-            [fcms.lib.resource :refer (c)]
+            [fcms.lib.resources :refer (c)]
             [fcms.unit.resources.taxonomy :refer (empty-collection-c existing-categories empty-taxonomy-et existing-taxonomy-t)]
             [fcms.resources.collection :as collection]
             [fcms.resources.taxonomy :refer (category-exists)]))

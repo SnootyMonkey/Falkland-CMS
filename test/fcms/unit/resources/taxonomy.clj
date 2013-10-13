@@ -2,7 +2,7 @@
   (:require [clojure.test :refer :all]
             [midje.sweet :refer :all]
             [midje.util :refer (expose-testables)]
-  			    [fcms.lib.resource :refer (c verify-new-resource)]
+  			    [fcms.lib.resources :refer (c verify-new-resource)]
             [fcms.resources.collection :as collection]
             [fcms.resources.collection-resource :as resource]
             [fcms.resources.taxonomy :refer :all]))

@@ -1,6 +1,6 @@
 (ns fcms.unit.resources.item
   (:require [clojure.test :refer :all]
-            [fcms.lib.resource :refer (verify-new-resource empty-collection-c)]
+            [fcms.lib.resources :refer (verify-new-resource empty-collection-c)]
             [fcms.resources.item :refer :all]))
 
 (def c "c")
