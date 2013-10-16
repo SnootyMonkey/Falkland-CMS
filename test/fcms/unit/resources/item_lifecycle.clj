@@ -1,7 +1,9 @@
-(ns fcms.unit.resources.item
+(ns fcms.unit.resources.item-lifecycle
   (:require [clojure.test :refer :all]
             [fcms.lib.resources :refer (verify-new-resource empty-collection-c)]
             [fcms.resources.item :refer :all]))
+
+;; fixtures
 
 (def c "c")
 (def i "i")
@@ -10,6 +12,8 @@
 (def mixed-name (str "test " unicode-name))
 (def unicode-description "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €")
 (def slug "slug")
+
+;; tests
 
 (use-fixtures :each empty-collection-c)
 
@@ -75,5 +79,3 @@
 (deftest item-updates)
 
 (deftest item-deletion)
-
-(deftest item-listing)

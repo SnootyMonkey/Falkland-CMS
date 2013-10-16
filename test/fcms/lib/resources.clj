@@ -6,13 +6,12 @@
             [fcms.resources.taxonomy :as taxonomy]
             [fcms.resources.item :as item]))
 
+;; fixtures
+
 (def c "c")
 (def e "e")
-(def i "i")
 (def t "t")
 (def t2 "food")
-(def m "m")
-(def u "u")
 (def foo "foo")
 
 (def existing-categories-t [
@@ -47,16 +46,13 @@
   (f)
   (taxonomy/delete-taxonomy c t))
 
-(defn existing-taxonomy-t2 []
+(defn existing-taxonomy-t2 [f]
   (resource/create-resource c "Food" :taxonomy [] 
     {:slug t2
      :description "Yummy."
-     :categories existing-categories-t2}))
-
-(defn existing-item-i [f]
-  (item/create-item c i)
+     :categories existing-categories-t2})
   (f)
-  (item/delete-item c i))
+  (taxonomy/delete-taxonomy c t2))
 
 (defn existing-item-e [f]
   (item/create-item c e)
@@ -65,19 +61,7 @@
   (f)
   (item/delete-item c e))
 
-(defn existing-item-u []
-  (item/create-item c u)
-  (taxonomy/categorize-item c u "t/foo")
-  (taxonomy/categorize-item c u "t/bar")
-  (taxonomy/categorize-item c u "t/fubar/a")
-  (taxonomy/categorize-item c u "t/fubar/b"))
-
-(defn existing-item-m []
-  (item/create-item c m)
-  (taxonomy/categorize-item c m "t/foo")
-  (taxonomy/categorize-item c m "t/fubar/a")
-  (taxonomy/categorize-item c m "food/fruit")
-  (taxonomy/categorize-item c m "food/vegetable/carrot"))
+;; validation functions
 
 (defn verify-new-resource [coll-slug resource]
 	(is (= (:collection resource) c))

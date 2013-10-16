@@ -9,6 +9,8 @@
 
 (expose-testables fcms.resources.taxonomy)
 
+;; fixtures
+
 (def tax "tax")
 
 (defn empty-collection-c []
@@ -33,6 +35,8 @@
     {:slug "t"
      :description "Categorize it."
      :categories existing-categories}))
+
+;; tests
 
 (facts "about taxonomy slug parsing from a category path"
   (taxonomy-slug-from-path "tax") => tax

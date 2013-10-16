@@ -5,7 +5,32 @@
             [fcms.resources.taxonomy :as taxonomy]
 						[fcms.resources.item :as item]))
 
-(use-fixtures :each empty-collection-c existing-taxonomy-t existing-item-i existing-item-e)
+;; fixtures
+
+(def i "i")
+(def m "m")
+(def u "u")
+
+(defn existing-item-i [f]
+  (item/create-item c i)
+  (f)
+  (item/delete-item c i))
+
+(defn existing-item-u []
+  (item/create-item c u)
+  (taxonomy/categorize-item c u "t/foo")
+  (taxonomy/categorize-item c u "t/bar")
+  (taxonomy/categorize-item c u "t/fubar/a")
+  (taxonomy/categorize-item c u "t/fubar/b"))
+
+(defn existing-item-m []
+  (item/create-item c m)
+  (taxonomy/categorize-item c m "t/foo")
+  (taxonomy/categorize-item c m "t/fubar/a")
+  (taxonomy/categorize-item c m "food/fruit")
+  (taxonomy/categorize-item c m "food/vegetable/carrot"))
+
+;; validation functions
 
 (defn- categorize [expectation coll-slug item-slug category-paths]
 	(is (= expectation (taxonomy/categorize-item coll-slug item-slug (first category-paths))))
@@ -53,6 +78,10 @@
       (if (empty? remaining-paths)
         (is (not-any? removed-paths (:categories (item/get-item coll-slug u))))
         (recur expectation coll-slug removed-paths remaining-paths)))))
+
+;; validation functions
+
+(use-fixtures :each empty-collection-c existing-taxonomy-t existing-taxonomy-t2 existing-item-i existing-item-e)
 
 (deftest item-categorization
   (testing "item categorization failures"
@@ -114,7 +143,6 @@
       (categorize-foo ["/t/bar/" "/t/fubar/b/"] ["t/bar" "t/fubar/b"]))
 
     (testing "item categorization with a single root category and a single leaf category in multiple taxonomies"
-      (existing-taxonomy-t2)
       (categorize-foo ["t/bar" "t/fubar/b" "food/fruit" "food/vegetable/carrot"]
                       ["t/bar" "t/fubar/b" "food/fruit" "food/vegetable/carrot"])
       (categorize-foo ["t/bar/" "t/fubar/b/" "food/fruit/" "food/vegetable/carrot/"]
@@ -122,8 +150,7 @@
       (categorize-foo ["/t/bar" "/t/fubar/b" "/food/fruit" "/food/vegetable/carrot"]
                       ["t/bar" "t/fubar/b" "food/fruit" "food/vegetable/carrot"])
       (categorize-foo ["/t/bar/" "/t/fubar/b/" "/food/fruit/" "/food/vegetable/carrot/"]
-                      ["t/bar" "t/fubar/b" "food/fruit" "food/vegetable/carrot"]))
-      (taxonomy/delete-taxonomy c t2)))
+                      ["t/bar" "t/fubar/b" "food/fruit" "food/vegetable/carrot"]))))
 
 (deftest item-uncategorization
    (testing "item uncategorization failures"
@@ -183,12 +210,10 @@
       (uncategorize-u c ["/t/foo/" "/t/fubar/a/"]))
 
     (testing "item categorization with a single root category and a single leaf category in multiple taxonomies")
-      (existing-taxonomy-t2)
       (existing-item-m)
       (is (= ["t/fubar/a" "food/fruit" "food/vegetable/carrot"] (:categories (taxonomy/uncategorize-item c m "t/foo"))))
       (is (= ["food/fruit" "food/vegetable/carrot"] (:categories (taxonomy/uncategorize-item c m "t/fubar/a/"))))
       (is (= ["food/vegetable/carrot"] (:categories (taxonomy/uncategorize-item c m "/food/fruit"))))
       (is (= [] (:categories (taxonomy/uncategorize-item c m "/food/vegetable/carrot/"))))
       (is (= [] (:categories (item/get-item c m))))
-      (item/delete-item c m)
-      (taxonomy/delete-taxonomy c t2)))
+      (item/delete-item c m)))
