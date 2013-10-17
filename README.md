@@ -128,6 +128,6 @@ Falkland CMS is pre-alpha and not yet usable. A usable version is expected by th
 
 ## LICENSE
 
-Copyright © 2013 Snooty Monkey
-
 Falkland CMS is distributed under the [Mozilla Public License v2.0](http://www.mozilla.org/MPL/2.0/).
+
+Copyright © 2013 Snooty Monkey, LLC
