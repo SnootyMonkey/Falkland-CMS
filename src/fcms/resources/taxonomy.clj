@@ -10,6 +10,8 @@
 
 (def taxonomy-media-type "application/vnd.fcms.taxonomy+json;version=1")
 
+;; ----- taxonomy lifecycle functions -----
+
 (defn get-taxonomy
   "Given the slug of the collection containing the taxonomy and the slug of the taxonomy,
   return the taxonomy as a map, or return :bad-collection if there's no collection with that slug, or
@@ -85,7 +87,7 @@
   [coll-slug]
   (resource/all-resources coll-slug :taxonomy))
 
-;; Category functions
+;; ----- Category functions -----
 
 (defn- valid-category-slug? [category]
   (common/valid-slug? (:slug category)))
@@ -298,6 +300,8 @@
       (empty? category-slugs) :bad-category
       :else (f path taxonomy-slug category-slugs result item))))
 
+;; ----- item functions -----
+
 (defn categorize-item
   "Given the slug of the collection, a slug of an item in the collection, and a path to a category in a taxonomy,
   categorize the item as a member of the category. This function is idempotent and categorizing the item again won't
@@ -342,12 +346,22 @@
            :updated (assoc item :categories (filterv #(not(= path %)) (:categories item)))}
               :item)))))
 
+(defn- items-for-path [coll-slug path]
+  (collection/with-collection coll-slug
+    (when-let [results (common/doc-from-view-with-db :item :all-slugs-by-coll-id-and-category-path [(:id collection) path])]
+      (vec (map #(common/resource-from-db coll-slug (:doc %)) results)))))
+
 (defn items-for-taxonomy
   "Given the slug of the collection, and the slug of a taxonomy, return a sequence of the
   items categorized in the taxonomy.
   :bad-collection is returned if there's no collection with that slug.
   :bad-taxonomy is returned if there's no taxonomy with that slug at the start of the category path."
-  [coll-slug taxonomy-slug])
+  [coll-slug taxonomy-slug]
+  (let [result (get-taxonomy coll-slug taxonomy-slug)]
+    (cond 
+      (keyword? result) result
+      (nil? result) :bad-taxonomy
+      :else (items-for-path coll-slug taxonomy-slug))))
 
 (defn items-for-category
   "Given the slug of the collection, and a path to a category in a taxonomy, return a sequence of the
@@ -364,7 +378,4 @@
       (keyword? result) result
       (nil? result) :bad-taxonomy
       (not (category-exists coll-slug path)) :bad-category
-      :else 
-        (collection/with-collection coll-slug
-          (when-let [results (common/doc-from-view-with-db :item :all-slugs-by-coll-id-and-category-path [(:id collection) path])]
-            (vec (map #(common/resource-from-db coll-slug (:doc %)) results)))))))
+      :else (items-for-path coll-slug path))))

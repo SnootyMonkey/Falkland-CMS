@@ -1,15 +1,20 @@
 (ns fcms.unit.resources.item-browsing
   (:require [clojure.test :refer :all]
             [fcms.lib.resources :refer :all]
+            [fcms.resources.collection :as collection]
             [fcms.resources.collection-resource :as resource]
             [fcms.resources.taxonomy :as taxonomy]
 						[fcms.resources.item :as item]))
 
-;; fixtures
+;; ----- fixtures -----
 
 (def x "x")
 (def y "y")
 (def z "z")
+
+(def c2 "c2")
+(def t3 "t3")
+(def a "a")
 
 (defn- existing-item [slug]
   (item/create-item c slug)
@@ -23,17 +28,27 @@
     (f)
     (doseq [item items] (item/delete-item c item))))
 
-;; validation functions
+(defn- create-single-item-taxonomy []
+  (collection/create-collection c2)
+  (taxonomy/create-taxonomy c2 t3)
+  (item/create-item c2 a)
+  (taxonomy/create-category c2 "t3/a")
+  (taxonomy/categorize-item c2 a "t3/a"))
+
+;; ----- validation functions -----
 
 (defn items [& slugs]
   (vec (map #(item/get-item c %) slugs)))
+
+(defn- taxonomy-browse [expectation coll-slug taxonomy-slug]
+  (is (= expectation (taxonomy/items-for-taxonomy coll-slug taxonomy-slug))))
 
 (defn- category-browse [expectation coll-slug category-paths]
   (is (= expectation (taxonomy/items-for-category coll-slug (first category-paths))))
   (let [remaining-paths (rest category-paths)]
     (if-not (empty? remaining-paths) (recur expectation coll-slug remaining-paths))))
 
-;; tests
+;; ----- tests -----
 
 (use-fixtures :each empty-collection-c existing-taxonomy-t existing-taxonomy-t2 existing-item-e existing-items)
 
@@ -41,9 +56,11 @@
   (testing "item browsing failures"
 
     (testing "item browsing with a non-existent collection"
+      (taxonomy-browse :bad-collection "not-here" "t")
       (category-browse :bad-collection "not-here" ["/t/foo"]))
 
     (testing "item browsing with a non-existent taxonomy"
+      (taxonomy-browse :bad-taxonomy c "not-here")
       (category-browse :bad-taxonomy c ["not-here/foo" "not-here/foo/" "/not-here/foo" "/not-here/foo/"]))
 
     (testing "browsing with no category"
@@ -57,6 +74,14 @@
       (category-browse :bad-category c ["t/fubar/a/not-here" "t/fubar/a/not-here/" "/t/fubar/a/not-here" "/t/fubar/a/not-here/"])))
 
    (testing "item browsing"
+
+    (testing "a taxonomy with a single item"
+      (create-single-item-taxonomy)
+      (taxonomy-browse [(item/get-item c2 a)] c2 t3)
+      (collection/delete-collection c2))
+
+    (testing "a taxonomy with multiple items"
+      (taxonomy-browse (items e x y z) c "t"))
 
     (testing "a root category with a single item"
       (category-browse (items e) c ["t/foo" "t/foo/" "/t/foo" "/t/foo/"]))
