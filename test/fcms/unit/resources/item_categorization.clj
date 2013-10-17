@@ -5,7 +5,7 @@
             [fcms.resources.taxonomy :as taxonomy]
 						[fcms.resources.item :as item]))
 
-;; ----- fixtures -----
+;; ----- Fixtures -----
 
 (def i "i")
 (def m "m")
@@ -30,7 +30,7 @@
   (taxonomy/categorize-item c m "food/fruit")
   (taxonomy/categorize-item c m "food/vegetable/carrot"))
 
-;; ----- validation functions -----
+;; ----- Validation functions -----
 
 (defn- categorize [expectation coll-slug item-slug category-paths]
 	(is (= expectation (taxonomy/categorize-item coll-slug item-slug (first category-paths))))
@@ -79,7 +79,7 @@
         (is (not-any? removed-paths (:categories (item/get-item coll-slug u))))
         (recur expectation coll-slug removed-paths remaining-paths)))))
 
-;; ----- tests -----
+;; ----- Tests -----
 
 (use-fixtures :each empty-collection-c existing-taxonomy-t existing-taxonomy-t2 existing-item-i existing-item-e)
 

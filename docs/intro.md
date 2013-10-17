@@ -4,7 +4,7 @@
 
 */doc* - you're reading them
 
-*/test/features* - cucumber test suite
+*/test/features* - cucumber integration test suite
 
 */src/fcms/app.clj* - server bootstrap
 

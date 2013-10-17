@@ -6,6 +6,9 @@
             [fcms.resources.collection :as collection]
             [fcms.lib.slugify :refer (slugify)]))
 
+;; A collection resource is an FCMS resource that is contained in a particular collection.
+;; As of now, collection resources are either taxonomies or items.
+
 (def reserved-properties
   "Properties that can't be specified during a create and are ignored during an update."
   (conj common/reserved-properties :collection :categories)) 

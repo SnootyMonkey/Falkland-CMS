@@ -9,7 +9,7 @@
 
 (expose-testables fcms.resources.taxonomy)
 
-;; ----- fixtures -----
+;; ----- Fixtures -----
 
 (def tax "tax")
 
@@ -36,7 +36,7 @@
      :description "Categorize it."
      :categories existing-categories}))
 
-;; ----- tests -----
+;; ----- Tests -----
 
 (facts "about taxonomy slug parsing from a category path"
   (taxonomy-slug-from-path "tax") => tax

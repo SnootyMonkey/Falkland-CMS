@@ -90,13 +90,16 @@
 ;; ----- Category functions -----
 
 (defn- valid-category-slug? [category]
+  ""
   (common/valid-slug? (:slug category)))
 
 (defn- valid-category-structure? [category]
+  ""
   (and (contains? :slug) (contains? :name)
     (= 2 (count (dissoc category :categories)))))
 
 (defn- valid-category-name? [category]
+  ""
   (common/valid-name? (:name category)))
 
 (defn- valid-categories

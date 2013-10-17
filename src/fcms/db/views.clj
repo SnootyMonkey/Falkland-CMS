@@ -46,6 +46,10 @@
 ;; http://localhost:5984/falklandcms/_design/item/_view/all-slugs-by-coll-id?key="collection-id"&include_docs=true
 ;; http://localhost:5984/falklandcms/_design/item/_view/delete-by-coll-id?key="collection-id"
 ;; http://localhost:5984/falklandcms/_design/item/_view/count-by-coll-id?key="collection-id"
+;; http://localhost:5984/falklandcms/_design/item/_view/all-ids-by-coll-id-and-category-path?key=["collection-id", "taxonomy-slug"]
+;; http://localhost:5984/falklandcms/_design/item/_view/all-ids-by-coll-id-and-category-path?key=["collection-id", "taxonomy-slug"]&include_docs=true
+;; http://localhost:5984/falklandcms/_design/item/_view/all-slugs-by-coll-id-and-category-path?key=["collection-id", "category-path"]
+;; http://localhost:5984/falklandcms/_design/item/_view/all-slugs-by-coll-id-and-category-path?key=["collection-id", "category-path"]&include_docs=true
 (defn- item-views []
   (clutch/save-view "item"
     (clutch/view-server-fns :javascript {

@@ -6,6 +6,8 @@
             [fcms.lib.slugify :refer (slugify)]
             [fcms.config :refer (db-resource)]))
 
+;; ----- Properties common to all FCMS resources -----
+
 (def reserved-properties
   "Properties that can't be specified during a create and are ignored during an update."
   #{:id :created-at :updated-at :type :version :links}) 
@@ -13,35 +15,63 @@
   "Properties that are retained during an update even if they aren't in the updated property set."
   #{:name :slug :created-at :type})
 
+;; ----- ISO 8601 timestamp -----
+
 (def timestamp-format (formatters :date-time-no-ms))
 
-;; CouchDB functions
+(defn- current-timestamp [] 
+  (unparse timestamp-format (now)))
+
+;; ----- Validation functions -----
+
+(defn valid-name? 
+  "Return true if the provided name is a valid name, false if not"
+  [n]
+  ;; any non-blank string is a valid name
+  (and (string? n) (not (s/blank? n))))
+
+;; ----- CouchDB base functions -----
 
 (defn db [] (clutch/get-database db-resource))
 
 (defn from-view
+  "Use the specified function of the specified view to return view contents (what was emitted by the view).
+   Optionally include a key-value used to filter the documents.
+   This works when you AREN'T already in a clutch/with-db macro."
   ([view function] (clutch/get-view (db) (name view) function {:include_docs false}))
   ([view function key-value] (clutch/get-view (db) (name view) function {:key key-value :include_docs false})))
 
 (defn from-view-with-db
+  "Use the specified function of the specified view to return view contents (what was emitted by the view).
+   Optionally include a key-value used to filter the documents.
+   This works when you ARE already in a clutch/with-db macro."
   ([view function] (clutch/get-view (name view) function {:include_docs false}))
   ([view function key-value] (clutch/get-view (name view) function {:key key-value :include_docs false})))
 
 (defn doc-from-view
+  "Use the specified function of the specified view to return CouchDB documents.
+   Optionally include a key-value used to filter the documents.
+   This works when you AREN'T already in a clutch/with-db macro."
   ([view function] (clutch/get-view (db) (name view) function {:include_docs true}))
   ([view function key-value] (clutch/get-view (db) (name view) function {:key key-value :include_docs true})))
 
 (defn doc-from-view-with-db
+  "Use the specified function of the specified view to return CouchDB documents.
+   Optionally include a key-value used to filter the documents.
+   This works when you ARE already in a clutch/with-db macro."
   ([view function] (clutch/get-view (name view) function {:include_docs true}))
   ([view function key-value] (clutch/get-view (name view) function {:key key-value :include_docs true})))
 
-;; Slug functions
+;; ----- Slug functions -----
 
-(defn valid-slug? [provided-slug]
-  ;; if the slug is the same one we'd provide for a resource with that name, then it's valid 
+(defn valid-slug? 
+  "Return true if the provided-slug is a valid slug and false if not"
+  [provided-slug]
+  ;; if the slug is the same one we'd provide for a resource with that name, then it's valid
   (and (string? provided-slug) (= provided-slug (slugify provided-slug)) (not (s/blank? provided-slug))))
 
 (defn slug-in-collection? [coll-id slug]
+  "Return true if an item or a taxonomy with the specified slug exists in the collection with the specified id, false if not."
   (if (first (doc-from-view-with-db :resource :all-ids-by-coll-id-and-slug [coll-id slug]))
     true
     false))
@@ -56,8 +86,8 @@
 
 (defn unique-slug
   "Make a given slug unique in the collection if needed by incrementing a slug counter
-  numeral and appending it with a dash until you have a unique slug. If the slug is already
-  unique it is just returned."
+   numeral and appending it with a dash until you have a unique slug. If the slug is already
+   unique it is just returned."
   ([coll-id slug] (unique-slug coll-id slug 0))
   ([coll-id slug counter] 
     (if-not (or (slug-in-collection? coll-id slug) (= slug ""))
@@ -65,12 +95,7 @@
       ;; recur with the next possible slug
       (recur coll-id (next-slug slug counter) (inc counter)))))
 
-;; Validation functions
-
-(defn valid-name? [n]
-  (and (string? n) (not (s/blank? n))))
-
-;; Raw resource functions
+;; ----- Raw resource functions -----
 
 (defn resource-doc [coll-id slug type]
   "Get the CouchDB map representation of an item given the ID of its collection, the resource's slug and its type."
@@ -87,22 +112,11 @@
   [coll-slug resource]
   (map-from-db (assoc-in resource [:data :collection] coll-slug)))
 
-;; ISO 8601 timestamp
-
-(defn- current-timestamp [] 
-  (unparse timestamp-format (now)))
-
-;; CRUD funcitons
-
-(defn all-meta []
-  (clutch/with-db (db)
-    (clutch/all-documents)))
-
-(defn all []
-  (clutch/with-db (db)
-    (clutch/all-documents {:include_docs true})))
+;; ----- Resource CRUD funcitons -----
 
 (defn create-with-db [props provided-type]
+  "Create an FCMS resource in the DB, returning the property map for the resource.
+   This works when you ARE already in a clutch/with-db macro."
   (let [timestamp (current-timestamp)]
     (clutch/put-document {:data (merge props {
       :version 1
@@ -111,23 +125,26 @@
       :type (name provided-type)})})))
 
 (defn create
-  "Create a resource in the DB, returning the property map for the resource."
+  "Create an FCMS resource in the DB, returning the property map for the resource.
+   This works when you AREN'T already in a clutch/with-db macro."
   [props provided-type]
   (clutch/with-db (db)
     (create-with-db props provided-type)))
 
 (defn update-with-db [document props]
+  "Update the CouchDB document provided with a nev version number, updated-at timestamp,
+   and any new or updated properties from the provided map of props.
+   This works when you ARE already in a clutch/with-db macro."
   (clutch/update-document document {:data (merge props {
     :version (inc (:version props))
     :updated-at (current-timestamp)})}))
 
 (defn update [document props]
+  "Update the CouchDB document provided with a nev version number, updated-at timestamp,
+   and any new or updated properties from the provided map of props.
+   This works when you AREN'T already in a clutch/with-db macro."
   (clutch/with-db (db)
     (update-with-db document props)))
-
-(defn retrieve [id]
-  (clutch/with-db (db)
-    (clutch/get-document id)))
 
 (defn delete-map
   "Given an array of the id and rev of a document, return the map needed to delete the document in a bulk update"
@@ -135,10 +152,7 @@
   {:_id (first id-rev) :_rev (last id-rev) :_deleted true})
 
 (defn delete [resource]
+  "Delete the provided CouchDB document.
+   This works when you AREN'T already in a clutch/with-db macro."
   (clutch/with-db (db)
     (clutch/delete-document resource)))
-
-(defn delete-by-id [id]
-  (let [resource (retrieve id)]
-    (if-not (nil? resource)
-      (delete resource))))

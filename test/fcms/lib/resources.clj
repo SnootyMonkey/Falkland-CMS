@@ -6,7 +6,7 @@
             [fcms.resources.taxonomy :as taxonomy]
             [fcms.resources.item :as item]))
 
-;; fixtures
+;; ----- Fixtures -----
 
 (def c "c")
 (def e "e")
@@ -61,7 +61,7 @@
   (f)
   (item/delete-item c e))
 
-;; validation functions
+;; ----- Validation functions -----
 
 (defn verify-new-resource [coll-slug resource]
 	(is (= (:collection resource) c))

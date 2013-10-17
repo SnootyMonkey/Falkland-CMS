@@ -6,7 +6,7 @@
             [fcms.resources.taxonomy :as taxonomy]
 						[fcms.resources.item :as item]))
 
-;; ----- fixtures -----
+;; ----- Fixtures -----
 
 (def x "x")
 (def y "y")
@@ -35,7 +35,7 @@
   (taxonomy/create-category c2 "t3/a")
   (taxonomy/categorize-item c2 a "t3/a"))
 
-;; ----- validation functions -----
+;; ----- Validation functions -----
 
 (defn items [& slugs]
   (vec (map #(item/get-item c %) slugs)))
@@ -48,7 +48,7 @@
   (let [remaining-paths (rest category-paths)]
     (if-not (empty? remaining-paths) (recur expectation coll-slug remaining-paths))))
 
-;; ----- tests -----
+;; ----- Tests -----
 
 (use-fixtures :each empty-collection-c existing-taxonomy-t existing-taxonomy-t2 existing-item-e existing-items)
 
