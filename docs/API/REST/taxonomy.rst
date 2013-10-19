@@ -384,8 +384,8 @@ Example
 	   ]
 	}
 
-Create an Taxonomy
-==================
+Create a Taxonomy
+=================
 
 Create a new taxonomy in a collection.
 
@@ -394,8 +394,8 @@ TODO
 
 
 
-Update an Item
-==============
+Update a Taxonomy
+=================
 
 Update an existing taxonomy.
 
