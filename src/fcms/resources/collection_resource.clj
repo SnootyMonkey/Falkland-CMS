@@ -16,7 +16,6 @@
   "Properties that are retained during an update even if they aren't in the updated property set."
   (conj common/retained-properties :collection :categories))
 
-;; ToDo hide in docs
 (defn allow-category-reserved-properties []
   (vec (remove #(= :categories %) reserved-properties)))
 

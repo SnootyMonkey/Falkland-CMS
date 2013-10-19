@@ -3,7 +3,9 @@
             [fcms.resources.common :as common]
             [fcms.resources.collection-resource :as resource]))
 
-(def item-media-type "application/vnd.fcms.item+json;version=1")
+(def 
+  ^{:no-doc true}
+  item-media-type "application/vnd.fcms.item+json;version=1")
 
 (defn get-item
   "Given the slug of the collection containing the item and the slug of the item,

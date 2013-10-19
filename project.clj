@@ -105,12 +105,17 @@
     "src/"
   ]
 
+  ;; ----- Clojure API Documentation -----
+
   :codox {
     :sources ["src/fcms/resources"]
-    :output-dir ["docs/API/Clojure"]
+    :exclude [fcms.resources.collection-resource]
+    :output-dir "docs/API/Clojure"
+    :src-dir-uri "http://github.com/SnootyMonkey/Falkland-CMS/blob/master/"
+    :src-linenum-anchor-prefix "L" ; for Github
   }
 
-  ;; ClojureScript
+  ;; ----- ClojureScript -----
 
   :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
@@ -138,7 +143,7 @@
     }
   }
 
-  ;; Web Application
+  ;; ----- Web Application -----
 
   :ring {
     :handler fcms.app/app

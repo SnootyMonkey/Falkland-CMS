@@ -111,11 +111,11 @@ Falkland CMS is pre-alpha and not yet usable. A usable version is expected by th
 
 ## INSTALLATION
 
-## Quick Start - Heroku
+### Quick Start - Heroku
 
 Quick start instructions for Heroku are expected by the end of November 2013.
 
-## Local Installation
+### Local Installation
 
 Most of Falkland's dependencies are internal, meaning Leiningen will handle getting them for you. There are a few exceptions:
 
@@ -125,6 +125,10 @@ Most of Falkland's dependencies are internal, meaning Leiningen will handle gett
 * [elasticsearch](http://www.elasticsearch.org/) - elasticsearch is a schema-free, document-oriented search engine, ideally suited for CouchDB
 
 Detailed instructions for local installation are expected by the end of November 2013.
+
+## API
+
+At this point in time, Falkland CMS supports a [Clojure API](./docs/API/Clojure/index.html) and a [REST HTTP API](http://falkland-cms-api.readthedocs.org/).
 
 ## DEVELOPMENT AND CONTRIBUTING
 

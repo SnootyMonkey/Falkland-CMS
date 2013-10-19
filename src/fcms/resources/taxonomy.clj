@@ -8,7 +8,9 @@
             [fcms.resources.collection :as collection]
             [fcms.resources.item :as item]))
 
-(def taxonomy-media-type "application/vnd.fcms.taxonomy+json;version=1")
+(def 
+  ^{:no-doc true}
+  taxonomy-media-type "application/vnd.fcms.taxonomy+json;version=1")
 
 ;; ----- taxonomy lifecycle functions -----
 
@@ -279,7 +281,7 @@
       :else (category-exists? [] category-slugs (hash-category-slugs (:categories result))))))
 
 (defn normalize-category-path
-  "Remove the prefix slash and trailing slash if they are present."
+  "Remove the prefix slash and trailing slash from the category-path if they are present."
   [category-path]
   ;; "/tax/cat/cat/" => "tax/cat/cat"
   (s/replace (s/replace category-path #"^/" "") #"/$" ""))

@@ -8,16 +8,22 @@
 
 ;; ----- Properties common to all FCMS resources -----
 
-(def reserved-properties
+(def 
+  ^{:no-doc true}
+  reserved-properties
   "Properties that can't be specified during a create and are ignored during an update."
   #{:id :created-at :updated-at :type :version :links}) 
-(def retained-properties
+(def 
+  ^{:no-doc true}
+  retained-properties
   "Properties that are retained during an update even if they aren't in the updated property set."
   #{:name :slug :created-at :type})
 
 ;; ----- ISO 8601 timestamp -----
 
-(def timestamp-format (formatters :date-time-no-ms))
+(def
+  ^{:no-doc true}
+  timestamp-format (formatters :date-time-no-ms))
 
 (defn- current-timestamp [] 
   (unparse timestamp-format (now)))
@@ -32,30 +38,40 @@
 
 ;; ----- CouchDB base functions -----
 
-(defn db [] (clutch/get-database db-resource))
+(defn 
+  ^{:no-doc true}
+  db [] (clutch/get-database db-resource))
 
-(defn from-view
+(defn 
+  ^{:no-doc true}
+  from-view
   "Use the specified function of the specified view to return view contents (what was emitted by the view).
    Optionally include a key-value used to filter the documents.
    This works when you AREN'T already in a clutch/with-db macro."
   ([view function] (clutch/get-view (db) (name view) function {:include_docs false}))
   ([view function key-value] (clutch/get-view (db) (name view) function {:key key-value :include_docs false})))
 
-(defn from-view-with-db
+(defn 
+  ^{:no-doc true}
+  from-view-with-db
   "Use the specified function of the specified view to return view contents (what was emitted by the view).
    Optionally include a key-value used to filter the documents.
    This works when you ARE already in a clutch/with-db macro."
   ([view function] (clutch/get-view (name view) function {:include_docs false}))
   ([view function key-value] (clutch/get-view (name view) function {:key key-value :include_docs false})))
 
-(defn doc-from-view
+(defn 
+  ^{:no-doc true}
+  doc-from-view
   "Use the specified function of the specified view to return CouchDB documents.
    Optionally include a key-value used to filter the documents.
    This works when you AREN'T already in a clutch/with-db macro."
   ([view function] (clutch/get-view (db) (name view) function {:include_docs true}))
   ([view function key-value] (clutch/get-view (db) (name view) function {:key key-value :include_docs true})))
 
-(defn doc-from-view-with-db
+(defn
+  ^{:no-doc true}
+  doc-from-view-with-db
   "Use the specified function of the specified view to return CouchDB documents.
    Optionally include a key-value used to filter the documents.
    This works when you ARE already in a clutch/with-db macro."
@@ -76,7 +92,9 @@
     true
     false))
 
-(defn next-slug 
+(defn 
+  ^{:no-doc true}
+  next-slug 
   "Generate the next possible slug to attempt by removing the old counter suffix and adding the new counter suffix."
   [slug counter]
     ;; if the slug is blank then it's just the counter
@@ -97,24 +115,32 @@
 
 ;; ----- Raw resource functions -----
 
-(defn resource-doc [coll-id slug type]
+(defn 
+  ^{:no-doc true}
+  resource-doc [coll-id slug type]
   "Get the CouchDB map representation of an item given the ID of its collection, the resource's slug and its type."
   (:doc (first (doc-from-view-with-db type :all-ids-by-coll-id-and-slug [coll-id slug]))))
 
-(defn map-from-db
+(defn 
+  ^{:no-doc true}
+  map-from-db
   "Turn the CouchDB map into the FCMS map"
   [db-map]
   (if-let [data (:data db-map)]
     (assoc (dissoc data :type) :id (:_id db-map))))
 
-(defn resource-from-db 
+(defn
+  ^{:no-doc true}
+  resource-from-db 
   "Turn an item from its CouchDB map representation into its FCMS map representation."
   [coll-slug resource]
   (map-from-db (assoc-in resource [:data :collection] coll-slug)))
 
 ;; ----- Resource CRUD funcitons -----
 
-(defn create-with-db [props provided-type]
+(defn 
+  ^{:no-doc true}
+  create-with-db [props provided-type]
   "Create an FCMS resource in the DB, returning the property map for the resource.
    This works when you ARE already in a clutch/with-db macro."
   (let [timestamp (current-timestamp)]
@@ -124,14 +150,18 @@
       :updated-at timestamp
       :type (name provided-type)})})))
 
-(defn create
+(defn 
+  ^{:no-doc true}
+  create
   "Create an FCMS resource in the DB, returning the property map for the resource.
    This works when you AREN'T already in a clutch/with-db macro."
   [props provided-type]
   (clutch/with-db (db)
     (create-with-db props provided-type)))
 
-(defn update-with-db [document props]
+(defn 
+  ^{:no-doc true}
+  update-with-db [document props]
   "Update the CouchDB document provided with a nev version number, updated-at timestamp,
    and any new or updated properties from the provided map of props.
    This works when you ARE already in a clutch/with-db macro."
@@ -139,19 +169,25 @@
     :version (inc (:version props))
     :updated-at (current-timestamp)})}))
 
-(defn update [document props]
+(defn 
+  ^{:no-doc true}
+  update [document props]
   "Update the CouchDB document provided with a nev version number, updated-at timestamp,
    and any new or updated properties from the provided map of props.
    This works when you AREN'T already in a clutch/with-db macro."
   (clutch/with-db (db)
     (update-with-db document props)))
 
-(defn delete-map
+(defn
+  ^{:no-doc true}
+  delete-map
   "Given an array of the id and rev of a document, return the map needed to delete the document in a bulk update"
   [id-rev]
   {:_id (first id-rev) :_rev (last id-rev) :_deleted true})
 
-(defn delete [resource]
+(defn
+  ^{:no-doc true}
+  delete [resource]
   "Delete the provided CouchDB document.
    This works when you AREN'T already in a clutch/with-db macro."
   (clutch/with-db (db)

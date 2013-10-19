@@ -3,7 +3,9 @@
             [fcms.lib.slugify :refer (slugify)]
             [fcms.resources.common :as common]))
 
-(def collection-media-type "application/vnd.fcms.collection+json;version=1")
+(def
+  ^{:no-doc true}
+  collection-media-type "application/vnd.fcms.collection+json;version=1")
 
 (defn get-collection
   "Given the slug of the collection, return the collection as a map, or nil if there's no collection with that slug"
