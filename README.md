@@ -128,7 +128,7 @@ Detailed instructions for local installation are expected by the end of November
 
 ## API
 
-At this point in time, Falkland CMS supports a [Clojure API](./docs/API/Clojure/index.html) and a [REST HTTP API](http://falkland-cms-api.readthedocs.org/).
+At this point in time, Falkland CMS supports a [Clojure API](http://htmlpreview.github.io/?https://github.com/SnootyMonkey/Falkland-CMS/master/docs/API/Clojure/index.html) and a [REST HTTP API](http://falkland-cms-api.readthedocs.org/).
 
 ## DEVELOPMENT AND CONTRIBUTING
 
