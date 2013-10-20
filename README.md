@@ -7,7 +7,9 @@ exists in the world about a particular topic.
 
 ### Why use Falkland CMS?
 
-Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a traditional Web CMS, a Digital Collection Management system, and a Museum Exhibit Management system. Unlike Omeka, Falkland CMS is written in Clojure, ClojureScript and CouchDB and has a certain elegance and panache that's missing from Omeka.
+Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a
+traditional Web CMS, a Digital Collection Management system, and a Museum Exhibit Management system. Unlike Omeka,
+Falkland CMS is written in Clojure, ClojureScript and CouchDB and has a certain elegance and panache.
 
 Ideal uses:
 
@@ -17,7 +19,8 @@ Ideal uses:
 
 ### Who is this for?
 
-Falkland CMS is for anyone who wants to collect, organize, curate and present the knowledge that exists in the world about a particular topic:
+Falkland CMS is for anyone who wants to collect, organize, curate and present the knowledge that exists in the
+world about a particular topic:
 
 * scholars and professors
 * teachers and students
@@ -77,13 +80,26 @@ Because of this difference of focus, the acronym that is used for Falkland CMS i
 ![FCMS Key Concepts](./docs/images/FCMS-High-level.png "FCMS Key Concepts")
 
 ### Collections
-A Falkland CMS instance support one or more collections of items. A collection is all the items that you'd like to be organized and searched on together. Taxonomical organization and searches don't span multiple collections so usually you'll have just one collection or each collection will support a website or app for experiencing the collection. There may be cases where you have multiple websites or apps supported by the same collection or one website or app accessing multiple collections, but these would be less typical.
+
+A Falkland CMS instance has one or more collections of items. A collection is all the items that you'd like to
+be organized and searched together.
+
+Taxonomical organization and searches don't span multiple collections so
+usually you'll have just one collection or each collection will support a website or app for experiencing
+the collection. There may be cases where you have multiple websites or apps supported by the same collection
+or one website or app accessing multiple collections, but these would be less typical.
 
 ### Items
-Items are referential in nature. They act as a catalog entry for something: a web page, a book, a product, a person, an animal, a building. The possibilities are endless and simply depend on what it is you are trying to curate.
+
+Items are referential in nature. They act as a catalog entry for something: a web page, a book, a product,
+a person, an animal, a building. The possibilities are endless and simply depend on what it is you are
+trying to curate.
 
 ### Taxonomies
-A taxonomy is a particular classification scheme for organizing items into hierarchical categories. Central to Falkland CMS is supporting multiple independent taxonomies. Most collections will have many different taxonomies to categorize their items by different criteria. 
+
+A taxonomy is a particular classification scheme for organizing items into hierarchical categories. Central to
+Falkland CMS is supporting multiple independent taxonomies. Most collections will have many different taxonomies
+to categorize their items by different criteria. 
 
 ### Faceted Search / Navigation
 
