@@ -1,0 +1,22 @@
+layouts: ./_layouts
+exclude: ['./target/']
+
+permalink: /:title
+
+safe: false
+lsi: false
+baseurl: /falkland-cms
+
+# mimic Github's markdown locally
+pygments: true
+markdown: redcarpet
+redcarpet:
+  extensions:
+    - hard_wrap
+    - no_intra_emphasis
+    - autolink
+    - strikethrough
+    - fenced_code_blocks
+
+timezone: America/New_York
+encoding: UTF-8

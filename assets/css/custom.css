@@ -1,0 +1,45 @@
+/*!
+ * Overrides to Bootstrap with custom styling
+ */
+
+/* Move down content because we have a fixed navbar up top */
+ body {
+  padding-top: 80px;
+  padding-bottom: 60px;
+  font-family: 'Varela', sans-serif;
+}
+
+a.brand {
+	padding-left: 20px;
+  font-family: 'Vast Shadow', cursive;
+  font-size: 40px;
+  text-decoration: none;
+}
+
+ul.navbar-right {
+	padding-top: 4px;
+	padding-right: 20px;
+}
+
+ul.nav-stacked {
+	padding-top: 20px;
+}
+
+li.github-nav {
+	padding-top: 17px;
+}
+
+div.navbar-fixed-bottom {
+	padding-top: 10px;
+}
+#github-banner {
+  display: block;
+  top: 8px;
+  padding: 6px 45px 6px 10px;
+  color: #fff;
+  background: #3f8cca;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(0,0,0,.5);
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+}

@@ -1,0 +1,8 @@
+rvm 1.9.3-p448@fcms --create
+
+if [[ $- == *i* ]] # check for interactive shells
+then
+    echo "Using: $(tput setaf 2)$GEM_HOME$(tput sgr0)" # show the user the ruby and gemset they are using in green
+else 
+	echo "Using: $GEM_HOME" # don't use colors in interactive shells
+fi
