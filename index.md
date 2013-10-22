@@ -21,6 +21,16 @@ Ideal uses:
 * online presentation of library collections
 * online museum exhibits
 
+These are perfect fits for Falkland CMS:
+
+* The Venerable VIC-20 - an online exhibit of everything Commodore VIC-20
+* Camus.org - a primary and secondary source collection for the philosopher Albert Camus
+* Mudskippers.org - a guide to all the world's knowledge about the amazing amphibious fish
+* Jack Freeman's Library - presenting 40 years of one man's books
+* nil.org - a complete guide to nihilism 
+* 8-bit '80's - a site to exhibit an extensive retro video game collection
+* The Pitiful Pirates - a history of the Tampa Bay Buccaneers from 1976-1995
+
 ### Who is this for?
 
 Falkland CMS is for anyone who wants to collect, organize, curate and present the knowledge that exists in the world about a particular topic:
@@ -40,23 +50,11 @@ Falkland CMS is not for everyone, if these describe you, look elsewhere:
 * Anyone that needs extensive, professional-grade offline artifact cataloging
 * Anyone that needs granular [security](#security)
 
-### What are some (hypothetical) example uses of Falkland CMS?
-
-These would be perfect fits for Falkland CMS:
-
-* The Venerable VIC-20 - an online exhibit of everything Commodore VIC-20
-* Camus.org - a primary and secondary source collection for the philosopher Albert Camus
-* Mudskippers.org - a guide to all the world's knowledge about the amazing amphibious fish
-* Jack Freeman's Library - presenting 40 years of one man's books
-* nil.org - a complete guide to Nihilism 
-* 8-bit '80's - a site to exhibit an extensive retro video game collection
-* The Pitiful Pirates - a history of the Tampa Bay Buccaneers from 1976-1995
-
-### What are some (real) example uses of Falkland CMS?
+### Who is using Falkland CMS?
 
 Falkland CMS was created to support [Falklandsophile](http://falklandsophile.com), the complete guide to resources about the Falkland Islands. This is where the name for Falkland CMS came from.
 
-If you're using Falkland CMS, please drop me a note and let me know.
+If you're using Falkland CMS, please drop me a note and I'll link to you here.
 
 ### How is Falkland CMS Different than a Content Management System?
 
