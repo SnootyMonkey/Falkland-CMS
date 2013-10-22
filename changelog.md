@@ -3,13 +3,13 @@ layout: default
 title: Falkland CMS - Changelog
 ---
 
-# Falkland CMS Changelog
+## Falkland CMS Changelog
 
-## v0.1.0
+### v0.1.0
 
 * Clojure API for collections and items. Tested REST API for items.
 
-## v0.2.0-SNAPSHOT
+### v0.2.0-SNAPSHOT
 
 * Taxonomy support.
 
