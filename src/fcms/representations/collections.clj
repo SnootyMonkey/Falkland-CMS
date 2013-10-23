@@ -6,7 +6,7 @@
 
 (def ordered-keys [:name :created-at :updated-at :slug :description])
 
-(defn- url 
+(defn- url
   ([coll]
     (str "/" (:slug coll)))
   ([coll suffix]
@@ -36,7 +36,7 @@
     (update-link coll)
     (delete-link coll)]])))
 
-(defn render-collection 
+(defn render-collection
   "Create a JSON representation of a collection for the REST API"
   [coll]
   ;; Generate JSON from the sorted array map that results from:
@@ -46,7 +46,7 @@
   ;; 4) adding the HATEAOS links to the array hash
   (let [coll-props (dissoc coll :id)]
     (json/generate-string
-      (-> coll-props 
+      (-> coll-props
         (common/ordered ordered-keys)
         (common/append-sorted (common/remaining-keys coll-props ordered-keys))
         links)) {:pretty true}))

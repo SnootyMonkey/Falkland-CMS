@@ -107,7 +107,7 @@
 ;; http://localhost:5984/falklandcms/_design/taxonomy/_view/all-ids-by-coll-id-and-slug?key=["collection-id", "taxonomy-slug"]
 ;; http://localhost:5984/falklandcms/_design/taxonomy/_view/all-slugs-by-coll-id?key="collection-id"
 ;; http://localhost:5984/falklandcms/_design/taxonomy/_view/all-slugs-by-coll-id?key="collection-id"&include_docs=true
-;; http://localhost:5984/falklandcms/_design/taxonomy/_view/delete-by-coll-id?key="collection-id"    
+;; http://localhost:5984/falklandcms/_design/taxonomy/_view/delete-by-coll-id?key="collection-id"
 (defn- taxonomy-views []
   (clutch/save-view "taxonomy"
     (clutch/view-server-fns :javascript {

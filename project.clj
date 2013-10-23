@@ -1,6 +1,6 @@
 (defproject falkland-cms "0.2.0-SNAPSHOT"
   :description "Falkland CMS is a Content/Collection Management System written in Clojure, ClojureScript and CouchDB."
-  :url "https://github.com/SnootyMonkey/Falkland-CMS/"
+  :url "http://falkland-cms.com/"
   :license {:name "Mozilla Public License v2.0"
             :url "http://www.mozilla.org/MPL/2.0/"}
   
@@ -47,6 +47,7 @@
         [com.cemerick/piggieback "0.1.0"] ; ClojureScript bREPL from the nREPL https://github.com/cemerick/piggieback
         [clj-ns-browser "1.3.1"] ; Doc browser https://github.com/franks42/clj-ns-browser
       ]
+      ; REPL injections
       :injections [
         (require '[clojure.pprint :refer :all]
                  '[clojure.stacktrace :refer (print-stack-trace)]
@@ -93,7 +94,7 @@
     [lein-cljsbuild "0.3.4"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
     [lein-cucumber "1.0.2"] ; BDD testing https://github.com/nilswloka/lein-cucumber
     [codox "0.6.6"] ; Generate Clojrue API docs https://github.com/weavejester/codox
-    [lein-midje "3.1.3-RC1"] ; Example-based testing https://github.com/marick/lein-midje
+    [lein-midje "3.1.3-RC2"] ; Example-based testing https://github.com/marick/lein-midje
     [lein-bikeshed "0.1.3"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
     [lein-pprint "1.1.1"] ; pretty-print the lein project map https://github.com/technomancy/leiningen/tree/master/lein-pprint
     [lein-ancient "0.5.0-RC1"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
@@ -110,7 +111,7 @@
   :codox {
     :sources ["src/fcms/resources"]
     :exclude [fcms.resources.collection-resource]
-    :output-dir "docs/API/Clojure"
+    :output-dir "../Falkland-CMS-docs/API/Clojure"
     :src-dir-uri "http://github.com/SnootyMonkey/Falkland-CMS/blob/master/"
     :src-linenum-anchor-prefix "L" ; for Github
   }

@@ -1,4 +1,4 @@
-(ns fcms.lib.slugify 
+(ns fcms.lib.slugify
   (:require [clojure.string :as s])
   (:import [java.text Normalizer Normalizer$Form]))
 
@@ -32,7 +32,7 @@
 ;; replace multiple dashes with dash and dash at the beginning and end with nothing
 ;; truncate
 ;; replace dash at the end with nothing (in case we left a - at the end by truncating)
-(defn slugify 
+(defn slugify
   ([resource-name] (slugify resource-name max-slug-length))
   ([resource-name max-length]
     (-> resource-name
