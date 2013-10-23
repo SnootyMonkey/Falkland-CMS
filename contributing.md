@@ -47,9 +47,9 @@ Additional short lived feature branches will come and go.
 
 [/src/fcms/cljs/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/fcms/cljs/) - [ClojureScript](https://github.com/clojure/clojurescript) for the Web UI
 
-[/src/brepl/fcms/connect.cljs](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/brepl/fcms/connect.clj) - [ClojureScript](https://github.com/clojure/clojurescript) browser REPL
+[/src/brepl/fcms/connect.cljs](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/brepl/fcms/connect.cljs) - [ClojureScript](https://github.com/clojure/clojurescript) browser REPL
 
-[/resources/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/resources/) - CSS, ClojureScript, images
+[/resources/public/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/resources/public/) - HTML, CSS, ClojureScript generated JavaScript, images
 
 [/test/fcms/features/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/test/fcms/features/) - [Cucumber](http://cukes.info/) integration tests
 
@@ -61,5 +61,16 @@ Additional short lived feature branches will come and go.
 
 ### Repository Structure - Documentation (gh-pages branch)
 
+[/*.md](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/) - Falkland CMS documentation [Markdown](http://daringfireball.net/projects/markdown/) files 
 
+[/_includes/](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/_includes/) - [jekyll](http://jekyllrb.com/) HTML partials
 
+[/_layout/](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/_layouts/) - [jekyll](http://jekyllrb.com/) HTML layouts
+
+[/API/clojure.md](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/API/clojure.md) - Clojure API tutorial
+
+[/API/Clojure/](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/API/Clojure/) - [Codox](https://github.com/weavejester/codox) generated Clojure API reference
+
+[/API/REST/](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/API/REST/) - source for the [Sphinx](http://sphinx-doc.org/) powered REST API reference documentation
+
+[/assets/](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/assets/) - CSS, fonts, icons, images, and JavaScript

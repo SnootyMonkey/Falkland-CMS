@@ -1,5 +1,5 @@
 layouts: ./_layouts
-exclude: ['./target/']
+exclude: ['README.md', './target/']
 
 permalink: /:title
 
