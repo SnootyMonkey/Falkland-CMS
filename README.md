@@ -16,7 +16,7 @@ Falkland CMS is pre-alpha and not yet usable. A usable version is expected by th
 
 ## Development and Contributing
 
-If you want to contribute to the development, complete documentation on how to proceed is on the [Falkland CMS website](http://falkland-cms.com).
+If you want to contribute to the development, complete documentation on how to proceed is on the [Falkland CMS website](http://falkland-cms.com/contributing.html).
 
 ## License
 
