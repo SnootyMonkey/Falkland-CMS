@@ -27,11 +27,17 @@ Additional short lived feature branches will come and go.
 
 ### Repository Structure - Development
 
-[/project.clj](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/project.clj) - [Leiningen](http://leiningen.org/) project config file
-
 [/.travis.yml](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/.travis.yml) - [Travis-CI](https://travis-ci.org/SnootyMonkey/Falkland-CMS) continual integration config file
 
 [/LICENSE.txt](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/LICENSE.txt) - Mozilla Public License 2.0
+
+[/project.clj](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/project.clj) - [Leiningen](http://leiningen.org/) project config file
+
+[/design](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/design/) - temporary design documents created before the final documentation exists 
+
+[/resources/public/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/resources/public/) - HTML, CSS, ClojureScript generated JavaScript, images
+
+[/src/brepl/fcms/connect.cljs](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/brepl/fcms/connect.cljs) - [ClojureScript](https://github.com/clojure/clojurescript) browser REPL
 
 [/src/fcms/app.clj](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/fcms/app.clj) - bootstrap the Falkland CMS server
 
@@ -39,27 +45,21 @@ Additional short lived feature branches will come and go.
 
 [/src/fcms/api/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/fcms/api/) - [Liberator](http://clojure-liberator.github.io/liberator/) request handlers implementing the REST API
 
-[/src/fcms/resources/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/fcms/resources/) - Clojure API, a light business logic wrapper around [CouchDB](http://couchdb.apache.org/)
-
-[/src/fcms/representations/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/fcms/representations/) - JSON rendering for the REST API
-
-[/src/fcms/lib/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/fcms/lib/) - helper files
+[/src/fcms/cljs/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/fcms/cljs/) - [ClojureScript](https://github.com/clojure/clojurescript) for the Web UI
 
 [/src/fcms/db/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/fcms/db/) - initialization of the [CouchDB](http://couchdb.apache.org/) views
 
-[/src/fcms/cljs/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/fcms/cljs/) - [ClojureScript](https://github.com/clojure/clojurescript) for the Web UI
+[/src/fcms/lib/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/fcms/lib/) - helper files
 
-[/src/brepl/fcms/connect.cljs](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/brepl/fcms/connect.cljs) - [ClojureScript](https://github.com/clojure/clojurescript) browser REPL
+[/src/fcms/representations/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/fcms/representations/) - JSON rendering for the REST API
 
-[/resources/public/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/resources/public/) - HTML, CSS, ClojureScript generated JavaScript, images
+[/src/fcms/resources/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/fcms/resources/) - Clojure API, a light business logic wrapper around [CouchDB](http://couchdb.apache.org/)
 
 [/test/fcms/features/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/test/fcms/features/) - [Cucumber](http://cukes.info/) integration tests
 
-[/test/fcms/unit/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/test/fcms/unit/) - [Midje](https://github.com/marick/Midje) and [core.test](http://richhickey.github.io/clojure/clojure.test-api.html) unit tests
-
 [/test/fcms/lib/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/test/fcms/lib/) - helper files for tests
 
-[/design](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/design/) - temporary design documents created before the final documentation exists 
+[/test/fcms/unit/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/test/fcms/unit/) - [Midje](https://github.com/marick/Midje) and [core.test](http://richhickey.github.io/clojure/clojure.test-api.html) unit tests
 
 ### Repository Structure - Documentation (gh-pages branch)
 
@@ -69,10 +69,10 @@ Additional short lived feature branches will come and go.
 
 [/_layout/](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/_layouts/) - [jekyll](http://jekyllrb.com/) HTML layouts
 
+[/assets/](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/assets/) - CSS, fonts, icons, images, and JavaScript
+
 [/API/clojure.md](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/API/clojure.md) - Clojure API tutorial
 
 [/API/Clojure/](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/API/Clojure/) - [Codox](https://github.com/weavejester/codox) generated Clojure API reference
 
 [/API/REST/](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/API/REST/) - source for the [Sphinx](http://sphinx-doc.org/) powered REST API reference documentation
-
-[/assets/](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/assets/) - CSS, fonts, icons, images, and JavaScript
