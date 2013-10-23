@@ -91,4 +91,4 @@ You can open an issue or feature request in the [GitHub issue tracker](https://g
 
 Falkland CMS is distributed under the [Mozilla Public License v2.0](http://www.mozilla.org/MPL/2.0/).
 
-Copyright © 2013 Snooty Monkey, LLC
+Copyright © 2013 [Snooty Monkey, LLC](http://snootymonkey.com/)
