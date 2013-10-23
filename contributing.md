@@ -7,7 +7,9 @@ author: Sean Johnson
 
 ## Development and Contributing
 
-Please fork [Falkland CMS on GitHub](https://github.com/SnootyMonkey/Falkland-CMS) if you'd like to enhance it. Submit your pull requests if you'd like to contribute back your enhancements. I promise to look at every pull request and incorporate it, or at least provide feedback on why if I won't.
+If you'd like to enhance Falkland CMS, please fork [Falkland CMS on GitHub](https://github.com/SnootyMonkey/Falkland-CMS). If you'd like to contribute back your enhancements, please submit your pull requests to the dev branch. I promise to look at every pull request and incorporate it, or at least provide feedback on why if I won't.
+
+If you want to contribute to the documentation, there is a [separate guide](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/README.md).
 
 ### Branches
 

@@ -25,7 +25,7 @@ jekyll serve --baseurl '' --port 3000
 open http://localhost:3000
 ```
 
-## Generating the API Reference Documention
+## Generating the API Reference Documentation
 
 ### Clojure API
 
@@ -42,7 +42,7 @@ cd ../Falkland-CMS
 lein doc
 ```
 
-The resulting Clojure API reference documention will be at: ./Falkland-CMS-docs/API/Clojure/index.html
+The resulting Clojure API reference documentation will be at: ./Falkland-CMS-docs/API/Clojure/index.html
 
 ### REST API
 
