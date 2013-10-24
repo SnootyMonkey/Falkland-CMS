@@ -13,7 +13,7 @@ Falkland CMS is a Curation Management System used to collect, curate, organize a
 
 ### Why use Falkland CMS?
 
-Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a traditional Web CMS, a Digital Collection Management system, and a Museum Exhibit Management system. Unlike Omeka, Falkland CMS is written in Clojure, ClojureScript and CouchDB and has a certain elegance and panache.
+Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a traditional Web CMS, a Digital Collection Management system, and a Museum Exhibit Management system. Unlike Omeka, Falkland CMS is written in Clojure, ClojureScript and CouchDB, and so has a certain elegance and panache.
 
 Ideal uses:
 
