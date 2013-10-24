@@ -7,16 +7,16 @@ title: Falkland CMS - Changelog
 
 ### v0.1.0
 
-* Clojure API for collections and items. Tested REST API for items.
+* Clojure API for collections and items. Tested REST API for items
 
 ### v0.2.0-SNAPSHOT
 
-* Taxonomy support.
+* Taxonomy support
 
-* Tests for the Clojure API.
+* Tests for the Clojure API
 
-* Generated docs for the Clojure API.
+* Generated docs for the Clojure API
 
-* Generated docs for the REST API.
+* Generated docs for the REST API
 
-* Project website
+* Created project website
