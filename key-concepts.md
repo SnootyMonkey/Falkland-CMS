@@ -17,7 +17,7 @@ Taxonomical organization and searches don't span multiple collections, so you'll
 
 ### Items
 
-Items are referential in nature. They point to something that exists and act as a catalog entry for something: a web page, a book, a product, a person, an animal, a building. The possibilities are endless and simply depend on what it is you are trying to curate.
+Items are referential in nature. They point to something that exists, and act as a catalog entry for it. Items can reference a web page, a book, a product, a person, an animal, a building... the possibilities are endless and simply depend on what it is you are trying to curate.
 
 ### Taxonomies
 
@@ -25,11 +25,11 @@ A taxonomy is a particular classification scheme for organizing items into hiera
 
 ### <a id="pages"></a> Pages
 
-There are 3 types of pages:
+There are 3 types of pages in Falkland CMS:
 
-* **item** - displays a single item from the collection.
-* **category** - displays the items in a particular category of a particular taxonomy.
-* **exhibit** - may reference many named or searched for resources, but could also be made up of just static content. A home page is a good example of a dynamic exhibit page, and an about page, or terms of use page is a good example of a completely static exhibit page.
+* **item page** - displays a single item from the collection.
+* **category page** - displays the items in a particular category of a particular taxonomy.
+* **exhibit page** - may reference many named or searched for resources, but could also be made up of just static content. A home page is a good example of a dynamic exhibit page, and an about page, or terms of use page is a good example of a completely static exhibit page.
 
 ![FCMS Key Concepts]({{site.url}}/assets/img/FCMS-High-level.png "FCMS Key Concepts")
 
@@ -37,7 +37,7 @@ There are 3 types of pages:
 
 ## <a id="search"></a> Faceted Search / Navigation
 
-[Faceted search](http://en.wikipedia.org/wiki/Faceted_search) or faceted navigation is full-text search blended with navigation by multiple, orthogonal filters. It's possible with faceted search for example to do a full text search on "Camus BBC" and then drill down into the search results limiting them to the "online video" in the media taxonomy, and the "United States" in the geography taxonomy. Faceted search and navigation is a powerful technique for quickly exploring a large catalog of items.
+[Faceted search](http://en.wikipedia.org/wiki/Faceted_search) or faceted navigation is full-text search blended with navigation by multiple, orthogonal filters. It's possible with faceted search for example to do a full text search on "Camus BBC" and then drill down into the search results limiting them to the "online video" in the media taxonomy, and the "United States" in the geography taxonomy. Faceted search and navigation is a powerful technique for quickly exploring a large catalog of items and is a key capability of Falkland CMS.
 
 ---
 

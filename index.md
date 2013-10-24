@@ -17,7 +17,7 @@ Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the
 
 Ideal uses:
 
-* a repository of digital collections
+* a repository for digital collections
 * online presentation of library collections
 * online museum exhibits
 
