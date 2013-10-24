@@ -76,6 +76,20 @@ I promise to look at every pull request and incorporate it, or at least provide 
 
 Details on the structure of the documentation branch can be found in the [contributing section](http://falkland-cms.com/contributing.html) of the Falkland CMS documentation.
 
+### Update the Site
+
+Update them once:
+
+```console
+jekyll build --watch
+```
+
+Or update them continuously:
+
+```console
+jekyll build --watch
+```
+
 ### Check Spelling
 
 ```console
