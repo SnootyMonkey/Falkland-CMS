@@ -48,7 +48,7 @@ Falkland CMS is not for everyone, if these describe you, look elsewhere:
 
 * Anyone that needs extensive new content authoring
 * Anyone that needs extensive, professional-grade offline artifact cataloging
-* Anyone that needs granular [security](#security)
+* Anyone that needs granular security
 
 ### Who is using Falkland CMS?
 
