@@ -75,4 +75,4 @@ Additional short lived feature branches will come and go.
 
 [/API/Clojure/](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/API/Clojure/) - [Codox](https://github.com/weavejester/codox) generated Clojure API reference
 
-[/API/REST/](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/API/REST/) - source for the [Sphinx](http://sphinx-doc.org/) powered REST API reference documentation
+[/API/REST/](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/API/REST/) - source for the [Sphinx](http://sphinx-doc.org/) generated REST API reference documentation
