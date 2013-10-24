@@ -1,13 +1,13 @@
 ---
 layout: default
-title: Falkland CMS - collect, organize, curate and present knowledge
-description: Falkland CMS is a Curation Management System used to collect, organize, curate and present the knowledge that exists in the world about a particular topic.
+title: Falkland CMS - collect, curate, organize, and present knowledge
+description: Falkland CMS is a Curation Management System used to collect, curate, organize, and present the knowledge that exists in the world about a particular topic.
 author: Sean Johnson
 ---
 
 ## Introduction
 
-Falkland CMS is a Curation Management System used to collect, organize, curate and present the knowledge that exists in the world about a particular topic.
+Falkland CMS is a Curation Management System used to collect, curate, organize and present the knowledge that exists in the world about a particular topic.
 
 ![FCMS Key Concepts]({{site.url}}/assets/img/FCMS-High-level.png "FCMS Key Concepts")
 
@@ -33,7 +33,7 @@ These are perfect fits for Falkland CMS:
 
 ### Who is this for?
 
-Falkland CMS is for anyone who wants to collect, organize, curate and present the knowledge that exists in the world about a particular topic:
+Falkland CMS is for anyone who wants to collect, curate, organize and present the knowledge that exists in the world about a particular topic:
 
 * scholars and professors
 * teachers and students
@@ -65,7 +65,9 @@ A traditional CMS or [WCMS (web content management system)](http://en.wikipedia.
 * collaboration of multiple content authors
 * templates to take the data in the system and present it as web content, typically HTML
 
-Falkland CMS has these foundational capabilities, but is not focused on the creation of *new* content. Instead, Falkland CMS is used for collecting, curating and presenting existing content. Falkland CMS supports authoring new content, but this new content is intended to provide context for the presentation and exhibition of collected resources. Falkland CMS is not intended as a WCMS for a huge corpus of brand new content. You wouldn't run a daily newspaper with Falklankd CMS. Its primary role is to point to existing content, either content on the web, or content collected into Falkland CMS.
+Falkland CMS has these foundational capabilities, but is not focused on the creation of *new* content. Instead, Falkland CMS is used for collecting, curating, organizing and presenting existing content.
+
+Falkland CMS does support authoring new content, but this new content is intended to provide context for the presentation and exhibition of collected resources. You wouldn't run a daily newspaper with Falklankd CMS.
 
 Because of this difference of focus, the acronym that is used for Falkland CMS is Curation Management System. 
 

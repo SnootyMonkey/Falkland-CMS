@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Falkland CMS - Installation
-description: Installation instructions for Falkland CMS, a Curation Management System used to collect, organize, curate and present the knowledge that exists in the world about a particular topic.
+description: Installation instructions for Falkland CMS, a Curation Management System used to collect, curate, organize, and present the knowledge that exists in the world about a particular topic.
 author: Sean Johnson
 ---
 

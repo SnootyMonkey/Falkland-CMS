@@ -2,7 +2,7 @@
 
 This is the git branch (gh-pages) for the Falkland CMS documentation.
 
-Falkland CMS is a Curation Management System used to collect, organize, curate and present the knowledge that exists in the world about a particular topic.
+Falkland CMS is a Curation Management System used to collect, curate, organize, and present the knowledge that exists in the world about a particular topic.
 
 If you just want to use the documentation, you're better off using them from the [Falkland CMS Website](http://falkland-cms.com/).
 
