@@ -1,10 +1,9 @@
 -= [Falkland CMS](http://falkland-cms.com) =- [![Build Status](https://travis-ci.org/SnootyMonkey/Falkland-CMS.png?branch=master)](https://travis-ci.org/SnootyMonkey/Falkland-CMS) [![Development on Trello](http://snooty-monkey-open-images.s3.amazonaws.com/managed_on_trello.jpg)](https://trello.com/b/UgzPjFAX/falkland-cms)
 ============
 
-
 Falkland CMS is a Curation Management System used to collect, organize, curate and present the knowledge that exists in the world about a particular topic.
 
-This README is just a stub, please visit the full website: [falkland-cms.com](http://falkland-cms.com)
+This README is just a stub, please visit the full website at [falkland-cms.com](http://falkland-cms.com).
 
 ## Documentation
 
