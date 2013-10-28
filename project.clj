@@ -10,7 +10,7 @@
     [org.clojure/clojure "1.5.1"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [org.clojure/core.match "0.2.0"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
-    [org.clojure/clojurescript "0.0-1934"] ; ClojureScript compiler https://github.com/clojure/clojurescript
+    [org.clojure/clojurescript "0.0-1978"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     [cheshire "5.2.0"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.2"] ; Ordered hash map https://github.com/flatland/ordered
     [ring/ring-jetty-adapter "1.2.0"] ; Web Server https://github.com/ring-clojure/ring
@@ -42,7 +42,7 @@
       :dependencies [
         [midje "1.6-beta1"] ; Example-based testing https://github.com/marick/Midje
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
-        [print-foo "0.3.7"] ; Old school print debugging https://github.com/danielribeiro/print-foo
+        [print-foo "0.4.2"] ; Old school print debugging https://github.com/danielribeiro/print-foo
         [org.clojure/tools.trace "0.7.6"] ; Tracing macros/fns https://github.com/clojure/tools.trace
         [com.cemerick/piggieback "0.1.0"] ; ClojureScript bREPL from the nREPL https://github.com/cemerick/piggieback
         [clj-ns-browser "1.3.1"] ; Doc browser https://github.com/franks42/clj-ns-browser
@@ -97,7 +97,7 @@
     [lein-midje "3.1.3-RC2"] ; Example-based testing https://github.com/marick/lein-midje
     [lein-bikeshed "0.1.3"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
     [lein-pprint "1.1.1"] ; pretty-print the lein project map https://github.com/technomancy/leiningen/tree/master/lein-pprint
-    [lein-ancient "0.5.1"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
+    [lein-ancient "0.5.2"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
     [lein-spell "0.1.0"] ; Catch spelling mistakes in docs and docstrings https://github.com/cldwalker/lein-spell
   ]
 
