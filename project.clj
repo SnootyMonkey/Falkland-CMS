@@ -13,13 +13,13 @@
     [org.clojure/clojurescript "0.0-1978"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     [cheshire "5.2.0"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.2"] ; Ordered hash map https://github.com/flatland/ordered
-    [ring/ring-jetty-adapter "1.2.0"] ; Web Server https://github.com/ring-clojure/ring
-    [compojure "1.1.5"] ; Web routing https://github.com/weavejester/compojure
+    [ring/ring-jetty-adapter "1.2.1"] ; Web Server https://github.com/ring-clojure/ring
+    [compojure "1.1.6"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.9.0"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0-RC1"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "1.3.0-beta5"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    [com.taoensso/timbre "2.6.3"] ; Logging https://github.com/ptaoussanis/timbre
+    [com.taoensso/timbre "2.7.0"] ; Logging https://github.com/ptaoussanis/timbre
   ]
   
   :profiles {
@@ -42,7 +42,7 @@
       :dependencies [
         [midje "1.6-beta1"] ; Example-based testing https://github.com/marick/Midje
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
-        [print-foo "0.4.2"] ; Old school print debugging https://github.com/danielribeiro/print-foo
+        [print-foo "0.4.6"] ; Old school print debugging https://github.com/danielribeiro/print-foo
         [org.clojure/tools.trace "0.7.6"] ; Tracing macros/fns https://github.com/clojure/tools.trace
         [com.cemerick/piggieback "0.1.0"] ; ClojureScript bREPL from the nREPL https://github.com/cemerick/piggieback
         [clj-ns-browser "1.3.1"] ; Doc browser https://github.com/franks42/clj-ns-browser
@@ -88,7 +88,7 @@
   ]
 
   :plugins [
-    [lein-ring "0.8.7"] ; common ring tasks https://github.com/weavejester/lein-ring
+    [lein-ring "0.8.8"] ; common ring tasks https://github.com/weavejester/lein-ring
     [lein-environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [lein-git-deps "0.0.1-SNAPSHOT"] ; dependencies from GitHub https://github.com/tobyhede/lein-git-deps
     [lein-cljsbuild "0.3.4"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
@@ -97,7 +97,7 @@
     [lein-midje "3.1.3-RC2"] ; Example-based testing https://github.com/marick/lein-midje
     [lein-bikeshed "0.1.3"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
     [lein-pprint "1.1.1"] ; pretty-print the lein project map https://github.com/technomancy/leiningen/tree/master/lein-pprint
-    [lein-ancient "0.5.2"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
+    [lein-ancient "0.5.3"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
     [lein-spell "0.1.0"] ; Catch spelling mistakes in docs and docstrings https://github.com/cldwalker/lein-spell
   ]
 
