@@ -16,7 +16,15 @@
   }
 
   :plugins [
-    [lein-ancient "0.5.0-RC1"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
+    [lein-sphinx "1.0.0"] ; Build Sphinx documentation https://github.com/SnootyMonkey/lein-sphinx
     [lein-spell "0.1.0"] ; Catch spelling mistakes in docs and docstrings https://github.com/cldwalker/lein-spell
+    [lein-ancient "0.5.3"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
   ]
+
+  ;; ----- REST API Documentation -----
+
+  :sphinx {
+    :source "API/REST"
+  }
+
 )
