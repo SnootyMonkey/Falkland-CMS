@@ -29,7 +29,7 @@
 
 (defn- item-links [item]
   "Add the HATEAOS links to the item"
-  (apply array-map (concat (flatten (into [] item)) [:links [
+  (apply array-map (concat (flatten (vec item)) [:links [
     (self-link item)
     (update-link item)
     (delete-link item)

@@ -20,7 +20,7 @@
   (s/replace (s/join "-" (s/split slug #"\-+")) #"^-+" ""))
 
 (defn- truncate [slug n]
-  (apply str (take n slug)))
+  (s/join (take n slug)))
 
 ;; Slugify Rules:
 ;; trim prefixed and trailing white space

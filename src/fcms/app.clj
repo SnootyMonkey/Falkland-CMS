@@ -15,7 +15,7 @@
   item-routes)
 
 (def trace-app
-  (-> routes (wrap-trace :header :ui)))
+  (wrap-trace routes :header :ui))
 
 (def app
   (if liberator-trace trace-app routes))

@@ -29,7 +29,7 @@
 
 (defn links [coll]
   "Add the HATEAOS links to the collection"
-  (apply array-map (concat (flatten (into [] coll)) [:links [
+  (apply array-map (concat (flatten (vec coll)) [:links [
     (self-link coll)
     (contains-link coll)
     (create-link coll)

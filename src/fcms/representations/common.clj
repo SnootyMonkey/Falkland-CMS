@@ -33,9 +33,9 @@
   that has the remaining keys sorted and appended to the ordered keys"
   [prop-map, remaining-map]
   ;; sort the remaining key-value pairs into a sorted map
-  (let [sorted-remaining (apply sorted-map (flatten (into [] remaining-map)))]
+  (let [sorted-remaining (apply sorted-map (flatten (vec remaining-map)))]
     ;; create a new ordered array map from our existing ordered map and the newly sorted map
-    (apply array-map (concat (flatten (into [] prop-map)) (flatten (into [] sorted-remaining))))))
+    (apply array-map (concat (flatten (vec prop-map)) (flatten (vec sorted-remaining))))))
 
 (defn remaining-keys
   "Remove all the ordered keys leaving just the remaining keys"
