@@ -11,6 +11,7 @@
     [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [org.clojure/core.match "0.2.0"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [org.clojure/clojurescript "0.0-2030"] ; ClojureScript compiler https://github.com/clojure/clojurescript
+    [org.clojure/tools.nrepl "0.2.3"] ; REPL server and client https://github.com/clojure/tools.nrepl
     [cheshire "5.2.0"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.2"] ; Ordered hash map https://github.com/flatland/ordered
     [ring/ring-jetty-adapter "1.2.1"] ; Web Server https://github.com/ring-clojure/ring
@@ -31,17 +32,16 @@
       :dependencies [
         [midje "1.6-beta1"] ; Example-based testing https://github.com/marick/Midje
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
+        [speclj "2.8.1"] ; BDD testing https://github.com/slagyr/speclj
       ]
-      :cucumber-feature-paths ["test/fcms/features"]
     }
-    :dev {
+
+    :dev [:qa {
       :env {
         :db-name "falklandcms"
         :liberator-trace true
       }
       :dependencies [
-        [midje "1.6-beta1"] ; Example-based testing https://github.com/marick/Midje
-        [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
         [print-foo "0.4.6"] ; Old school print debugging https://github.com/danielribeiro/print-foo
         [org.clojure/tools.trace "0.7.6"] ; Tracing macros/fns https://github.com/clojure/tools.trace
         [com.cemerick/piggieback "0.1.2"] ; ClojureScript bREPL from the nREPL https://github.com/cemerick/piggieback
@@ -59,7 +59,8 @@
                  '[cemerick.piggieback :as pb])
         (defn brepl [] (pb/cljs-repl :repl-env (b-repl/repl-env :port 9000)))
       ]
-    }
+    }]
+
     :prod {
       :env {
         :db-name "falklandcms"
@@ -74,6 +75,7 @@
     "build" ["do" "clean," "deps," "git-deps,", "compile," "init-db"] ; clean and build
     "test" ["with-profile" "qa" "do" "test"] ; run unit tests
     "midje" ["with-profile" "qa" "midje"] ; run unit tests
+    "spec" ["with-profile" "qa" "spec"] ; run integration tests
     "cucumber" ["with-profile" "qa" "cucumber"] ; run integration tests
     "test-all" ["with-profile" "qa" "do" "midje," "test," "cucumber"] ; run all tests
     "test-all!" ["with-profile" "qa" "do" "build,", "test-all"] ; clean and build and run all tests
@@ -89,6 +91,7 @@
     [lein-git-deps "0.0.1-SNAPSHOT"] ; dependencies from GitHub https://github.com/tobyhede/lein-git-deps
     [lein-cljsbuild "1.0.0-alpha2"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
     [lein-cucumber "1.0.2"] ; BDD testing https://github.com/nilswloka/lein-cucumber
+    [speclj "2.8.1"] ; BDD testing https://github.com/slagyr/speclj
     [codox "0.6.6"] ; Generate Clojrue API docs https://github.com/weavejester/codox
     [lein-midje "3.1.3-RC2"] ; Example-based testing https://github.com/marick/lein-midje
     [lein-bikeshed "0.1.3"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
@@ -108,6 +111,11 @@
   ;   ".lein-git-deps/liberator/src/"
   ;   "src/"
   ; ]
+
+  ;; ----- Location of tests -----
+
+  :cucumber-feature-paths ["test/fcms/features"]
+  :test-paths ["test"]
 
   ;; ----- Clojure API Documentation -----
 
