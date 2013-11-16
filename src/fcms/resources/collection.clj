@@ -6,6 +6,9 @@
 (def
   ^{:no-doc true}
   collection-media-type "application/vnd.fcms.collection+json;version=1")
+(def
+  ^{:no-doc true}
+  collection-collection-media-type "application/vnd.collection+vnd.fcms.collection+json;version=1")
 
 (defn get-collection
   "Given the slug of the collection, return the collection as a map, or nil if there's no collection with that slug"

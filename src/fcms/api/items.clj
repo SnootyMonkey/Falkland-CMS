@@ -97,8 +97,12 @@
 
 (defresource items-list [coll-slug]
   :available-charsets [common/UTF8]
-  :available-media-types [item/item-media-type]
-  :handle-not-acceptable (fn [ctx] (common/only-accept item/item-media-type))
+  :available-media-types (by-method {
+    :get [item/item-collection-media-type]
+    :post [item/item-media-type]})
+  :handle-not-acceptable (by-method {
+    :get (fn [ctx] (common/only-accept item/item-collection-media-type))
+    :post (fn [ctx] (common/only-accept item/item-media-type))})
   :allowed-methods [:get :post]
   :exists? (fn [ctx] (get-items coll-slug))
   :handle-not-found (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
@@ -108,8 +112,12 @@
   :malformed? (by-method {
     :get false
     :post (fn [ctx] (common/malformed-json? ctx))})
-  :known-content-type? (fn [ctx] (common/known-content-type ctx item/item-media-type))
-  :handle-unsupported-media-type (fn [ctx] (common/only-accept item/item-media-type))
+  :known-content-type? (by-method {
+    :get (fn [ctx] (common/known-content-type ctx item/item-collection-media-type))
+    :post (fn [ctx] (common/known-content-type ctx item/item-media-type))})
+  :handle-unsupported-media-type (by-method {
+    :get (fn [ctx] (common/only-accept item/item-collection-media-type))
+    :post (fn [ctx] (common/only-accept item/item-media-type))})
   :processable? (by-method {
     :get true
     :post (fn [ctx] (common/check-input (item/valid-new-item coll-slug (get-in ctx [:data :name]) (:data ctx))))})

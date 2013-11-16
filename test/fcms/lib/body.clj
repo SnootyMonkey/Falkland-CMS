@@ -6,7 +6,9 @@
             [fcms.lib.checks :refer (check)]))
 
 (defn value-of [prop]
-  (prop (http-mock/body)))
+  (if (sequential? prop)
+    (get-in (http-mock/body) prop)
+    (prop (http-mock/body))))
 
 (defn verify [prop value]
   (check (= value (value-of prop))))

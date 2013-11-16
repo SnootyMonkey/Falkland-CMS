@@ -6,19 +6,22 @@
          '[fcms.lib.checks :refer (check check-not)]
          '[fcms.app :refer (app)]
          '[fcms.resources.collection :refer (collection-media-type)]
-         '[fcms.resources.item :refer (item-media-type)])
+         '[fcms.resources.item :refer (item-media-type item-collection-media-type)])
 
 (defn- method-keyword [method]
   (keyword (lower-case method)))
 
-;; TODO ideally this should be all one mime type, but on an item GET we aren't returning a version #
+;; TODO ideally send/recieve mime types should be the same, but on an item GET liberator isn't returning a version #
 (defn- send-mime-type [res-type]
   (case res-type
     "item" item-media-type
+    "item collection" item-collection-media-type
     "collection" collection-media-type))
+
 (defn- receive-mime-type [res-type]
   (case res-type
     "item" "application/vnd.fcms.item+json"
+    "item collection" "application/vnd.collection+vnd.fcms.item+json"
     "collection" "application/vnd.fcms.collection+json"))
 
 (defn- body-from-response [resp-map]

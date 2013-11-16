@@ -43,20 +43,24 @@
   ;; Generate JSON from the sorted array map that results from:
   ;; 1) removing unneeded :id key
   ;; 2) making an ordered array hash of the known ordered keys
-  ;; 3) adding a sorted hash of any remaining keys
+  ;; 3) adding a sorted hash of any remaining keys except categories
   ;; 4) adding the HATEAOS links to the array hash
   (let [item-props (dissoc item :id)]
     (-> item-props
       (common/ordered ordered-keys)
-      (common/append-sorted (common/remaining-keys item-props ordered-keys))
+      (common/append-sorted (common/remaining-keys (dissoc item-props :categories) ordered-keys))
       item-links)))
 
 (defn render-items
   "Create a JSON representation of a group of items for the REST API"
   [coll-slug items]
   (json/generate-string {
-    :items (map item-to-json-map items)
-    :links (item-list-links coll-slug)} {:pretty true}))
+    :collection {
+      :version common/json-collection-version
+      :href (str "/" coll-slug)
+      :items (map item-to-json-map items)
+      :links (item-list-links coll-slug)
+    }} {:pretty true}))
 
 (defn render-item 
   "Create a JSON representation of an item for the REST API"

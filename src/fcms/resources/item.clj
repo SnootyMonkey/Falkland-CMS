@@ -6,6 +6,9 @@
 (def 
   ^{:no-doc true}
   item-media-type "application/vnd.fcms.item+json;version=1")
+(def
+  ^{:no-doc true}
+  item-collection-media-type "application/vnd.collection+vnd.fcms.item+json;version=1")
 
 (defn get-item
   "Given the slug of the collection containing the item and the slug of the item,

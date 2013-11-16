@@ -6,6 +6,8 @@
 (def DELETE "DELETE")
 (def PATCH "PATCH")
 
+(def json-collection-version "1.0")
+
 (defn link-map [rel method url media-type]
   (array-map :rel rel :method method :href url :type media-type))
 
