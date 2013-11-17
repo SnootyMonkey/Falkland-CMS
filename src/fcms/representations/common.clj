@@ -8,8 +8,9 @@
 
 (def json-collection-version "1.0")
 
-(defn link-map [rel method url media-type]
-  (array-map :rel rel :method method :href url :type media-type))
+(defn link-map [rel method url media-type & others]
+  (apply array-map
+    (flatten (into [:rel rel :method method :href url :type media-type] others))))
 
 (defn self-link [url media-type]
   (link-map "self" GET url media-type))

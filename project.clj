@@ -37,7 +37,7 @@
     }
 
     :dev [:qa {
-      :env {
+      :env ^:replace {
         :db-name "falklandcms"
         :liberator-trace true
       }
@@ -80,7 +80,7 @@
     "test-all" ["with-profile" "qa" "do" "midje," "test," "cucumber"] ; run all tests
     "test-all!" ["with-profile" "qa" "do" "build,", "test-all"] ; clean and build and run all tests
     "start" ["do" "build," "ring" "server-headless"] ; start an FCMS server
-    "start!" ["with-profile" "prod" "start"] ; start an FCMS server in production
+    "start!" ["with-profile" "prod" "run"] ; start an FCMS server in production
     "spell" ["spell" "-n"] ; check spelling in docs and docstrings
     "ancient" ["with-profile" "dev" "do" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"] ; check for out of date dependencies
   }

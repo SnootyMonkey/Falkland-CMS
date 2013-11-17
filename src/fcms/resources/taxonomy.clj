@@ -11,6 +11,9 @@
 (def 
   ^{:no-doc true}
   taxonomy-media-type "application/vnd.fcms.taxonomy+json;version=1")
+(def 
+  ^{:no-doc true}
+  category-media-type "application/vnd.fcms.category+json;version=1")
 
 ;; ----- taxonomy lifecycle functions -----
 
