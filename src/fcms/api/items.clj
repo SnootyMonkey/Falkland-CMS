@@ -1,9 +1,10 @@
 (ns fcms.api.items
   (:require [clojure.core.match :refer (match)]
             [compojure.core :refer (defroutes ANY)]
-            [liberator.core :refer (defresource by-method)]
+            [liberator.core :refer (by-method)]
             [liberator.representation :refer (ring-response)]
             [taoensso.timbre :refer (debug info warn error fatal spy)]
+            [fcms.api.common :refer (defresource)]
             [fcms.api.common :as common]
             [fcms.resources.collection :as collection]
             [fcms.resources.item :as item]
@@ -60,13 +61,18 @@
 
 ;; Resources, see: http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
 
-(defresource item [coll-slug item-slug]
+(def item-resource-config {
   :available-charsets [common/UTF8]
+  :handle-not-found (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
+  :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
+})
+
+(defresource item [coll-slug item-slug]
+  item-resource-config
   :available-media-types [item/item-media-type]
   :handle-not-acceptable (fn [_] (common/only-accept item/item-media-type))
   :allowed-methods [:get :put :delete]
   :exists? (fn [_] (get-item coll-slug item-slug))
-  :handle-not-found (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
   ;; Get an item
   :handle-ok (by-method {
     :get (fn [ctx] (render-item (:item ctx)))
@@ -87,7 +93,6 @@
     :delete true
     :post (fn [ctx] (common/check-input (item/valid-item-update coll-slug item-slug (:data ctx))))
     :put (fn [ctx] (common/check-input (item/valid-item-update coll-slug item-slug (:data ctx))))})
-  :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
   :can-put-to-missing? (fn [_] false) ; temporarily only use PUT for update
   :conflict? (fn [_] false)
   :put! (fn [ctx] (update-item coll-slug item-slug (:data ctx)))
@@ -96,7 +101,7 @@
   :handle-not-implemented (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response)))
 
 (defresource items-list [coll-slug]
-  :available-charsets [common/UTF8]
+  item-resource-config
   :available-media-types (by-method {
     :get [item/item-collection-media-type]
     :post [item/item-media-type]})
@@ -105,7 +110,6 @@
     :post (fn [ctx] (common/only-accept item/item-media-type))})
   :allowed-methods [:get :post]
   :exists? (fn [ctx] (get-items coll-slug))
-  :handle-not-found (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
   ;; Get list of items
   :handle-ok (fn [ctx] (render-items coll-slug (:items ctx)))
   ;; Create new item
@@ -121,7 +125,6 @@
   :processable? (by-method {
     :get true
     :post (fn [ctx] (common/check-input (item/valid-new-item coll-slug (get-in ctx [:data :name]) (:data ctx))))})
-  :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
   :post! (fn [ctx] (create-item coll-slug (:data ctx)))
   :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))
 

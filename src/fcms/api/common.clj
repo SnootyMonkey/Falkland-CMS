@@ -2,12 +2,35 @@
   (:require [taoensso.timbre :refer (debug info warn error fatal spy)]
             [clojure.string :refer (join)]
             [cheshire.core :as json]
+            [liberator.core :refer (run-resource)]
             [liberator.representation :refer (ring-response)]))
 
 (def UTF8 "utf-8")
 
 (def malformed true)
 (def good-json false)
+
+;; ----- Stijn's Liberator shared config macro -----
+
+(defn split-args
+  "Split the given key-values into a pair of arguments and remaining key values"
+  [kvs]
+   (if (vector? (first kvs))
+     [(first kvs) (rest kvs)]
+     [[] kvs]))
+
+(defmacro defresource 
+  ""
+  [name & kvs]
+  (let [[args kvs] (split-args kvs)
+        options (if (keyword? (first kvs))
+                  (apply hash-map kvs)
+                  `(merge ~(first kvs) ~(apply hash-map (rest kvs))))]
+    `(defn ~name [~@args]
+       (fn [request#]
+         (run-resource request# ~options)))))
+
+;; ----------
 
 (defn only-accept [media-type]
   (format "Acceptable media type: %s\nAcceptable charset: %s" media-type UTF8))
