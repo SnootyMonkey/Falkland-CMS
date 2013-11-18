@@ -210,7 +210,7 @@ Example
          "template":{
             "$schema": "http://json-schema.org/draft-04/schema#",
             "title": "Item",
-            "description": "A single entry in the Mudskippers collection.",
+            "description": "A new item in the Mudskippers collection.",
             "type": "object",
             "properties": {
                "name": {
@@ -220,7 +220,7 @@ Example
                },
                "url": {
                   "prompt": "Link",
-                  "description": "A natural language identifier for an item, does not need to be unique.",
+                  "description": "A URL pointer to the resource referred to by the item.",
                   "type": "string"
                },
                "slug": {
