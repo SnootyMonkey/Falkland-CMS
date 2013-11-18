@@ -9,7 +9,7 @@ in a collection. A taxonomy is made up of a tree of categories from the more gen
 of the taxonomy to the more specific at the leaves of the taxonomy. Here is a simple abbreviated example
 of a taxonomy of US locations:
 
-.. image:: ../../images/US-Location-Taxonomy.png
+.. image:: ../../assets/img/US-Location-Taxonomy.png
 	:alt: Sample US Location Taxonomy
 
 In the example the taxonomy is called "Location" and it consists of categories such as "Continental US" and
@@ -19,7 +19,7 @@ An item classified in a category in a taxonomy is a member of that category and 
 parents. As an illustrative example, imagine an item classified as "Nort Carolina". It's also a member of
 "South East", "Continental US" and the "Location" taxonomy as a whole.
 
-.. image:: ../../images/Sample-Item-US-Location-Taxonomy.png
+.. image:: ../../assets/img/Sample-Item-US-Location-Taxonomy.png
 	:alt: Sample Item in US Location Taxonomy
 
 With Falkland CMS, it is typical to have multiple orthogonal taxonomies categorizing the items in a collection. 

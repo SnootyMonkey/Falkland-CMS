@@ -60,8 +60,7 @@ To build the docs:
 git clone https://github.com/SnootyMonkey/Falkland-CMS.git Falkland-CMS-docs
 cd Falkland-CMS-docs
 git checkout gh-pages
-cd API/REST
-make html
+lein sphinx
 ```
 
 The resulting REST API reference documentation will be at: ./Falkland-CMS-docs/API/REST/_build/html/index.html

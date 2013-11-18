@@ -17,6 +17,6 @@ title: Falkland CMS - Changelog
 
 * Generated docs for the Clojure API
 
-* Generated docs for the REST API
+* Docs for the REST API
 
 * Created project website
