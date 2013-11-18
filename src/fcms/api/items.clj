@@ -30,7 +30,7 @@
 (defn- item-location-response [coll-slug item]
   (common/location-response [coll-slug (:slug item)] (render-item item) item/item-media-type))
 
-;; Create new item
+;; ----- Create new item -----
 
 (defn- create-item [coll-slug item]
   (when-let [item (item/create-item coll-slug (:name item) item)]
@@ -46,7 +46,7 @@
     :invalid-slug "Invalid slug."
     :else "Not processable."))
 
-;; Update item
+;; ----- Update item -----
 
 (defn- update-item [coll-slug item-slug item]
   (when-let [result (item/update-item coll-slug item-slug item)]
@@ -59,7 +59,8 @@
     ; it moved
     (item-location-response coll-slug (:updated-item ctx))))
 
-;; Resources, see: http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
+;; ----- Resources -----
+;; see: http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
 
 (def item-resource-config {
   :available-charsets [common/UTF8]
@@ -128,7 +129,7 @@
   :post! (fn [ctx] (create-item coll-slug (:data ctx)))
   :handle-created (fn [ctx] (item-location-response coll-slug (:item ctx))))
 
-;; Routes
+;; ----- Routes -----
 
 (defroutes item-routes
   (ANY "/:coll-slug/:item-slug" [coll-slug item-slug] (item coll-slug item-slug))

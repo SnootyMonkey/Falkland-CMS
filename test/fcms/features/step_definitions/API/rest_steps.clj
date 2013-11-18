@@ -32,7 +32,7 @@
       ;; must not be valid JSON
       (:body resp-map))))
 
-;; mock a request
+;; ----- Mock request -----
 
 (When #"^I have a \"([^\"]*)\" request to URL \"([^\"]*)\"$" [method url]
   (http-mock/body {})
@@ -68,7 +68,7 @@
 (When #"^I delay a moment$" []
   (Thread/sleep 1000))
 
-;; check on the response
+;; ----- Check response -----
 
 (Then #"^the \"([^\"]*)\" header will be \"([^\"]*)\"$" [header value]
   (check (= value (get-in (http-mock/response) [:headers header]))))

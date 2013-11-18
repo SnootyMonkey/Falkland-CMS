@@ -10,7 +10,8 @@
   (if-let [collection (collection/get-collection coll-slug)]
     {:collection collection}))
 
-;; Resources, see: http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
+;; ----- Resources -----
+;; see: http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
 
 (defresource collection [coll-slug]
     :available-media-types [collection/collection-media-type]
@@ -19,7 +20,7 @@
     :exists? (fn [ctx] (get-collection coll-slug))
     :handle-ok (fn [ctx] (render-collection (:collection ctx))))
 
-;; Routes
+;; ----- Routes -----
 
 (defroutes collection-routes
   (ANY "/:coll-slug" [coll-slug] (collection coll-slug)))
