@@ -1,4 +1,4 @@
-(ns fcms.unit.resources.item-categorization
+(ns fcms.unit.resources.taxonomy.item-categorization
   (:require [clojure.test :refer :all]
             [fcms.lib.resources :refer :all]
             [fcms.resources.collection-resource :as resource]

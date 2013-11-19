@@ -89,7 +89,7 @@
     [lein-ring "0.8.8"] ; common ring tasks https://github.com/weavejester/lein-ring
     [lein-environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [lein-git-deps "0.0.1-SNAPSHOT"] ; dependencies from GitHub https://github.com/tobyhede/lein-git-deps
-    [lein-cljsbuild "1.0.0-alpha2"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
+    [lein-cljsbuild "1.0.0"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
     [lein-cucumber "1.0.2"] ; BDD testing https://github.com/nilswloka/lein-cucumber
     [speclj "2.8.1"] ; BDD testing https://github.com/slagyr/speclj
     [codox "0.6.6"] ; Generate Clojrue API docs https://github.com/weavejester/codox

@@ -6,15 +6,13 @@
             [fcms.resources.taxonomy :as taxonomy]
             [fcms.resources.item :as item]))
 
-;; ----- Fixtures -----
-
 (def c "c")
 (def e "e")
 (def t "t")
 (def t2 "food")
 (def foo "foo")
 
-(def existing-categories-t [
+(def existing-categories-c [
   {:slug "foo" :name "Foo"}
   {:slug "bar" :name "Bar"}
   {:slug "fubar" :name "FUBAR" :categories [
@@ -22,7 +20,7 @@
     {:slug "b" :name "B"}
   ]}])
 
-(def existing-categories-t2 [
+(def existing-categories-c2 [
   {:slug "fruit" :name "Fruit" :categories [
     {:slug "apple" :name "Apple"}
     {:slug "pear" :name "Pear"}
@@ -32,25 +30,40 @@
     {:slug "brocolli" :name "Brocolli"}
   ]}])
 
+(defn empty-collection-e []
+  (collection/delete-collection e)
+  (collection/create-collection e))
+
 (defn empty-collection-c [f]
   (collection/delete-collection c)
   (collection/create-collection c)
   (f)
   (collection/delete-collection c))
 
-(defn existing-taxonomy-t [f]
-  (resource/create-resource c "Taxonomy" :taxonomy [] 
-    {:slug t
+(defn empty-taxonomy-et []
+  (taxonomy/create-taxonomy e "Empty Taxonomy" 
+     {:slug "et"
+      :description "Categorize it."}))
+
+(defn existing-taxonomy-t []
+  (resource/create-resource e "Taxonomy" :taxonomy [] 
+    {:slug "t"
      :description "Categorize it."
-     :categories existing-categories-t})
-  (f)
-  (taxonomy/delete-taxonomy c t))
+     :categories existing-categories-c}))
+
+; (defn existing-taxonomy-t [f]
+;   (resource/create-resource c "Taxonomy" :taxonomy [] 
+;     {:slug t
+;      :description "Categorize it."
+;      :categories existing-categories-c})
+;   (f)
+;   (taxonomy/delete-taxonomy c t))
 
 (defn existing-taxonomy-t2 [f]
   (resource/create-resource c "Food" :taxonomy [] 
     {:slug t2
      :description "Yummy."
-     :categories existing-categories-t2})
+     :categories existing-categories-c2})
   (f)
   (taxonomy/delete-taxonomy c t2))
 
@@ -60,13 +73,3 @@
   (taxonomy/categorize-item c e "t/fubar/a")
   (f)
   (item/delete-item c e))
-
-;; ----- Validation functions -----
-
-(defn verify-new-resource [coll-slug resource]
-	(is (= (:collection resource) c))
-  (is (= (:version resource) 1))
-  (is (instance? String (:id resource)))
-  (is (instance? String (:created-at resource)))
-  (is (instance? org.joda.time.DateTime (parse (:created-at resource))))
-  (is (= (:created-at resource) (:updated-at resource))))

@@ -1,4 +1,4 @@
-(ns fcms.unit.resources.item-browsing
+(ns fcms.unit.resources.taxonomy.item-browsing
   (:require [clojure.test :refer :all]
             [fcms.lib.resources :refer :all]
             [fcms.resources.collection :as collection]
