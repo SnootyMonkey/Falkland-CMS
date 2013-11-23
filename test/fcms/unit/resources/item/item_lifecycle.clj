@@ -4,6 +4,7 @@
             [midje.sweet :refer :all]
             [fcms.lib.resources :refer (empty-collection-e)]
             [fcms.resources.collection :as collection]
+            [fcms.resources.collection-resource :as resource]
             [fcms.resources.item :refer :all]))
 
 ;; ----- Fixtures -----
@@ -30,7 +31,6 @@
 
 ;(deftest new-item-validity)
 
-;; TODO tests for error from reserved props (created-at, updated-at, collection, links, id, version, name) as string and keyword
 (facts "about item creation"
 
   (with-state-changes [(before :facts (empty-collection-e)) 
@@ -87,7 +87,13 @@
       (create-item e ascii-name {:slug "i I"}) => :invalid-slug)
     
     (fact "with a collection that doesn't exist"
-      (create-item "not-here" ascii-name) => :bad-collection)))
+      (create-item "not-here" ascii-name) => :bad-collection)
+
+    (fact "with a reserved property"
+      (doseq [prop resource/reserved-properties]
+        (create-item e i {prop "foo"}) => :property-conflict
+        (create-item e i {(name prop) "foo"}) => :property-conflict))))
+
 
 ; (deftest item-retrieval)
 

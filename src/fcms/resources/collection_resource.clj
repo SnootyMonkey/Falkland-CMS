@@ -1,6 +1,7 @@
 (ns fcms.resources.collection-resource
   (:require [clojure.set :refer (intersection)]
             [clojure.string :refer (blank?)]
+            [clojure.walk :refer (keywordize-keys)]
             [com.ashafa.clutch :as clutch]
             [fcms.resources.common :as common]
             [fcms.resources.collection :as collection]
@@ -65,8 +66,9 @@
   If a property is included in the map of properties that is in the reserved-properties
   set, :property-conflict will be returned."
   ([coll-slug resource-name type reserved-properties] (create-resource coll-slug resource-name type reserved-properties {}))
-  ([coll-slug resource-name type reserved-properties props]
-    (let [validity (valid-new-resource coll-slug resource-name reserved-properties type props)]
+  ([coll-slug resource-name type reserved-properties properties]
+    (let [props (keywordize-keys properties)
+          validity (valid-new-resource coll-slug resource-name reserved-properties type props)]
       (if (true? validity) 
         (collection/with-collection coll-slug
           (let [slug (common/unique-slug (:id collection) (or (:slug props) (slugify resource-name)))]

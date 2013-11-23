@@ -1,5 +1,5 @@
 (ns fcms.unit.resources.taxonomy.item-browsing
-  (:require [clojure.test :refer :all]
+  (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
             [fcms.resources.collection :as collection]
             [fcms.resources.collection-resource :as resource]
@@ -35,65 +35,64 @@
   (taxonomy/create-category c2 "t3/a")
   (taxonomy/categorize-item c2 a "t3/a"))
 
-;; ----- Validation functions -----
+;; ----- Helper functions -----
 
 (defn items [& slugs]
   (vec (map #(item/get-item c %) slugs)))
 
-(defn- taxonomy-browse [expectation coll-slug taxonomy-slug]
-  (is (= expectation (taxonomy/items-for-taxonomy coll-slug taxonomy-slug))))
-
-(defn- category-browse [expectation coll-slug category-paths]
-  (is (= expectation (taxonomy/items-for-category coll-slug (first category-paths))))
-  (let [remaining-paths (rest category-paths)]
-    (if-not (empty? remaining-paths) (recur expectation coll-slug remaining-paths))))
-
 ;; ----- Tests -----
 
-(use-fixtures :each empty-collection-c existing-taxonomy-t existing-taxonomy-t2 existing-item-e existing-items)
+(facts "about item browsing failures"
 
-(deftest browse-items
-  (testing "item browsing failures"
+  (with-state-changes [(before :facts (do (empty-collection-e) (existing-taxonomy-t)))
+                       (after :facts (collection/delete-collection e))]
 
-    (testing "item browsing with a non-existent collection"
-      (taxonomy-browse :bad-collection "not-here" "t")
-      (category-browse :bad-collection "not-here" ["/t/foo"]))
+    (fact "with a non-existent collection"
+      (taxonomy/items-for-taxonomy "not-here" "t") => :bad-collection
+      (taxonomy/items-for-category "not-here" "/t/foo") => :bad-collection)
 
-    (testing "item browsing with a non-existent taxonomy"
-      (taxonomy-browse :bad-taxonomy c "not-here")
-      (category-browse :bad-taxonomy c ["not-here/foo" "not-here/foo/" "/not-here/foo" "/not-here/foo/"]))
+    (fact "with a non-existent taxonomy"
+      (taxonomy/items-for-taxonomy e "not-here") => :bad-taxonomy
+      (doseq [category ["not-here/foo" "not-here/foo/" "/not-here/foo" "/not-here/foo/"]]
+        (taxonomy/items-for-category e category) => :bad-taxonomy))
 
-    (testing "browsing with no category"
-      (category-browse :bad-category c ["t" "t/" "/t" "/t/"]))
+    (fact "with a non-existent category"
+      (doseq [category ["t" "t/" "/t" "/t/"]]
+        (taxonomy/items-for-category e category) => :bad-category))
 
-    (testing "item browsing with a non-existent root category"
-      (category-browse :bad-category c ["t/not-here" "t/not-here/" "/t/not-here" "/t/not-here/"]))
+    (fact "with a non-existent root category"
+      (doseq [category ["t/not-here" "t/not-here/" "/t/not-here" "/t/not-here/"]]
+        (taxonomy/items-for-category e category) => :bad-category))
 
-    (testing "item browsing with a non-existent leaf category"
-      (category-browse :bad-category c ["t/foo/not-here" "t/foo/not-here/" "/t/foo/not-here" "/t/foo/not-here/"])
-      (category-browse :bad-category c ["t/fubar/a/not-here" "t/fubar/a/not-here/" "/t/fubar/a/not-here" "/t/fubar/a/not-here/"])))
+    (fact "with a non-existent leaf category"
+      (doseq [category ["t/foo/not-here" "t/foo/not-here/" "/t/foo/not-here" "/t/foo/not-here/"]]
+        (taxonomy/items-for-category e category) => :bad-category)
+      (doseq [category ["t/fubar/a/not-here" "t/fubar/a/not-here/" "/t/fubar/a/not-here" "/t/fubar/a/not-here/"]]
+        (taxonomy/items-for-category e category) => :bad-category))))
 
-   (testing "item browsing"
+;(use-fixtures :each empty-collection-c existing-taxonomy-t existing-taxonomy-t2 existing-item-e existing-items)
 
-    (testing "a taxonomy with a single item"
-      (create-single-item-taxonomy)
-      (taxonomy-browse [(item/get-item c2 a)] c2 t3)
-      (collection/delete-collection c2))
+; (facts "about item browsing"
 
-    (testing "a taxonomy with multiple items"
-      (taxonomy-browse (items e x y z) c "t"))
+;     (testing "a taxonomy with a single item"
+;       (create-single-item-taxonomy)
+;       (taxonomy-browse [(item/get-item c2 a)] c2 t3)
+;       (collection/delete-collection c2))
 
-    (testing "a root category with a single item"
-      (category-browse (items e) c ["t/foo" "t/foo/" "/t/foo" "/t/foo/"]))
+;     (testing "a taxonomy with multiple items"
+;       (taxonomy-browse (items e x y z) c "t"))
 
-    (testing "a leaf category with a single item"
-      (category-browse (items e) c ["t/fubar/a" "t/fubar/a/" "/t/fubar/a" "/t/fubar/a/"]))
+;     (testing "a root category with a single item"
+;       (category-browse (items e) c ["t/foo" "t/foo/" "/t/foo" "/t/foo/"]))
 
-    (testing "a root category with a few items"
-      (category-browse (items x y z) c ["t/bar" "t/bar/" "/t/bar" "/t/bar/"]))
+;     (testing "a leaf category with a single item"
+;       (category-browse (items e) c ["t/fubar/a" "t/fubar/a/" "/t/fubar/a" "/t/fubar/a/"]))
 
-    (testing "a parent category with a few items"
-      (category-browse (items e x y z) c ["t/fubar" "t/fubar/" "/t/fubar" "/t/fubar/"]))
+;     (testing "a root category with a few items"
+;       (category-browse (items x y z) c ["t/bar" "t/bar/" "/t/bar" "/t/bar/"]))
 
-    (testing "a leaf category with a few items"
-      (category-browse (items x y z) c ["food/fruit/pear" "food/fruit/pear/" "/food/fruit/pear" "/food/fruit/pear/"]))))
+;     (testing "a parent category with a few items"
+;       (category-browse (items e x y z) c ["t/fubar" "t/fubar/" "/t/fubar" "/t/fubar/"]))
+
+;     (testing "a leaf category with a few items"
+;       (category-browse (items x y z) c ["food/fruit/pear" "food/fruit/pear/" "/food/fruit/pear" "/food/fruit/pear/"]))))

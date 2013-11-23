@@ -6,11 +6,27 @@
             [fcms.resources.taxonomy :as taxonomy]
             [fcms.resources.item :as item]))
 
+;; ----- Names / slugs -----
+
 (def c "c")
 (def e "e")
 (def t "t")
 (def t2 "food")
 (def foo "foo")
+
+;; ----- Collections -----
+
+(defn empty-collection-e []
+  (collection/delete-collection e)
+  (collection/create-collection e))
+
+(defn empty-collection-c [f]
+  (collection/delete-collection c)
+  (collection/create-collection c)
+  (f)
+  (collection/delete-collection c))
+
+;; ----- Category maps -----
 
 (def existing-categories-c [
   {:slug "foo" :name "Foo"}
@@ -30,15 +46,12 @@
     {:slug "brocolli" :name "Brocolli"}
   ]}])
 
+;; ----- Taxonomies -----
+
 (defn empty-collection-e []
   (collection/delete-collection e)
   (collection/create-collection e))
 
-(defn empty-collection-c [f]
-  (collection/delete-collection c)
-  (collection/create-collection c)
-  (f)
-  (collection/delete-collection c))
 
 (defn empty-taxonomy-et []
   (taxonomy/create-taxonomy e "Empty Taxonomy" 
@@ -51,21 +64,13 @@
      :description "Categorize it."
      :categories existing-categories-c}))
 
-; (defn existing-taxonomy-t [f]
-;   (resource/create-resource c "Taxonomy" :taxonomy [] 
-;     {:slug t
-;      :description "Categorize it."
-;      :categories existing-categories-c})
-;   (f)
-;   (taxonomy/delete-taxonomy c t))
-
-(defn existing-taxonomy-t2 [f]
-  (resource/create-resource c "Food" :taxonomy [] 
+(defn existing-taxonomy-t2 []
+  (resource/create-resource e "Food" :taxonomy [] 
     {:slug t2
      :description "Yummy."
-     :categories existing-categories-c2})
-  (f)
-  (taxonomy/delete-taxonomy c t2))
+     :categories existing-categories-c2}))
+
+;; ----- Items -----
 
 (defn existing-item-e [f]
   (item/create-item c e)
