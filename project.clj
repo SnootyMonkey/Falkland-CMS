@@ -10,7 +10,7 @@
     [org.clojure/clojure "1.5.1"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [org.clojure/core.match "0.2.0"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
-    [org.clojure/clojurescript "0.0-2075"] ; ClojureScript compiler https://github.com/clojure/clojurescript
+    [org.clojure/clojurescript "0.0-2080"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     [org.clojure/tools.nrepl "0.2.3"] ; REPL server and client https://github.com/clojure/tools.nrepl
     [cheshire "5.2.0"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.2"] ; Ordered hash map https://github.com/flatland/ordered
@@ -72,7 +72,8 @@
   :aliases {
     "init-db" ["run" "-m" "fcms.db.views"] ; create CouchDB views
     "init-test-db" ["with-profile" "qa" "run" "-m" "fcms.db.views"] ; create CouchDB views for test DB
-    "build" ["do" "clean," "deps," "git-deps,", "compile," "init-db"] ; clean and build
+    ;"build" ["do" "clean," "deps," "git-deps,", "compile," "init-db"] ; clean and build
+    "build" ["do" "clean," "deps," "compile," "init-db"] ; clean and build
     "test" ["with-profile" "qa" "do" "test"] ; run unit tests
     "midje" ["with-profile" "qa" "midje"] ; run unit tests
     "spec" ["with-profile" "qa" "spec"] ; run integration tests
