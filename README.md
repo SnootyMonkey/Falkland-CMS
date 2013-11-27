@@ -46,7 +46,7 @@ The resulting Clojure API reference documentation will be at: ./Falkland-CMS-doc
 
 ### REST API
 
-Again, most developers should just use the [online docs](http://falkland-cms-api.readthedocs.org/) but if you're contributing to Falkland CMS and working on the API docs, or if you want you own local copy, you'll need to build them.
+Again, most developers should just use the [online docs](http://falkland-cms-api.readthedocs.org/) but if you're contributing to Falkland CMS and working on the API docs, or if you want your own local copy, you'll need to build them.
 
 The REST API docs are written in [reStructuredText](http://docutils.sourceforge.net/rst.html) and built by [Sphinx](http://sphinx-doc.org). You'll need a few things:
 
@@ -80,7 +80,7 @@ Details on the structure of the documentation branch can be found in the [contri
 Update them once:
 
 ```console
-jekyll build --watch
+jekyll build
 ```
 
 Or update them continuously:
