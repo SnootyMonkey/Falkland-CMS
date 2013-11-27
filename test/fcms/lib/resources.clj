@@ -3,12 +3,10 @@
   					[clj-time.format :refer (parse)]
             [fcms.resources.collection-resource :as resource]
   					[fcms.resources.collection :as collection]
-            [fcms.resources.taxonomy :as taxonomy]
-            [fcms.resources.item :as item]))
+            [fcms.resources.taxonomy :as taxonomy]))
 
 ;; ----- Names / slugs -----
 
-(def c "c")
 (def e "e")
 (def t "t")
 (def t2 "food")
@@ -19,12 +17,6 @@
 (defn empty-collection-e []
   (collection/delete-collection e)
   (collection/create-collection e))
-
-(defn empty-collection-c [f]
-  (collection/delete-collection c)
-  (collection/create-collection c)
-  (f)
-  (collection/delete-collection c))
 
 ;; ----- Category maps -----
 
@@ -48,11 +40,6 @@
 
 ;; ----- Taxonomies -----
 
-(defn empty-collection-e []
-  (collection/delete-collection e)
-  (collection/create-collection e))
-
-
 (defn empty-taxonomy-et []
   (taxonomy/create-taxonomy e "Empty Taxonomy" 
      {:slug "et"
@@ -69,12 +56,3 @@
     {:slug t2
      :description "Yummy."
      :categories existing-categories-c2}))
-
-;; ----- Items -----
-
-(defn existing-item-e [f]
-  (item/create-item c e)
-  (taxonomy/categorize-item c e "t/foo")
-  (taxonomy/categorize-item c e "t/fubar/a")
-  (f)
-  (item/delete-item c e))

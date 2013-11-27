@@ -287,7 +287,9 @@
   "Remove the prefix slash and trailing slash from the category-path if they are present."
   [category-path]
   ;; "/tax/cat/cat/" => "tax/cat/cat"
-  (s/replace (s/replace category-path #"^/" "") #"/$" ""))
+  (if (s/blank? category-path)
+    ""
+    (s/replace (s/replace category-path #"^/" "") #"/$" "")))
 
 (defn- duplicate-category?
   "Determine if the item as already categorized by this category, or by one of its children."

@@ -33,10 +33,10 @@
 
 ;; ----- Tests -----
 
-(facts "about item browsing failures"
+(with-state-changes [(before :facts (do (empty-collection-e) (existing-taxonomy-t)))
+                     (after :facts (collection/delete-collection e))]
 
-  (with-state-changes [(before :facts (do (empty-collection-e) (existing-taxonomy-t)))
-                       (after :facts (collection/delete-collection e))]
+  (facts "about item browsing failures"
 
     (fact "with a non-existent collection"
       (taxonomy/items-for-taxonomy "not-here" "t") => :bad-collection
@@ -59,47 +59,44 @@
       (doseq [category ["t/foo/not-here" "t/foo/not-here/" "/t/foo/not-here" "/t/foo/not-here/"]]
         (taxonomy/items-for-category e category) => :bad-category)
       (doseq [category ["t/fubar/a/not-here" "t/fubar/a/not-here/" "/t/fubar/a/not-here" "/t/fubar/a/not-here/"]]
-        (taxonomy/items-for-category e category) => :bad-category))))
+        (taxonomy/items-for-category e category) => :bad-category)))
 
-(facts "about browsing items"
+  (facts "about browsing items"
 
-  (with-state-changes [(before :facts (do (empty-collection-e) (existing-taxonomy-t) (create-single-item)))
-                       (after :facts (collection/delete-collection e))]
+    (with-state-changes [(before :facts (create-single-item))]
 
-    (fact "in a taxonomy with a single item"
-      (taxonomy/items-for-taxonomy  e t) => [(item/get-item e a)])
+      (fact "in a taxonomy with a single item"
+        (taxonomy/items-for-taxonomy  e t) => [(item/get-item e a)])
 
-    (fact "in an empty root category"
-      (doseq [category ["t/foo" "t/foo/" "/t/foo" "/t/foo/"]]
-        (taxonomy/items-for-category e category) => []))
+      (fact "in an empty root category"
+        (doseq [category ["t/foo" "t/foo/" "/t/foo" "/t/foo/"]]
+          (taxonomy/items-for-category e category) => []))
 
-    (fact "in a root category with a single item"
-      (doseq [category ["t/fubar" "t/fubar/" "/t/fubar" "/t/fubar/"]]
-        (taxonomy/items-for-category e category) => (items e a)))
+      (fact "in a root category with a single item"
+        (doseq [category ["t/fubar" "t/fubar/" "/t/fubar" "/t/fubar/"]]
+          (taxonomy/items-for-category e category) => (items e a)))
 
-    (fact "in an empty leaf category"
-      (doseq [category ["t/fubar/b" "t/fubar/b/" "/t/fubar/b" "/t/fubar/b/"]]
-        (taxonomy/items-for-category e category) => []))
+      (fact "in an empty leaf category"
+        (doseq [category ["t/fubar/b" "t/fubar/b/" "/t/fubar/b" "/t/fubar/b/"]]
+          (taxonomy/items-for-category e category) => []))
 
-    (fact "in a leaf category with a single item"
-      (doseq [category ["t/fubar/a" "t/fubar/a/" "/t/fubar/a" "/t/fubar/a/"]]
-        (taxonomy/items-for-category e category) => (items e a))))
+      (fact "in a leaf category with a single item"
+        (doseq [category ["t/fubar/a" "t/fubar/a/" "/t/fubar/a" "/t/fubar/a/"]]
+          (taxonomy/items-for-category e category) => (items e a))))
 
-  (with-state-changes [(before :facts (do (empty-collection-e) (existing-taxonomy-t) 
-                                          (existing-taxonomy-t2) (existing-items)))
-                       (after :facts (do (collection/delete-collection e)))]
+    (with-state-changes [(before :facts (do (existing-taxonomy-t2) (existing-items)))]
 
-    (fact "in a taxonomy with multiple items"
-      (taxonomy/items-for-taxonomy e "t") => (items e x y z))
+      (fact "in a taxonomy with multiple items"
+        (taxonomy/items-for-taxonomy e "t") => (items e x y z))
 
-    (fact "in a root category with a few items"
-      (doseq [category ["t/bar" "t/bar/" "/t/bar" "/t/bar/"]]
-        (taxonomy/items-for-category e category) => (items e x y z)))
+      (fact "in a root category with a few items"
+        (doseq [category ["t/bar" "t/bar/" "/t/bar" "/t/bar/"]]
+          (taxonomy/items-for-category e category) => (items e x y z)))
 
-    (fact "in a parent category with a few items"
-      (doseq [category ["t/fubar" "t/fubar/" "/t/fubar" "/t/fubar/"]]
-        (taxonomy/items-for-category e category) => (items e x y z)))
+      (fact "in a parent category with a few items"
+        (doseq [category ["t/fubar" "t/fubar/" "/t/fubar" "/t/fubar/"]]
+          (taxonomy/items-for-category e category) => (items e x y z)))
 
-    (fact "in a leaf category with a few items"
-      (doseq [category ["food/fruit/pear" "food/fruit/pear/" "/food/fruit/pear" "/food/fruit/pear/"]]
-        (taxonomy/items-for-category e category) => (items e x y z)))))
+      (fact "in a leaf category with a few items"
+        (doseq [category ["food/fruit/pear" "food/fruit/pear/" "/food/fruit/pear" "/food/fruit/pear/"]]
+          (taxonomy/items-for-category e category) => (items e x y z))))))

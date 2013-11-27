@@ -1,219 +1,248 @@
-; (ns fcms.unit.resources.taxonomy.item-categorization
-;   (:require [clojure.test :refer :all]
-;             [fcms.lib.resources :refer :all]
-;             [fcms.resources.collection-resource :as resource]
-;             [fcms.resources.taxonomy :as taxonomy]
-; 						[fcms.resources.item :as item]))
+(ns fcms.unit.resources.taxonomy.item-categorization
+  (:require [midje.sweet :refer :all]
+            [fcms.lib.resources :refer :all]
+            [fcms.resources.collection :as collection]
+            [fcms.resources.taxonomy :as taxonomy]
+						[fcms.resources.item :as item]))
 
-; ;; ----- Fixtures -----
+;; ----- Fixtures -----
 
-; (def i "i")
-; (def m "m")
-; (def u "u")
+(def i "i")
+(def x "x")
+(def m "m")
 
-; (defn existing-item-i [f]
-;   (item/create-item c i)
-;   (f)
-;   (item/delete-item c i))
+(defn existing-item-x []
+  (item/create-item e x)
+  (taxonomy/categorize-item e x "t/foo")
+  (taxonomy/categorize-item e x "t/bar")
+  (taxonomy/categorize-item e x "t/fubar/a")
+  (taxonomy/categorize-item e x "t/fubar/b"))
 
-; (defn existing-item-u []
-;   (item/create-item c u)
-;   (taxonomy/categorize-item c u "t/foo")
-;   (taxonomy/categorize-item c u "t/bar")
-;   (taxonomy/categorize-item c u "t/fubar/a")
-;   (taxonomy/categorize-item c u "t/fubar/b"))
+(defn existing-item-m []
+  (item/create-item e m)
+  (taxonomy/categorize-item e m "t/foo")
+  (taxonomy/categorize-item e m "t/fubar/a")
+  (taxonomy/categorize-item e m "food/fruit")
+  (taxonomy/categorize-item e m "food/vegetable/carrot"))
 
-; (defn existing-item-m []
-;   (item/create-item c m)
-;   (taxonomy/categorize-item c m "t/foo")
-;   (taxonomy/categorize-item c m "t/fubar/a")
-;   (taxonomy/categorize-item c m "food/fruit")
-;   (taxonomy/categorize-item c m "food/vegetable/carrot"))
+;; ----- Tests -----
 
-; ;; ----- Validation functions -----
+(with-state-changes [(before :facts (do (empty-collection-e) (existing-taxonomy-t)))
+										 (after :facts (collection/delete-collection e))]
 
-; (defn- categorize [expectation coll-slug item-slug category-paths]
-; 	(is (= expectation (taxonomy/categorize-item coll-slug item-slug (first category-paths))))
-; 	(let [remaining-paths (rest category-paths)]
-; 		(if-not (empty? remaining-paths) (recur expectation coll-slug item-slug remaining-paths))))
+	(facts "about item categorization failures"
+  
+  	(with-state-changes [(before :facts (item/create-item e i))]
 
-; (defn- categorize-i [expectation coll-slug category-paths]
-; 	(categorize expectation coll-slug i category-paths))
+			(fact "with a non-existent collection"
+				(taxonomy/categorize-item nil i "/t/foo") => :bad-collection
+				(taxonomy/categorize-item "" i "/t/foo") => :bad-collection
+				(taxonomy/categorize-item "not-here" i "/t/foo") => :bad-collection)
 
-; (defn- categorize-e [expectation coll-slug category-paths]
-; 	(categorize expectation coll-slug e category-paths))
+	  	(fact "with a non-existent taxonomy"
+	  		(doseq [category [nil "" "not-here/foo" "not-here/foo/" "/not-here/foo" "/not-here/foo/"]]
+	  			(taxonomy/categorize-item e i category) => :bad-taxonomy))
 
-; (defn- categorize-foo
-;   "Create a new item and categorize it by each category in the vector, validating with each add and then with a
-;   final check on the categories after getting the item."
-;   ([category-paths category-validations] (categorize-foo true category-paths category-validations))
-;   ([incremental-validation category-paths category-validations] 
-;     (item/create-item c foo)
-;     (categorize-foo incremental-validation category-paths [] category-validations []))
-;   ([incremental-validation category-paths added-paths category-validations added-validations]
-;     (let [category (first category-paths)
-;           validation (first category-validations)
-;           validations (vec (conj added-validations validation))]
-;       (if category
-;         (do
-;           (is (= (:categories (taxonomy/categorize-item c foo category)) validations))
-;           (categorize-foo incremental-validation (rest category-paths)
-;             (vec (conj added-paths category)) (rest category-validations) validations))
-;         (do
-;           (is (= (:categories (item/get-item c foo)) added-validations))
-;           (item/delete-item c foo))))))
+	  	(fact "with a non-existent item"
+	  		(taxonomy/categorize-item e nil "/t/foo") => :bad-item
+	  		(taxonomy/categorize-item e "" "/t/foo") => :bad-item
+	  		(taxonomy/categorize-item e "not-here" "/t/foo") => :bad-item)
 
-; (defn- uncategorize-u 
-;   "Create a new categorized item and uncategorize it by each category in the vector, validating with a
-;   final check on the categories after getting the item."
-;   ([coll-slug category-paths] (uncategorize-u map? coll-slug category-paths))
-;   ([expectation coll-slug category-paths] 
-;     (existing-item-u)
-;     (uncategorize-u (if (keyword? expectation) #(= expectation %) #(expectation %))
-;       coll-slug (set (map taxonomy/normalize-category-path category-paths)) category-paths)
-;     (item/delete-item c u))
-;   ([expectation coll-slug removed-paths category-paths]
-;     (is (expectation (taxonomy/uncategorize-item coll-slug u (first category-paths))))
-;     (let [remaining-paths (rest category-paths)]
-;       (if (empty? remaining-paths)
-;         (is (not-any? removed-paths (:categories (item/get-item coll-slug u))))
-;         (recur expectation coll-slug removed-paths remaining-paths)))))
+	  	(fact "with no category"
+	  		(doseq [category ["t" "t/" "/t" "/t/"]]
+	  			(taxonomy/categorize-item e i category) => :bad-category))
 
-; ;; ----- Tests -----
+	  	(fact "with a non-existent root category"
+	  		(doseq [category ["t/not-here" "t/not-here/" "/t/not-here" "/t/not-here/"]]
+	  			(taxonomy/categorize-item e i category) => :bad-category))
 
-; (use-fixtures :each empty-collection-c existing-taxonomy-t existing-taxonomy-t2 existing-item-i existing-item-e)
+	  	(fact "with a non-existent leaf category"
+	  		(doseq [category ["t/foo/not-here" "t/foo/not-here/" "/t/foo/not-here" "/t/foo/not-here/"]]
+	  			(taxonomy/categorize-item e i category) => :bad-category)
+	  		(doseq [category ["t/fubar/a/not-here" "t/fubar/a/not-here/" "/t/fubar/a/not-here" "/t/fubar/a/not-here/"]]
+	  			(taxonomy/categorize-item e i category) => :bad-category)))
 
-; (deftest item-categorization
-;   (testing "item categorization failures"
+  	(with-state-changes [(before :facts (existing-item-x))]
 
-;   	(testing "item categorization with a non-existent collection"
-;   		(categorize-i :bad-collection "not-here" ["/t/foo"]))
+	  	(fact "with a duplicate root category"
+	  		(doseq [category ["t/foo" "t/foo/" "/t/foo" "/t/foo/"]]
+  				(taxonomy/categorize-item e x category) => :duplicate-category))
 
-;   	(testing "item categorization with a non-existent taxonomy"
-;   		(categorize-i :bad-taxonomy c ["not-here/foo" "not-here/foo/" "/not-here/foo" "/not-here/foo/"]))
+	  	(fact "with a duplicate parent category"
+	  		(doseq [category ["t/fubar" "t/fubar/" "/t/fubar" "/t/fubar/"]]
+  				(taxonomy/categorize-item e x category) => :duplicate-category))
 
-;   	(testing "item categorization with a non-existent item"
-;   		(is (= :bad-item (taxonomy/categorize-item c "not-here" "/t/foo"))))
+	  	(fact "with a duplicate leaf category"
+	  		(doseq [category ["t/fubar/a" "t/fubar/a/" "/t/fubar/a" "/t/fubar/a/"]]
+  				(taxonomy/categorize-item e x category) => :duplicate-category))))
 
-;   	(testing "item categorization with no category"
-;   		(categorize-i :bad-category c ["t" "t/" "/t" "/t/"]))
+	(facts "about item categorization sucesses"
 
-;   	(testing "item categorization with a non-existent root category"
-;   		(categorize-i :bad-category c ["t/not-here" "t/not-here/" "/t/not-here" "/t/not-here/"]))
+		(fact "creating a new version"
+			(item/create-item e i)
+			(:version (item/get-item e i)) => 1
+			(taxonomy/categorize-item e i "t/foo")
+			(:version (item/get-item e i)) => 2)
 
-;   	(testing "item categorization with a non-existent leaf category"
-;   		(categorize-i :bad-category c ["t/foo/not-here" "t/foo/not-here/" "/t/foo/not-here" "/t/foo/not-here/"])
-;   		(categorize-i :bad-category c ["t/fubar/a/not-here" "t/fubar/a/not-here/" "/t/fubar/a/not-here" "/t/fubar/a/not-here/"]))
+		(fact "with a single root category"
+			(doseq [category ["t/bar" "t/bar/" "/t/bar" "/t/bar/"]]
+				(item/create-item e i)
+				(:categories (taxonomy/categorize-item e i category)) => ["t/bar"]
+				(:categories (item/get-item e i)) => ["t/bar"]
+				(item/delete-item e i)))
 
-;   	(testing "item categorization with a duplicate category"
-;   		(categorize-e :duplicate-category c ["t/foo" "t/foo/" "/t/foo" "/t/foo/"])
-;   		(categorize-e :duplicate-category c ["t/fubar" "t/fubar/" "/t/fubar" "/t/fubar/"])
-;   		(categorize-e :duplicate-category c ["t/fubar/a" "t/fubar/a/" "/t/fubar/a" "/t/fubar/a/"])))
+  	(fact "with multiple root categories"
+			(doseq [categories [["t/bar" "t/foo"]
+													["t/bar/" "t/foo/"]
+													["/t/bar" "/t/foo"]
+													["/t/bar/" "/t/foo/"]]]
+				(item/create-item e i)
+				(doseq [category categories]
+					(taxonomy/categorize-item e i category))
+				(:categories (item/get-item e i)) => ["t/bar" "t/foo"]
+				(item/delete-item e i)))
 
-;   (testing "item categorization sucesses"
+		(fact "with a single leaf category"
+			(doseq [category ["t/fubar/a" "t/fubar/a/" "/t/fubar/a" "/t/fubar/a/"]]
+				(item/create-item e i)
+				(:categories (taxonomy/categorize-item e i category)) => ["t/fubar/a"]
+				(:categories (item/get-item e i)) => ["t/fubar/a"]
+				(item/delete-item e i)))
 
-;   	(testing "item categorization with a single root category"
-;       (categorize-foo ["t/bar"] ["t/bar"])
-;       (categorize-foo ["t/bar/"] ["t/bar"])
-;       (categorize-foo ["/t/bar"] ["t/bar"])
-;       (categorize-foo ["/t/bar/"] ["t/bar"]))
+  	(fact "with multiple leaf categories"
+			(doseq [categories [["t/fubar/a" "t/fubar/b"]
+													["t/fubar/a/" "t/fubar/b/"]
+													["/t/fubar/a" "/t/fubar/b"]
+													["/t/fubar/a/" "/t/fubar/b/"]]]
+				(item/create-item e i)
+				(doseq [category categories]
+					(taxonomy/categorize-item e i category))
+				(:categories (item/get-item e i)) => ["t/fubar/a" "t/fubar/b"]
+				(item/delete-item e i)))
 
-;   	(testing "item categorization with multiple root categories"
-;       (categorize-foo ["t/bar" "t/foo"] ["t/bar" "t/foo"])
-;       (categorize-foo ["t/bar/" "t/foo/"] ["t/bar" "t/foo"])
-;       (categorize-foo ["/t/bar" "/t/foo"] ["t/bar" "t/foo"])
-;       (categorize-foo ["/t/bar/" "/t/foo/"] ["t/bar" "t/foo"]))
+  	(fact "with a single root category and a single leaf category"
+			(doseq [categories [["t/bar" "t/fubar/b"]
+													["t/bar/" "t/fubar/b/"]
+													["/t/bar" "/t/fubar/b"]
+													["/t/bar/" "/t/fubar/b/"]]]
+				(item/create-item e i)
+				(doseq [category categories]
+					(taxonomy/categorize-item e i category))
+				(:categories (item/get-item e i)) => ["t/bar" "t/fubar/b"]
+				(item/delete-item e i)))
 
-;   	(testing "item categorization with a single leaf category"
-;       (categorize-foo ["t/fubar/a"] ["t/fubar/a"])
-;       (categorize-foo ["t/fubar/a/"] ["t/fubar/a"])
-;       (categorize-foo ["/t/fubar/a"] ["t/fubar/a"])
-;       (categorize-foo ["/t/fubar/a/"] ["t/fubar/a"]))
+  	(with-state-changes [(before :facts (existing-taxonomy-t2))]
 
-;   	(testing "item categorization with multiple leaf categories"
-;       (categorize-foo ["t/fubar/a" "t/fubar/b"] ["t/fubar/a" "t/fubar/b"])
-;       (categorize-foo ["t/fubar/a/" "t/fubar/b/"] ["t/fubar/a" "t/fubar/b"])
-;       (categorize-foo ["/t/fubar/a" "/t/fubar/b"] ["t/fubar/a" "t/fubar/b"])
-;       (categorize-foo ["/t/fubar/a/" "/t/fubar/b/"] ["t/fubar/a" "t/fubar/b"]))
+	  	(fact "with a single root category and a single leaf category in multiple taxonomies"
+				(doseq [categories [["t/bar" "t/fubar/b" "food/fruit" "food/vegetable/carrot"]
+														["t/bar/" "t/fubar/b/" "food/fruit/" "food/vegetable/carrot/"]
+														["/t/bar" "/t/fubar/b" "/food/fruit" "/food/vegetable/carrot"]
+														["/t/bar/" "/t/fubar/b/" "/food/fruit/" "/food/vegetable/carrot/"]]]
+					(item/create-item e i)
+					(doseq [category categories]
+						(taxonomy/categorize-item e i category))
+					(:categories (item/get-item e i)) => ["t/bar" "t/fubar/b" "food/fruit" "food/vegetable/carrot"]
+					(item/delete-item e i)))))
 
-;   	(testing "item categorization with a single root category and a single leaf category"
-;       (categorize-foo ["t/bar" "t/fubar/b"] ["t/bar" "t/fubar/b"])
-;       (categorize-foo ["t/bar/" "t/fubar/b/"] ["t/bar" "t/fubar/b"])
-;       (categorize-foo ["/t/bar" "/t/fubar/b"] ["t/bar" "t/fubar/b"])
-;       (categorize-foo ["/t/bar/" "/t/fubar/b/"] ["t/bar" "t/fubar/b"]))
+	(facts "about item uncategorization failures"
 
-;     (testing "item categorization with a single root category and a single leaf category in multiple taxonomies"
-;       (categorize-foo ["t/bar" "t/fubar/b" "food/fruit" "food/vegetable/carrot"]
-;                       ["t/bar" "t/fubar/b" "food/fruit" "food/vegetable/carrot"])
-;       (categorize-foo ["t/bar/" "t/fubar/b/" "food/fruit/" "food/vegetable/carrot/"]
-;                       ["t/bar" "t/fubar/b" "food/fruit" "food/vegetable/carrot"])
-;       (categorize-foo ["/t/bar" "/t/fubar/b" "/food/fruit" "/food/vegetable/carrot"]
-;                       ["t/bar" "t/fubar/b" "food/fruit" "food/vegetable/carrot"])
-;       (categorize-foo ["/t/bar/" "/t/fubar/b/" "/food/fruit/" "/food/vegetable/carrot/"]
-;                       ["t/bar" "t/fubar/b" "food/fruit" "food/vegetable/carrot"]))))
+  	(with-state-changes [(before :facts (existing-item-x))]
 
-; (deftest item-uncategorization
-;    (testing "item uncategorization failures"
+			(fact "with a non-existent collection"
+				(taxonomy/uncategorize-item nil x "/t/foo") => :bad-collection
+				(taxonomy/uncategorize-item "" x "/t/foo") => :bad-collection
+				(taxonomy/uncategorize-item "not-here" x "/t/foo") => :bad-collection)
 
-;     (testing "item uncategorization with a non-existent collection"
-;       (uncategorize-u :bad-collection "not-here" ["/t/foo"]))
+	  	(fact "with a non-existent taxonomy"
+	  		(doseq [category [nil "" "not-here/foo" "not-here/foo/" "/not-here/foo" "/not-here/foo/"]]
+	  			(taxonomy/uncategorize-item e x category) => :bad-taxonomy))
 
-;     (testing "item uncategorization with a non-existent taxonomy"
-;       (uncategorize-u :bad-taxonomy c ["not-here/foo" "not-here/foo/" "/not-here/foo" "/not-here/foo/"]))
+	  	(fact "with a non-existent item"
+	  		(taxonomy/uncategorize-item e nil "/t/foo") => :bad-item
+	  		(taxonomy/uncategorize-item e "" "/t/foo") => :bad-item
+	  		(taxonomy/uncategorize-item e "not-here" "/t/foo") => :bad-item)
 
-;     (testing "item uncategorization with a non-existent item"
-;       (is (= :bad-item (taxonomy/uncategorize-item c "not-here" "/t/foo"))))
+	  	(fact "with no category"
+	  		(doseq [category ["t" "t/" "/t" "/t/"]]
+	  			(taxonomy/uncategorize-item e x category) => :bad-category))
 
-;     (testing "item categorization with no category"
-;       (uncategorize-u :bad-category c ["t" "t/" "/t" "/t/"]))
+	  	(fact "with a non-existent root category"
+	  		(doseq [category ["t/not-here" "t/not-here/" "/t/not-here" "/t/not-here/"]]
+	  			(taxonomy/uncategorize-item e x category) => :bad-category))
 
-;     (testing "item categorization with a non-existent root category"
-;       (uncategorize-u :bad-category c ["t/not-here" "t/not-here/" "/t/not-here" "/t/not-here/"]))
+	  	(fact "with a non-existent leaf category"
+	  		(doseq [category ["t/foo/not-here" "t/foo/not-here/" "/t/foo/not-here" "/t/foo/not-here/"]]
+	  			(taxonomy/uncategorize-item e x category) => :bad-category)
+	  		(doseq [category ["t/fubar/a/not-here" "t/fubar/a/not-here/" "/t/fubar/a/not-here" "/t/fubar/a/not-here/"]]
+	  			(taxonomy/uncategorize-item e x category) => :bad-category))
 
-;     (testing "item uncategorization with a non-existent leaf category"
-;       (uncategorize-u :bad-category c ["t/foo/not-here" "t/foo/not-here/" "/t/foo/not-here" "/t/foo/not-here/"])
-;       (uncategorize-u :bad-category c ["t/fubar/a/not-here" "t/fubar/a/not-here/" "/t/fubar/a/not-here" "/t/fubar/a/not-here/"]))
+	    (fact "with a partial category path"
+	      (doseq [category ["t/fubar" "t/fubar/" "/t/fubar" "/t/fubar/"]]
+	  			(taxonomy/uncategorize-item e x category) => :bad-category))))
 
-;     (testing "item uncategorization with a partial category path"
-;       (uncategorize-u :bad-category c ["t/fubar" "t/fubar/" "/t/fubar" "/t/fubar/"])))
+  (facts "about item uncategorization successes"
 
-;   (testing "item uncategorization successes"
+		(fact "creating a new version"
+    	(existing-item-x)
+			(:version (item/get-item e x)) => 5
+			(taxonomy/uncategorize-item e x "t/foo")
+			(:version (item/get-item e x)) => 6)
 
-;     (testing "item uncategorization with a single root category"
-;       (uncategorize-u c ["t/foo"])
-;       (uncategorize-u c ["t/foo/"])
-;       (uncategorize-u c ["/t/foo"])
-;       (uncategorize-u c ["/t/foo/"]))
+    (fact "with a single root category"
+    	(doseq [category ["t/foo" "t/foo/" "/t/foo" "/t/foo/"]]
+    		(existing-item-x)
+				(:categories (taxonomy/uncategorize-item e x category)) => ["t/bar" "t/fubar/a" "t/fubar/b"]
+				(:categories (item/get-item e x)) => ["t/bar" "t/fubar/a" "t/fubar/b"]
+				(item/delete-item e x)))
 
-;     (testing "item uncategorization withmultiple root categories"
-;       (uncategorize-u c ["t/foo" "t/bar"])
-;       (uncategorize-u c ["t/foo/" "t/bar/"])
-;       (uncategorize-u c ["/t/foo" "/t/bar"])
-;       (uncategorize-u c ["/t/foo/" "/t/bar/"]))
+    (fact "with multiple root categories"
+    	(doseq [categories [["t/foo" "t/bar"]
+    											["t/foo/" "t/bar/"]
+    											["/t/foo" "/t/bar"]
+    											["/t/foo/" "/t/bar/"]]]
+    		(existing-item-x)
+    		(doseq [category categories]
+					(taxonomy/uncategorize-item e x category))
+				(:categories (item/get-item e x)) => ["t/fubar/a" "t/fubar/b"]
+				(item/delete-item e x)))
 
-;     (testing "item uncategorization with a single leaf category"
-;       (uncategorize-u c ["t/fubar/a"])
-;       (uncategorize-u c ["t/fubar/a/"])
-;       (uncategorize-u c ["/t/fubar/a"])
-;       (uncategorize-u c ["/t/fubar/a/"]))
+    (fact "with a single leaf category"
+    	(doseq [category ["t/fubar/a" "t/fubar/a/" "/t/fubar/a" "/t/fubar/a/"]]
+    		(existing-item-x)
+				(:categories (taxonomy/uncategorize-item e x category)) => ["t/foo" "t/bar" "t/fubar/b"]
+				(:categories (item/get-item e x)) => ["t/foo" "t/bar" "t/fubar/b"]
+				(item/delete-item e x)))
 
-;     (testing "item uncategorization with multiple leaf categories"
-;       (uncategorize-u c ["t/fubar/a" "t/fubar/b"])
-;       (uncategorize-u c ["t/fubar/a/" "t/fubar/b/"])
-;       (uncategorize-u c ["/t/fubar/a" "/t/fubar/b"])
-;       (uncategorize-u c ["/t/fubar/a/" "/t/fubar/b/"]))
+    (fact "with multiple leaf categories"
+    	(doseq [categories [["t/fubar/a" "t/fubar/b"]
+    											["t/fubar/a/" "t/fubar/b/"]
+    											["/t/fubar/a" "/t/fubar/b"]
+    											["/t/fubar/a/" "/t/fubar/b/"]]]
+    		(existing-item-x)
+    		(doseq [category categories]
+					(taxonomy/uncategorize-item e x category))
+				(:categories (item/get-item e x)) => ["t/foo" "t/bar"]
+				(item/delete-item e x)))
 
-;     (testing "item uncategorization with a single root category and a single leaf category"
-;       (uncategorize-u c ["t/foo" "t/fubar/a"])
-;       (uncategorize-u c ["t/foo/" "t/fubar/a/"])
-;       (uncategorize-u c ["/t/foo" "/t/fubar/a"])
-;       (uncategorize-u c ["/t/foo/" "/t/fubar/a/"]))
+    (fact "with a single root category and a single leaf category"
+    	(doseq [categories [["t/foo" "t/fubar/a"]
+    											["t/foo/" "t/fubar/a/"]
+    											["/t/foo" "/t/fubar/a"]
+    											["/t/foo/" "/t/fubar/a/"]]]
+    		(existing-item-x)
+    		(doseq [category categories]
+					(taxonomy/uncategorize-item e x category))
+				(:categories (item/get-item e x)) => ["t/bar" "t/fubar/b"]
+				(item/delete-item e x)))
 
-;     (testing "item categorization with a single root category and a single leaf category in multiple taxonomies")
-;       (existing-item-m)
-;       (is (= ["t/fubar/a" "food/fruit" "food/vegetable/carrot"] (:categories (taxonomy/uncategorize-item c m "t/foo"))))
-;       (is (= ["food/fruit" "food/vegetable/carrot"] (:categories (taxonomy/uncategorize-item c m "t/fubar/a/"))))
-;       (is (= ["food/vegetable/carrot"] (:categories (taxonomy/uncategorize-item c m "/food/fruit"))))
-;       (is (= [] (:categories (taxonomy/uncategorize-item c m "/food/vegetable/carrot/"))))
-;       (is (= [] (:categories (item/get-item c m))))
-;       (item/delete-item c m)))
+    (fact "with a single root category and a single leaf category in multiple taxonomies"
+      (existing-taxonomy-t2)
+      (existing-item-m)
+      (:categories (taxonomy/uncategorize-item e m "t/foo")) => ["t/fubar/a" "food/fruit" "food/vegetable/carrot"]
+      (:categories (item/get-item e m)) => ["t/fubar/a" "food/fruit" "food/vegetable/carrot"]
+			(:categories (taxonomy/uncategorize-item e m "t/fubar/a/")) => ["food/fruit" "food/vegetable/carrot"]
+      (:categories (item/get-item e m)) => ["food/fruit" "food/vegetable/carrot"]
+      (:categories (taxonomy/uncategorize-item e m "/food/fruit")) => ["food/vegetable/carrot"]
+      (:categories (item/get-item e m)) => ["food/vegetable/carrot"]
+      (:categories (taxonomy/uncategorize-item e m "/food/vegetable/carrot/")) => []
+      (:categories (item/get-item e m)) => [])))
