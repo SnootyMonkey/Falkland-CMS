@@ -86,8 +86,9 @@
   ;; if the slug is the same one we'd provide for a resource with that name, then it's valid
   (and (string? provided-slug) (= provided-slug (slugify provided-slug)) (not (s/blank? provided-slug))))
 
-(defn slug-in-collection? [coll-id slug]
+(defn slug-in-collection?
   "Return true if an item or a taxonomy with the specified slug exists in the collection with the specified id, false if not."
+  [coll-id slug]
   (if (first (doc-from-view-with-db :resource :all-ids-by-coll-id-and-slug [coll-id slug]))
     true
     false))
@@ -117,8 +118,9 @@
 
 (defn 
   ^{:no-doc true}
-  resource-doc [coll-id slug type]
+  resource-doc
   "Get the CouchDB map representation of an item given the ID of its collection, the resource's slug and its type."
+  [coll-id slug type]
   (:doc (first (doc-from-view-with-db type :all-ids-by-coll-id-and-slug [coll-id slug]))))
 
 (defn 
@@ -140,9 +142,10 @@
 
 (defn 
   ^{:no-doc true}
-  create-with-db [props provided-type]
+  create-with-db
   "Create an FCMS resource in the DB, returning the property map for the resource.
    This works when you ARE already in a clutch/with-db macro."
+  [props provided-type]
   (let [timestamp (current-timestamp)]
     (clutch/put-document {:data (merge props {
       :version 1
@@ -161,20 +164,22 @@
 
 (defn 
   ^{:no-doc true}
-  update-with-db [document props]
+  update-with-db
   "Update the CouchDB document provided with a nev version number, updated-at timestamp,
    and any new or updated properties from the provided map of props.
    This works when you ARE already in a clutch/with-db macro."
+  [document props]
   (clutch/update-document document {:data (merge props {
     :version (inc (:version props))
     :updated-at (current-timestamp)})}))
 
 (defn 
   ^{:no-doc true}
-  update [document props]
+  update
   "Update the CouchDB document provided with a nev version number, updated-at timestamp,
    and any new or updated properties from the provided map of props.
    This works when you AREN'T already in a clutch/with-db macro."
+  [document props]
   (clutch/with-db (db)
     (update-with-db document props)))
 
@@ -187,8 +192,9 @@
 
 (defn
   ^{:no-doc true}
-  delete [resource]
+  delete
   "Delete the provided CouchDB document.
    This works when you AREN'T already in a clutch/with-db macro."
+  [resource]
   (clutch/with-db (db)
     (clutch/delete-document resource)))

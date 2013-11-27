@@ -94,17 +94,20 @@
 
 ;; ----- Category functions -----
 
-(defn- valid-category-slug? [category]
+(defn- valid-category-slug?
   ""
+  [category]
   (common/valid-slug? (:slug category)))
 
-(defn- valid-category-structure? [category]
+(defn- valid-category-structure?
   ""
+  [category]
   (and (contains? :slug) (contains? :name)
     (= 2 (count (dissoc category :categories)))))
 
-(defn- valid-category-name? [category]
+(defn- valid-category-name?
   ""
+  [category]
   (common/valid-name? (:name category)))
 
 (defn- valid-categories
@@ -136,8 +139,9 @@
 
 (defn- 
   ^{:testable true}
-  taxonomy-slug-from-path [category-path]
+  taxonomy-slug-from-path
   "Return the taxonomy slug given a category path such as: /taxonomy-slug/category-a/category-b"
+  [category-path]
   (if (or (nil? category-path) (not (string? category-path)))
     ""
     (let [path-parts (s/split category-path #"/")]
@@ -147,8 +151,9 @@
 
 (defn- 
   ^{:testable true}
-  category-slugs-from-path [category-path]
+  category-slugs-from-path
   "Return a sequence of the category slugs given a category path such as: /taxonomy-slug/cat-a/cat-b"
+  [category-path]
   (if (or (nil? category-path) (not (string? category-path)))
     []
     (let [path-parts (s/split category-path #"/")]
@@ -164,8 +169,9 @@
 
 (declare hash-category-slugs)
 
-(defn- category-from-map [m]
+(defn- category-from-map
   "Return the category map with its :categories vector replaced by an ordered map (if it has one)"
+  [m]
   (if-let [categories (:categories m)]
     (assoc m :categories (hash-category-slugs categories))
     m))
@@ -176,10 +182,11 @@
     ; create an ordered map with the slug as the key and the name and categories as values
     (zip-ordered-map (map :slug categories) (map category-from-map categories)))
 
-(defn- new-categories [slugs category-name]
+(defn- new-categories
   "Create the new portion of a category path as an ordered-map (:name, :slug, :categories) of the slugs in
   a vector with each subsequent slug being a child of the prior slug,
   keyed by :categories, and the final slug getting the provided category-name."
+  [slugs category-name]
   (let [slug (first slugs)
         tail (rest slugs)]
     (if (empty? tail)
@@ -188,8 +195,9 @@
 
 (declare vectorize-category-slugs)
 
-(defn- categories-vector-from-map [m]
+(defn- categories-vector-from-map
   "Replace the hash map of categories at the :categories key with a vector of categories"
+  [m]
   (if-let [categories (:categories m)]
     (assoc m :categories (vectorize-category-slugs categories))
     m))

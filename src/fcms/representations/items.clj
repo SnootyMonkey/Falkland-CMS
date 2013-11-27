@@ -36,8 +36,9 @@
 (defn- create-item-link [coll-slug]
   (common/create-link (str "/" coll-slug "/") item/item-media-type))
 
-(defn- item-links [item]
+(defn- item-links
   "Add the HATEAOS links to the item"
+  [item]
   (let [links [:links (flatten [
     (self-link item)
     (update-link item)
@@ -46,8 +47,9 @@
     (collection-link item)])]]
     (apply array-map (concat (flatten (vec (dissoc item :categories))) links))))
 
-(defn- item-list-links [coll-slug]
+(defn- item-list-links
   "Array of HATEAOS links for the item list"
+  [coll-slug]
   [(create-item-link coll-slug)])
 
 (defn- item-to-json-map [item]

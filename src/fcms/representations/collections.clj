@@ -27,8 +27,9 @@
 (defn- delete-link [coll]
   (common/delete-link (url coll)))
 
-(defn links [coll]
+(defn links
   "Add the HATEAOS links to the collection"
+  [coll]
   (apply array-map (concat (flatten (vec coll)) [:links [
     (self-link coll)
     (contains-link coll)
