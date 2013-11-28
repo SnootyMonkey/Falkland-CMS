@@ -4,35 +4,47 @@
 
 (facts "about making slugs"
 
-  (fact "upper case letters are replaced with lower case letters"
-    (slugify "slug") => "slug"
-    (slugify "Slug") => "slug"
-    (slugify "SLUG") => "slug"
-    (slugify "sLUG") => "slug"
-    (slugify "sluG") => "slug"
-    (slugify "sLuG") => "slug")
+  (tabular (fact "upper case letters are replaced with lower case letters"
+    (slugify ?name) => "slug")
+    ?name
+    "slug"
+    "Slug"
+    "SLUG"
+    "sLUG"
+    "sluG"
+    "sLuG")
 
-  (fact "internal white space is replaced with a single dash"
-    (slugify "this is a slug") => "this-is-a-slug"
-    (slugify "this is-a slug") => "this-is-a-slug"
-    (slugify "this  is  a  slug") => "this-is-a-slug"
-    (slugify "this is a          slug") => "this-is-a-slug"
+  (tabular (fact "internal spaces is replaced with a single dash"
+    (slugify ?name) => "this-is-a-slug")
+    ?name  
+    "this is a slug"
+    "this is-a slug"
+    "this  is  a  slug"
+    "this is a          slug")
+
+  (fact "internal white space characters are replaced with a single dash"
     (slugify "this\t\tis\r\ralso\n\na\r\n\r\nslug") => "this-is-also-a-slug")
 
-  (fact "prefixed and trailing spaces are removed"
-    (slugify " this is a slug") => "this-is-a-slug"
-    (slugify " this is a slug") => "this-is-a-slug"
-    (slugify "this is a slug ") => "this-is-a-slug"
-    (slugify " this is a slug ") => "this-is-a-slug"
-    (slugify "          this is a slug          ") => "this-is-a-slug"
+  (tabular (fact "prefixed and trailing spaces are removed"
+    (slugify ?name) => "this-is-a-slug")
+    ?name
+    " this is a slug"
+    " this is a slug"
+    "this is a slug "
+    " this is a slug "
+    "          this is a slug          ")
+
+  (fact "prefixed and trailing white space characters are removed"
     (slugify "\t\tthis is a slug\t\t\r\n\r\n") => "this-is-a-slug")
 
-  (fact "prefixed and trailing dashes are removed"
-    (slugify "-slug") => "slug"
-    (slugify "slug-") => "slug"
-    (slugify "-slug-") => "slug"
-    (slugify "--slug--") => "slug"
-    (slugify "----------slug----------") => "slug")
+  (tabular (fact "prefixed and trailing dashes are removed"
+    (slugify ?name) => "slug")
+    ?name
+    "-slug"
+    "slug-"
+    "-slug-"
+    "--slug--"
+    "----------slug----------")
 
   (fact "sequential dashes are replaced with a single dash"
     (slugify "this--is----also---a-slug") => "this-is-also-a-slug")
@@ -53,9 +65,11 @@
     (slugify "à-á-â-ã-ā-ă-ȧ-ä-ả-å-ǎ-ȁ-ą-ạ-ḁ-ẚ-ầ-ấ-ẫ-ẩ-ằ-ắ-ẵ-ẳ-ǡ-ǟ-ǻ-ậ-ặ") =>
       "a-a-a-a-a-a-a-a-a-a-a-a-a-a-a-a-a-a-a-a-a-a-a-a-a-a-a-a")
 
-  (fact "other unicode characters are replaced with nothing"
-    (slugify "γλώσσαthis-μουέδωσανis-ελληνικήalso-მივჰხვდეaმასჩემსაالزجاجوهذالايؤلمني.slug मैकाँचखासकताฉันกินกระจกได้לאמזיק")  => "this-is-also-a-slug"
-    (slugify "æ-ǽ-ǣ-this-♜-♛-☃-✄-✈-is-→-☞-➩-⇏-⇉-also-•-✪-▼-❊-✔-a-∑-∏-∛-≃-≈-⅋-⋶-slug") => "this-is-also-a-slug")
+  (tabular (fact "other unicode characters are replaced with nothing"
+    (slugify ?name)  => "this-is-also-a-slug")
+    ?name
+    "γλώσσαthis-μουέδωσανis-ελληνικήalso-მივჰხვდეaმასჩემსაالزجاجوهذالايؤلمني.slug मैकाँचखासकताฉันกินกระจกได้לאמזיק"
+    "æ-ǽ-ǣ-this-♜-♛-☃-✄-✈-is-→-☞-➩-⇏-⇉-also-•-✪-▼-❊-✔-a-∑-∏-∛-≃-≈-⅋-⋶-slug")
 
   (fact "slugs that are too long are truncated"
     (let [long-slug (apply str (range 0 500))]
@@ -82,9 +96,11 @@
       (slugify all-in-one) => "this-is-also-a-slug"
       (slugify (str all-in-one long-string)) => (str "this-is-also-a-slug-" (apply str (take 236 long-string)))))
 
-  (fact "perfectly good slugs are unaffected"
-    (slugify "slug") => "slug"
-    (slugify "42") => "42"
-    (slugify "slug42") => "slug42"
-    (slugify "slug-42") => "slug-42"
-    (slugify "this-is-a-slug-42") => "this-is-a-slug-42"))
+  (tabular (fact "perfectly good slugs are unaffected"
+    (slugify ?name) => ?slug)
+    ?name               ?slug
+    "slug"              "slug"
+    "42"                "42"
+    "slug42"            "slug42"
+    "slug-42"           "slug-42"
+    "this-is-a-slug-42" "this-is-a-slug-42"))
