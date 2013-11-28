@@ -10,61 +10,45 @@
   (facts "about non-existent categories"
     (category-exists "not-here" "/t/foo") => :bad-collection
 
-    (category-exists e "not-here") => :bad-taxonomy
-    (category-exists e "not-here/") => :bad-taxonomy
-    (category-exists e "/not-here") => :bad-taxonomy
-    (category-exists e "/not-here/") => :bad-taxonomy
-    (category-exists e "not-here/foo") => :bad-taxonomy
-    (category-exists e "not-here/foo/") => :bad-taxonomy
-    (category-exists e "/not-here/foo") => :bad-taxonomy
-    (category-exists e "/not-here/foo/") => :bad-taxonomy
+    (fact "when the provided taxonomy doesn't exist"
+      (doseq [category ["not-here" "not-here/" "/not-here" "/not-here/"]]
+        (category-exists e category) => :bad-taxonomy)
 
-    (category-exists e "et") => false
-    (category-exists e "et/") => false
-    (category-exists e "/et") => false
-    (category-exists e "/et/") => false
-    (category-exists e "t") => false
-    (category-exists e "t/") => false
-    (category-exists e "/t") => false
-    (category-exists e "/t/") => false
+      (doseq [category ["not-here/foo" "not-here/foo/" "/not-here/foo" "/not-here/foo/"]]
+        (category-exists e category) => :bad-taxonomy))
 
-    (category-exists e "et/not-here") => false
-    (category-exists e "et/not-here/") => false
-    (category-exists e "/et/not-here") => false
-    (category-exists e "/et/not-here/") => false
+    (fact "when the category is not provided"
+      (doseq [category ["et" "et/" "/et" "/et/"]]
+        (category-exists e category) => false)
 
-    (category-exists e "et/not-here/not-here") => false
-    (category-exists e "et/not-here/not-here/") => false
-    (category-exists e "/et/not-here/not-here") => false
-    (category-exists e "/et/not-here/not-here/") => false
+      (doseq [category ["t" "t/" "/t" "/t/"]]
+        (category-exists e category) => false))
 
-    (category-exists e "t/not-here") => false
-    (category-exists e "t/not-here/") => false
-    (category-exists e "/t/not-here") => false
-    (category-exists e "/t/not-here/") => false
+    (fact "when the provided category doesn't exist"
+      (doseq [category ["et/not-here" "et/not-here/" "/et/not-here" "/et/not-here/"]]
+        (category-exists e category) => false)
 
-    (category-exists e "t/foo/not-here") => false
-    (category-exists e "t/foo/not-here/") => false
-    (category-exists e "/t/foo/not-here") => false
-    (category-exists e "/t/foo/not-here/") => false
+      (doseq [category ["et/not-here/not-here" "et/not-here/not-here/"
+                        "/et/not-here/not-here" "/et/not-here/not-here/"]]
+        (category-exists e category) => false)
 
-    (category-exists e "t/fubar/a/not-here") => false
-    (category-exists e "t/fubar/a/not-here/") => false)
-    (category-exists e "/t/fubar/a/not-here") => false
-    (category-exists e "/t/fubar/a/not-here/") => false
+      (doseq [category ["t/not-here" "t/not-here/" "/t/not-here" "/t/not-here/"]]
+        (category-exists e category) => false)
+
+      (doseq [category ["t/foo/not-here" "t/foo/not-here/"
+                        "/t/foo/not-here" "/t/foo/not-here/"]]
+        (category-exists e category) => false)
+
+      (doseq [category ["t/fubar/a/not-here" "t/fubar/a/not-here/"
+                        "/t/fubar/a/not-here" "/t/fubar/a/not-here/"]]
+        (category-exists e category) => false)))
 
   (facts "about existing categories"
-    (category-exists e "t/foo") => true
-    (category-exists e "t/foo/") => true
-    (category-exists e "/t/foo") => true
-    (category-exists e "/t/foo/") => true
+    (doseq [category ["t/foo" "t/foo/" "/t/foo" "/t/foo/"]]
+      (category-exists e category) => true)
 
-    (category-exists e "t/fubar") => true
-    (category-exists e "t/fubar/") => true
-    (category-exists e "/t/fubar") => true
-    (category-exists e "/t/fubar/") => true
+    (doseq [category ["t/fubar" "t/fubar/" "/t/fubar" "/t/fubar/"]]
+      (category-exists e category) => true)
 
-    (category-exists e "t/fubar/a") => true
-    (category-exists e "t/fubar/a/") => true
-    (category-exists e "/t/fubar/a") => true
-    (category-exists e "/t/fubar/a/") => true))
+    (doseq [category ["t/fubar/a" "t/fubar/a/" "/t/fubar/a" "/t/fubar/a/"]]
+      (category-exists e category) => true)))
