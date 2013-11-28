@@ -6,34 +6,38 @@
 
 (def tax "tax")
 
-(facts "about taxonomy slug parsing from a category path"
-  (taxonomy-slug-from-path "tax") => tax
-  (taxonomy-slug-from-path "tax/") => tax
-  (taxonomy-slug-from-path "/tax") => tax
-  (taxonomy-slug-from-path "/tax/") => tax
-  (taxonomy-slug-from-path "tax/a") => tax
-  (taxonomy-slug-from-path "tax/a/") => tax
-  (taxonomy-slug-from-path "/tax/a") => tax
-  (taxonomy-slug-from-path "/tax/a/") => tax
-  (taxonomy-slug-from-path "tax/a/b") => tax
-  (taxonomy-slug-from-path "tax/a/b/") => tax
-  (taxonomy-slug-from-path "/tax/a/b") => tax
-  (taxonomy-slug-from-path "/tax/a/b/") => tax)
+(tabular (facts "about taxonomy slug parsing from a category path"
+  (taxonomy-slug-from-path ?category-path) => tax)
+  ?category-path
+  "tax"
+  "tax/"
+  "/tax"
+  "/tax/"
+  "tax/a"
+  "tax/a/"
+  "/tax/a"
+  "/tax/a/"
+  "tax/a/b"
+  "tax/a/b/"
+  "/tax/a/b"
+  "/tax/a/b/")
 
-(facts "about category slug parsing from a category path"
-  (category-slugs-from-path "tax") => []
-  (category-slugs-from-path "tax/") => []
-  (category-slugs-from-path "/tax") => []
-  (category-slugs-from-path "/tax/") => []
-  (category-slugs-from-path "tax/a") => ["a"]
-  (category-slugs-from-path "tax/a/") => ["a"]
-  (category-slugs-from-path "/tax/a") => ["a"]
-  (category-slugs-from-path "/tax/a/") => ["a"]
-  (category-slugs-from-path "tax/a/b") => ["a" "b"]
-  (category-slugs-from-path "tax/a/b/") => ["a" "b"]
-  (category-slugs-from-path "/tax/a/b") => ["a" "b"]
-  (category-slugs-from-path "/tax/a/b/") => ["a" "b"]
-  (category-slugs-from-path "tax/a/b/c-d-e/f/g") => ["a" "b" "c-d-e" "f" "g"]
-  (category-slugs-from-path "tax/a/b/c-d-e/f/g/") => ["a" "b" "c-d-e" "f" "g"]
-  (category-slugs-from-path "/tax/a/b/c-d-e/f/g") => ["a" "b" "c-d-e" "f" "g"]
-  (category-slugs-from-path "/tax/a/b/c-d-e/f/g/") => ["a" "b" "c-d-e" "f" "g"])
+(tabular (facts "about category slug parsing from a category path"
+  (category-slugs-from-path ?category-path) => ?category-slugs)
+  ?category-path        ?category-slugs
+  "tax"                 []
+  "tax/"                []
+  "/tax"                []
+  "/tax/"               []
+  "tax/a"               ["a"]
+  "tax/a/"              ["a"]
+  "/tax/a"              ["a"]
+  "/tax/a/"             ["a"]
+  "tax/a/b"             ["a" "b"]
+  "tax/a/b/"            ["a" "b"]
+  "/tax/a/b"            ["a" "b"]
+  "/tax/a/b/"           ["a" "b"]
+  "tax/a/b/c-d-e/f/g"   ["a" "b" "c-d-e" "f" "g"]
+  "tax/a/b/c-d-e/f/g/"  ["a" "b" "c-d-e" "f" "g"]
+  "/tax/a/b/c-d-e/f/g"  ["a" "b" "c-d-e" "f" "g"]
+  "/tax/a/b/c-d-e/f/g/" ["a" "b" "c-d-e" "f" "g"])
