@@ -12,7 +12,7 @@
 
 (def reserved-properties
   "Properties that can't be specified during a create and are ignored during an update."
-  (conj common/reserved-properties :collection :categories)) 
+  (conj common/reserved-properties :collection :categories))
 (def retained-properties
   "Properties that are retained during an update even if they aren't in the updated property set."
   (conj common/retained-properties :collection :categories))
@@ -69,7 +69,7 @@
   ([coll-slug resource-name type reserved-properties properties]
     (let [props (keywordize-keys properties)
           validity (valid-new-resource coll-slug resource-name reserved-properties type props)]
-      (if (true? validity) 
+      (if (true? validity)
         (collection/with-collection coll-slug
           (let [slug (common/unique-slug (:id collection) (or (:slug props) (slugify resource-name)))]
             (when-let [resource (common/create-with-db
@@ -98,7 +98,7 @@
   valid or return :invalid-slug and ensure it is unused or
   return :slug-conflict. If no item slug is specified in
   the properties it will be retain its current slug."
-  [coll-slug slug reserved-properties {item-name :name provided-slug :slug :as props} type]
+  [coll-slug slug {item-name :name provided-slug :slug :as props} type]
     (let [coll-id (:id (collection/get-collection coll-slug))
           resource-id (:id (get-resource coll-slug slug type))]
       (cond

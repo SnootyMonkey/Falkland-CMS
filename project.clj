@@ -120,6 +120,10 @@
   :cucumber-feature-paths ["test/fcms/features"]
   :test-paths ["test"]
 
+  ;; ----- Code check configuration -----
+
+  :eastwood {:exclude-linters [:keyword-typos]}
+
   ;; ----- Clojure API Documentation -----
 
   :codox {

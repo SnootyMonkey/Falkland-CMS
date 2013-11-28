@@ -49,12 +49,12 @@
       (create-category e "t/new/sluG/new/") => :invalid-category-slug
       (create-category e "/t/new/sluG/new") => :invalid-category-slug
       (create-category e "/t/new/sluG/new/") => :invalid-category-slug
-      
+
       (create-category e "t/new/-slug/new") => :invalid-category-slug
       (create-category e "t/new/-slug/new/") => :invalid-category-slug
       (create-category e "/t/new/-slug/new") => :invalid-category-slug
       (create-category e "/t/new/-slug/new/") => :invalid-category-slug
-      
+
       (create-category e "t/new/sl--ug/new") => :invalid-category-slug
       (create-category e "t/new/sl--ug/new/") => :invalid-category-slug
       (create-category e "/t/new/sl--ug/new") => :invalid-category-slug
@@ -62,7 +62,7 @@
 
 
   (facts "about creating categories 1 level at a time"
-    
+
     (fact "without a name"
       ((create-category e "et/a") :categories) => [{:slug "a" :name "a" }])
 
@@ -80,7 +80,7 @@
       (first ((create-category e "t/foo/b" "B") :categories)) => {:slug "foo" :name "Foo" :categories [{:slug "b" :name "B"}]})
 
     (fact "nested with siblings and without a name"
-      (last ((create-category e "t/fubar/foo/") :categories)) => 
+      (last ((create-category e "t/fubar/foo/") :categories)) =>
         {:slug "fubar" :name "FUBAR" :categories [{:slug "a" :name "A"} {:slug "b" :name "B"} {:slug "foo" :name "foo"}]})
 
     (fact "nested with siblings and with a name"
@@ -100,11 +100,11 @@
         [{:slug "a" :name "a" :categories [{:slug "c" :name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "}]}])
 
     (fact "with 5 levels"
-      ((create-category e "/et/a/b/c/d/e/") :categories) => 
+      ((create-category e "/et/a/b/c/d/e/") :categories) =>
         [{:slug "a" :name "a" :categories [{:slug "b" :name "b" :categories [{:slug "c" :name "c" :categories [{:slug "d" :name "d" :categories [{:slug "e" :name "e"}]}]}]}]}])
 
     (fact "nested without a name"
-      (first ((create-category e "t/foo/foo/foo") :categories)) => 
+      (first ((create-category e "t/foo/foo/foo") :categories)) =>
         {:slug "foo" :name "Foo" :categories [{:slug "foo" :name "foo" :categories [{:slug "foo" :name "foo"}]}]})
 
     (fact "nested with a name"
@@ -112,7 +112,7 @@
         {:slug "foo" :name "Foo" :categories [{:slug "b" :name "b" :categories [{:slug "c" :name "C"}]}]})
 
     (fact "nested with siblings and without a name"
-      (last ((create-category e "/t/fubar/foo/foo") :categories)) => 
+      (last ((create-category e "/t/fubar/foo/foo") :categories)) =>
         {:slug "fubar" :name "FUBAR" :categories [{:slug "a" :name "A"} {:slug "b" :name "B"} {:slug "foo" :name "foo" :categories [{:slug "foo" :name "foo"}]}]})
 
     (fact "nested with siblings and with a name"

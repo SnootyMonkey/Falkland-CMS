@@ -41,18 +41,18 @@
 ;; ----- Taxonomies -----
 
 (defn empty-taxonomy-et []
-  (taxonomy/create-taxonomy e "Empty Taxonomy" 
+  (taxonomy/create-taxonomy e "Empty Taxonomy"
      {:slug "et"
       :description "Categorize it."}))
 
 (defn existing-taxonomy-t []
-  (resource/create-resource e "Taxonomy" :taxonomy [] 
+  (resource/create-resource e "Taxonomy" :taxonomy []
     {:slug "t"
      :description "Categorize it."
      :categories existing-categories-c}))
 
 (defn existing-taxonomy-t2 []
-  (resource/create-resource e "Food" :taxonomy [] 
+  (resource/create-resource e "Food" :taxonomy []
     {:slug t2
      :description "Yummy."
      :categories existing-categories-c2}))

@@ -17,7 +17,7 @@
     :available-media-types [collection/collection-media-type]
     :available-charsets [common/UTF8]
     :allowed-methods [:get :put :delete]
-    :exists? (fn [ctx] (get-collection coll-slug))
+    :exists? (fn [_] (get-collection coll-slug))
     :handle-ok (fn [ctx] (render-collection (:collection ctx))))
 
 ;; ----- Routes -----

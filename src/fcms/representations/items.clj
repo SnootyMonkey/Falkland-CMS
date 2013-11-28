@@ -77,7 +77,7 @@
       :items (map item-to-json-map items))}
     {:pretty true}))
 
-(defn render-item 
+(defn render-item
   "Create a JSON representation of an item for the REST API"
   [item]
   (json/generate-string (item-to-json-map item) {:pretty true}))

@@ -8,10 +8,10 @@
             [fcms.resources.collection :as collection]
             [fcms.resources.item :as item]))
 
-(def 
+(def
   ^{:no-doc true}
   taxonomy-media-type "application/vnd.fcms.taxonomy+json;version=1")
-(def 
+(def
   ^{:no-doc true}
   category-media-type "application/vnd.fcms.category+json;version=1")
 
@@ -70,7 +70,7 @@
   return :slug-conflict. If no item slug is specified in
   the properties it will be retain its current slug."
   [coll-slug slug props]
-  (resource/valid-resource-update coll-slug slug resource/reserved-properties props :taxonomy))
+  (resource/valid-resource-update coll-slug slug props :taxonomy))
 
 (defn update-taxonomy
   "Update a taxonomy in the collection specified by its slug using the specified
@@ -80,9 +80,9 @@
   [coll-slug slug props]
     (let [reason (valid-taxonomy-update coll-slug slug props)]
       (if (true? reason)
-        (resource/update-resource coll-slug slug 
+        (resource/update-resource coll-slug slug
           {:reserved resource/reserved-properties
-          :retained resource/retained-properties 
+          :retained resource/retained-properties
           :updated props} :taxonomy)
         reason)))
 
@@ -137,7 +137,7 @@
             true
             (recur (first non-leaves) (vec (rest non-leaves))))))))
 
-(defn- 
+(defn-
   ^{:testable true}
   taxonomy-slug-from-path
   "Return the taxonomy slug given a category path such as: /taxonomy-slug/category-a/category-b"
@@ -149,7 +149,7 @@
         (nth path-parts 1)
         (first path-parts)))))
 
-(defn- 
+(defn-
   ^{:testable true}
   category-slugs-from-path
   "Return a sequence of the category slugs given a category path such as: /taxonomy-slug/cat-a/cat-b"
@@ -162,7 +162,7 @@
         ;; "" "tax" => []
         ;; "" "tax" "cat-a" "cat-b" => ["cat-a" "cat-b"]
         ;; "tax" "cat-a" "cat-b" => ["cat-a" "cat-b"]
-      (cond 
+      (cond
         (= (count path-parts) 1) []
         (s/blank? (first path-parts)) (vec (rest (rest path-parts)))
         :else (vec (rest path-parts))))))
@@ -209,11 +209,11 @@
 
 (defn- create-categories
   "Given a category name, a vector of the slugs of a desired category path,
-  and the categories that already exist in the taxonomy, add the portions of the 
+  and the categories that already exist in the taxonomy, add the portions of the
   desired category path that don't already exist."
-  ([category-name category-slugs categories] 
+  ([category-name category-slugs categories]
     (vectorize-category-slugs (create-categories category-name [] category-slugs (hash-category-slugs categories))))
- 
+
   ([category-name category-path category-slugs categories]
     (let [category-slug (first category-slugs)
           category (get-in categories (conj category-path category-slug))
@@ -223,20 +223,20 @@
         [_ [] {}] categories ; all done with the existing categories as they are
 
         ;; the category doesn't exist
-        [_ _ nil] 
+        [_ _ nil]
           ; add it
-          (assoc-in categories (conj category-path category-slug) 
-                               (new-categories (vec (cons category-slug remaining-path)) category-name)) 
-        
+          (assoc-in categories (conj category-path category-slug)
+                               (new-categories (vec (cons category-slug remaining-path)) category-name))
+
         ;; the category exists and it has categories already
-        [_ _ ({} :guard :categories)] 
+        [_ _ ({} :guard :categories)]
           ; recurse (not tail recursion)
           (create-categories category-name (conj category-path category-slug :categories) remaining-path categories)
-        
+
         ;; else, the category exists but it doesn't have categories
         :else
           ; add categories
-          (assoc-in categories (conj category-path category-slug :categories) 
+          (assoc-in categories (conj category-path category-slug :categories)
                                (ordered-map (first remaining-path) (new-categories remaining-path category-name)))))))
 
 (defn create-category
@@ -255,7 +255,7 @@
     (let [taxonomy-slug (taxonomy-slug-from-path category-path)
           category-slugs (category-slugs-from-path category-path)
           result (get-taxonomy coll-slug taxonomy-slug)]
-      (cond 
+      (cond
         (keyword? result) result
         (nil? result) :bad-taxonomy
         (not-every? common/valid-slug? category-slugs) :invalid-category-slug
@@ -285,7 +285,7 @@
   (let [taxonomy-slug (taxonomy-slug-from-path category-path)
         category-slugs (category-slugs-from-path category-path)
         result (get-taxonomy coll-slug taxonomy-slug)]
-    (cond 
+    (cond
       (keyword? result) result
       (nil? result) :bad-taxonomy
       (empty? category-slugs) false
@@ -311,12 +311,12 @@
         category-slugs (category-slugs-from-path path)
         result (get-taxonomy coll-slug taxonomy-slug)
         item (item/get-item coll-slug item-slug)]
-    (cond 
+    (cond
       (keyword? result) result
       (nil? item) :bad-item
       (nil? result) :bad-taxonomy
       (empty? category-slugs) :bad-category
-      :else (f path taxonomy-slug category-slugs result item))))
+      :else (f path item))))
 
 ;; ----- item functions -----
 
@@ -333,8 +333,8 @@
   :duplicate-category is returned if item is already a member of the provided category or one of its children."
   [coll-slug item-slug category-path]
   (validate-category-request coll-slug category-path item-slug
-    (fn [path taxonomy-slug category-slugs result item] 
-      (cond 
+    (fn [path item]
+      (cond
         (not (true? (category-exists coll-slug path))) :bad-category
         (duplicate-category? path (:categories item)) :duplicate-category
         :else
@@ -354,7 +354,7 @@
   :bad-category is returned if the item is not categorized with the provided category path."
   [coll-slug item-slug category-path]
   (validate-category-request coll-slug category-path item-slug
-    (fn [path taxonomy-slug category-slugs result item] 
+    (fn [path item]
       (if (nil? (some #{path} (:categories item)))
         :bad-category
         ;; else, remove the category from the categories vector and update the item
@@ -376,7 +376,7 @@
   :bad-taxonomy is returned if there's no taxonomy with that slug at the start of the category path."
   [coll-slug taxonomy-slug]
   (let [result (get-taxonomy coll-slug taxonomy-slug)]
-    (cond 
+    (cond
       (keyword? result) result
       (nil? result) :bad-taxonomy
       :else (items-for-path coll-slug taxonomy-slug))))
@@ -392,7 +392,7 @@
       taxonomy-slug (taxonomy-slug-from-path path)
       category-slugs (category-slugs-from-path path)
       result (get-taxonomy coll-slug taxonomy-slug)]
-    (cond 
+    (cond
       (keyword? result) result
       (nil? result) :bad-taxonomy
       (not (category-exists coll-slug path)) :bad-category

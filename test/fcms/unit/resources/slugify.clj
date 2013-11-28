@@ -41,12 +41,12 @@
     ;; use !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
     (slugify "a!b\"c#d$e%f&g'h(i)j*k+l,m-n.o/p:q;r<s=t>u?v@w[x\\y]z^1_2`3{4|5}6~") =>
       "a-b-c-d-e-f-g-h-i-j-k-l-m-n-o-p-q-r-s-t-u-v-w-x-y-z-1-2-3-4-5-6")
-      
+
   (fact "accented latin characters are replaced with ascii"
     ;; Works for the other letters too, but not all are tested here since then I'd
     ;; just be testing java.text.Normalizer.
     ;;
-    ;; See: 
+    ;; See:
     ;;   http://docs.oracle.com/javase/7/docs/api/java/text/Normalizer.html
     ;;   http://www.unicode.org/reports/tr15/tr15-23.html
     ;;

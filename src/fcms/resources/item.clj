@@ -3,7 +3,7 @@
             [fcms.resources.common :as common]
             [fcms.resources.collection-resource :as resource]))
 
-(def 
+(def
   ^{:no-doc true}
   item-media-type "application/vnd.fcms.item+json;version=1")
 (def
@@ -63,7 +63,7 @@
   return :slug-conflict. If no item slug is specified in
   the properties it will be retain its current slug."
   [coll-slug slug props]
-    (resource/valid-resource-update coll-slug slug resource/reserved-properties props :item))
+    (resource/valid-resource-update coll-slug slug props :item))
 
 (defn update-item
   "Update an item in the collection specified by its slug using the specified
@@ -71,11 +71,11 @@
   the item will be moved to the new slug, otherwise the slug will remain the same.
   The same validity conditions and invalid return values as valid-item-update apply."
   [coll-slug slug props]
-    (let [reason (resource/valid-resource-update coll-slug slug resource/reserved-properties props :item)]
+    (let [reason (resource/valid-resource-update coll-slug slug props :item)]
       (if (true? reason)
-        (resource/update-resource coll-slug slug 
+        (resource/update-resource coll-slug slug
           {:reserved resource/reserved-properties
-          :retained resource/retained-properties 
+          :retained resource/retained-properties
           :updated props} :item)
         reason)))
 

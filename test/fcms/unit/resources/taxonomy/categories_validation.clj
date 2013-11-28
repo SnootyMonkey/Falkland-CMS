@@ -18,7 +18,7 @@
 ;     (valid-categories ["foo"]) => :invalid-structure
 ;     (valid-categories [42]) => :invalid-structure
 ;     (valid-categories [[]]) => :invalid-structure
-;     (valid-categories 
+;     (valid-categories
 ;       [
 ;         {"florida" "Florida"}
 ;         "foo"

@@ -8,12 +8,12 @@
 
 ;; ----- Properties common to all FCMS resources -----
 
-(def 
+(def
   ^{:no-doc true}
   reserved-properties
   "Properties that can't be specified during a create and are ignored during an update."
-  #{:id :created-at :updated-at :type :version :links}) 
-(def 
+  #{:id :created-at :updated-at :type :version :links})
+(def
   ^{:no-doc true}
   retained-properties
   "Properties that are retained during an update even if they aren't in the updated property set."
@@ -25,12 +25,12 @@
   ^{:no-doc true}
   timestamp-format (formatters :date-time-no-ms))
 
-(defn- current-timestamp [] 
+(defn- current-timestamp []
   (unparse timestamp-format (now)))
 
 ;; ----- Validation functions -----
 
-(defn valid-name? 
+(defn valid-name?
   "Return true if the provided name is a valid name, false if not"
   [n]
   ;; any non-blank string is a valid name
@@ -38,11 +38,11 @@
 
 ;; ----- CouchDB base functions -----
 
-(defn 
+(defn
   ^{:no-doc true}
   db [] (clutch/get-database db-resource))
 
-(defn 
+(defn
   ^{:no-doc true}
   from-view
   "Use the specified function of the specified view to return view contents (what was emitted by the view).
@@ -51,7 +51,7 @@
   ([view function] (clutch/get-view (db) (name view) function {:include_docs false}))
   ([view function key-value] (clutch/get-view (db) (name view) function {:key key-value :include_docs false})))
 
-(defn 
+(defn
   ^{:no-doc true}
   from-view-with-db
   "Use the specified function of the specified view to return view contents (what was emitted by the view).
@@ -60,7 +60,7 @@
   ([view function] (clutch/get-view (name view) function {:include_docs false}))
   ([view function key-value] (clutch/get-view (name view) function {:key key-value :include_docs false})))
 
-(defn 
+(defn
   ^{:no-doc true}
   doc-from-view
   "Use the specified function of the specified view to return CouchDB documents.
@@ -80,7 +80,7 @@
 
 ;; ----- Slug functions -----
 
-(defn valid-slug? 
+(defn valid-slug?
   "Return true if the provided-slug is a valid slug and false if not"
   [provided-slug]
   ;; if the slug is the same one we'd provide for a resource with that name, then it's valid
@@ -93,9 +93,9 @@
     true
     false))
 
-(defn 
+(defn
   ^{:no-doc true}
-  next-slug 
+  next-slug
   "Generate the next possible slug to attempt by removing the old counter suffix and adding the new counter suffix."
   [slug counter]
     ;; if the slug is blank then it's just the counter
@@ -108,7 +108,7 @@
    numeral and appending it with a dash until you have a unique slug. If the slug is already
    unique it is just returned."
   ([coll-id slug] (unique-slug coll-id slug 0))
-  ([coll-id slug counter] 
+  ([coll-id slug counter]
     (if-not (or (slug-in-collection? coll-id slug) (= slug ""))
       slug
       ;; recur with the next possible slug
@@ -116,14 +116,14 @@
 
 ;; ----- Raw resource functions -----
 
-(defn 
+(defn
   ^{:no-doc true}
   resource-doc
   "Get the CouchDB map representation of an item given the ID of its collection, the resource's slug and its type."
   [coll-id slug type]
   (:doc (first (doc-from-view-with-db type :all-ids-by-coll-id-and-slug [coll-id slug]))))
 
-(defn 
+(defn
   ^{:no-doc true}
   map-from-db
   "Turn the CouchDB map into the FCMS map"
@@ -133,14 +133,14 @@
 
 (defn
   ^{:no-doc true}
-  resource-from-db 
+  resource-from-db
   "Turn an item from its CouchDB map representation into its FCMS map representation."
   [coll-slug resource]
   (map-from-db (assoc-in resource [:data :collection] coll-slug)))
 
 ;; ----- Resource CRUD funcitons -----
 
-(defn 
+(defn
   ^{:no-doc true}
   create-with-db
   "Create an FCMS resource in the DB, returning the property map for the resource.
@@ -153,7 +153,7 @@
       :updated-at timestamp
       :type (name provided-type)})})))
 
-(defn 
+(defn
   ^{:no-doc true}
   create
   "Create an FCMS resource in the DB, returning the property map for the resource.
@@ -162,7 +162,7 @@
   (clutch/with-db (db)
     (create-with-db props provided-type)))
 
-(defn 
+(defn
   ^{:no-doc true}
   update-with-db
   "Update the CouchDB document provided with a nev version number, updated-at timestamp,
@@ -173,7 +173,7 @@
     :version (inc (:version props))
     :updated-at (current-timestamp)})}))
 
-(defn 
+(defn
   ^{:no-doc true}
   update
   "Update the CouchDB document provided with a nev version number, updated-at timestamp,

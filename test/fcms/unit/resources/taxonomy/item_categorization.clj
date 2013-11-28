@@ -31,7 +31,7 @@
 										 (after :facts (collection/delete-collection e))]
 
 	(facts "about item categorization failures"
-  
+
   	(with-state-changes [(before :facts (item/create-item e i))]
 
 			(fact "with a non-existent collection"

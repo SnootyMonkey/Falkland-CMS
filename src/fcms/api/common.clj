@@ -19,7 +19,7 @@
      [(first kvs) (rest kvs)]
      [[] kvs]))
 
-(defmacro defresource 
+(defmacro defresource
   "Stijn's Liberator shared config macro"
   [name & kvs]
   (let [[args kvs] (split-args kvs)

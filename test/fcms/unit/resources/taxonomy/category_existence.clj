@@ -27,27 +27,27 @@
     (category-exists e "t/") => false
     (category-exists e "/t") => false
     (category-exists e "/t/") => false
-    
+
     (category-exists e "et/not-here") => false
     (category-exists e "et/not-here/") => false
     (category-exists e "/et/not-here") => false
     (category-exists e "/et/not-here/") => false
-    
+
     (category-exists e "et/not-here/not-here") => false
-    (category-exists e "et/not-here/not-here/") => false    
+    (category-exists e "et/not-here/not-here/") => false
     (category-exists e "/et/not-here/not-here") => false
     (category-exists e "/et/not-here/not-here/") => false
-    
+
     (category-exists e "t/not-here") => false
     (category-exists e "t/not-here/") => false
     (category-exists e "/t/not-here") => false
     (category-exists e "/t/not-here/") => false
-    
+
     (category-exists e "t/foo/not-here") => false
     (category-exists e "t/foo/not-here/") => false
     (category-exists e "/t/foo/not-here") => false
     (category-exists e "/t/foo/not-here/") => false
-    
+
     (category-exists e "t/fubar/a/not-here") => false
     (category-exists e "t/fubar/a/not-here/") => false)
     (category-exists e "/t/fubar/a/not-here") => false
