@@ -15,50 +15,42 @@
       (create-category "not-here" "/t/new" "New") => :bad-collection)
 
     (fact "with a bad taxonomy"
-      (create-category e "not-here/new") => :bad-taxonomy
-      (create-category e "not-here/new/") => :bad-taxonomy
-      (create-category e "/not-here/new") => :bad-taxonomy
-      (create-category e "/not-here/new/") => :bad-taxonomy
-      (create-category e "not-here/new" "New") => :bad-taxonomy
-      (create-category e "not-here/new/" "New") => :bad-taxonomy
-      (create-category e "/not-here/new" "New") => :bad-taxonomy
-      (create-category e "/not-here/new/" "New") => :bad-taxonomy)
+      (doseq [category ["not-here/new" "not-here/new/"
+                        "/not-here/new" "/not-here/new/"]]
+        (create-category e category) => :bad-taxonomy
+        (create-category e category "New") => :bad-taxonomy))
 
     (fact "with a bad name"
-       (create-category e "/t/new" nil) => :invalid-category-name
-       (create-category e "/t/new" "") => :invalid-category-name
-       (create-category e "/t/new" 42) => :invalid-category-name)
+      (doseq [name [nil "" "  " "\n" "\r\n\t\n" 42]]
+        (create-category e "/t/new" name) => :invalid-category-name))
 
-    (fact "with a bad category slug"
-      (create-category e "t/new/sl ug/new") => :invalid-category-slug
-      (create-category e "t/new/sl ug/new/") => :invalid-category-slug
-      (create-category e "/t/new/sl ug/new") => :invalid-category-slug
-      (create-category e "/t/new/sl ug/new/") => :invalid-category-slug
-
-      (create-category e "t/new/s!ug/new") => :invalid-category-slug
-      (create-category e "t/new/s!ug/new/") => :invalid-category-slug
-      (create-category e "/t/new/s!ug/new") => :invalid-category-slug
-      (create-category e "/t/new/s!ug/new/") => :invalid-category-slug
-
-      (create-category e "t/new/slüg/new") => :invalid-category-slug
-      (create-category e "t/new/slüg/new/") => :invalid-category-slug
-      (create-category e "/t/new/slüg/new") => :invalid-category-slug
-      (create-category e "/t/new/slüg/new/") => :invalid-category-slug
-
-      (create-category e "t/new/sluG/new") => :invalid-category-slug
-      (create-category e "t/new/sluG/new/") => :invalid-category-slug
-      (create-category e "/t/new/sluG/new") => :invalid-category-slug
-      (create-category e "/t/new/sluG/new/") => :invalid-category-slug
-
-      (create-category e "t/new/-slug/new") => :invalid-category-slug
-      (create-category e "t/new/-slug/new/") => :invalid-category-slug
-      (create-category e "/t/new/-slug/new") => :invalid-category-slug
-      (create-category e "/t/new/-slug/new/") => :invalid-category-slug
-
-      (create-category e "t/new/sl--ug/new") => :invalid-category-slug
-      (create-category e "t/new/sl--ug/new/") => :invalid-category-slug
-      (create-category e "/t/new/sl--ug/new") => :invalid-category-slug
-      (create-category e "/t/new/sl--ug/new/") => :invalid-category-slug))
+    (tabular (fact "with a bad category slug"
+      (create-category e ?slug) => :invalid-category-slug)
+      ?slug
+      "t/new/sl ug/new"
+      "t/new/sl ug/new/"
+      "/t/new/sl ug/new"
+      "/t/new/sl ug/new/"
+      "t/new/s!ug/new"
+      "t/new/s!ug/new/"
+      "/t/new/s!ug/new"
+      "/t/new/s!ug/new/"
+      "t/new/slüg/new"
+      "t/new/slüg/new/"
+      "/t/new/slüg/new"
+      "/t/new/slüg/new/"
+      "t/new/sluG/new"
+      "t/new/sluG/new/"
+      "/t/new/sluG/new"
+      "/t/new/sluG/new/"
+      "t/new/-slug/new"
+      "t/new/-slug/new/"
+      "/t/new/-slug/new"
+      "/t/new/-slug/new/"
+      "t/new/sl--ug/new"
+      "t/new/sl--ug/new/"
+      "/t/new/sl--ug/new"
+      "/t/new/sl--ug/new/"))
 
 
   (facts "about creating categories 1 level at a time"
