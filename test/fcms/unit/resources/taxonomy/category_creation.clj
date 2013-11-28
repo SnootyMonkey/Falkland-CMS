@@ -21,7 +21,7 @@
         (create-category e category "New") => :bad-taxonomy))
 
     (fact "with a bad name"
-      (doseq [name [nil "" "  " "\n" "\r\n\t\n" 42]]
+      (doseq [name bad-strings]
         (create-category e "/t/new" name) => :invalid-category-name))
 
     (tabular (fact "with a bad category slug"

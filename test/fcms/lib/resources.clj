@@ -12,6 +12,8 @@
 (def t2 "food")
 (def foo "foo")
 
+(def bad-strings [nil 42 :foo "" "  " "\n" "\r\n\t\n"])
+
 ;; ----- Collections -----
 
 (defn empty-collection-e []

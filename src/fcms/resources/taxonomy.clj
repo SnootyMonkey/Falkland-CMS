@@ -294,10 +294,9 @@
 (defn normalize-category-path
   "Remove the prefix slash and trailing slash from the category-path if they are present."
   [category-path]
-  ;; "/tax/cat/cat/" => "tax/cat/cat"
-  (if (s/blank? category-path)
+  (if (or (not (string? category-path)) (s/blank? category-path))
     ""
-    (s/replace (s/replace category-path #"^/" "") #"/$" "")))
+    (s/replace (s/replace category-path #"^/" "") #"/$" ""))) ; "/tax/cat/cat/" => "tax/cat/cat"
 
 (defn- duplicate-category?
   "Determine if the item as already categorized by this category, or by one of its children."

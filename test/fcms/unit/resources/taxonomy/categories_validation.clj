@@ -5,6 +5,7 @@
 
 ; (facts "about valid and invalid category trees"
 
+		; TODO use bad-strings
 ;   (fact "anything but a vector is invalid"
 ;     (valid-categories nil) => :invalid-structure
 ;     (valid-categories "") => :invalid-structure
@@ -12,6 +13,7 @@
 ;     (valid-categories 42) => :invalid-structure
 ;     (valid-categories {}) => :invalid-structure)
 
+		; TODO use bad-strings
 ;   (fact "anything in the tree that's not a map makes the tree invalid"
 ;     (valid-categories [nil]) => :invalid-structure
 ;     (valid-categories [""]) => :invalid-structure
