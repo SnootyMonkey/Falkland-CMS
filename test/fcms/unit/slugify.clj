@@ -1,4 +1,4 @@
-(ns fcms.unit.resources.slugify
+(ns fcms.unit.slugify
   (:require [midje.sweet :refer :all]
             [fcms.lib.slugify :refer (slugify max-slug-length)]))
 
