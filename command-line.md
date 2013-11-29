@@ -6,7 +6,7 @@ author: Sean Johnson
 
 ## Falkland CMS Command-line Interface
 
-A usable initial version of the Falkland CMS command-line UI is expected by the end of November 2013.
+A usable initial version of the Falkland CMS command-line UI is expected early in 2014.
 
 ## Usage
 
