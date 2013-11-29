@@ -3,7 +3,7 @@
 
 Falkland CMS is a Curation Management System used to collect, organize, curate and present the knowledge that exists in the world about a particular topic.
 
-This README is just a stub, please visit the full website at [falkland-cms.com](http://falkland-cms.com).
+This README is just a stub, please visit the [Falkland CMS website](http://falkland-cms.com) at [falkland-cms.com](http://falkland-cms.com).
 
 ## Documentation
 
@@ -11,7 +11,7 @@ Complete documentation is on the [Falkland CMS website](http://falkland-cms.com)
 
 ## Getting Help
 
-Falkland CMS is pre-alpha and not yet usable. A usable version is expected by the end of 2013 and instructions for getting help will be available then.
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected in the first quarter of 2014 and instructions for getting help will be available then.
 
 ## Development and Contributing
 
