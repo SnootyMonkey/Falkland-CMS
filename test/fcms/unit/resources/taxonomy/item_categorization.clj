@@ -149,7 +149,7 @@
 					(taxonomy/uncategorize-item coll-slug x "/t/foo") => :bad-collection))
 
 	  	(fact "with a non-existent taxonomy"
-	  		(doseq [category-path (concat bad-strings 
+	  		(doseq [category-path (concat bad-strings
 	  													 ["not-here/foo" "not-here/foo/"
 	  													  "/not-here/foo" "/not-here/foo/"])]
 	  			(taxonomy/uncategorize-item e x category-path) => :bad-taxonomy))

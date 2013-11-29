@@ -1,6 +1,6 @@
 (ns fcms.resources.common
   (:require [clojure.string :as s]
-            [clj-time.format :refer (formatters unparse)]
+            [clj-time.format :refer (parse formatters unparse)]
             [clj-time.core :refer (now)]
             [com.ashafa.clutch :as clutch]
             [fcms.lib.slugify :refer (slugify)]
@@ -136,7 +136,9 @@
   resource-from-db
   "Turn an item from its CouchDB map representation into its FCMS map representation."
   [coll-slug resource]
-  (map-from-db (assoc-in resource [:data :collection] coll-slug)))
+  (-> (map-from-db (assoc-in resource [:data :collection] coll-slug))
+    (update-in [:created-at] parse)
+    (update-in [:updated-at] parse)))
 
 ;; ----- Resource CRUD funcitons -----
 

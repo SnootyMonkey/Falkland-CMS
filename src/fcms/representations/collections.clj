@@ -1,5 +1,7 @@
 (ns fcms.representations.collections
   (:require [cheshire.core :as json]
+            [clj-time.format :refer (unparse)]
+            [fcms.resources.common :refer (timestamp-format)]
             [fcms.representations.common :as common]
             [fcms.resources.collection :as collection]
             [fcms.resources.item :refer (item-media-type)]))
@@ -41,13 +43,16 @@
   "Create a JSON representation of a collection for the REST API"
   [coll]
   ;; Generate JSON from the sorted array map that results from:
-  ;; 1) removing unneeded :id key
-  ;; 2) making an ordered array hash of the known ordered keys
-  ;; 3) adding a sorted hash of any remaining keys
-  ;; 4) adding the HATEAOS links to the array hash
+  ;; 1) render timestamps as strings
+  ;; 2) removing unneeded :id key
+  ;; 3) making an ordered array hash of the known ordered keys
+  ;; 4) adding a sorted hash of any remaining keys
+  ;; 5) adding the HATEAOS links to the array hash
   (let [coll-props (dissoc coll :id)]
     (json/generate-string
       (-> coll-props
+        (update-in [:created-at] #(unparse timestamp-format %))
+        (update-in [:updated-at] #(unparse timestamp-format %))
         (common/ordered ordered-keys)
         (common/append-sorted (common/remaining-keys coll-props ordered-keys))
         links)) {:pretty true}))

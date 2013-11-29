@@ -1,6 +1,8 @@
 (ns fcms.representations.items
   (:require [cheshire.core :as json]
+            [clj-time.format :refer (unparse)]
             [fcms.representations.common :as common]
+            [fcms.resources.common :refer (timestamp-format)]
             [fcms.resources.item :as item]
             [fcms.resources.collection :refer (collection-media-type)]
             [fcms.resources.taxonomy :refer (category-media-type)]))
@@ -54,13 +56,16 @@
 
 (defn- item-to-json-map [item]
   ;; Generate JSON from the sorted array map that results from:
-  ;; 1) removing unneeded :id key
-  ;; 2) making an ordered array hash of the known ordered keys
-  ;; 3) adding a sorted hash of any remaining keys except the categories key
-  ;; 4) add back in the categories
-  ;; 5) add the HATEAOS links to the array hash
+  ;; 1) render timestamps as strings
+  ;; 2) removing unneeded :id key
+  ;; 3) making an ordered array hash of the known ordered keys
+  ;; 4) adding a sorted hash of any remaining keys except the categories key
+  ;; 5) add back in the categories
+  ;; 6) add the HATEAOS links to the array hash
   (let [item-props (dissoc item :id)]
     (-> item-props
+      (update-in [:created-at] #(unparse timestamp-format %))
+      (update-in [:updated-at] #(unparse timestamp-format %))
       (common/ordered ordered-keys)
       (common/append-sorted (common/remaining-keys (dissoc item-props :categories) ordered-keys))
       (assoc :categories (:categories item))
