@@ -24,13 +24,6 @@
 
 (def timestamp org.joda.time.DateTime)
 
-(defn verify-new-resource [coll-slug resource]
-  (is (= (:collection resource) e))
-  (is (= (:version resource) 1))
-  (is (instance? String (:id resource)))
-  (is (instance? timestamp (:created-at resource)))
-  (is (= (:created-at resource) (:updated-at resource))))
-
 ;; ----- Tests -----
 
 (with-state-changes [(before :facts (empty-collection-e))
@@ -38,66 +31,88 @@
 
   (future-facts "about the validity of new items")
 
-  (facts "about item creation"
+  (facts "about successful item creation"
 
-      (fact "with a generated slug"
-        (let [item (create-item e ascii-name)]
-          (:name item) => ascii-name
-          (:slug item) => "test-this"
-          (verify-new-resource e item)))
+    (with-state-changes [(before :facts (create-item e i))
+                         (after :facts (delete-item e i))]
 
-      (fact "with a unicode name"
-        (let [item (create-item e unicode-name)]
-          (:name item) => unicode-name
-          (:slug item) => "1"
-          (verify-new-resource e item))
-        (let [item (create-item e mixed-name)]
-          (:name item) => mixed-name
-          (:slug item) => "test"
-          (verify-new-resource e item)))
+      (fact "resulting in a generated id"
+        (instance? String (:id (get-item e i))) => true)
 
-      (fact "with unicode properties"
-        (let [item (create-item e i {:description unicode-description})]
-          (:name item) => i
-          (:slug item) => i
-          (:description item) => unicode-description
-          (verify-new-resource e item)))
+      (fact "resulting in membership in the collection"
+        (:collection (get-item e i)) => e)
 
-      (fact "with a generated slug that is already used"
-        (let [item (create-item e ascii-name)]
-          (:name item) => ascii-name
-          (:slug item) => "test-this"
-          (verify-new-resource e item))
-        (let [item (create-item e ascii-name)]
-          (:name item) => ascii-name
-          (:slug item) => "test-this-1"
-          (verify-new-resource e item))
-        (let [item (create-item e ascii-name)]
-          (:name item) => ascii-name
-          (:slug item) => "test-this-2"
-          (verify-new-resource e item)))
+      (fact "resulting in an initial version"
+        (:version (get-item e i)) => 1)
 
-      (fact "with a provided slug"
-        (let [item (create-item e ascii-name {:slug slug})]
-          (:name item) => ascii-name
-          (:slug item) => slug
-          (verify-new-resource e item)))
+      (fact "resulting in good initial timestamps"
+        (instance? timestamp (:created-at (get-item e i))) => true
+        (:created-at (get-item e i)) => (:updated-at (get-item e i))))
 
-      (fact "with a provided slug that is already used"
-        (create-item e "first" {:slug slug})
-        (create-item e "second" {:slug slug}) => :slug-conflict)
+    (fact "with a generated slug"
+      (create-item e ascii-name)
+      (let [item-slug "test-this"
+            item (get-item e item-slug)]
+        (:name item) => ascii-name
+        (:slug item) => item-slug))
 
-      (fact "with a provided slug that is invalid"
-        (create-item e ascii-name {:slug "i I"}) => :invalid-slug)
+    (fact "with a unicode name"
+      (create-item e unicode-name)
+      (let [item-slug "1"
+            item (get-item e item-slug)]
+        (:name item) => unicode-name
+        (:slug item) => item-slug)
+      (create-item e mixed-name)
+      (let [item-slug "test"
+            item (get-item e item-slug)]
+        (:name item) => mixed-name
+        (:slug item) => "test"))
 
-      (fact "with a collection that doesn't exist"
-        (create-item "not-here" ascii-name) => :bad-collection)
+    (fact "with unicode properties"
+      (create-item e i {:description unicode-description})
+      (let [item (get-item e i)]
+        (:name item) => i
+        (:slug item) => i
+        (:description item) => unicode-description))
 
-      (fact "with a reserved property"
-        (doseq [prop resource/reserved-properties]
-          (create-item e i {prop "foo"}) => :property-conflict
-          (create-item e i {(name prop) "foo"}) => :property-conflict)))
+    (fact "with a generated slug that is already used"
+      (create-item e ascii-name)
+      (let [item-slug "test-this"
+            item (get-item e item-slug)]
+        (:name item) => ascii-name
+        (:slug item) => item-slug)
+      (create-item e ascii-name)
+      (let [item-slug "test-this-1"
+            item (get-item e item-slug)]
+        (:name item) => ascii-name
+        (:slug item) => item-slug)
+      (create-item e ascii-name)
+      (let [item-slug "test-this-2"
+            item (get-item e item-slug)]
+        (:name item) => ascii-name
+        (:slug item) => item-slug))
 
+    (fact "with a provided slug"
+      (let [item (create-item e ascii-name {:slug slug})]
+        (:name item) => ascii-name
+        (:slug item) => slug)))
+
+  (facts "about item creation failures"
+
+    (fact "with a provided slug that is already used"
+      (create-item e "first" {:slug slug})
+      (create-item e "second" {:slug slug}) => :slug-conflict)
+
+    (fact "with a provided slug that is invalid"
+      (create-item e ascii-name {:slug "i I"}) => :invalid-slug)
+
+    (fact "with a collection that doesn't exist"
+      (create-item "not-here" ascii-name) => :bad-collection)
+
+    (fact "with a reserved property"
+      (doseq [prop resource/reserved-properties]
+        (create-item e i {prop "foo"}) => :property-conflict
+        (create-item e i {(name prop) "foo"}) => :property-conflict)))
 
   (facts "about item retrieval"
 
@@ -111,6 +126,9 @@
 
     (with-state-changes [(before :facts (existing-item-i))
                      (after :facts (delete-item e i))]
+
+      (fact "when retrieving the item's id"
+        (instance? String (:id (get-item e i))) => true)
 
       (fact "when retrieving the item's collection"
         (:collection (get-item e i)) => e)
