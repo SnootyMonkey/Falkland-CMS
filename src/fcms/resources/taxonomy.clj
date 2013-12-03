@@ -35,7 +35,7 @@
   set, :property-conflict will be returned."
   ([coll-slug taxonomy-name] (valid-new-taxonomy coll-slug taxonomy-name {}))
   ([coll-slug taxonomy-name props]
-    (resource/valid-new-resource coll-slug taxonomy-name resource/reserved-properties type props)))
+    (resource/valid-new-resource coll-slug taxonomy-name type resource/reserved-properties props)))
 
 (defn create-taxonomy
   "Create a new taxonomy in the collection specified by its slug, using the specified
@@ -70,7 +70,7 @@
   return :slug-conflict. If no item slug is specified in
   the properties it will be retain its current slug."
   [coll-slug slug props]
-  (resource/valid-resource-update coll-slug slug props :taxonomy))
+  (resource/valid-resource-update coll-slug slug :taxonomy resource/reserved-properties props))
 
 (defn update-taxonomy
   "Update a taxonomy in the collection specified by its slug using the specified
@@ -80,10 +80,10 @@
   [coll-slug slug props]
     (let [reason (valid-taxonomy-update coll-slug slug props)]
       (if (true? reason)
-        (resource/update-resource coll-slug slug
+        (resource/update-resource coll-slug slug :taxonomy
           {:reserved resource/reserved-properties
           :retained resource/retained-properties
-          :updated props} :taxonomy)
+          :updated props})
         reason)))
 
 (defn all-taxonomies
@@ -260,11 +260,10 @@
         (nil? result) :bad-taxonomy
         (not-every? common/valid-slug? category-slugs) :invalid-category-slug
         (not (common/valid-name? category-name)) :invalid-category-name
-        :else (resource/update-resource coll-slug taxonomy-slug
+        :else (resource/update-resource coll-slug taxonomy-slug :taxonomy
                 {:reserved (resource/allow-category-reserved-properties)
                  :retained resource/retained-properties
-                 :updated (assoc result :categories (create-categories category-name category-slugs (:categories result)))}
-                :taxonomy)))))
+                 :updated (assoc result :categories (create-categories category-name category-slugs (:categories result)))})))))
 
 (defn- category-exists?
   "Recursive function to ensure that each category in the path exists in the category tree."
@@ -338,11 +337,10 @@
         (duplicate-category? path (:categories item)) :duplicate-category
         :else
           ;; add the category to the categories vector and update the item
-          (resource/update-resource coll-slug item-slug
+          (resource/update-resource coll-slug item-slug :item
             {:reserved (resource/allow-category-reserved-properties)
              :retained resource/retained-properties
-             :updated (assoc item :categories (vec (conj (:categories item) path)))}
-             :item)))))
+             :updated (assoc item :categories (vec (conj (:categories item) path)))})))))
 
 (defn uncategorize-item
   "Given the slug of the collection, a slug of an item in the collection, and a path to a category in a taxonomy,
@@ -357,11 +355,10 @@
       (if (nil? (some #{path} (:categories item)))
         :bad-category
         ;; else, remove the category from the categories vector and update the item
-        (resource/update-resource coll-slug item-slug
+        (resource/update-resource coll-slug item-slug :item
           {:reserved (resource/allow-category-reserved-properties)
            :retained resource/retained-properties
-           :updated (assoc item :categories (filterv #(not(= path %)) (:categories item)))}
-              :item)))))
+           :updated (assoc item :categories (filterv #(not(= path %)) (:categories item)))})))))
 
 (defn- items-for-path [coll-slug path]
   (collection/with-collection coll-slug

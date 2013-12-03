@@ -1,8 +1,8 @@
 (ns fcms.unit.resources.item.item-lifecycle
   (:require [clj-time.format :refer (parse)]
-            [clojure.test :refer :all]
             [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
+            [fcms.lib.checks :refer (about-now?)]
             [fcms.resources.collection :as collection]
             [fcms.resources.collection-resource :as resource]
             [fcms.resources.item :refer :all]))
@@ -20,10 +20,6 @@
   (create-item e unicode-name
     {:slug i :description unicode-description :custom "foo"}))
 
-;; ----- Validation functions -----
-
-(def timestamp org.joda.time.DateTime)
-
 ;; ----- Tests -----
 
 (with-state-changes [(before :facts (empty-collection-e))
@@ -31,23 +27,24 @@
 
   (future-facts "about the validity of new items")
 
-  (facts "about successful item creation"
+  (facts "about item creation failures"
 
-    (with-state-changes [(before :facts (create-item e i))
-                         (after :facts (delete-item e i))]
+    (fact "with a provided slug that is already used"
+      (create-item e "first" {:slug slug})
+      (create-item e "second" {:slug slug}) => :slug-conflict)
 
-      (fact "resulting in a generated id"
-        (instance? String (:id (get-item e i))) => true)
+    (fact "with a provided slug that is invalid"
+      (create-item e ascii-name {:slug "i I"}) => :invalid-slug)
 
-      (fact "resulting in membership in the collection"
-        (:collection (get-item e i)) => e)
+    (fact "with a collection that doesn't exist"
+      (create-item "not-here" ascii-name) => :bad-collection)
 
-      (fact "resulting in an initial version"
-        (:version (get-item e i)) => 1)
+    (fact "with a reserved property"
+      (doseq [prop resource/reserved-properties]
+        (create-item e i {prop "foo"}) => :property-conflict
+        (create-item e i {(name prop) "foo"}) => :property-conflict)))
 
-      (fact "resulting in good initial timestamps"
-        (instance? timestamp (:created-at (get-item e i))) => true
-        (:created-at (get-item e i)) => (:updated-at (get-item e i))))
+  (facts "about item creation"
 
     (fact "with a generated slug"
       (create-item e ascii-name)
@@ -97,23 +94,6 @@
         (:name item) => ascii-name
         (:slug item) => slug)))
 
-  (facts "about item creation failures"
-
-    (fact "with a provided slug that is already used"
-      (create-item e "first" {:slug slug})
-      (create-item e "second" {:slug slug}) => :slug-conflict)
-
-    (fact "with a provided slug that is invalid"
-      (create-item e ascii-name {:slug "i I"}) => :invalid-slug)
-
-    (fact "with a collection that doesn't exist"
-      (create-item "not-here" ascii-name) => :bad-collection)
-
-    (fact "with a reserved property"
-      (doseq [prop resource/reserved-properties]
-        (create-item e i {prop "foo"}) => :property-conflict
-        (create-item e i {(name prop) "foo"}) => :property-conflict)))
-
   (facts "about item retrieval"
 
     (fact "when the specified collection doesn't exist"
@@ -125,7 +105,7 @@
         (get-item e item-slug) => nil))
 
     (with-state-changes [(before :facts (existing-item-i))
-                     (after :facts (delete-item e i))]
+                         (after :facts (delete-item e i))]
 
       (fact "when retrieving the item's id"
         (instance? String (:id (get-item e i))) => true)
@@ -148,12 +128,57 @@
       (fact "when retrieving a custom property of the item"
         (:custom (get-item e i)) => "foo")
 
-      (fact "when retriieving the item's timestamps"
+      (fact "when retrieving the item's timestamps"
         (instance? timestamp (:created-at (get-item e i))) => true
+        (about-now? (:created-at (get-item e i))) => true
         (:created-at (get-item e i)) => (:updated-at (get-item e i)))))
 
-  (future-facts "about validity of item updates")
+  ; TODO positive cases of validity
+  (facts "about validity of item updates"
+
+    (fact "when the specified collection doesn't exist"
+      (doseq [coll-slug (conj bad-strings "not-here")]
+        (update-item coll-slug i {}) => :bad-collection))
+
+    (fact "when the specified item doesn't exist"
+      (doseq [item-slug (conj bad-strings "not-here")]
+        (update-item e item-slug {}) => :bad-item))
+
+    (with-state-changes [(before :facts (existing-item-i))
+                         (after :facts (delete-item e i))]
+
+      (fact "when updating a reserved property"
+        (doseq [prop resource/reserved-properties]
+          (update-item e i {prop "foo"}) => :property-conflict
+          (update-item e i {(name prop) "foo"}) => :property-conflict))))
+
+  (facts "about item update failures"
+
+    (fact "when the specified collection doesn't exist"
+      (doseq [coll-slug (conj bad-strings "not-here")]
+        (update-item coll-slug i {}) => :bad-collection))
+
+    (fact "when the specified item doesn't exist"
+      (doseq [item-slug (conj bad-strings "not-here")]
+        (update-item e item-slug {}) => :bad-item))
+
+    (with-state-changes [(before :facts (existing-item-i))
+                         (after :facts (delete-item e i))]
+
+      (fact "with a provided slug that is invalid"
+        (update-item e i {:slug "i I"}) => :invalid-slug)
+
+      (with-state-changes [(before :facts (create-item e slug))
+                           (after :facts (delete-item e slug))]
+
+        (fact "with a provided slug that is already used"
+          (update-item e i {:slug slug}) => :slug-conflict))
+
+      (fact "when updating a reserved property"
+        (doseq [prop resource/reserved-properties]
+          (update-item e i {prop "foo"}) => :property-conflict
+          (update-item e i {(name prop) "foo"}) => :property-conflict))))
 
   (future-facts "about updating items")
-
+  (future-facts "about item deletion failures")
   (future-facts "about deleting items"))

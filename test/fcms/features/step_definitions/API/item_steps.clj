@@ -1,15 +1,15 @@
 (require '[clj-time.core :refer (before?)]
          '[clj-time.format :refer (parse)]
          '[fcms.lib.body :as body]
-         '[fcms.lib.checks :refer (check about-now? timestamp?)])
+         '[fcms.lib.checks :refer (check check-about-now? check-timestamp?)])
 
 (defn- verify-item [coll-slug item-slug item-name]
   (body/verify :name item-name)
   (body/verify :slug item-slug)
   (body/verify :collection coll-slug)
-  (timestamp? (body/value-of :created-at))
-  (timestamp? (body/value-of :updated-at))
-  (about-now? (body/value-of :created-at))
+  (check-timestamp? (body/value-of :created-at))
+  (check-timestamp? (body/value-of :updated-at))
+  (check-about-now? (body/value-of :created-at))
   (body/verify-item-links coll-slug item-slug (body/value-of :links)))
 
 (defn- verify-updated-item [coll-slug item-slug item-name version]
@@ -32,6 +32,6 @@
   (verify-updated-item coll-slug item-slug item-name (read-string version)))
 
 (Then #"^the timestamps will be matching parseable dates$" []
-  (timestamp? (body/value-of :created-at))
-  (timestamp? (body/value-of :updated-at))
+  (check-timestamp? (body/value-of :created-at))
+  (check-timestamp? (body/value-of :updated-at))
   (body/verify-relation = :created-at :updated-at))

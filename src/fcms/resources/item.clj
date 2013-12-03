@@ -28,7 +28,7 @@
   set, :property-conflict will be returned."
   ([coll-slug item-name] (valid-new-item coll-slug item-name {}))
   ([coll-slug item-name props]
-    (resource/valid-new-resource coll-slug item-name resource/reserved-properties :item props)))
+    (resource/valid-new-resource coll-slug item-name :item resource/reserved-properties props)))
 
 (defn create-item
   "Create a new item in the collection specified by its slug, using the specified
@@ -60,10 +60,13 @@
   Ensure the item exists or return :bad-item.
   If a new slug is provided in the properties, ensure it is
   valid or return :invalid-slug and ensure it is unused or
-  return :slug-conflict. If no item slug is specified in
-  the properties it will be retain its current slug."
+  return :slug-conflict.
+  If no item slug is specified in
+  the properties it will retain its current slug.
+  If a property is included in the map of properties that is in the reserved-properties
+  set, :property-conflict will be returned."
   [coll-slug slug props]
-    (resource/valid-resource-update coll-slug slug props :item))
+    (resource/valid-resource-update coll-slug slug :item resource/reserved-properties props))
 
 (defn update-item
   "Update an item in the collection specified by its slug using the specified
@@ -71,12 +74,12 @@
   the item will be moved to the new slug, otherwise the slug will remain the same.
   The same validity conditions and invalid return values as valid-item-update apply."
   [coll-slug slug props]
-    (let [reason (resource/valid-resource-update coll-slug slug props :item)]
+    (let [reason (resource/valid-resource-update coll-slug slug :item resource/reserved-properties props)]
       (if (true? reason)
-        (resource/update-resource coll-slug slug
+        (resource/update-resource coll-slug slug :item
           {:reserved resource/reserved-properties
           :retained resource/retained-properties
-          :updated props} :item)
+          :updated props})
         reason)))
 
 (defn all-items

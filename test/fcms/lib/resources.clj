@@ -5,7 +5,7 @@
   					[fcms.resources.collection :as collection]
             [fcms.resources.taxonomy :as taxonomy]))
 
-;; ----- Names / slugs -----
+;; ----- Names / slugs / constants -----
 
 (def e "e")
 (def t "t")
@@ -13,6 +13,8 @@
 (def foo "foo")
 
 (def bad-strings [nil 42 :foo "" "  " "\n" "\r\n\t\n"])
+
+(def timestamp org.joda.time.DateTime)
 
 ;; ----- Collections -----
 

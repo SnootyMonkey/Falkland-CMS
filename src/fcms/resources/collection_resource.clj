@@ -42,12 +42,12 @@
   or return :invalid-slug or :slug-conflict respectively.
   If a property is included in the map of properties that is in the reserved-properties
   set, :property-conflict will be returned."
-  ([coll-slug resource-name reserved-properties type] (valid-new-resource coll-slug resource-name reserved-properties type {}))
-  ([coll-slug resource-name reserved-properties type {provided-slug :slug :as props}]
+  ([coll-slug resource-name type reserved-properties] (valid-new-resource coll-slug resource-name reserved-properties type {}))
+  ([coll-slug resource-name type reserved-properties {provided-slug :slug :as props}]
     (if-let [coll-id (:id (collection/get-collection coll-slug))]
       (cond
         (or (nil? resource-name) (blank? resource-name)) :no-name
-        (not-empty (intersection (set (keys props)) reserved-properties)) :property-conflict
+        (not-empty (intersection (set (keys (keywordize-keys props))) reserved-properties)) :property-conflict
         (not provided-slug) true
         (not (common/valid-slug? provided-slug)) :invalid-slug
         (nil? (get-resource coll-slug provided-slug type)) true
@@ -68,7 +68,7 @@
   ([coll-slug resource-name type reserved-properties] (create-resource coll-slug resource-name type reserved-properties {}))
   ([coll-slug resource-name type reserved-properties properties]
     (let [props (keywordize-keys properties)
-          validity (valid-new-resource coll-slug resource-name reserved-properties type props)]
+          validity (valid-new-resource coll-slug resource-name type reserved-properties props)]
       (if (true? validity)
         (collection/with-collection coll-slug
           (let [slug (common/unique-slug (:id collection) (or (:slug props) (slugify resource-name)))]
@@ -98,12 +98,13 @@
   valid or return :invalid-slug and ensure it is unused or
   return :slug-conflict. If no item slug is specified in
   the properties it will be retain its current slug."
-  [coll-slug slug {item-name :name provided-slug :slug :as props} type]
+  [coll-slug slug type reserved-properties {item-name :name provided-slug :slug :as props}]
     (let [coll-id (:id (collection/get-collection coll-slug))
           resource-id (:id (get-resource coll-slug slug type))]
       (cond
         (nil? coll-id) :bad-collection
         (nil? resource-id) (keyword (str "bad-" (name type)))
+        (not-empty (intersection (set (keys (keywordize-keys props))) reserved-properties)) :property-conflict
         (not provided-slug) true
         (not (common/valid-slug? provided-slug)) :invalid-slug
         (= slug provided-slug) true
@@ -111,11 +112,12 @@
 
 (defn update-resource
   "Update a resource retaining it's manufactured properties and replacing the rest with the provided properties"
-  [coll-slug slug properties type]
+  [coll-slug slug type properties]
   (collection/with-collection coll-slug
     (if-let [resource (common/resource-doc (:id collection) slug type)]
-      (let [retained-props (select-keys (:data resource) (conj (:retained properties) :version))
-            updated-props (apply dissoc (:updated properties) (:reserved properties))
+      (let [props (keywordize-keys properties)
+            retained-props (select-keys (:data resource) (conj (:retained props) :version))
+            updated-props (apply dissoc (:updated props) (:reserved props))
             new-props (merge retained-props updated-props)]
         (common/resource-from-db coll-slug (common/update-with-db resource new-props))
         (get-resource-with-db (:id collection) coll-slug (:slug new-props) type))

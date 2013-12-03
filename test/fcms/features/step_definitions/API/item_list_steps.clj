@@ -2,7 +2,7 @@
          '[fcms.lib.body :as body]
          '[fcms.representations.common :refer (POST)]
          '[fcms.resources.item :refer (item-media-type)]
-         '[fcms.lib.checks :refer (check about-now? timestamp?)])
+         '[fcms.lib.checks :refer (check check-timestamp?)])
 
 (defn- verify-item-list [coll-slug length]
   (body/verify-length [:collection :items] length)
@@ -27,6 +27,6 @@
 
 (Then #"^all the timestamps will be matching parseable dates$" []
   (doseq [item (body/value-of :items)]
-    (timestamp? (:created-at item))
-    (timestamp? (:updated-at item))
+    (check-timestamp? (:created-at item))
+    (check-timestamp? (:updated-at item))
     (check (= (:created-at item) (:updated-at item)))))

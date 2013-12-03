@@ -10,9 +10,10 @@
   `(assert (is (not ~forms))))
 
 (defn about-now? [timestamp]
-  (check
-    (when-let [time (parse timestamp)]
-      (and (after? time (-> 10 secs ago)) (before? time (now))))))
+  (and (after? timestamp (-> 10 secs ago)) (before? timestamp (now))))
 
-(defn timestamp? [timestamp]
+(defn check-about-now? [timestamp]
+	(check (about-now? (parse timestamp))))
+
+(defn check-timestamp? [timestamp]
   (check (parse timestamp)))
