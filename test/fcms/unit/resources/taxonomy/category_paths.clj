@@ -1,4 +1,4 @@
-(ns fcms.unit.resources.taxonomy.paths
+(ns fcms.unit.resources.taxonomy.category-paths
   (:require [midje.sweet :refer :all]
             [midje.util :refer (expose-testables)]))
 

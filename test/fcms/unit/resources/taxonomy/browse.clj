@@ -1,4 +1,4 @@
-(ns fcms.unit.resources.taxonomy.item-browsing
+(ns fcms.unit.resources.taxonomy.browse
   (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
             [fcms.resources.collection :as collection]

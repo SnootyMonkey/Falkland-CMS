@@ -1,4 +1,4 @@
-(ns fcms.unit.resources.taxonomy.item-categorization
+(ns fcms.unit.resources.taxonomy.categorization
   (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
             [fcms.resources.collection :as collection]
@@ -7,7 +7,6 @@
 
 ;; ----- Fixtures -----
 
-(def i "i")
 (def x "x")
 (def m "m")
 

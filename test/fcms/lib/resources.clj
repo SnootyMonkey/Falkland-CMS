@@ -3,13 +3,24 @@
   					[clj-time.format :refer (parse)]
             [fcms.resources.collection-resource :as resource]
   					[fcms.resources.collection :as collection]
+            [fcms.resources.item :as item]
             [fcms.resources.taxonomy :as taxonomy]))
 
 ;; ----- Names / slugs / constants -----
 
 (def e "e")
+(def i "i")
+(def slug "slug")
+
 (def t "t")
 (def t2 "food")
+
+(def ascii-name "test this")
+(def unicode-name "私はガラスを食")
+(def mixed-name (str "test " unicode-name))
+
+(def unicode-description "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €")
+
 (def foo "foo")
 
 (def bad-strings [nil 42 :foo "" "  " "\n" "\r\n\t\n"])
@@ -21,6 +32,12 @@
 (defn empty-collection-e []
   (collection/delete-collection e)
   (collection/create-collection e))
+
+;; ----- Items -----
+
+(defn existing-item-i []
+  (item/create-item e unicode-name
+    {:slug i :description unicode-description :custom foo}))
 
 ;; ----- Category maps -----
 
@@ -51,7 +68,7 @@
 
 (defn existing-taxonomy-t []
   (resource/create-resource e "Taxonomy" :taxonomy []
-    {:slug "t"
+    {:slug t
      :description "Categorize it."
      :categories existing-categories-c}))
 
