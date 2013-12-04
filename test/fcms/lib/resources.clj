@@ -22,6 +22,7 @@
 (def unicode-description "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €")
 
 (def foo "foo")
+(def bar "bar")
 
 (def bad-strings [nil 42 :foo "" "  " "\n" "\r\n\t\n"])
 
