@@ -16,7 +16,7 @@
 
   (tabular (fact "internal spaces is replaced with a single dash"
     (slugify ?name) => "this-is-a-slug")
-    ?name  
+    ?name
     "this is a slug"
     "this is-a slug"
     "this  is  a  slug"

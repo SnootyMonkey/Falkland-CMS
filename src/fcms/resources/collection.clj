@@ -29,8 +29,9 @@
 (defn create-collection
   "Create a new collection using the specified name and optional map of properties.
   If :slug is included in the properties it will be used as the collection's slug,
-  otherwise one will be created from the name. If a :slug is included in the
-  properties and a collection already exists with that slug, a :slug-conflict will be returned."
+  otherwise one will be created from the name.
+  :slug-conflict is returned if a :slug is included in the
+  properties and a collection already exists with that slug."
   ([coll-name] (create-collection coll-name {}))
   ([coll-name props]
     (if (and (:slug props) (get-collection (:slug props)))

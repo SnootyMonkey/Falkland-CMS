@@ -40,8 +40,8 @@
   Ensure the name of the resource is specified or return :no-name.
   Ensure the slug is valid and doesn't already exist if it's specified,
   or return :invalid-slug or :slug-conflict respectively.
-  If a property is included in the map of properties that is in the reserved-properties
-  set, :property-conflict will be returned."
+  :property-conflict is returned if a property is included in the map of properties that is in
+  the reserved-properties set."
   ([coll-slug resource-name type reserved-properties] (valid-new-resource coll-slug resource-name reserved-properties type {}))
   ([coll-slug resource-name type reserved-properties {provided-slug :slug :as props}]
     (if-let [coll-id (:id (collection/get-collection coll-slug))]
@@ -59,12 +59,11 @@
   resource name, resource type and an optional map of properties.
   If :slug is included in the properties it will be used as the resource's slug, otherwise
   the slug will be created from the name.
-  If a :slug is included in the properties and a resource already exists
-  in the collection with that slug, a :slug-conflict will be returned.
-  If a :slug is included in the properties and it's not valid,
-  :invalid-slug will be returned.
-  If a property is included in the map of properties that is in the reserved-properties
-  set, :property-conflict will be returned."
+  :slug-conflict is returned if a :slug is included in the properties and a resource already exists
+  in the collection with that slug.
+  :invalid-slug is returned if a :slug is included in the properties and it's not valid.
+  :property-conflict is returned if a property is included in the map of properties that is
+  in the reserved-properties set."
   ([coll-slug resource-name type reserved-properties] (create-resource coll-slug resource-name type reserved-properties {}))
   ([coll-slug resource-name type reserved-properties properties]
     (let [props (keywordize-keys properties)

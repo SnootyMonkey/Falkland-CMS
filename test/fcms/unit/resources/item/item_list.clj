@@ -4,8 +4,6 @@
             [fcms.resources.collection :as collection]
             [fcms.resources.item :refer :all]))
 
-;; ----- Tests -----
-
 (with-state-changes [(before :facts (empty-collection-e))
                      (after :facts (collection/delete-collection e))]
 
