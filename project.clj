@@ -93,7 +93,7 @@
     [lein-cljsbuild "1.0.0"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
     [lein-cucumber "1.0.2"] ; BDD testing https://github.com/nilswloka/lein-cucumber
     [speclj "2.8.1"] ; BDD testing https://github.com/slagyr/speclj
-    [codox "0.6.6"] ; Generate Clojrue API docs https://github.com/weavejester/codox
+    [codox "0.6.6"] ; Generate Clojure API docs https://github.com/weavejester/codox
     [lein-midje "3.1.3"] ; Example-based testing https://github.com/marick/lein-midje
     [lein-bikeshed "0.1.3"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
     [lein-kibit "0.0.8"] ; Static code search for non-idiomatic code https://github.com/jonase/kibit

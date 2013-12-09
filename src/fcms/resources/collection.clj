@@ -1,4 +1,5 @@
 (ns fcms.resources.collection
+  ""
   (:require [com.ashafa.clutch :as clutch]
             [fcms.lib.slugify :refer (slugify)]
             [fcms.resources.common :as common]))

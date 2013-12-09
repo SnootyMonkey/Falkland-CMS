@@ -12,6 +12,7 @@
 
     (facts "when the specified collection doesn't exist"
       (doseq [coll-slug (conj bad-strings "not-here")]
+        (valid-new-item coll-slug i) => :bad-collection
         (valid-new-item coll-slug i {}) => :bad-collection))
 
     (facts "when including a reserved property"
@@ -22,6 +23,7 @@
   (facts "about checking validity of valid new items"
 
       (fact "it's valid with no properties"
+        (valid-new-item e i) => true
         (valid-new-item e i {}) => true)
 
       (fact "it's valid with custom properties"
@@ -37,7 +39,8 @@
       (create-item e ascii-name {:slug "i I"}) => :invalid-slug)
 
     (fact "it fails with a collection that doesn't exist"
-      (create-item "not-here" ascii-name) => :bad-collection)
+      (create-item "not-here" ascii-name) => :bad-collection
+      (create-item "not-here" ascii-name {}) => :bad-collection)
 
     (facts "with a reserved property"
       (doseq [prop resource/reserved-properties]
@@ -65,7 +68,7 @@
         (:name item) => mixed-name
         (:slug item) => "test"))
 
-    (facts "with no properties"
+    (facts "with empty properties"
       (create-item e i {})
       (let [item (get-item e i)]
         (:name item) => i
