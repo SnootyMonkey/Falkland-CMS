@@ -1,6 +1,7 @@
 (ns fcms.unit.resources.item.item-list
   (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
+            [fcms.lib.checks :refer (about-now?)]
             [fcms.resources.collection :as collection]
             [fcms.resources.item :refer :all]))
 
@@ -28,18 +29,30 @@
 			(fact "returns two items when there are two item in the collection"
 				(count (all-items e)) => 2)
 
-      (future-fact "the item ids are strings")
+      (fact "the item ids are strings"
+        (doseq [item (all-items e)]
+          (instance? String (:id item)) => true))
+          
+      (fact "the containing collection's slug is included in the items"
+        (set (map :collection (all-items e))) => #{e})
 
-      (future-fact "the containing collection's slug is included in the items")
+      (fact "the items' slugs are included"
+        (set (map :slug (all-items e))) => #{i slug})
 
-      (future-fact "the items' slugs are included")
+      (fact "the items' names are included"
+        (set (map :name (all-items e))) => #{unicode-name slug})
 
-      (future-fact "the items' names are included")
+      (fact "the items' descriptions are included"
+        (set (map :description (all-items e))) => #{unicode-description nil})
 
-      (future-fact "the items' descriptions are included")
+      (fact "the items' versions are 1"
+        (set (map :version (all-items e))) => #{1})
 
-      (future-fact "the items' versions are 1")
+      (fact "the custom property of an item in the list is included"
+        (set (map :custom (all-items e))) => #{foo nil})
 
-      (future-fact "the custom property of an item in the list is included")
-
-      (future-fact "the item's timestamps are included"))))
+      (fact "the item's timestamps are included"
+        (doseq [item (all-items e)]
+          (instance? timestamp (:created-at item)) => true
+          (about-now? (:created-at item)) => true
+          (:created-at item) => (:updated-at item))))))
