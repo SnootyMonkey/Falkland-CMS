@@ -123,11 +123,10 @@
   ;; ----- Clojure API Documentation -----
 
   :codox {
-    :sources ["src/fcms/resources"]
-    :exclude [fcms.resources.collection-resource]
+    :include [fcms.resources.common fcms.resources.collection fcms.resources.item fcms.resources.taxonomy]
     :output-dir "../Falkland-CMS-docs/API/Clojure"
-    ;:src-dir-uri "http://github.com/SnootyMonkey/Falkland-CMS/blob/master/"
-    ;:src-linenum-anchor-prefix "L" ; for Github
+    :src-dir-uri "http://github.com/SnootyMonkey/Falkland-CMS/blob/master/"
+    :src-linenum-anchor-prefix "L" ; for Github
   }
 
   ;; ----- ClojureScript -----
