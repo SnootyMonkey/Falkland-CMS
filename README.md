@@ -21,4 +21,4 @@ If you want to contribute to the development, complete documentation on how to p
 
 Falkland CMS is distributed under the [Mozilla Public License v2.0](http://www.mozilla.org/MPL/2.0/).
 
-Copyright © 2013 [Snooty Monkey, LLC](http://snootymonkey.com/)
+Copyright © 2013-2014 [Snooty Monkey, LLC](http://snootymonkey.com/)
