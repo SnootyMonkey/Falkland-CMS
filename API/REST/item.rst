@@ -294,52 +294,83 @@ Example
 
 .. code-block:: json
 
-   {
-      "name":"Amazing animals - Mudskipper",
-      "URL":"http://www.youtube.com/watch?v=mJhUKzEq47U",
-      "created_at":"2013-04-23T14:30:50Z",
-      "updated_at":"2013-04-23T14:30:50Z",
-      "slug":"amazing-animals-mudskipper",
-      "collection":"mudskippers",
-      "description":"Excerpt from David Attenborough's BBC Life series episode 04",
-      "links":[
-         {
-            "rel":"self",
-            "method":"get",
-            "href":"/mudskippers/amazing-animals-mudskipper",
-            "type":"application/vnd.fcms.item+json;version=1"
-         },
-         {
-            "rel":"update",
-            "method":"put",
-            "href":"/mudskippers/amazing-animals-mudskipper",
-            "type":"application/vnd.fcms.item+json;version=1"
-         },
-         {
-            "rel":"delete",
-            "method":"delete",
-            "href":"/mudskippers/amazing-animals-mudskipper",
-         },
-         {
-            "rel":"category",
-            "method":"get",
-            "href":"/mudskippers/media-types/videos/online",
-            "type":"application/vnd.fcms.category+json;version=1"
-         },
-         {
-            "rel":"category",
-            "method":"get",
-            "href":"/mudskippers/topics/reproduction",
-            "type":"application/vnd.fcms.category+json;version=1"
-         },
-         {
-            "rev":"collection",
-            "method":"get",
-            "href":"/mudskippers",
-            "type":"application/vnd.fcms.collection+json;version=1"
-         }
+  {
+    "slug": "amazing-animals-mudskipper",
+    "collection": "mudskippers",
+    "created_at": "2013-04-23T14:30:50Z",
+    "updated_at": "2013-04-23T14:30:50Z",
+    "version": "1",
+    "properties": {
+      "@context": {
+        "dc": "http://purl.org/dc/elements/1.1/"
+      },
+      "dc:creator": "David Attenborough",
+      "dc:date": "2009",
+      "dc:description": "Excerpt from David Attenborough's BBC Life series episode 04",
+      "dc:identifier": [
+        "http://www.youtube.com/watch?v=mJhUKzEq47U",
+        "http://www.metacafe.com/watch/yt-KurTiX4FDuQ/amazing_animals_mudskipper/"
+      ],
+      "dc:language": "en",
+      "dc:publisher": [
+        "BBC",
+        "British Broadcasting Corporation"
+      ],
+      "dc:subject": [
+        {
+          "@id": "/mudskippers/topics/reproduction",
+          "name": "Reproduction"
+        }
+      ],
+      "dc:title": [
+        "Amazing animals - Mudskipper - Episode 4",
+        "Mudskipper"
+      ],
+      "dc:type": [
+        {
+          "@id": "/mudskippers/media-types/videos/online",
+          "name": "Online Video"
+        }
       ]
-   }
+    },
+    "links": [
+      {
+        "rel": "self",
+        "method": "get",
+        "href": "/mudskippers/amazing-animals-mudskipper",
+        "type": "application/vnd.fcms.item+json;version=1"
+      },
+      {
+        "rel": "update",
+        "method": "put",
+        "href": "/mudskippers/amazing-animals-mudskipper",
+        "type": "application/vnd.fcms.item+json;version=1"
+      },
+      {
+        "rel": "delete",
+        "method": "delete",
+        "href": "/mudskippers/amazing-animals-mudskipper"
+      },
+      {
+        "rel": "category",
+        "method": "get",
+        "href": "/mudskippers/media-types/videos/online",
+        "type": "application/vnd.fcms.category+json;version=1"
+      },
+      {
+        "rel": "category",
+        "method": "get",
+        "href": "/mudskippers/topics/reproduction",
+        "type": "application/vnd.fcms.category+json;version=1"
+      },
+      {
+        "rev": "collection",
+        "method": "get",
+        "href": "/mudskippers",
+        "type": "application/vnd.fcms.collection+json;version=1"
+      }
+    ]
+  }
 
 Create an Item
 ==============
