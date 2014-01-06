@@ -63,7 +63,7 @@ git checkout gh-pages
 lein sphinx
 ```
 
-The resulting REST API reference documentation will be at: ./Falkland-CMS-docs/API/REST/_build/html/index.html
+The resulting REST API reference documentation will be at: ./API/REST/_build/index.html
 
 ## Contributing to the Docs
 
