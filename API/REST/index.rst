@@ -16,8 +16,8 @@ style. You can help with that by pointing out anything you perceive as a deviati
 .. note::
 
 	The example API calls in this documentation are provided in `cURL <http://curl.haxx.se/>`_. 
-	When exploring the API feel free to use cURL, the HTTP client of your choice, or a programming
-	language you are most comfortable in. It should be simple to convert the cURL example to your
+	When exploring the API feel free to use cURL, the HTTP client of your choice, or the programming
+	language you're most comfortable in. It should be simple to convert the cURL example to your
 	own preferred HTTP client.
 
 Request Headers
