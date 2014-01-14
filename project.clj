@@ -4,7 +4,7 @@
   :license {:name "Mozilla Public License v2.0"
             :url "http://www.mozilla.org/MPL/2.0/"}
   
-  :min-lein-version "2.2" ;; highest version supported by Travis-CI as of 9/20/13
+  :min-lein-version "2.3.4" ;; highest version supported by Travis-CI as of 1/14/2014
 
   :dependencies [
     [org.clojure/clojure "1.5.1"] ; Lisp on the JVM http://clojure.org/documentation
@@ -18,7 +18,7 @@
     [compojure "1.1.6"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.10.0"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0-RC1"] ; CouchDB client https://github.com/clojure-clutch/clutch
-    [clojurewerkz/elastisch "1.3.0"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
+    [clojurewerkz/elastisch "1.4.0"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "0.4.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [com.taoensso/timbre "3.0.0-RC4"] ; Logging https://github.com/ptaoussanis/timbre
   ]
