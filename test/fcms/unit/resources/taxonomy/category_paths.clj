@@ -1,5 +1,6 @@
 (ns fcms.unit.resources.taxonomy.category-paths
-  (:require [midje.sweet :refer :all]
+  (:require [fcms.resources.taxonomy :refer :all]
+            [midje.sweet :refer :all]
             [midje.util :refer (expose-testables)]))
 
 (expose-testables fcms.resources.taxonomy)
