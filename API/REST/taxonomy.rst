@@ -16,7 +16,7 @@ In the example the taxonomy is called "Location" and it consists of categories s
 "Florida".
 
 An item classified in a category in a taxonomy is a member of that category and all of that category's
-parents. As an illustrative example, imagine an item classified as "Nort Carolina". It's also a member of
+parents. As an illustrative example, imagine an item, “Mecklenburg Declaration of Independence”, classified with the category "North Carolina". It's also a member of
 "South East", "Continental US" and the "Location" taxonomy as a whole.
 
 .. image:: ../../assets/img/Sample-Item-US-Location-Taxonomy.png
