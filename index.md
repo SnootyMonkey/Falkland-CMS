@@ -17,9 +17,25 @@ Items can be physical things: books, magazines, newspapers, documents, papers, c
 
 Falkland CMS can be used to describe relationships among items and can assist in the archiving and preservation of digital items.
 
+### Who is this for?
+
+Falkland CMS is for anyone who wants to collect, curate, organize and present the knowledge that exists in the world about a particular topic:
+
+* bibliographers and librarians
+* digital curators and archivists
+* museum and exhibit curators
+* scholars and professors
+* teachers and students
+* historical organizations
+* collectors, hobbyists and enthusiasts
+
 ### Why use Falkland CMS?
 
-Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a traditional Web CMS, a Digital Collection Management system, and a Museum Exhibit Management system. Unlike Omeka, Falkland CMS is written in Clojure, ClojureScript and CouchDB, and so has a certain elegance and panache.
+Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a traditional Web CMS, a Digital Collection Management system, and a Museum Exhibit Management system. Unlike Omeka, Falkland CMS is written in Clojure, ClojureScript and CouchDB, and so has a certain elegance and panache. 
+
+Not Omeka in particular, but a lot of the software in this domain is produced by people with rich domain expertise, but untraditional software engineering backgrounds. This often equates to mountains of poorly constructed PHP or Perl code that is difficult to use and maintain.
+
+Falkland CMS is an experiment in going the other direction and having experienced software professionals learn the library science needed to create better software.
 
 Ideal uses:
 
@@ -37,18 +53,6 @@ These are perfect fits for Falkland CMS:
 * nil.org - a complete guide to nihilism 
 * 8-bit '80's - a site to exhibit an extensive retro video game collection
 * The Pitiful Pirates - a history of the Tampa Bay Buccaneers from 1976-1995
-
-### Who is this for?
-
-Falkland CMS is for anyone who wants to collect, curate, organize and present the knowledge that exists in the world about a particular topic:
-
-* bibliographers and librarians
-* digital curators and archivists
-* museum and exhibit curators
-* scholars and professors
-* teachers and students
-* historical organizations
-* collectors, hobbyists and enthusiasts
 
 ### Who is this not for?
 
