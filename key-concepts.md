@@ -47,4 +47,4 @@ Users of Falkland CMS are one of three types:
 
 * **Administrator** - named users that can administer the configuration of the system and all items.
 * **User** - named users that can create, update, and delete all items in the system, but not administer the configuration of the system.
-* **The General Public** - everyone accessing the system anonymously with their web browser.
+* **The Public** - everyone accessing the system anonymously with their web browser.
