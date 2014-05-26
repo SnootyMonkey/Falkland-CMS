@@ -111,7 +111,7 @@
     :post (fn [_] (common/only-accept item/item-media-type))})
   :allowed-methods [:get :post]
   :exists? (fn [_] (get-items coll-slug))
-  ;; Get list of items
+  ;; Get a list of items
   :handle-ok (fn [ctx] (render-items coll-slug (:items ctx)))
   ;; Create new item
   :malformed? (by-method {
