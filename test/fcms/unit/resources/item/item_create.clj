@@ -10,12 +10,12 @@
 
   (facts "about checking validity of invalid new items"
 
-    (facts "when the specified collection doesn't exist"
+    (fact "when the specified collection doesn't exist"
       (doseq [coll-slug (conj bad-strings "not-here")]
         (valid-new-item coll-slug i) => :bad-collection
         (valid-new-item coll-slug i {}) => :bad-collection))
 
-    (facts "when including a reserved property"
+    (fact "when including a reserved property"
       (doseq [prop resource/reserved-properties]
         (valid-new-item e i {prop foo}) => :property-conflict
         (valid-new-item e i {(name prop) foo}) => :property-conflict)))
@@ -42,21 +42,21 @@
       (create-item "not-here" ascii-name) => :bad-collection
       (create-item "not-here" ascii-name {}) => :bad-collection)
 
-    (facts "with a reserved property"
+    (fact "with a reserved property"
       (doseq [prop resource/reserved-properties]
         (create-item e i {prop foo}) => :property-conflict
         (create-item e i {(name prop) foo}) => :property-conflict)))
 
   (facts "about item creation"
 
-    (facts "with a generated slug"
+    (fact "with a generated slug"
       (create-item e ascii-name)
       (let [item-slug "test-this"
             item (get-item e item-slug)]
         (:name item) => ascii-name
         (:slug item) => item-slug))
 
-    (facts "with a unicode name"
+    (fact "with a unicode name"
       (create-item e unicode-name)
       (let [item-slug "1"
             item (get-item e item-slug)]
@@ -68,13 +68,13 @@
         (:name item) => mixed-name
         (:slug item) => "test"))
 
-    (facts "with empty properties"
+    (fact "with empty properties"
       (create-item e i {})
       (let [item (get-item e i)]
         (:name item) => i
         (:slug item) => i))
 
-    (facts "with custom properties"
+    (fact "with custom properties"
       (create-item e i {:a "b" "c" "d"})
       (let [item (get-item e i)]
         (:name item) => i
@@ -82,14 +82,14 @@
         (:a item) => "b"
         (:c item) => "d"))
 
-    (facts "with unicode properties"
+    (fact "with unicode properties"
       (create-item e i {:description unicode-description})
       (let [item (get-item e i)]
         (:name item) => i
         (:slug item) => i
         (:description item) => unicode-description))
 
-    (facts "with a generated slug that is already used"
+    (fact "with a generated slug that is already used"
       (create-item e ascii-name)
       (let [item-slug "test-this"
             item (get-item e item-slug)]
@@ -106,7 +106,7 @@
         (:name item) => ascii-name
         (:slug item) => item-slug))
 
-    (facts "with a provided slug"
+    (fact "with a provided slug"
       (let [item (create-item e ascii-name {:slug slug})]
         (:name item) => ascii-name
         (:slug item) => slug))))
