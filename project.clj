@@ -73,11 +73,9 @@
     "init-test-db" ["with-profile" "qa" "run" "-m" "fcms.db.views"] ; create CouchDB views for test DB
     ;"build" ["do" "clean," "deps," "git-deps,", "compile," "init-db"] ; clean and build
     "build" ["do" "clean," "deps," "compile," "init-db"] ; clean and build
-    "test" ["with-profile" "qa" "do" "test"] ; run unit tests
-    "midje" ["with-profile" "qa" "midje"] ; run unit tests
-    "cucumber" ["with-profile" "qa" "cucumber"] ; run integration tests
-    "test-all" ["with-profile" "qa" "do" "midje," "test," "cucumber"] ; run all tests
-    "test-all!" ["with-profile" "qa" "do" "build,", "test-all"] ; clean and build and run all tests
+    "midje" ["with-profile" "qa" "midje"] ; run tests
+    "test" ["with-profile" "qa" "midje"] ; run tests
+    "test!" ["with-profile" "qa" "do" "build," "midje"] ; run all tests
     "start" ["do" "build," "ring" "server-headless"] ; start an FCMS server
     "start!" ["with-profile" "prod" "run"] ; start an FCMS server in production
     "spell" ["spell" "-n"] ; check spelling in docs and docstrings
@@ -89,7 +87,6 @@
     [lein-environ "0.5.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     ;[lein-git-deps "0.0.1-SNAPSHOT"] ; use dependencies directly from GitHub repos https://github.com/tobyhede/lein-git-deps
     [lein-cljsbuild "1.0.3"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
-    [lein-cucumber "1.0.2"] ; BDD testing https://github.com/nilswloka/lein-cucumber
     [codox "0.8.8"] ; Generate Clojure API docs https://github.com/weavejester/codox
     [lein-midje "3.1.3"] ; Example-based testing https://github.com/marick/lein-midje
     [lein-bikeshed "0.1.7"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
@@ -111,10 +108,6 @@
   ;   ".lein-git-deps/liberator/src/"
   ;   "src/"
   ; ]
-
-  ;; ----- Location of tests -----
-
-  :cucumber-feature-paths ["test/fcms/features"]
 
   ;; ----- Code check configuration -----
 

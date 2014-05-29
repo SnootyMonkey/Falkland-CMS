@@ -1,8 +1,9 @@
 (ns fcms.integration.api.item.item-create
   (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
-            [fcms.lib.http-mock :refer :all]
-            [fcms.resources.collection :as collection]))
+            [fcms.lib.rest-api-mock :refer :all]
+            [fcms.resources.collection :as collection]
+            [fcms.resources.item :as item]))
 
 ;; Creating items with the REST API
 
@@ -10,7 +11,7 @@
 
 ;; POST
 ;; all good - no slug
-;; all good - generated slug is different than the name
+;; all good - generated slug is different than the provided name
 ;; all good - generated slug is already used
 ;; all good - with slug
 ;; all good - unicode in the body
@@ -28,26 +29,6 @@
 ;; slug specified in body is already used
 ;; slug specified in body is invalid
 
-
-  ; Scenario: Create an item without providing a slug
-  ;   When I have a "POST" request to URL "/c/"
-  ;   And I provide an "item"
-  ;   And I accept an "item"
-  ;   And I set the "name" to "i"
-  ;   Then the status will be "201"
-  ;   And I will receive an "item"
-  ;   And the "Location" header will be "/c/i"
-  ;   And the body will be JSON
-  ;   And the new item "i" in collection "c" will be named "i"
-  ;   And the collection "c" will have an item count of 1
-  ;   When I have a "GET" request to URL "/c/i"
-  ;   And I accept an "item"
-  ;   Then the status will be "200"
-  ;   And I will receive an "item"
-  ;   And the body will be JSON
-  ;   And the new item "i" in collection "c" will be named "i"
-
-
 (with-state-changes [(before :facts (empty-collection-e))
                      (after :facts (collection/delete-collection "e"))]
 
@@ -56,6 +37,7 @@
     ;; all good, no slug - 201 Created
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
     (fact "when no slug is specified"
+      ;; Create the item
       (let [response (api-request :post "/e/" {
         :headers {
           :Accept (mime-type :item)
@@ -65,37 +47,61 @@
           :name "i"
         }})]
         (:status response) => 201
-        (get-in response [:headers "Content-Type"]) => (str (mime-type :item) ";charset=utf-8")
+        (base-mime-type (get-in response [:headers "Content-Type"])) => (mime-type :item)
         (get-in response [:headers "Location"]) => "/e/i"
-  ;   And the body will be JSON
-  ;   And the new item "i" in collection "c" will be named "i"
-  ;   And the collection "c" will have an item count of 1
-  ;   When I have a "GET" request to URL "/c/i"
-  ;   And I accept an "item"
-  ;   Then the status will be "200"
-  ;   And I will receive an "item"
-  ;   And the body will be JSON
-  ;   And the new item "i" in collection "c" will be named "i"        
-        ))
+        (json? response) => true
+        (item/get-item "e" "i") => (contains {
+          :collection "e"
+          :name "i"
+          :slug "i"
+          :version 1})
+        (collection/item-count "e") => 1)
+      ;; Get the created item
+      (let [response (api-request :get "/e/i" {
+        :headers {
+          :Accept (mime-type :item)
+        }})]
+        (:status response) => 200
+        (base-mime-type (get-in response [:headers "Content-Type"])) => (mime-type :item)
+        (json? response) => true
+        (let [item (body-from-response response)]
+          (:slug item) => "i"
+          (:name item) => "i"
+          (:version item) => 1
+          (:collection item) => e)))
 
-  ; Scenario: "Create an item with a complex name that won't match the generated slug"
-  ;   When I have a "POST" request to URL "/c/"
-  ;   And I provide an "item"
-  ;   And I accept an "item"
-  ;   And I set the "name" to " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
-  ;   Then the status will be "201"
-  ;   And I will receive an "item"
-  ;   And the "Location" header will be "/c/this-is-also-a-slug"
-  ;   And the body will be JSON
-  ;   And the new item "this-is-also-a-slug" in collection "c" will be named " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
-  ;   And the collection "c" will have an item count of 1
-  ;   When I have a "GET" request to URL "/c/this-is-also-a-slug"
-  ;   And I accept an "item"
-  ;   Then the status will be "200"
-  ;   And I will receive an "item"
-  ;   And the body will be JSON
-  ;   And the new item "this-is-also-a-slug" in collection "c" will be named " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
-
-    ;; all good, generated slug is different than the name - 201 Created
+    ;; all good, generated slug is different than the provided name - 201 Created
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":" -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "}' http://localhost:3000/c/
-    (fact "when the generated slug is different than the name"))
+    (fact "when the generated slug is different than the provided name"
+      ;; Create the item
+      (let [response (api-request :post "/e/" {
+        :headers {
+          :Accept (mime-type :item)
+          :Content-Type (mime-type :item)
+        }
+        :body {
+          :name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
+        }})]
+        (:status response) => 201
+        (base-mime-type (get-in response [:headers "Content-Type"])) => (mime-type :item)
+        (get-in response [:headers "Location"]) => "/e/this-is-also-a-slug"
+        (json? response) => true
+        (item/get-item "e" "this-is-also-a-slug") => (contains {
+          :collection "e" 
+          :name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
+          :slug "this-is-also-a-slug"
+          :version 1})
+        (collection/item-count "e") => 1)
+      ;; Get the created item
+      (let [response (api-request :get "/e/this-is-also-a-slug" {
+        :headers {
+          :Accept (mime-type :item)
+        }})]
+        (:status response) => 200
+        (base-mime-type (get-in response [:headers "Content-Type"])) => (mime-type :item)
+        (json? response) => true
+        (let [item (body-from-response response)]
+          (:slug item) => "this-is-also-a-slug"
+          (:name item) => " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
+          (:version item) => 1
+          (:collection item) => e))))
