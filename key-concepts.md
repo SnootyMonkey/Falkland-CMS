@@ -11,7 +11,7 @@ There are 4 main types of resources in Falkland CMS, collections, items, taxonom
 
 ### Collections
 
-A Falkland CMS instance has one or more collections of items. A collection is all the items that you'd like to be organized and searched together.
+A Falkland CMS instance has one or more collections of items. A collection is a container for all the items that you'd like to be organized and searched together.
 
 Taxonomical organization and searches don't span multiple collections, so you'll often have just one collection per website or app. There may be cases where you have multiple websites or apps supported by the same collection or one website or app accessing multiple collections, but these would be less typical.
 

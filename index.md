@@ -31,11 +31,11 @@ Falkland CMS is for anyone who wants to collect, curate, organize and present th
 
 ### Why use Falkland CMS?
 
-Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a traditional Web CMS, a Digital Collection Management system, and a Museum Exhibit Management system. Unlike Omeka, Falkland CMS is written in Clojure, ClojureScript and CouchDB, and so has a certain elegance and panache. 
+Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a traditional Web CMS, a Digital Collection Management system, and a Museum Exhibit Management system. Unlike Omeka, Falkland CMS is written in Clojure, ClojureScript and CouchDB, and so it has a certain elegance and panache. 
 
-Not Omeka in particular, but a lot of the software in this domain is produced by people with rich domain expertise, but untraditional software engineering backgrounds. This often equates to mountains of poorly constructed PHP or Perl code that is difficult to use and maintain.
+A lot of the software in this domain is produced by people with rich domain expertise, but untraditional software engineering backgrounds. This often equates to mountains of poorly constructed PHP or Perl code that is difficult to use and maintain.
 
-Falkland CMS is an experiment in going the other direction and having experienced software professionals learn the library science needed to create better software.
+Falkland CMS is a deliberate experiment in going the other direction and having experienced software professionals learn the library science needed to create better software.
 
 Ideal uses:
 
@@ -71,7 +71,7 @@ Falkland CMS embraces standards, and takes a flexible, but opinionated and pragm
 
 ### Who is using Falkland CMS?
 
-Falkland CMS was created to support [Falklandsophile](http://falklandsophile.com), the complete guide to resources about the Falkland Islands. This is where the name for Falkland CMS came from.
+Falkland CMS was created to support [Falklandsophile](http://falklandsophile.com), a complete guide to resources about the Falkland Islands. This is where the name for Falkland CMS came from.
 
 If you're using Falkland CMS, please drop me a note and I'll link to you here.
 
