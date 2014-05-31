@@ -19,7 +19,7 @@
     (resource/get-resource coll-slug slug :item))
 
 (defn valid-new-item
-  "Given the slug of the collection, the name of the item, and a map of a potential new item,
+  "Given the slug of the collection, the name of the new item, and a map of the new item's properties,
   check if the everything is in order to create the new item.
   Ensure the collection exists or return :bad-collection.
   Ensure the name of the item is specified or return :no-name.

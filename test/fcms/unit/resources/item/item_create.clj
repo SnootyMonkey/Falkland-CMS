@@ -5,42 +5,51 @@
             [fcms.resources.collection-resource :as resource]
             [fcms.resources.item :refer :all]))
 
+;; TODO checks around timestamps
+
 (with-state-changes [(before :facts (empty-collection-e))
                      (after :facts (collection/delete-collection e))]
 
-  (facts "about checking validity of invalid new items"
+  (facts "about validity checks of invalid new items"
 
     (fact "when the specified collection doesn't exist"
       (doseq [coll-slug (conj bad-strings "not-here")]
         (valid-new-item coll-slug i) => :bad-collection
         (valid-new-item coll-slug i {}) => :bad-collection))
 
+    (fact "when a provided slug is already used"
+      (create-item e "first" {:slug slug})
+      (valid-new-item e "second" {:slug slug}) => :slug-conflict)
+
+    (fact "with a provided slug that is invalid"
+      (valid-new-item e i {:slug "i I"}) => :invalid-slug)
+
     (fact "when including a reserved property"
       (doseq [prop resource/reserved-properties]
         (valid-new-item e i {prop foo}) => :property-conflict
         (valid-new-item e i {(name prop) foo}) => :property-conflict)))
 
-  (facts "about checking validity of valid new items"
+  (facts "about validity checks of valid new items"
 
-      (fact "it's valid with no properties"
+      (fact "with no properties"
         (valid-new-item e i) => true
         (valid-new-item e i {}) => true)
 
-      (fact "it's valid with custom properties"
+      (fact "with custom properties"
         (valid-new-item e i {:a "b" "c" "d"}) => true))
 
   (facts "about item creation failures"
 
-    (fact "it fails with a provided slug that is already used"
+    (fact "with a provided slug that is already used"
       (create-item e "first" {:slug slug})
       (create-item e "second" {:slug slug}) => :slug-conflict)
 
-    (fact "it fails with a provided slug that is invalid"
-      (create-item e ascii-name {:slug "i I"}) => :invalid-slug)
+    (fact "with a provided slug that is invalid"
+      (create-item e i {:slug "i I"}) => :invalid-slug)
 
-    (fact "it fails with a collection that doesn't exist"
-      (create-item "not-here" ascii-name) => :bad-collection
-      (create-item "not-here" ascii-name {}) => :bad-collection)
+    (fact "with a collection that doesn't exist"
+      (create-item "not-here" i) => :bad-collection
+      (create-item "not-here" i {}) => :bad-collection)
 
     (fact "with a reserved property"
       (doseq [prop resource/reserved-properties]
@@ -50,63 +59,35 @@
   (facts "about item creation"
 
     (fact "with a generated slug"
-      (create-item e ascii-name)
-      (let [item-slug "test-this"
-            item (get-item e item-slug)]
-        (:name item) => ascii-name
-        (:slug item) => item-slug))
-
+      (let [item-slug "test-this"]
+        (create-item e ascii-name) => (contains {:name ascii-name :slug item-slug :version 1})
+        (get-item e item-slug) => (contains {:name ascii-name :slug item-slug :version 1})))
+        
     (fact "with a unicode name"
-      (create-item e unicode-name)
-      (let [item-slug "1"
-            item (get-item e item-slug)]
-        (:name item) => unicode-name
-        (:slug item) => item-slug)
-      (create-item e mixed-name)
-      (let [item-slug "test"
-            item (get-item e item-slug)]
-        (:name item) => mixed-name
-        (:slug item) => "test"))
+      (let [item-slug "1"]
+        (create-item e unicode-name) => (contains {:name unicode-name :slug item-slug :version 1})
+        (get-item e item-slug) => (contains {:name unicode-name :slug item-slug :version 1}))
+      (let [item-slug "test"]
+        (create-item e mixed-name) => (contains {:name mixed-name :slug item-slug :version 1})
+        (get-item e item-slug) => (contains {:name mixed-name :slug item-slug :version 1})))
 
-    (fact "with empty properties"
-      (create-item e i {})
-      (let [item (get-item e i)]
-        (:name item) => i
-        (:slug item) => i))
+    (fact "with provided but empty properties"
+      (create-item e i {}) => (contains {:name i :slug i :version 1})
+      (get-item e i) => (contains {:name i :slug i :version 1}))
 
     (fact "with custom properties"
-      (create-item e i {:a "b" "c" "d"})
-      (let [item (get-item e i)]
-        (:name item) => i
-        (:slug item) => i
-        (:a item) => "b"
-        (:c item) => "d"))
+      (create-item e i {:a "b" "c" "d"}) => (contains {:name i :slug i :a "b" :c "d" :version 1})
+      (get-item e i) => (contains {:name i :slug i :a "b" :c "d" :version 1}))
 
     (fact "with unicode properties"
-      (create-item e i {:description unicode-description})
-      (let [item (get-item e i)]
-        (:name item) => i
-        (:slug item) => i
-        (:description item) => unicode-description))
+      (create-item e i {:description unicode-description}) => (contains {:name i :slug i :description unicode-description :version 1})
+      (get-item e i) => (contains {:name i :slug i :description unicode-description :version 1}))
 
     (fact "with a generated slug that is already used"
-      (create-item e ascii-name)
-      (let [item-slug "test-this"
-            item (get-item e item-slug)]
-        (:name item) => ascii-name
-        (:slug item) => item-slug)
-      (create-item e ascii-name)
-      (let [item-slug "test-this-1"
-            item (get-item e item-slug)]
-        (:name item) => ascii-name
-        (:slug item) => item-slug)
-      (create-item e ascii-name)
-      (let [item-slug "test-this-2"
-            item (get-item e item-slug)]
-        (:name item) => ascii-name
-        (:slug item) => item-slug))
+      (doseq [item-slug ["test-this" "test-this-1" "test-this-2"]]
+        (create-item e ascii-name) => (contains {:name ascii-name :slug item-slug :version 1})
+        (get-item e item-slug) => (contains {:name ascii-name :slug item-slug :version 1})))
 
     (fact "with a provided slug"
-      (let [item (create-item e ascii-name {:slug slug})]
-        (:name item) => ascii-name
-        (:slug item) => slug))))
+      (create-item e ascii-name {:slug slug}) => (contains {:name ascii-name :slug slug :version 1})
+      (get-item e slug) => (contains {:name ascii-name :slug slug :version 1}))))
