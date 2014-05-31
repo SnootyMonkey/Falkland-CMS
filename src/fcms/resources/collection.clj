@@ -1,6 +1,9 @@
 (ns fcms.resources.collection
-  ""
-  (:require [com.ashafa.clutch :as clutch]
+  "A collection is a container for all the items that you'd like to be organized and searched together."
+  (:require [clojure.set :refer (intersection)]
+            [clojure.string :refer (blank?)]
+            [clojure.walk :refer (keywordize-keys)]
+            [com.ashafa.clutch :as clutch]
             [fcms.lib.slugify :refer (slugify)]
             [fcms.resources.common :as common]))
 
@@ -27,19 +30,49 @@
       ;; recur with the next possible slug
       (recur (common/next-slug slug counter) (inc counter)))))
 
+(defn valid-new-collection
+  "Given the name of a new collection, and a map of the new collection's properties,
+  check if the everything is in order to create the new collection.
+  Ensure the name of the item is specified or return :no-name.
+  Ensure the slug is valid and doesn't already exist if it's specified,
+  or return :invalid-slug or :slug-conflict respectively.
+  :property-conflict is returned if a property is included in the map of properties that is in the common/reserved-properties
+  set."
+  ([coll-name] (valid-new-collection coll-name {}))
+  ([coll-name {provided-slug :slug :as props}]
+  (cond
+    (or (not (string? coll-name)) (blank? coll-name)) :no-name
+    (not-empty (intersection (set (keys (keywordize-keys props))) common/reserved-properties)) :property-conflict
+    (not provided-slug) true
+    (not (common/valid-slug? provided-slug)) :invalid-slug
+    :else (if (nil? (get-collection provided-slug)) true :slug-conflict))))
+
 (defn create-collection
   "Create a new collection using the specified name and optional map of properties.
   If :slug is included in the properties it will be used as the collection's slug,
   otherwise one will be created from the name.
-  :slug-conflict is returned if a :slug is included in the
-  properties and a collection already exists with that slug."
+  :slug-conflict is returned if a :slug is included in the properties and a collection already exists
+  with that slug.
+  :invalid-slug is returned if a :slug is included in the properties and it's not valid.
+  :property-conflict is returned if a property is included in the map of properties that is in
+  the reserved-properties set."
   ([coll-name] (create-collection coll-name {}))
-  ([coll-name props]
-    (if (and (:slug props) (get-collection (:slug props)))
-      :slug-conflict
-      (let [slug (unique-slug (or (:slug props) (slugify coll-name)))]
-        (when-let [collection (common/create (merge props {:slug slug :name coll-name}) :collection)]
-          (common/map-from-db collection))))))
+  ([coll-name properties]
+    (let [props (keywordize-keys properties)
+          validity (valid-new-collection coll-name props)]
+      (if (true? validity)
+        (let [slug (unique-slug (or (:slug props) (slugify coll-name)))]
+          (when-let [collection (common/create (merge props {:slug slug :name coll-name}) :collection)]
+            (common/map-from-db collection)))
+        validity))))
+
+  ; ([coll-name props]
+  ;   (if (and (:slug props) (get-collection (:slug props)))
+  ;     :slug-conflict
+  ;     (let [slug (unique-slug (or (:slug props) (slugify coll-name)))]
+  ;       (when-let [collection (common/create (merge props {:slug slug :name coll-name}) :collection)]
+  ;         (common/map-from-db collection))))))
+
 
 (defn- delete-collection-and-contents [id rev]
   ;; get all the id and rev of all the items in this collection
