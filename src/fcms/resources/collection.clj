@@ -25,7 +25,7 @@
   numeral until you have a unique collection slug."
   ([slug] (unique-slug slug 0))
   ([slug counter]
-    (if-not (get-collection slug)
+    (if-not (or (blank? slug) (get-collection slug))
       slug
       ;; recur with the next possible slug
       (recur (common/next-slug slug counter) (inc counter)))))
@@ -65,14 +65,6 @@
           (when-let [collection (common/create (merge props {:slug slug :name coll-name}) :collection)]
             (common/map-from-db collection)))
         validity))))
-
-  ; ([coll-name props]
-  ;   (if (and (:slug props) (get-collection (:slug props)))
-  ;     :slug-conflict
-  ;     (let [slug (unique-slug (or (:slug props) (slugify coll-name)))]
-  ;       (when-let [collection (common/create (merge props {:slug slug :name coll-name}) :collection)]
-  ;         (common/map-from-db collection))))))
-
 
 (defn- delete-collection-and-contents [id rev]
   ;; get all the id and rev of all the items in this collection

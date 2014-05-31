@@ -110,7 +110,7 @@
    unique it is just returned."
   ([coll-id slug] (unique-slug coll-id slug 0))
   ([coll-id slug counter]
-    (if-not (or (slug-in-collection? coll-id slug) (= slug ""))
+    (if-not (or (s/blank? slug) (slug-in-collection? coll-id slug))
       slug
       ;; recur with the next possible slug
       (recur coll-id (next-slug slug counter) (inc counter)))))
