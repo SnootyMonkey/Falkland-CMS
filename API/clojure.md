@@ -8,26 +8,19 @@ author: Sean Johnson
 
 ### Namespaces
 
-<a href="Clojure/fcms.resources.collection.html" target="_clojure_api">collection</a> -  a container
-for all the items that you'd like to be organized and searched together.
+<a href="Clojure/fcms.resources.collection.html" target="_clojure_api">collection</a> -  a container for all the items that you'd like to be organized and searched together.
 
-<a href="Clojure/fcms.resources.taxonomy.html" target="_clojure_api">taxonomy</a> - a hierarchical
-organization of categories to organize the items in a collection. A collection may have many
-taxonomies and they are independent of each other.
+<a href="Clojure/fcms.resources.taxonomy.html" target="_clojure_api">taxonomy</a> - a hierarchical organization of categories to organize the items in a collection. A collection may have many taxonomies and they are independent of each other.
 
-<a href="Clojure/fcms.resources.item.html" target="_clojure_api">item</a> - any resource that's
-been stored in a particular collection. Items may also be organized in one or more taxonomies.
+<a href="Clojure/fcms.resources.item.html" target="_clojure_api">item</a> - any resource that's been stored in a particular collection. Items may also be organized in one or more taxonomies.
 
-<a href="Clojure/fcms.resources.common.html" target="_clojure_api">common</a> - a common set of
-functions for everything that's stored in FCMS. You won't often use these functions directly.
+<a href="Clojure/fcms.resources.common.html" target="_clojure_api">common</a> - a common set of functions for everything that's stored in FCMS. You won't often use these functions directly.
 
-The full set of <a href="Clojure/index.html" target="_clojure_api"
-title="Falkland CMS Clojure API Reference Documentation">reference documentation</a> is available.
+The full set of <a href="Clojure/index.html" target="_clojure_api" title="Falkland CMS Clojure API Reference Documentation">reference documentation</a> is available.
 
 ### Quick-Start from the Interactive REPL
 
-[Download the latest CouchDB](http://couchdb.apache.org/), install it (it's a 1-click installer)
-and run it (it's a 1-click app).
+[Download the latest CouchDB](http://couchdb.apache.org/), install it (it's a 1-click installer) and run it (it's a 1-click app).
 
 Clone the Falkland CMS repo:
 
