@@ -11,7 +11,7 @@ Complete documentation is on the [Falkland CMS website](http://falkland-cms.com)
 
 ## Getting Help
 
-Falkland CMS is pre-alpha and not yet usable. A usable version is expected in the 2014 and instructions for getting help will be available then.
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected before the end of 2014, and instructions for getting help will be available then.
 
 ## Development and Contributing
 
