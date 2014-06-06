@@ -31,7 +31,7 @@ Falkland CMS is for anyone who wants to collect, curate, organize and present th
 
 ### Why use Falkland CMS?
 
-Like its inspiration, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a traditional Web CMS, a Digital Collection Management system, and a Museum Exhibit Management system. Unlike Omeka, Falkland CMS is written in Clojure, ClojureScript and CouchDB, and so it has a certain elegance and panache. 
+Like one of its inspirations, [Omeka](http://omeka.org/about/), Falkland CMS sits at the intersection between a traditional Web CMS, a Digital Collection Management system, and a Museum Exhibit Management system. Unlike Omeka, Falkland CMS is written in Clojure, ClojureScript and CouchDB, and so it has a certain elegance and panache. 
 
 A lot of the software in this domain is produced by people with rich domain expertise, but untraditional software engineering backgrounds. This often equates to mountains of poorly constructed PHP or Perl code that is difficult to use and maintain.
 
@@ -67,7 +67,7 @@ Falkland CMS is *not* for everyone, if these describe you, you should probably l
 
 If there is one thing the world of digital cataloging is not short of, its acronyms and standards. It seems there is enough for everyone to have a standard of their own!
 
-Falkland CMS embraces standards, and takes a flexible, but opinionated and pragmatic approach to them. Standards are very important... and very plentiful. Falkland CMS remains as flexible as possible so you can use the metadata and interoperability standards most relevant to you. At the same time, Falkland CMS takes an informed, pragmatic and opinionated approach, using widely supported general standards as defaults. If you aren't a card carrying metadata geek, you won't need to make confusing choices from the dizzying amount of potentially relevant standards to utilize Falkland CMS.
+Standards are very important... and very plentiful. Falkland CMS remains as flexible as possible so you can use the metadata and interoperability standards most relevant to you. At the same time, Falkland CMS takes an informed, pragmatic and opinionated approach, using widely supported general standards as defaults. If you aren't a card carrying metadata geek, you won't need to make confusing choices from the dizzying amount of potentially relevant standards to utilize Falkland CMS.
 
 ### Who is using Falkland CMS?
 
@@ -84,11 +84,11 @@ A traditional CMS or [WCMS (web content management system)](http://en.wikipedia.
 * collaboration of multiple content authors
 * templates to take the data in the system and present it as web content, typically HTML
 
-Falkland CMS has these foundational capabilities, but is not focused on the creation of *new* content. Instead, Falkland CMS is used for collecting, organizing, curating and presenting existing content.
+Falkland CMS has these foundational capabilities, but is not focused on the creation of *new* content. Instead, Falkland CMS is used for collecting, organizing, curating and presenting *existing* content.
 
 Falkland CMS supports authoring content, but this content is [metadata](http://en.wikibooks.org/wiki/Open_Metadata_Handbook/Introduction) about existing resources, intended to provide context for the collection, organization, curation, presentation and exhibition of collected resources. You wouldn't run a daily on-line news site with Falkland CMS, like you would with a content management system, but you would use Falkland CMS to collect, curate and present historical or current news reports about a particular topic.
 
-Because of this difference of focus, the acronym that is used for Falkland CMS is Curation Management System. It's not a name and acronym we use, but you could also consider Falkland CMS to be a metadata management system (MMS).
+Because of this difference of focus, the acronym that is used for Falkland CMS is Curation Management System. It's not an acronym we use, but you could also consider Falkland CMS to be a metadata management system (MMS).
 
 ---
 
