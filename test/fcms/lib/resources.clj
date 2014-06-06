@@ -1,4 +1,5 @@
 (ns fcms.lib.resources
+  "Namespace of data fixtures for use in tests."
   (:require [clojure.test :refer :all]
   					[clj-time.format :refer (parse)]
             [fcms.resources.collection-resource :as resource]

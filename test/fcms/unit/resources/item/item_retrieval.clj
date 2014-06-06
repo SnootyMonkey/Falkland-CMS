@@ -1,7 +1,7 @@
 (ns fcms.unit.resources.item.item-retrieval
   (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
-            [fcms.lib.checks :refer (about-now?)]
+            [fcms.lib.check :refer (about-now?)]
             [fcms.resources.collection :as collection]
             [fcms.resources.item :refer :all]))
 

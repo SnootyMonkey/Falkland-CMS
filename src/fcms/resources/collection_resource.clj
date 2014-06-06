@@ -1,6 +1,6 @@
 (ns fcms.resources.collection-resource
-  "A collection resource is an FCMS resource that is contained in one particular collection.
-  Collection resources are either taxonomies or items."
+  "Namespace for collection resources. Collection resources are either taxonomies or items, and are
+  stored in a particular collection."
   (:require [clojure.set :refer (intersection)]
             [clojure.string :refer (blank?)]
             [clojure.walk :refer (keywordize-keys)]

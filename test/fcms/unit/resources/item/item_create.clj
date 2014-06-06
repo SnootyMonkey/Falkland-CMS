@@ -1,11 +1,10 @@
 (ns fcms.unit.resources.item.item-create
   (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
+            [fcms.lib.check :refer (timestamp? about-now?)]
             [fcms.resources.collection :as collection]
             [fcms.resources.collection-resource :as resource]
             [fcms.resources.item :refer :all]))
-
-;; TODO checks around timestamps
 
 (with-state-changes [(before :facts (empty-collection-e))
                      (after :facts (collection/delete-collection e))]
@@ -90,4 +89,15 @@
 
     (fact "with a provided slug"
       (create-item e ascii-name {:slug slug}) => (contains {:name ascii-name :slug slug :version 1})
-      (get-item e slug) => (contains {:name ascii-name :slug slug :version 1}))))
+      (get-item e slug) => (contains {:name ascii-name :slug slug :version 1}))
+
+    (facts "and timestamps"
+      (let [item (create-item e i)
+            created-at (:created-at item)
+            updated-at (:updated-at item)
+            retrieved-item (get-item e i)]
+        (instance? timestamp created-at) => true
+        (about-now? created-at) = true
+        (= created-at updated-at) => true
+        (= created-at (:created-at retrieved-item))
+        (= updated-at (:updated-at retrieved-item))))))

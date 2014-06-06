@@ -1,5 +1,6 @@
 (ns fcms.resources.taxonomy
-  ""
+  "Namespace for FCMS taxonomies. A taxonomy is a hierarchical organization of categories to organize
+  the items in a collection. A collection may have many taxonomies and they are independent of each other."
   (:require [clojure.core.match :refer (match)]
             [clojure.string :as s]
             [flatland.ordered.map :refer (ordered-map)]

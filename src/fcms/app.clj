@@ -1,4 +1,5 @@
 (ns fcms.app
+  "Namespace for the FCMS web application which serves the REST API."
   (:require [liberator.core :refer [resource defresource]]
             [liberator.dev :refer (wrap-trace)]
             [compojure.core :refer (defroutes ANY)]

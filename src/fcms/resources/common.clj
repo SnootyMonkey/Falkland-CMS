@@ -1,5 +1,5 @@
 (ns fcms.resources.common
-  ""
+  "Namespace for FCMS resources. FCMS resources are things stored in FCMS, so either collections, taxonomies or items."
   (:require [clojure.string :as s]
             [clj-time.format :refer (parse formatters unparse)]
             [clj-time.core :refer (now)]
@@ -127,19 +127,20 @@
 (defn
   ^{:no-doc true}
   map-from-db
-  "Turn the CouchDB map into the FCMS map"
+  "Turn a resource from its CouchDB map representation into its FCMS map representation."
   [db-map]
   (if-let [data (:data db-map)]
-    (assoc (dissoc data :type) :id (:_id db-map))))
+    (-> 
+      (assoc (dissoc data :type) :id (:_id db-map))
+      (update-in [:created-at] parse)
+      (update-in [:updated-at] parse))))
 
 (defn
   ^{:no-doc true}
   resource-from-db
-  "Turn an item from its CouchDB map representation into its FCMS map representation."
+  "Turn a collection resource from its CouchDB map representation into its FCMS map representation."
   [coll-slug resource]
-  (-> (map-from-db (assoc-in resource [:data :collection] coll-slug))
-    (update-in [:created-at] parse)
-    (update-in [:updated-at] parse)))
+  (map-from-db (assoc-in resource [:data :collection] coll-slug)))
 
 ;; ----- Resource CRUD funcitons -----
 

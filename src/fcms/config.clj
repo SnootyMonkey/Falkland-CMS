@@ -1,4 +1,5 @@
 (ns fcms.config
+  "Namespace for the FCMS configuration parameters."
   (:require [environ.core :refer (env)]
             [com.ashafa.clutch :as clutch]))
 

@@ -1,5 +1,6 @@
 (ns fcms.resources.collection
-  "A collection is a container for all the items that you'd like to be organized and searched together."
+  "Namespace for FCMS collections. A collection is a container for all the items that you'd like to be organized
+  and searched together."
   (:require [clojure.set :refer (intersection)]
             [clojure.string :refer (blank?)]
             [clojure.walk :refer (keywordize-keys)]

@@ -2,7 +2,7 @@
   (:require [clj-time.core :refer (before?)]
             [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
-            [fcms.lib.checks :refer (about-now?)]
+            [fcms.lib.check :refer (about-now?)]
             [fcms.resources.collection :as collection]
             [fcms.resources.collection-resource :as resource]
             [fcms.resources.item :refer :all]))
