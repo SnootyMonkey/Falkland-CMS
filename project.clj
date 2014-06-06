@@ -44,7 +44,6 @@
         [print-foo "0.4.6"] ; Old school print debugging https://github.com/danielribeiro/print-foo
         [org.clojure/tools.trace "0.7.6"] ; Tracing macros/fns https://github.com/clojure/tools.trace
         [com.cemerick/piggieback "0.1.2"] ; ClojureScript bREPL from the nREPL https://github.com/cemerick/piggieback
-        [clj-ns-browser "1.3.1"] ; Doc browser https://github.com/franks42/clj-ns-browser
       ]
       ; REPL injections
       :injections [
