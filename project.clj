@@ -14,7 +14,7 @@
     [org.clojure/tools.nrepl "0.2.3"] ; REPL server and client https://github.com/clojure/tools.nrepl
     [cheshire "5.3.1"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.2"] ; Ordered hash map https://github.com/flatland/ordered
-    [ring/ring-jetty-adapter "1.3.0-RC1"] ; Web Server https://github.com/ring-clojure/ring
+    [ring/ring-jetty-adapter "1.3.0"] ; Web Server https://github.com/ring-clojure/ring
     [compojure "1.1.8"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.11.0"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0-RC1"] ; CouchDB client https://github.com/clojure-clutch/clutch
@@ -87,11 +87,11 @@
     [lein-environ "0.5.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     ;[lein-git-deps "0.0.1-SNAPSHOT"] ; use dependencies directly from GitHub repos https://github.com/tobyhede/lein-git-deps
     [lein-cljsbuild "1.0.3"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
-    [codox "0.8.8"] ; Generate Clojure API docs https://github.com/weavejester/codox
+    [codox "0.8.9"] ; Generate Clojure API docs https://github.com/weavejester/codox
     [lein-midje "3.1.3"] ; Example-based testing https://github.com/marick/lein-midje
     [lein-bikeshed "0.1.7"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
     [lein-kibit "0.0.8"] ; Static code search for non-idiomatic code https://github.com/jonase/kibit
-    [jonase/eastwood "0.1.2"] ; Clojure linter https://github.com/jonase/eastwood
+    [jonase/eastwood "0.1.3"] ; Clojure linter https://github.com/jonase/eastwood
     [lein-checkall "0.1.1"] ; Runs bikeshed, kibit and eastwood https://github.com/itang/lein-checkall
     [lein-pprint "1.1.1"] ; pretty-print the lein project map https://github.com/technomancy/leiningen/tree/master/lein-pprint
     [lein-ancient "0.5.5"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
