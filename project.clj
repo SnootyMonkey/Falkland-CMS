@@ -18,7 +18,7 @@
     [compojure "1.1.8"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.11.0"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0-RC1"] ; CouchDB client https://github.com/clojure-clutch/clutch
-    [clojurewerkz/elastisch "2.0.0-rc1"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
+    [clojurewerkz/elastisch "2.0.0-rc2"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "0.5.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [com.taoensso/timbre "3.2.1"] ; Logging https://github.com/ptaoussanis/timbre
   ]
