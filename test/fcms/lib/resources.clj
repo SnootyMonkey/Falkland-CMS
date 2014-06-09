@@ -9,6 +9,7 @@
 
 ;; ----- Names / slugs / constants -----
 
+(def c "c")
 (def e "e")
 (def i "i")
 (def slug "slug")

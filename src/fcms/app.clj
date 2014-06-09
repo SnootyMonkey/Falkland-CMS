@@ -22,7 +22,6 @@
   (if liberator-trace trace-app routes))
 
 (defn start [port]
-  (db-views/init) ; make sure DB is created and has latest views
   (ring/run-jetty app {:port port :join? false}))
 
 (defn -main []

@@ -74,31 +74,34 @@
   :handle-not-acceptable (fn [_] (common/only-accept item/item-media-type))
   :allowed-methods [:get :put :delete]
   :exists? (fn [_] (get-item coll-slug item-slug))
-  ;; Get an item
-  :handle-ok (by-method {
-    :get (fn [ctx] (render-item (:item ctx)))
-    :post (fn [ctx] (render-item (:item ctx)))
-    :put (fn [ctx] (update-item-response coll-slug ctx))})
-  ;; Delete an item
-  :delete! (fn [_] (item/delete-item coll-slug item-slug))
-  ;; Update/Create an item
-  :malformed? (by-method {
-    :get false
-    :delete false
-    :post (fn [ctx] (common/malformed-json? ctx))
-    :put (fn [ctx] (common/malformed-json? ctx))})
   :known-content-type? (fn [ctx] (common/known-content-type ctx item/item-media-type))
   :handle-unsupported-media-type (fn [_] (common/only-accept item/item-media-type))
+  :respond-with-entity? (by-method {:put true :delete false})
+
   :processable? (by-method {
     :get true
     :delete true
     :post (fn [ctx] (common/check-input (item/valid-item-update coll-slug item-slug (:data ctx))))
     :put (fn [ctx] (common/check-input (item/valid-item-update coll-slug item-slug (:data ctx))))})
+  
+  :handle-ok (by-method {
+    :get (fn [ctx] (render-item (:item ctx)))
+    :post (fn [ctx] (render-item (:item ctx)))
+    :put (fn [ctx] (update-item-response coll-slug ctx))})
+  
+  ;; Delete an item
+  :delete! (fn [_] (item/delete-item coll-slug item-slug))
+  
+  ;; Update/Create an item
+  :new? (by-method {:post true :put false})
+  :malformed? (by-method {
+    :get false
+    :delete false
+    :post (fn [ctx] (common/malformed-json? ctx))
+    :put (fn [ctx] (common/malformed-json? ctx))})
   :can-put-to-missing? (fn [_] false) ; temporarily only use PUT for update
   :conflict? (fn [_] false)
   :put! (fn [ctx] (update-item coll-slug item-slug (:data ctx)))
-  :new? (by-method {:post true :put false})
-  :respond-with-entity? (by-method {:put true :delete false})
   :handle-not-implemented (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response)))
 
 (defresource items-list [coll-slug]

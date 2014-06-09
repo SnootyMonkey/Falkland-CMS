@@ -153,7 +153,6 @@
 
   :ring {
     :handler fcms.app/app
-    :init fcms.db.views/init
   }
 
   :main fcms.app
