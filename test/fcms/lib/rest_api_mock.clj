@@ -17,8 +17,14 @@
     :item-collection "application/vnd.collection+vnd.fcms.item+json"
     :collection "application/vnd.fcms.collection+json"))
 
-(defn base-mime-type [full-mime-type]
+(defn- base-mime-type [full-mime-type]
   (first (s/split full-mime-type #";")))
+
+(defn response-mime-type [response]
+  (base-mime-type (get-in response [:headers "Content-Type"])))
+
+(defn response-location [response]
+  (get-in response [:headers "Location"]))
 
 (defn- apply-headers
   "Add the map of headers to the ring mock request."

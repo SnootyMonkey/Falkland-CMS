@@ -47,8 +47,8 @@
           :name i
         }})]
         (:status response) => 201
-        (base-mime-type (get-in response [:headers "Content-Type"])) => (mime-type :item)
-        (get-in response [:headers "Location"]) => "/e/i"
+        (response-mime-type response) => (mime-type :item)
+        (response-location response) => "/e/i"
         (json? response) => true
         (item/get-item e i) => (contains {
           :collection e
@@ -76,8 +76,8 @@
           :name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
         }})]
         (:status response) => 201
-        (base-mime-type (get-in response [:headers "Content-Type"])) => (mime-type :item)
-        (get-in response [:headers "Location"]) => "/e/this-is-also-a-slug"
+        (response-mime-type response) => (mime-type :item)
+        (response-location response) => "/e/this-is-also-a-slug"
         (json? response) => true
         (item/get-item e "this-is-also-a-slug") => (contains {
           :collection e
