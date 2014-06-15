@@ -21,12 +21,13 @@ Falkland CMS can be used to describe relationships among items and can assist in
 
 Falkland CMS is for anyone who wants to collect, curate, organize and present the knowledge that exists in the world about a particular topic:
 
-* bibliographers and librarians
 * digital curators and archivists
 * museum and exhibit curators
 * scholars and professors
+* bibliographers and librarians
 * teachers and students
 * historical organizations
+* authors and journalists
 * collectors, hobbyists and enthusiasts
 
 ### Why use Falkland CMS?
