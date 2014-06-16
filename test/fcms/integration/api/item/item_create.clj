@@ -30,7 +30,7 @@
 ;; slug specified in body is invalid
 
 (with-state-changes [(before :facts (empty-collection-e))
-                     (after :facts (collection/delete-collection "e"))]
+                     (after :facts (collection/delete-collection e))]
 
   (facts "about creating valid new items"
 
@@ -50,18 +50,13 @@
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i"
         (json? response) => true
+        ;; Get the created item and make sure it's right
         (item/get-item e i) => (contains {
           :collection e
           :name i
           :slug i
           :version 1})
-        (collection/item-count e) => 1)
-      ;; Get the created item and make sure it's right
-      (let [item (item/get-item e i)]
-        (:slug item) => i
-        (:name item) => i
-        (:version item) => 1
-        (:collection item) => e))
+        (collection/item-count e) => 1))
 
     ;; all good, generated slug is different than the provided name - 201 Created
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":" -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "}' http://localhost:3000/c/
@@ -79,15 +74,10 @@
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/this-is-also-a-slug"
         (json? response) => true
+        ;; Get the created item and make sure it's right
         (item/get-item e "this-is-also-a-slug") => (contains {
           :collection e
           :name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
           :slug "this-is-also-a-slug"
           :version 1})
-        (collection/item-count "e") => 1)
-      ;; Get the created item and make sure it's right
-      (let [item (item/get-item e "this-is-also-a-slug")]
-        (:slug item) => "this-is-also-a-slug"
-        (:name item) => " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
-        (:version item) => 1
-        (:collection item) => e))))
+        (collection/item-count "e") => 1))))

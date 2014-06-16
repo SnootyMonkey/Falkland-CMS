@@ -1,7 +1,11 @@
 (ns fcms.lib.check
   "Namespace for utility functions used in tests to check that things are as expected."
-  (:require [clj-time.core :refer (now before? after? ago secs within?)]
+  (:require [clojure.test :refer (is)]
+            [clj-time.core :refer (now before? after? ago secs within?)]
             [clj-time.format :refer (parse)]))
+
+(defmacro check [forms]
+  `(assert (is ~forms)))
 
 (defn- time-for [timestamp]
   (if (instance? org.joda.time.DateTime timestamp)
