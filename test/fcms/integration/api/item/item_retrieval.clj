@@ -90,8 +90,7 @@
     (fact "a normal item with the wrong Accept type"
       (item/create-item e i {:description "An item."})
       (let [response (api-request :get "/e/i"
-                                  {:headers {
-                                             :Accept (mime-type :collection)
+                                  {:headers {:Accept (mime-type :collection)
                                              :Content-Type (mime-type :item)}})]
         (:status response) => 406
         (response-mime-type response) => (mime-type :text)
@@ -103,11 +102,8 @@
           (item/create-item e i {:description "An item."})
           
           ;; Retrieve the item
-          (let [response (api-request :get "/e/i" {
-                                                   :headers {
-                                                             :Accept (mime-type :item)
-                                                             :Content-Type (mime-type :item)
-                                                             }})]
+          (let [response (api-request :get "/e/i" {:headers {:Accept (mime-type :item)
+                                                             :Content-Type (mime-type :item)}})]
             (:status response) => 200
             (response-mime-type response) => (mime-type :item)
             (json? response) => true
@@ -127,10 +123,8 @@
     (fact "a normal item with the wrong Accept-Charset header"
           (item/create-item e i {:description "An item."})
           (let [response (api-request :get "/e/i" {
-                                                   :headers {
-                                                             :Accept (mime-type :item)
-                                                             :Accept-Charset "iso-8859-1"
-                                                             }})]
+                                                   :headers {:Accept (mime-type :item)
+                                                             :Accept-Charset "iso-8859-1"}})]
             (:status response) => 406
             (response-mime-type response) => (mime-type :text)
             (let [item (body-from-response response)]
@@ -139,9 +133,7 @@
 
     (fact "a collection doesn't exist"
           (let [response (api-request :get "/not-here/i" {
-                                                   :headers {
-                                                             :Accept (mime-type :item)
-                                                             }})]
+                                                   :headers {:Accept (mime-type :item)}})]
             (:status response) => 404
             (response-mime-type response) => (mime-type :text)
             (let [item (body-from-response response)]
@@ -149,9 +141,7 @@
 
     (fact "an item doesn't exist"
           (let [response (api-request :get "/c/not-here" {
-                                                   :headers {
-                                                             :Accept (mime-type :item)
-                                                             }})]
+                                                   :headers {:Accept (mime-type :item)}})]
             (:status response) => 404
             (let [item (body-from-response response)]
               (.contains item "") => true)))))
