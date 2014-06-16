@@ -8,14 +8,15 @@
             
             ; [clojure.core.incubator :refer (dissoc-in)]
             ; [fcms.lib.checks :refer (check check-not)]
-      
+
 (defn mime-type
   "Provide the mime-type for a given resources symbol."
   [res-type]
   (case res-type
     :item "application/vnd.fcms.item+json"
     :item-collection "application/vnd.collection+vnd.fcms.item+json"
-    :collection "application/vnd.fcms.collection+json"))
+    :collection "application/vnd.fcms.collection+json"
+    :text "text/plain"))
 
 (defn- base-mime-type [full-mime-type]
   (first (s/split full-mime-type #";")))
