@@ -65,7 +65,7 @@
 (def item-resource-config {
   :available-charsets [common/UTF8]
   :handle-not-found (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
-  :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
+  :handle-unprocessable-entity (fn [ctx] (common/unprocessable-entity-response (unprocessable-reason (:reason ctx))))
 })
 
 (defresource item [coll-slug item-slug]

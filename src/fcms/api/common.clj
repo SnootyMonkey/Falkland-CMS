@@ -32,6 +32,12 @@
 
 ;; ----------
 
+(defn unprocessable-entity-response [reason]
+  (ring-response
+    {:status 422
+      :body reason
+      :headers {"Content-Type" (format "text/plain;charset=%s" UTF8)}}))
+
 (defn only-accept [media-type]
   (ring-response
     {:status 406
