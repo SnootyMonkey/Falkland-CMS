@@ -13,7 +13,7 @@
 (def missing-item-response
   (ring-response
     {:status 404
-     :headers {"Content-Type" "text/plain"}}))
+     :headers {"Content-Type" (format "text/plain;charset=%s" common/UTF8)}}))
 
 (defn- get-item [coll-slug item-slug]
   (let [item (item/get-item coll-slug item-slug)]

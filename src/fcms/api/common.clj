@@ -33,13 +33,16 @@
 ;; ----------
 
 (defn only-accept [media-type]
-  (format "Acceptable media type: %s\nAcceptable charset: %s" media-type UTF8))
+  (ring-response
+    {:status 406
+     :body (format "Acceptable media type: %s\nAcceptable charset: %s" media-type UTF8)
+     :headers {"Content-Type" (format "text/plain;charset=%s" UTF8)}}))
 
 (def missing-collection-response
   (ring-response
     {:status 404
      :body "Collection not found."
-     :headers {"Content-Type" "text/plain"}}))
+     :headers {"Content-Type" (format "text/plain;charset=%s" UTF8)}}))
 
 (defn location-response [path-parts body media-type]
   (ring-response

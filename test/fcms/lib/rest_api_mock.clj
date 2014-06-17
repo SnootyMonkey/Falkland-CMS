@@ -5,9 +5,6 @@
             [fcms.app :refer (app)]
             [ring.mock.request :refer (request body content-type header)]
             [cheshire.core :as json]))
-            
-            ; [clojure.core.incubator :refer (dissoc-in)]
-            ; [fcms.lib.checks :refer (check check-not)]
 
 (defn mime-type
   "Provide the mime-type for a given resources symbol."
@@ -37,13 +34,15 @@
 
 (defn api-request
   "Pretends to execute a REST API request using ring mock."
-  [method url options]
+  ([method url options] (api-request method url options true))
+  ([method url options include-charset?]
   (let [initial-request (request method url)
-        headers (merge (:headers options) {"Accept-Charset" "utf-8"})
-        headers-request (apply-headers initial-request headers)
+        headers (:headers options)
+        headers-charset (if include-charset? (merge {:Accept-Charset "utf-8"} headers) headers)
+        headers-request (apply-headers initial-request headers-charset)
         body-value (:body options)
         body-request (if body-value (body headers-request (json/generate-string body-value)) headers-request)]
-    (app body-request)))
+    (app body-request))))
 
 (defn body-from-response
   "Return just the parsed JSON body from an API REST response, or return the raw result
@@ -57,4 +56,10 @@
       (:body resp-map))))
 
 (defn json? [resp]
+  "True if the body of the response contains JSON."
   (map? (body-from-response resp)))
+
+(defn body?
+  "True if the body of the response contains anything."
+  [resp-map]
+  (not (s/blank? (:body resp-map))))
