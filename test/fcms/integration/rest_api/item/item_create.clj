@@ -1,4 +1,4 @@
-(ns fcms.integration.api.item.item-create
+(ns fcms.integration.rest-api.item.item-create
   (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
             [fcms.lib.rest-api-mock :refer :all]
@@ -36,7 +36,7 @@
                                 {:Accept (mime-type :item)
                                  :Accept-Charset "utf-8"
                                  :Content-Type (mime-type :item)}
-                                :body body}))
+                                 :body body}))
   ([headers body]
      (api-request :post "/e/" {:headers headers
                                 :body body})))
@@ -45,6 +45,7 @@
                      (after :facts (collection/delete-collection e))]
 
   (facts "about creating valid new items"
+
     ;; all good, no slug - 201 Created
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
     (fact "when no slug is specified"
@@ -317,6 +318,7 @@
           (:status response) => 200
           (json? response) => true)
         (collection/item-count e) => 1))
+
     ;; wrong charset - 406 Not Acceptable
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms
     (fact "create an item the wrong Accept-Charset header"
@@ -419,6 +421,7 @@
         (let [body (body-from-response response)]
           (.contains body "Slug already used in collection.") => true)
         (collection/item-count e) => 1))
+
     ;; slug specified in body is invalid - 422 Unprocessable Entity
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"i", "slug":"I i"}' http://localhost:3000/c/
     (fact "create an item with a slug that's invalid"
