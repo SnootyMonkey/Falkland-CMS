@@ -1,4 +1,4 @@
-(ns fcms.integration.api.collection.collection-retrieval
+(ns fcms.integration.rest-api.collection.collection-retrieval
   (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
             [fcms.lib.rest-api-mock :refer :all]

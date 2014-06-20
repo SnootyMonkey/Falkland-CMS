@@ -1,4 +1,4 @@
-(ns fcms.integration.api.item.item-retrieval
+(ns fcms.integration.rest-api.item.item-retrieval
   "Integration tests for retrieving items with the REST API."
   (:require
     [clojure.walk :refer (keywordize-keys)]
