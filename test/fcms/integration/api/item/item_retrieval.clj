@@ -49,7 +49,7 @@
         (:slug item) => i
         (:collection item) => e
         (:description item) => "An item."
-        (:version item) = 1
+        (:version item) => 1
         (instance? timestamp (parse (:created-at item))) => true
         (about-now? (:created-at item)) => true
         (:created-at item) => (:updated-at item)

@@ -12,6 +12,8 @@
 (def c "c")
 (def e "e")
 (def i "i")
+(def one "one")
+(def many "many")
 (def slug "slug")
 
 (def t "t")
