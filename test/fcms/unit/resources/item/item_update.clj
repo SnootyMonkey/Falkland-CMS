@@ -13,7 +13,7 @@
 
 ;; ----- Tests -----
 
-(with-state-changes [(before :facts (empty-collection-e))
+(with-state-changes [(before :facts (reset-collection e))
                      (after :facts (collection/delete-collection e))]
 
   (facts "about checking validity of invalid item updates"

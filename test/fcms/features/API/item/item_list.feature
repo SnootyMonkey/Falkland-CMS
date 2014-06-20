@@ -16,7 +16,7 @@ Feature: Listing items with the REST API
 	Background:
 	  Given I had an empty collection "empty"
 	  And the collection "empty" had an item count of 0
-	  
+
 	  Given I had a collection "one" with the following item:
 	  |slug				|name        	|description			|
 	  | i 				| i 					| this is an item	|
@@ -30,7 +30,7 @@ Feature: Listing items with the REST API
 	  | i-3 	| i 3					| this is an item	3																																																																	|
 	  | i-4 	| i 4					| this is an item	4																																																																	|
 	  And the collection "many" had an item count of 5
-	  
+
   # empty collection - 200 OK
   # curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/empty/
   Scenario: List items from an empty collection
@@ -112,7 +112,7 @@ Feature: Listing items with the REST API
 
 	# wrong accept charset - 406 Not Acceptable
 	# curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: iso-8859-1" -X GET http://localhost:3000/one/
-  Scenario: Attempt to list an item with the wrong Accept-Charset header 
+  Scenario: Attempt to list an item with the wrong Accept-Charset header
 	  When I have a "GET" request to URL "/one/"
 	  And I set the "Accept-Charset" header to "iso-8859-1"
 	  And I accept an "item collection"

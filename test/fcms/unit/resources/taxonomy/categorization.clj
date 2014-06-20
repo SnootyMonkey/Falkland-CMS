@@ -22,7 +22,7 @@
 
 ;; ----- Tests -----
 
-(with-state-changes [(before :facts (do (empty-collection-e) (existing-taxonomy-t)))
+(with-state-changes [(before :facts (do (reset-collection e) (existing-taxonomy-t)))
 										 (after :facts (collection/delete-collection e))]
 
 	(facts "about item categorization failures"

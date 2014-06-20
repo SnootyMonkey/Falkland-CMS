@@ -5,7 +5,7 @@
             [fcms.resources.collection :as collection]
             [fcms.resources.item :refer :all]))
 
-(with-state-changes [(before :facts (empty-collection-e))
+(with-state-changes [(before :facts (reset-collection e))
                      (after :facts (collection/delete-collection e))]
 
   (facts "about item retrieval"
