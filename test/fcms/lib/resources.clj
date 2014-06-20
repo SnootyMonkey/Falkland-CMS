@@ -12,6 +12,8 @@
 (def c "c")
 (def e "e")
 (def i "i")
+(def one "one")
+(def many "many")
 (def slug "slug")
 
 (def t "t")
@@ -21,6 +23,7 @@
 (def unicode-name "私はガラスを食")
 (def mixed-name (str "test " unicode-name))
 
+(def ascii-description "this is an item")
 (def unicode-description "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €")
 
 (def foo "foo")
@@ -32,9 +35,9 @@
 
 ;; ----- Collections -----
 
-(defn empty-collection-e []
-  (collection/delete-collection e)
-  (collection/create-collection e))
+(defn reset-collection [collection]
+  (collection/delete-collection collection)
+  (collection/create-collection collection))
 
 ;; ----- Items -----
 

@@ -5,8 +5,8 @@
             [fcms.resources.collection :refer :all]
             [fcms.resources.common :as common]))
 
-  (with-state-changes [(before :facts (empty-collection-e))
-                     (after :facts (doseq [coll-slug [e c slug "1" "test" "test-this"]] (delete-collection coll-slug)))]
+  (with-state-changes [(before :facts (reset-collection e))
+                       (after :facts (doseq [coll-slug [e c slug "1" "test" "test-this"]] (delete-collection coll-slug)))]
 
   (facts "about validity checks of invalid new collections"
 
