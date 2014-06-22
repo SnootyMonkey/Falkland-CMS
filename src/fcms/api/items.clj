@@ -71,11 +71,11 @@
 (defresource item [coll-slug item-slug]
   item-resource-config
   :available-media-types [item/item-media-type]
-  :handle-not-acceptable (fn [_] (common/only-accept item/item-media-type))
+  :handle-not-acceptable (fn [_] (common/only-accept 406 item/item-media-type))
   :allowed-methods [:get :put :delete]
   :exists? (fn [_] (get-item coll-slug item-slug))
-  :known-content-type? (fn [ctx] (common/known-content-type ctx item/item-media-type))
-  :handle-unsupported-media-type (fn [_] (common/only-accept item/item-media-type))
+  :known-content-type? (fn [ctx] (common/known-content-type? ctx item/item-media-type))
+  :handle-unsupported-media-type (fn [_] (common/only-accept 415 item/item-media-type))
   :respond-with-entity? (by-method {:put true :delete false})
 
   :processable? (by-method {
@@ -110,8 +110,8 @@
     :get [item/item-collection-media-type]
     :post [item/item-media-type]})
   :handle-not-acceptable (by-method {
-    :get (fn [_] (common/only-accept item/item-collection-media-type))
-    :post (fn [_] (common/only-accept item/item-media-type))})
+    :get (fn [_] (common/only-accept 406 item/item-collection-media-type))
+    :post (fn [_] (common/only-accept 406 item/item-media-type))})
   :allowed-methods [:get :post]
   :exists? (fn [_] (get-items coll-slug))
   ;; Get a list of items
@@ -121,11 +121,11 @@
     :get false
     :post (fn [ctx] (common/malformed-json? ctx))})
   :known-content-type? (by-method {
-    :get (fn [ctx] (common/known-content-type ctx item/item-collection-media-type))
-    :post (fn [ctx] (common/known-content-type ctx item/item-media-type))})
+    :get (fn [ctx] (common/known-content-type? ctx item/item-collection-media-type))
+    :post (fn [ctx] (common/known-content-type? ctx item/item-media-type))})
   :handle-unsupported-media-type (by-method {
-    :get (fn [_] (common/only-accept item/item-collection-media-type))
-    :post (fn [_] (common/only-accept item/item-media-type))})
+    :get (fn [_] (common/only-accept 415 item/item-collection-media-type))
+    :post (fn [_] (common/only-accept 415 item/item-media-type))})
   :processable? (by-method {
     :get true
     :post (fn [ctx] (common/check-input (item/valid-new-item coll-slug (get-in ctx [:data :name]) (:data ctx))))})

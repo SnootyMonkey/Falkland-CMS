@@ -38,9 +38,9 @@
       :body reason
       :headers {"Content-Type" (format "text/plain;charset=%s" UTF8)}}))
 
-(defn only-accept [media-type]
+(defn only-accept [status media-type]
   (ring-response
-    {:status 406
+    {:status status
      :body (format "Acceptable media type: %s\nAcceptable charset: %s" media-type UTF8)
      :headers {"Content-Type" (format "text/plain;charset=%s" UTF8)}}))
 
@@ -71,10 +71,10 @@
       (debug "Request body not processable as JSON: " e)
       malformed)))
 
-(defn known-content-type
+(defn known-content-type?
   [ctx content-type]
-  (if-let [request-type (get-in ctx [:request :content-type])]
-    (= request-type content-type)
+  (if-let [request-type (get-in ctx [:request :headers "content-type"])]
+    (.startsWith content-type request-type)
     true))
 
 (defn check-input [check]

@@ -34,15 +34,14 @@
 
 (defn api-request
   "Pretends to execute a REST API request using ring mock."
-  ([method url options] (api-request method url options true))
-  ([method url options include-charset?]
+  [method url options]
   (let [initial-request (request method url)
         headers (:headers options)
-        headers-charset (if include-charset? (merge {:Accept-Charset "utf-8"} headers) headers)
+        headers-charset (if (:skip-charset options) headers (merge {:Accept-Charset "utf-8"} headers))
         headers-request (apply-headers initial-request headers-charset)
         body-value (:body options)
-        body-request (if body-value (body headers-request (json/generate-string body-value)) headers-request)]
-    (app body-request))))
+        body-request (if (:skip-body options) headers-request (body headers-request (json/generate-string body-value)))]
+    (app body-request)))
 
 (defn body-from-response
   "Return just the parsed JSON body from an API REST response, or return the raw result

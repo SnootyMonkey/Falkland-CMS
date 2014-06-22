@@ -21,11 +21,11 @@
 (defresource collection [coll-slug]
     collection-resource-config
     :available-media-types [collection/collection-media-type]
-    :handle-not-acceptable (fn [_] (common/only-accept collection/collection-media-type))
+    :handle-not-acceptable (fn [_] (common/only-accept 406 collection/collection-media-type))
     :allowed-methods [:get :put :delete]
     :exists? (fn [_] (get-collection coll-slug))
-    :known-content-type? (fn [ctx] (common/known-content-type ctx collection/collection-media-type))
-    :handle-unsupported-media-type (fn [_] (common/only-accept collection/collection-media-type))
+    :known-content-type? (fn [ctx] (common/known-content-type? ctx collection/collection-media-type))
+    :handle-unsupported-media-type (fn [_] (common/only-accept 415 collection/collection-media-type))
     :respond-with-entity? (by-method {:put true :delete false})
 
   :processable? (by-method {
