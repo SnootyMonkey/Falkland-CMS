@@ -64,18 +64,6 @@ Falkland CMS is *not* for everyone, if these describe you, you should probably l
 * You need fine granular security
 * You are trying to organize, curate and present a very small collection (just dozens of items)
 
-### A word about standards.
-
-If there is one thing the world of digital cataloging is not short of, its acronyms and standards. It seems there is enough for everyone to have a standard of their own!
-
-Standards are very important... and very plentiful. Falkland CMS remains as flexible as possible so you can use the metadata and interoperability standards most relevant to you. At the same time, Falkland CMS takes an informed, pragmatic and opinionated approach, using widely supported general standards as defaults. If you aren't a card carrying metadata geek, you won't need to make confusing choices from the dizzying amount of potentially relevant standards to utilize Falkland CMS.
-
-### Who is using Falkland CMS?
-
-Falkland CMS was created to support [Falklandsophile](http://falklandsophile.com), a complete guide to resources about the Falkland Islands. This is where the name for Falkland CMS came from.
-
-If you're using Falkland CMS, please drop me a note and I'll link to you here.
-
 ### How is Falkland CMS Different than a Content Management System?
 
 A traditional CMS or [WCMS (web content management system)](http://en.wikipedia.org/wiki/Web_content_management_system) is a system for publishing website content. Key features of a WCMS are:
@@ -90,6 +78,18 @@ Falkland CMS has these foundational capabilities, but is not focused on the crea
 Falkland CMS supports authoring content, but this content is [metadata](http://en.wikibooks.org/wiki/Open_Metadata_Handbook/Introduction) about existing resources, intended to provide context for the collection, organization, curation, presentation and exhibition of collected resources. You wouldn't run a daily on-line news site with Falkland CMS, like you would with a content management system, but you would use Falkland CMS to collect, curate and present historical or current news reports about a particular topic.
 
 Because of this difference of focus, the acronym that is used for Falkland CMS is Curation Management System. It's not an acronym we use, but you could also consider Falkland CMS to be a metadata management system (MMS).
+
+### A word about standards.
+
+If there is one thing the world of digital cataloging is not short of, its acronyms and standards. It seems there are enough for everyone to have a standard of their own!
+
+Standards are very important... and very plentiful. Falkland CMS is flexible so you can use the metadata and interoperability standards most relevant to you. At the same time, Falkland CMS takes an informed, pragmatic and opinionated approach, using widely supported general standards as defaults. If you aren't a card carrying metadata geek, you won't need to make confusing choices from the dizzying amount of potentially relevant standards just to utilize Falkland CMS.
+
+### Who is using Falkland CMS?
+
+Falkland CMS was created to support [Falklandsophile](http://falklandsophile.com), a complete guide to resources about the Falkland Islands. This is where the name for Falkland CMS came from.
+
+If you're using Falkland CMS, please drop me a note and I'll link to you here.
 
 ---
 
