@@ -30,21 +30,21 @@
 (defn- item-location-response [coll-slug item]
   (common/location-response [coll-slug (:slug item)] (render-item item) item/item-media-type))
 
+(defn- unprocessable-reason [reason]
+  (match reason
+    :bad-collection common/missing-collection-response
+    :bad-item missing-item-response
+    :no-name (common/unprocessable-entity-response "Name is required.")
+    :property-conflict (common/unprocessable-entity-response "A reserved property was used.")
+    :slug-conflict (common/unprocessable-entity-response "Slug already used in collection.")
+    :invalid-slug (common/unprocessable-entity-response"Invalid slug.")
+    :else (common/unprocessable-entity-response "Not processable.")))
+
 ;; ----- Create new item -----
 
 (defn- create-item [coll-slug item]
   (when-let [item (item/create-item coll-slug (:name item) item)]
     {:item item}))
-
-(defn- unprocessable-reason [reason]
-  (match reason
-    :bad-collection common/missing-collection-response
-    :bad-item missing-item-response
-    :no-name "Name is required."
-    :property-conflict "A reserved property was used."
-    :slug-conflict "Slug already used in collection."
-    :invalid-slug "Invalid slug."
-    :else "Not processable."))
 
 ;; ----- Update item -----
 
@@ -65,7 +65,7 @@
 (def item-resource-config {
   :available-charsets [common/UTF8]
   :handle-not-found (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
-  :handle-unprocessable-entity (fn [ctx] (common/unprocessable-entity-response (unprocessable-reason (:reason ctx))))
+  :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
 })
 
 (defresource item [coll-slug item-slug]
@@ -114,8 +114,10 @@
     :post (fn [_] (common/only-accept 406 item/item-media-type))})
   :allowed-methods [:get :post]
   :exists? (fn [_] (get-items coll-slug))
+
   ;; Get a list of items
   :handle-ok (fn [ctx] (render-items coll-slug (:items ctx)))
+
   ;; Create new item
   :malformed? (by-method {
     :get false
