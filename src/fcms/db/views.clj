@@ -1,21 +1,26 @@
-;; CouchDB Views
 (ns fcms.db.views
+  "Initialize CouchDB with the views needed for Falkland CMS."
   (:require [com.ashafa.clutch :as clutch]
             [fcms.resources.common :as common]))
 
 ;; http://localhost:5984/falklandcms/_design/fcms/_view/all
-;; http://localhost:5984/falklandcms/_design/collection/_view/all?include_docs=true
+;; http://localhost:5984/falklandcms/_design/fcms/_view/all?include_docs=true
 ;; http://localhost:5984/falklandcms/_design/fcms/_view/all?key="id"
+;; http://localhost:5984/falklandcms/_design/fcms/_view/all?key="id"&include_docs=true
 ;; http://localhost:5984/falklandcms/_design/fcms/_view/all-by-type
-;; http://localhost:5984/falklandcms/_design/collection/_view/all-by-type?include_docs=true
+;; http://localhost:5984/falklandcms/_design/fcms/_view/all-by-type?include_docs=true
 ;; http://localhost:5984/falklandcms/_design/fcms/_view/all-by-type?key=["type", "id"]
+;; http://localhost:5984/falklandcms/_design/fcms/_view/all-by-type?key=["type", "id"]&include_docs=true
+;; http://localhost:5984/falklandcms/_design/fcms/_view/all-by-rev
 (defn- fcms-views []
   (clutch/save-view "fcms"
     (clutch/view-server-fns :javascript {
       :all {:map "function(doc) {
         if (['collection', 'item', 'taxonomy'].indexOf(doc.data.type) >= 0) emit(doc._id, doc.data.type) }"}
       :all-by-type {:map "function(doc) {
-        if (['collection', 'item', 'taxonomy'].indexOf(doc.data.type) >= 0) emit([doc.data.type, doc._id], nil) }"}})))
+        if (['collection', 'item', 'taxonomy'].indexOf(doc.data.type) >= 0) emit([doc.data.type, doc._id], null) }"}
+      :all-by-rev {:map "function(doc) {
+        if (['collection', 'item', 'taxonomy'].indexOf(doc.data.type) >= 0) emit(null, doc._rev) }"}})))
 
 ;; http://localhost:5984/falklandcms/_design/collection/_view/all-ids-by-slug
 ;; http://localhost:5984/falklandcms/_design/collection/_view/all-ids-by-slug?include_docs=true
@@ -123,14 +128,14 @@
         :reduce "_count"}})))
 
 (defn init []
-  (println "FCMS: Initializing database")
+  (println "FCMS: Initializing database...")
   (clutch/with-db (common/db)
-     (fcms-views)
-     (collection-views)
-     (resource-views)
-     (item-views)
-     (taxonomy-views))
-  (println "FCMS: Database initialization complete"))
+     (fcms-views) (print ".")
+     (collection-views) (print ".")
+     (resource-views) (print ".")
+     (item-views) (print ".")
+     (taxonomy-views) (print "."))
+  (println "\nFCMS: Database initialization complete."))
 
 (defn -main []
   (init))

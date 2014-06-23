@@ -1,6 +1,6 @@
 (ns fcms.api.common
   (:require [taoensso.timbre :refer (debug info warn error fatal spy)]
-            [clojure.string :refer (join)]
+            [clojure.string :refer (join split)]
             [cheshire.core :as json]
             [liberator.core :refer (run-resource)]
             [liberator.representation :refer (ring-response)]))
@@ -74,7 +74,7 @@
 (defn known-content-type?
   [ctx content-type]
   (if-let [request-type (get-in ctx [:request :headers "content-type"])]
-    (.startsWith content-type request-type)
+    (= (first (split content-type #";")) (first (split request-type #";")))
     true))
 
 (defn check-input [check]
