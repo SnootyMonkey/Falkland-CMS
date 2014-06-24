@@ -1,4 +1,5 @@
 (ns fcms.integration.rest-api.item.item-create
+  "Integration tests for creating items with the REST API."
   (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
             [fcms.lib.rest-api-mock :refer :all]
@@ -6,10 +7,8 @@
             [fcms.resources.collection-resource :as resource]
             [fcms.resources.item :as item]))
 
-;; Creating items with the REST API
-
 ;; The system should store newly created valid items into a collection and handle the following scenarios:
-
+;;
 ;; POST
 ;; all good - no slug
 ;; all good - generated slug is different than the provided name
@@ -30,18 +29,24 @@
 ;; slug specified in body is already used
 ;; slug specified in body is invalid
 
+;; ----- Utilities -----
+
 (defn- create-item-with-api
   "Makes an API request to create the item and returns the response."  
   ([body]
-     (api-request :post "/e/" {:headers {
-                                :Accept (mime-type :item)
-                                :Content-Type (mime-type :item)}
-                               :body body}))
+     (api-request :post "/e/" {
+      :headers {
+        :Accept (mime-type :item)
+        :Content-Type (mime-type :item)}
+        :body body}))
   ([headers body]
-     (api-request :post "/e/" {:headers headers
-                               :body body})))
+     (api-request :post "/e/" {
+        :headers headers
+        :body body})))
 
-(with-state-changes [(before :facts (empty-collection-e))
+;; ----- Tests -----
+
+(with-state-changes [(before :facts (reset-collection e))
                      (after :facts (collection/delete-collection e))]
 
   (facts "about creating valid new items"
@@ -92,12 +97,11 @@
         (response-location response) => "/e/i"
         (json? response) => true
         ;; Get the created item and make sure it's right
-        (item/get-item e i) => (contains
-                                 {
-                                   :collection e
-                                   :name i
-                                   :slug i
-                                   :version 1})
+        (item/get-item e i) => (contains {
+          :collection e
+          :name i
+          :slug i
+          :version 1})
         (collection/item-count e) => 1)
       ;; Create the second item with the same name
       (let [response (create-item-with-api {:name i})]
@@ -105,12 +109,11 @@
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i-1"
         (json? response) => true
-        (item/get-item e "i-1") => (contains
-                                 {
-                                   :collection e
-                                   :name i
-                                   :slug "i-1"
-                                   :version 1})
+        (item/get-item e "i-1") => (contains {
+          :collection e
+          :name i
+          :slug "i-1"
+          :version 1})
         (collection/item-count e) => 2)
       ;; Create the third item with the same name
       (let [response (create-item-with-api {:name i})]
@@ -118,12 +121,11 @@
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i-2"
         (json? response) => true
-        (item/get-item e "i-2") => (contains
-                                 {
-                                   :collection e
-                                   :name i
-                                   :slug "i-2"
-                                   :version 1})
+        (item/get-item e "i-2") => (contains {
+          :collection e
+          :name i
+          :slug "i-2"
+          :version 1})
         (collection/item-count e) => 3))
 
     ;; all good, with slug - 201 Created
@@ -135,12 +137,11 @@
         (response-location response) => "/e/another-i"
         (json? response) => true
         ;; Get the created item and make sure it's right
-        (item/get-item e "another-i") => (contains
-                                           {
-                                             :collection e
-                                             :name i
-                                             :slug "another-i"
-                                             :version 1})
+        (item/get-item e "another-i") => (contains {
+         :collection e
+         :name i
+         :slug "another-i"
+         :version 1})
         (collection/item-count e) => 1))
 
     ;; all good, unicode in the body - 201 Created
@@ -152,12 +153,11 @@
         (response-location response) => "/e/i"
         (json? response) => true
         ;; Get the created item and make sure it's right
-        (item/get-item e i) => (contains
-                                 {
-                                   :collection e
-                                   :name unicode-name
-                                   :slug i
-                                   :version 1})
+        (item/get-item e i) => (contains {
+          :collection e
+          :name unicode-name
+          :slug i
+          :version 1})
         (collection/item-count e) => 1))
 
     ;; no accept type - 201 Created
