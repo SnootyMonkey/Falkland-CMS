@@ -1,4 +1,4 @@
-; (ns fcms.unit.resources.taxonomy.categories-validation
+; (ns fcms.unit.resources.taxonomy.category-validation
 ;   (:require [clojure.test :refer :all]
 ;             [midje.sweet :refer :all]
 ;             [fcms.resources.taxonomy :refer :all]))

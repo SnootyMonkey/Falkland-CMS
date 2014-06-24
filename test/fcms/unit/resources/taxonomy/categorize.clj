@@ -1,4 +1,4 @@
-(ns fcms.unit.resources.taxonomy.categorization
+(ns fcms.unit.resources.taxonomy.categorize
   (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
             [fcms.resources.collection :as collection]
