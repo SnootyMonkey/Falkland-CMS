@@ -41,7 +41,7 @@
      (api-request :post "/e/" {:headers headers
                                :body body})))
 
-(with-state-changes [(before :facts (empty-collection-e))
+(with-state-changes [(before :facts (reset-collection e))
                      (after :facts (collection/delete-collection e))]
 
   (facts "about creating valid new items"

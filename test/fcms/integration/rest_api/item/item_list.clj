@@ -1,4 +1,4 @@
-(ns fcms.integration.api.item.item-list
+(ns fcms.integration.rest-api.item.item-list
   "Integration tests for listing items with the REST API."
   (:require [midje.sweet :refer :all]
             [clj-time.format :refer (parse)]
