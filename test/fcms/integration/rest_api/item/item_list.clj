@@ -7,44 +7,27 @@
             [fcms.resources.collection :as collection]
             [fcms.resources.item :as item]))
 
-;; Utils
+;; The system should return a summary of the items stored in a collection and handle the following scenarios:
+;;
+;; GET
+;; all good, empty collection
+;; all good, 1 item
+;; all good, many items
+;; all good, force pagination
+;; all good, additional page
+;; no accept
+;; wrong accept
+;; no accept charset
+;; wrong accept charset
+;; collection doesn't exist
+;; using an invalid page
+
+;; ----- Utilities -----
+
 (defn- items-from-body [body]
   (-> body
       :collection
       :items))
-
-;; Listing items with the REST API
-
-;;   The system should return a summary of the items stored in a collection and handle the following scenarios:
-
-;;   empty collection
-;;   all good, 1 item
-;;   all good, many items
-;;   all good, force pagination
-;;   all good, additional page
-;;     no accept
-;;     wrong accept
-;;     no accept charset
-;;     wrong accept charset
-;;     collection doesn't exist
-
-;; Background:
-;;   Given I had an empty collection "empty"
-;;   And the collection "empty" had an item count of 0
-
-;;   Given I had a collection "one" with the following item:
-;;   |slug				|name        	|description			|
-;;   | i 				| i 					| this is an item	|
-;;   And the collection "one" had an item count of 1
-
-;;   Given I had a collection "many" with the following items:
-;;   |slug		|name        	|description																																																																				|
-;;   | i 		| i 					| this is an item																																																																		|
-;;   | uni-i	| 私はガラスを食	| er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €|
-;;   | i-2 	| i 2					| this is an item 2																																																																	|
-;;   | i-3 	| i 3					| this is an item	3																																																																	|
-;;   | i-4 	| i 4					| this is an item	4																																																																	|
-;;   And the collection "many" had an item count of 5
 
 (defn- create-collection-one-items []
   (item/create-item one i {:slug i :description ascii-description}))
@@ -68,167 +51,173 @@
   (collection/delete-collection one)
   (collection/delete-collection many))
 
+;; ----- Tests -----
+
 (with-state-changes [(before :facts (setup))
                      (after :facts (teardown))]
 
   (facts "about listing items"
-         ;; empty collection - 200 OK
-         ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/empty/
-         (fact "from an empty collection"
-               (let [response (api-request :get "/e/"
-                                           {:headers
-                                            {:Accept (mime-type :item-collection)
-                                             :Accept-Charset "utf-8"}})]
-                 (:status response) => 200
-                 (response-mime-type response) => (mime-type :item-collection)
-                 (json? response) => true
-                 (collection/item-count e) => 0))
 
-         ;; all good, 1 item - 200 OK
-         ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/one/
-         (fact "from a collection"
-               (let [response (api-request :get "/one/"
-                                           {:headers
-                                            {:Accept (mime-type :item-collection)
-                                             :Accept-Charset "utf-8"}})]
-                 (:status response) => 200
-                 (response-mime-type response) => (mime-type :item-collection)
-                 (json? response) => true
-                 (collection/item-count one) => 1
-                 (let [body (body-from-response response)
-                       item (first (items-from-body body))]
-                   (:name item) => i
-                   (:slug item) => i
-                   (:description item) => ascii-description
-                   (:version item) => 1
-                   (:collection item) => one
-                   (instance? timestamp (parse (:created-at item))) => true)))
-         ;; all good, many items - 200 OK
-         ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/one/
-         (fact "from a collection with many items"
-               (let [response (api-request :get "/many/"
-                                           {:headers
-                                            {:Accept (mime-type :item-collection)
-                                             :Accept-Charset "utf-8"}})]
-                 (:status response) => 200
-                 (response-mime-type response) => (mime-type :item-collection)
-                 (json? response) => true
-                 (collection/item-count many) => 5
-                 (let [body (body-from-response response)
-                       i-1 (first (items-from-body body))
-                       uni-i (second (items-from-body body))
-                       i-2 (nth (items-from-body body) 2)
-                       i-3 (nth (items-from-body body) 3)
-                       i-4 (nth (items-from-body body) 4)]
-                   ;; i-1
-                   i-1 => (contains {
-                                     :collection many
-                                     :name i
-                                     :slug i
-                                     :description ascii-description
-                                     :version 1})
-                   (instance? timestamp (parse (:created-at i-1))) => true
-                   ;; uni-i
-                   uni-i => (contains {
-                                       :collection many
-                                       :name unicode-name
-                                       :slug "uni-i"
-                                       :description unicode-description
-                                       :version 1})
-                   (instance? timestamp (parse (:created-at uni-i))) => true
-                   i-2 => (contains {
-                                     :collection many
-                                     :name "i 2"
-                                     :slug "i-2"
-                                     :description (str ascii-description " 2")
-                                     :version 1})
-                   (instance? timestamp (parse (:created-at i-2))) => true
-                   i-3 => (contains {
-                                     :collection many
-                                     :name "i 3"
-                                     :slug "i-3"
-                                     :description (str ascii-description " 3")
-                                     :version 1})
-                   (instance? timestamp (parse (:created-at i-3))) => true
-                   i-4 => (contains {
-                                     :collection many
-                                     :name "i 4"
-                                     :slug "i-4"
-                                     :description (str ascii-description " 4")
-                                     :version 1})
-                   (instance? timestamp (parse (:created-at i-4))) => true)))
-         
-         ;; TODO
-         ;; all good, force pagination
-         ;; all good, additional page
+    ;; all good, empty collection - 200 OK
+    ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/empty/
+    (fact "from an empty collection"
+      (let [response (api-request :get "/e/" {:headers {:Accept (mime-type :item-collection)}})]
+        (:status response) => 200
+        (response-mime-type response) => (mime-type :item-collection)
+        (json? response) => true
+        (items-from-body (body-from-response response)) => []))
 
-         ;; no accept - 200 OK
-         ;; curl -i --header "Accept-Charset: utf-8" -X GET http://localhost:3000/one/
-         (fact "without using an an Accept header"
-               (let [response (api-request :get "/one/"
-                                           {:headers {:Accept-Charset "utf-8"}})]
-                 (:status response) => 200
-                 (response-mime-type response) => (mime-type :item-collection)
-                 (json? response) => true
-                 (let [body (body-from-response response)
-                       item (first (items-from-body body))]
-                   item => (contains {
-                                      :collection one
-                                      :name i
-                                      :slug i
-                                      :description ascii-description
-                                      :version 1})
-                   (instance? timestamp (parse (:created-at item))) => true)))
+    ;; all good, 1 item - 200 OK
+    ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/one/
+    (fact "from a collection with one item"
+      (let [response (api-request :get "/one/" {:headers {:Accept (mime-type :item-collection)}})
+            body (body-from-response response)
+            items (items-from-body body)
+            item (first items)]
+          (:status response) => 200
+          (response-mime-type response) => (mime-type :item-collection)
+          (json? response) => true
+          (collection/item-count one) => 1
+          (count items) => 1
+          (:name item) => i
+          (:slug item) => i
+          (:description item) => ascii-description
+          (:version item) => 1
+          (:collection item) => one
+          (instance? timestamp (parse (:created-at item))) => true))
 
-         ;; wrong accept - 406 Not Acceptable
-         ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/one/
-         (fact "with the wrong Accept header"
-               (let [response (api-request :get "/one/"
-                                           {:headers {:Accept (mime-type :item)
-                                                      :Accept-Charset "utf-8"}})]
-                 (:status response) => 406
-                 (response-mime-type response) => (mime-type :text)
-                 (let [body (body-from-response response)]
-                   (.contains body "Acceptable media type: application/vnd.collection+vnd.fcms.item+json;version=1") => true
-                   (.contains body "Acceptable charset: utf-8") => true)))
+    ;; all good, many items - 200 OK
+    ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/one/
+    (fact "from a collection with many items"
+      (let [response (api-request :get "/many/" {:headers {:Accept (mime-type :item-collection)}})
+            body (body-from-response response)
+            items (items-from-body body)
+            i-1 (first items)
+            uni-i (second items)
+            i-2 (nth items 2)
+            i-3 (nth items 3)
+            i-4 (nth items 4)]
+        (:status response) => 200
+        (response-mime-type response) => (mime-type :item-collection)
+        (json? response) => true
+        (collection/item-count many) => 5
+        (count items) => 5
+        i-1 => (contains {
+          :collection many
+          :name i
+          :slug i
+          :description ascii-description
+          :version 1})
+        (instance? timestamp (parse (:created-at i-1))) => true
+        uni-i => (contains {
+          :collection many
+          :name unicode-name
+          :slug "uni-i"
+          :description unicode-description
+          :version 1})
+        (instance? timestamp (parse (:created-at uni-i))) => true
+        i-2 => (contains {
+          :collection many
+          :name "i 2"
+          :slug "i-2"
+          :description (str ascii-description " 2")
+          :version 1})
+        (instance? timestamp (parse (:created-at i-2))) => true
+        i-3 => (contains {
+          :collection many
+          :name "i 3"
+          :slug "i-3"
+          :description (str ascii-description " 3")
+          :version 1})
+        (instance? timestamp (parse (:created-at i-3))) => true
+        i-4 => (contains {
+          :collection many
+          :name "i 4"
+          :slug "i-4"
+          :description (str ascii-description " 4")
+          :version 1})
+        (instance? timestamp (parse (:created-at i-4))) => true))
 
+    ;; all good, force pagination - 200 OK
+    (future-fact "when forcing pagination")
 
-         ;; no accept charset - 200 OK
-         ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" -X GET http://localhost:3000/one/
-         (fact "without the Accept-Charset header"
-               (let [response (api-request :get "/one/"
-                                           {:headers {:Accept (mime-type :item-collection)}})]
-                 (:status response) => 200
-                 (response-mime-type response) => (mime-type :item-collection)
-                 (json? response) => true
-                 (collection/item-count one) => 1
-                 (let [body (body-from-response response)
-                       item (first (items-from-body body))]
-                   (:name item) => i
-                   (:slug item) => i
-                   (:description item) => ascii-description
-                   (:version item) => 1
-                   (:collection item) => one
-                   (instance? timestamp (parse (:created-at item))) => true)))
+    ;; all good, force pagination and using a subsequent page - 200 OK
+    (future-fact "when forcing pagination and using a subsequent page")
 
-         ;; wrong accept charset - 406 Not Acceptable
-         ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: iso-8859-1" -X GET http://localhost:3000/one/
-         (fact "with the wrong Accept-Charset header"
-               (let [response (api-request :get "/one/"
-                                           {:headers {:Accept (mime-type :item-collection)
-                                                      :Accept-Charset "iso-8859-1"}})]
-                 (:status response) => 406
-                 (response-mime-type response) => (mime-type :text)
-                 (let [body (body-from-response response)]
-                   (.contains body "Acceptable media type: application/vnd.collection+vnd.fcms.item+json;version=1") => true
-                   (.contains body "Acceptable charset: utf-8") => true)))
-         ;; collection doesn't exist
-         ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/not-here/
-         (fact "from a collection that doesn't exist"
-               (let [response (api-request :get "/not-here/"
-                                           {:headers {:Accept (mime-type :item-collection)
-                                                      :Accept-Charset "utf-8"}})]
-                 (:status response) => 404
-                 (response-mime-type response) => (mime-type :text)
-                 (let [body (body-from-response response)]
-                   (.contains body "Collection not found.") => true)))))
+    ;; no accept - 200 OK
+    ;; curl -i --header "Accept-Charset: utf-8" -X GET http://localhost:3000/one/
+    (fact "without using an an Accept header"
+      (let [response (api-request :get "/one/" {})
+            body (body-from-response response)
+            items (items-from-body body)
+            item (first items)]
+        (:status response) => 200
+        (response-mime-type response) => (mime-type :item-collection)
+        (json? response) => true
+        (count items) => 1
+        item => (contains {
+          :collection one
+          :name i
+          :slug i
+          :description ascii-description
+          :version 1})
+        (instance? timestamp (parse (:created-at item))) => true))
+
+    ;; no accept charset - 200 OK
+    ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" -X GET http://localhost:3000/one/
+    (fact "without the Accept-Charset header"
+      (let [response (api-request :get "/one/" {
+        :skip-charset true
+        :headers {
+          :Accept (mime-type :item-collection)}})]
+        (:status response) => 200
+        (response-mime-type response) => (mime-type :item-collection)
+        (json? response) => true
+        (collection/item-count one) => 1
+        (let [body (body-from-response response)
+              items (items-from-body body)
+              item (first items)]
+          (count items) => 1
+          (:name item) => i
+          (:slug item) => i
+          (:description item) => ascii-description
+          (:version item) => 1
+          (:collection item) => one
+          (instance? timestamp (parse (:created-at item))) => true))))
+
+  (facts "about failing to list items"
+
+    ;; wrong accept - 406 Not Acceptable
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/one/
+    (fact "with the wrong Accept header"
+      (let [response (api-request :get "/one/" {:headers {:Accept (mime-type :item)}})
+            body (body-from-response response)]
+        (:status response) => 406
+        (response-mime-type response) => (mime-type :text)
+        (.contains body "Acceptable media type: application/vnd.collection+vnd.fcms.item+json;version=1") => true
+        (.contains body "Acceptable charset: utf-8") => true))
+
+    ;; wrong accept charset - 406 Not Acceptable
+    ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: iso-8859-1" -X GET http://localhost:3000/one/
+    (fact "with the wrong Accept-Charset header"
+         (let [response (api-request :get "/one/" {
+          :headers {
+            :Accept (mime-type :item-collection)
+            :Accept-Charset "iso-8859-1"}})]
+          (:status response) => 406
+          (response-mime-type response) => (mime-type :text)
+          (let [body (body-from-response response)]
+            (.contains body "Acceptable media type: application/vnd.collection+vnd.fcms.item+json;version=1") => true
+            (.contains body "Acceptable charset: utf-8") => true)))
+    
+    ;; collection doesn't exist - 404 Not Found
+    ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/not-here/
+    (fact "from a collection that doesn't exist"
+      (let [response (api-request :get "/not-here/" {:headers {:Accept (mime-type :item-collection)}})
+            body (body-from-response response)]
+        (:status response) => 404
+        (response-mime-type response) => (mime-type :text)
+        (.contains body "Collection not found.") => true))
+    
+    ;; force pagination and use a subsequent page
+    (future-fact "when forcing pagination and using an invalid page")))
