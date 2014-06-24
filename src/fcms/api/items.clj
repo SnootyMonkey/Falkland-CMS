@@ -30,21 +30,21 @@
 (defn- item-location-response [coll-slug item]
   (common/location-response [coll-slug (:slug item)] (render-item item) item/item-media-type))
 
+(defn- unprocessable-reason [reason]
+  (match reason
+    :bad-collection common/missing-collection-response
+    :bad-item missing-item-response
+    :no-name (common/unprocessable-entity-response "Name is required.")
+    :property-conflict (common/unprocessable-entity-response "A reserved property was used.")
+    :slug-conflict (common/unprocessable-entity-response "Slug already used in collection.")
+    :invalid-slug (common/unprocessable-entity-response"Invalid slug.")
+    :else (common/unprocessable-entity-response "Not processable.")))
+
 ;; ----- Create new item -----
 
 (defn- create-item [coll-slug item]
   (when-let [item (item/create-item coll-slug (:name item) item)]
     {:item item}))
-
-(defn- unprocessable-reason [reason]
-  (match reason
-    :bad-collection common/missing-collection-response
-    :bad-item missing-item-response
-    :no-name "Name is required."
-    :property-conflict "A reserved property was used."
-    :slug-conflict "Slug already used in collection."
-    :invalid-slug "Invalid slug."
-    :else "Not processable."))
 
 ;; ----- Update item -----
 
@@ -65,17 +65,17 @@
 (def item-resource-config {
   :available-charsets [common/UTF8]
   :handle-not-found (fn [ctx] (when (:bad-collection ctx) common/missing-collection-response))
-  :handle-unprocessable-entity (fn [ctx] (common/unprocessable-entity-response (unprocessable-reason (:reason ctx))))
+  :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
 })
 
 (defresource item [coll-slug item-slug]
   item-resource-config
   :available-media-types [item/item-media-type]
-  :handle-not-acceptable (fn [_] (common/only-accept item/item-media-type))
+  :handle-not-acceptable (fn [_] (common/only-accept 406 item/item-media-type))
   :allowed-methods [:get :put :delete]
   :exists? (fn [_] (get-item coll-slug item-slug))
-  :known-content-type? (fn [ctx] (common/known-content-type ctx item/item-media-type))
-  :handle-unsupported-media-type (fn [_] (common/only-accept item/item-media-type))
+  :known-content-type? (fn [ctx] (common/known-content-type? ctx item/item-media-type))
+  :handle-unsupported-media-type (fn [_] (common/only-accept 415 item/item-media-type))
   :respond-with-entity? (by-method {:put true :delete false})
 
   :processable? (by-method {
@@ -110,22 +110,24 @@
     :get [item/item-collection-media-type]
     :post [item/item-media-type]})
   :handle-not-acceptable (by-method {
-    :get (fn [_] (common/only-accept item/item-collection-media-type))
-    :post (fn [_] (common/only-accept item/item-media-type))})
+    :get (fn [_] (common/only-accept 406 item/item-collection-media-type))
+    :post (fn [_] (common/only-accept 406 item/item-media-type))})
   :allowed-methods [:get :post]
   :exists? (fn [_] (get-items coll-slug))
+
   ;; Get a list of items
   :handle-ok (fn [ctx] (render-items coll-slug (:items ctx)))
+
   ;; Create new item
   :malformed? (by-method {
     :get false
     :post (fn [ctx] (common/malformed-json? ctx))})
   :known-content-type? (by-method {
-    :get (fn [ctx] (common/known-content-type ctx item/item-collection-media-type))
-    :post (fn [ctx] (common/known-content-type ctx item/item-media-type))})
+    :get (fn [ctx] (common/known-content-type? ctx item/item-collection-media-type))
+    :post (fn [ctx] (common/known-content-type? ctx item/item-media-type))})
   :handle-unsupported-media-type (by-method {
-    :get (fn [_] (common/only-accept item/item-collection-media-type))
-    :post (fn [_] (common/only-accept item/item-media-type))})
+    :get (fn [_] (common/only-accept 415 item/item-collection-media-type))
+    :post (fn [_] (common/only-accept 415 item/item-media-type))})
   :processable? (by-method {
     :get true
     :post (fn [ctx] (common/check-input (item/valid-new-item coll-slug (get-in ctx [:data :name]) (:data ctx))))})

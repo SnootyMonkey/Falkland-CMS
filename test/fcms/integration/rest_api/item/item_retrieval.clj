@@ -107,7 +107,7 @@
     ;; no accept charset - 200 OK
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" -X GET http://localhost:3000/e/i
     (fact "a normal item without an Accept-Charset header"
-      (let [response (api-request :get "/e/i" {:headers {:Accept (mime-type :item)}} false)]
+      (let [response (api-request :get "/e/i" {:headers {:Accept (mime-type :item)} :skip-charset true})]
         (:status response) => 200
         (response-mime-type response) => (mime-type :item)
         (json? response) => true

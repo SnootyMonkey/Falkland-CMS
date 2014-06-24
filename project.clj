@@ -70,11 +70,11 @@
   :aliases {
     "init-db" ["run" "-m" "fcms.db.views"] ; create CouchDB views
     "init-test-db" ["with-profile" "qa" "run" "-m" "fcms.db.views"] ; create CouchDB views for test DB
-    ;"build" ["do" "clean," "deps," "git-deps,", "compile," "init-db"] ; clean and build
-    "build" ["do" "clean," "deps," "compile," "init-db"] ; clean and build
-    "midje" ["with-profile" "qa" "midje"] ; run tests
-    "test" ["with-profile" "qa" "midje"] ; run tests
-    "test!" ["with-profile" "qa" "do" "build," "midje"] ; run all tests
+    "clean-test-db" ["with-profile" "qa" "run" "-m" "fcms.db.clean"] ; clean the CouchDB test DB
+    "build" ["do" "clean," "deps," "compile," "init-db"] ; clean and build code
+    "midje" ["with-profile" "qa" "midje"] ; run all tests
+    "test" ["with-profile" "qa" "do" "clean-test-db," "midje," "clean-test-db"] ; run all tests with clean test DB
+    "test!" ["with-profile" "qa" "do" "build," "test"] ; build and run all tests
     "start" ["do" "build," "ring" "server-headless"] ; start an FCMS server
     "start!" ["with-profile" "prod" "run"] ; start an FCMS server in production
     "spell" ["spell" "-n"] ; check spelling in docs and docstrings
@@ -84,7 +84,6 @@
   :plugins [
     [lein-ring "0.8.11"] ; common ring tasks https://github.com/weavejester/lein-ring
     [lein-environ "0.5.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    ;[lein-git-deps "0.0.1-SNAPSHOT"] ; use dependencies directly from GitHub repos https://github.com/tobyhede/lein-git-deps
     [lein-cljsbuild "1.0.3"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
     [codox "0.8.9"] ; Generate Clojure API docs https://github.com/weavejester/codox
     [lein-midje "3.1.3"] ; Example-based testing https://github.com/marick/lein-midje
@@ -96,17 +95,6 @@
     [lein-ancient "0.5.5"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
     [lein-spell "0.1.0"] ; Catch spelling mistakes in docs and docstrings https://github.com/cldwalker/lein-spell
   ]
-
-  ;; ----- Run libraries from source -----
-
-  ; :git-dependencies [
-  ;   ["https://github.com/clojure-liberator/liberator.git"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
-  ; ]
-
-  ; :source-paths [
-  ;   ".lein-git-deps/liberator/src/"
-  ;   "src/"
-  ; ]
 
   ;; ----- Code check configuration -----
 
