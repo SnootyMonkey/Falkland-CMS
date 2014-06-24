@@ -4,7 +4,7 @@
             [fcms.resources.collection :as collection]
             [fcms.resources.taxonomy :refer (category-exists)]))
 
-(with-state-changes [(before :facts (do (empty-collection-e) (empty-taxonomy-et) (existing-taxonomy-t)))
+(with-state-changes [(before :facts (do (reset-collection e) (empty-taxonomy-et) (existing-taxonomy-t)))
                      (after :facts (collection/delete-collection e))]
 
   (facts "about non-existent categories"

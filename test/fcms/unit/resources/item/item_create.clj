@@ -6,7 +6,7 @@
             [fcms.resources.collection-resource :as resource]
             [fcms.resources.item :refer :all]))
 
-(with-state-changes [(before :facts (empty-collection-e))
+(with-state-changes [(before :facts (reset-collection e))
                      (after :facts (collection/delete-collection e))]
 
   (facts "about validity checks of invalid new items"

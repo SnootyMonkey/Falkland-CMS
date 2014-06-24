@@ -5,7 +5,7 @@
             [fcms.resources.collection-resource :as resource]
             [fcms.resources.taxonomy :refer (create-category)]))
 
-(with-state-changes [(before :facts (do (empty-collection-e) (empty-taxonomy-et) (existing-taxonomy-t)))
+(with-state-changes [(before :facts (do (reset-collection e) (empty-taxonomy-et) (existing-taxonomy-t)))
                      (after :facts (collection/delete-collection e))]
 
   (facts "about category creation failures"
