@@ -233,11 +233,11 @@
     (fact "with a property that conflicts with a reserved property"
       ;; conflicts with each reserved property
       (doseq [keyword-name resource/reserved-properties]
-        (let [response (create-item-with-api {:name i keyword-name "foo"})]
+        (let [response (create-item-with-api {:name i keyword-name "foo"})
+              body (body-from-response response)]
           (:status response) => 422
           (response-mime-type response) => (mime-type :text)
-          (let [body (body-from-response response)]
-            (.contains body "A reserved property was used.") => true)
+          (.contains body "A reserved property was used.") => true
           ;; check if collection is still empty
           (collection/item-count e) => 0)))
         
@@ -314,12 +314,12 @@
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"g' http://localhost:3000/c/'
     (fact "create an item with an invalid body"
       (doseq [bad-body ["Hi Mom!" "{'name': 'i'"]]
-        (let [response (create-item-with-api bad-body)]
+        (let [response (create-item-with-api bad-body)
+              body (body-from-response response)]
           (:status response) => 400
           (response-mime-type response) => (mime-type :text)
           (response-location response) => nil
-          (let [body (body-from-response response)]
-            (.contains body "Bad request.") => true)        
+          (.contains body "Bad request.") => true
           (collection/item-count e) => 0)))
     
     ;; collection doesn't exist - 404 Not Found
@@ -340,11 +340,11 @@
     ;; no "name" in body - 422 Unprocessable Entity
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"slug":"i"}' http://localhost:3000/c/
     (fact "create an item without a name"
-      (let [response (create-item-with-api {:slug i})]
+      (let [response (create-item-with-api {:slug i})
+            body (body-from-response response)]
         (:status response) => 422
         (response-mime-type response) => (mime-type :text)
-        (let [body (body-from-response response)]
-          (.contains body "Name is required.") => true)
+        (.contains body "Name is required.") => true
         (collection/item-count e) => 0))
     
     ;; slug specified in body is already used - 422 Unprocessable Entity
@@ -362,21 +362,21 @@
           :slug i
           :version 1})
         (collection/item-count e) => 1)
-      (let [response (create-item-with-api {:name "another-i" :slug i})]
+      (let [response (create-item-with-api {:name "another-i" :slug i})
+            body (body-from-response response)]
         (:status response) => 422
         (response-mime-type response) => (mime-type :text)
         (response-location response) => nil
-        (let [body (body-from-response response)]
-          (.contains body "Slug already used in collection.") => true)
+        (.contains body "Slug already used in collection.") => true
         (collection/item-count e) => 1))
 
     ;; slug specified in body is invalid - 422 Unprocessable Entity
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"i", "slug":"I i"}' http://localhost:3000/c/
     (fact "create an item with a slug that's invalid"
-      (let [response (create-item-with-api {:name i :slug "I i"})]
+      (let [response (create-item-with-api {:name i :slug "I i"})
+            body (body-from-response response)]
         (:status response) => 422
         (response-mime-type response) => (mime-type :text)
         (response-location response) => nil
-        (let [body (body-from-response response)]
-          (.contains body "Invalid slug.") => true)
+        (.contains body "Invalid slug.") => true
         (collection/item-count e) => 0))))
