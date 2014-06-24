@@ -172,51 +172,51 @@
         (response-location response) => "/e/i"
         (json? response) => true
         ;; Get the created item and make sure it's right
-        (item/get-item e i) => (contains
-                                 {:collection e
-                                   :name i
-                                   :slug i
-                                   :version 1})
+        (item/get-item e i) => (contains {
+          :collection e
+          :name i
+          :slug i
+          :version 1})
         (collection/item-count e) => 1))
 
     ;; no content type - 201 Created
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X POST -d '{"name":"i"}' http://localhost:3000/c/
     (fact "without a Content-Type header"
-      (let [response (create-item-with-api
-                       {:Accept (mime-type :item)
-                        :Accept-Charset "utf-8"}
-                       {:name i})]
+      (let [response (create-item-with-api {
+        :Accept (mime-type :item)
+        :Accept-Charset "utf-8"}
+        {:name i})]
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i"
         (json? response) => true
         ;; Get the created item and make sure it's right
-        (item/get-item e i) => (contains
-                                 {:collection e
-                                   :name i
-                                   :slug i
-                                   :version 1})
+        (item/get-item e i) => (contains {
+          :collection e
+          :name i
+          :slug i
+          :version 1})
         (collection/item-count e) => 1))
 
     ;; no charset - 201 Created
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
     (fact "without an Accept-Charset header"
       (let [response (api-request :post "/e/" {
-                      :skip-charset true
-                      :headers {
-                        :Accept (mime-type :item)
-                        :Content-Type (mime-type :item)}
-                      :body {:name i}})]
+        :skip-charset true
+        :headers {
+          :Accept (mime-type :item)
+          :Content-Type (mime-type :item)}
+        :body {:name i}})]
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i"
         (json? response) => true
         ;; Get the created item and make sure it's right
-        (item/get-item e i) => (contains
-                                 {:collection e
-                                   :name i
-                                   :slug i
-                                   :version 1})        
+        (item/get-item e i) => (contains {
+          :collection e
+          :name i
+          :slug i
+          :version 1})        
         (collection/item-count e) => 1)))
 
   (facts "about failing to create a new item"
@@ -244,10 +244,10 @@
     ;; wrong accept type - 406 Not Acceptable
     ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
     (fact "with the wrong Accept header"
-      (let [response (create-item-with-api
-                       {:Accept (mime-type :collection)
-                        :Content-Type (mime-type :item)}
-                       {:name i})]
+      (let [response (create-item-with-api {
+        :Accept (mime-type :collection)
+        :Content-Type (mime-type :item)}
+        {:name i})]
         (:status response) => 406
         (response-mime-type response) => (mime-type :text)
         (response-location response) => nil
@@ -262,10 +262,10 @@
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
     (fact "create an item with the wrong Content-Type header"
       (let [response (create-item-with-api {
-                        :Accept (mime-type :item)
-                        :Accept-Charset "utf-8"
-                        :Content-Type (mime-type :collection)}
-                       {:name i})]
+        :Accept (mime-type :item)
+        :Accept-Charset "utf-8"
+        :Content-Type (mime-type :collection)}
+        {:name i})]
         (:status response) => 415
         (response-mime-type response) => (mime-type :text)
         (response-location response) => nil
@@ -279,18 +279,17 @@
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms
     (fact "create an item the wrong Accept-Charset header"
       (let [response (create-item-with-api {
-                        :Accept-Charset "iso-8859-1"
-                        :Accept (mime-type :item)
-                        :Content-Type (mime-type :item)}
-                       {:name i})]
+        :Accept-Charset "iso-8859-1"
+        :Accept (mime-type :item)
+        :Content-Type (mime-type :item)}
+        {:name i})]
         (:status response) => 406
         (response-mime-type response) => (mime-type :text)
         (response-location response) => nil
         (let [body (body-from-response response)]
           (.contains body "Acceptable media type: application/vnd.fcms.item+json;version=1") => true
           (.contains body "Acceptable charset: utf-8") => true)        
-        (let [response (api-request :get "/e/i" {:headers
-                                                  {:Accept (mime-type :item)}})]
+        (let [response (api-request :get "/e/i" {:headers {:Accept (mime-type :item)}})]
           (:status response) => 404
           (body? response) => false)
         (collection/item-count e) => 0))
@@ -299,11 +298,11 @@
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST http://localhost:3000/c/
     (fact "create an item with no body"
       (let [response (api-request :post "/e/" {
-                      :skip-body true
-                      :headers {
-                        :Accept-Charset "utf-8"
-                        :Accept (mime-type :item)
-                        :Content-Type (mime-type :item)}})]
+        :skip-body true
+        :headers {
+          :Accept-Charset "utf-8"
+          :Accept (mime-type :item)
+          :Content-Type (mime-type :item)}})]
         (:status response) => 400
         (response-mime-type response) => (mime-type :text)
         (let [body (body-from-response response)]
@@ -326,11 +325,12 @@
     ;; collection doesn't exist - 404 Not Found
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"i"}' http://localhost:3000/not-here/
     (fact "create an item in a collection that doesn't exist"
-      (let [response (api-request :post "/not-here/" {:headers
-                                                       {:Accept (mime-type :item)
-                                                         :Accept-Charset "utf-8"
-                                                         :Content-Type (mime-type :item)}
-                                                       :body {:name i}})]
+      (let [response (api-request :post "/not-here/" {
+          :headers {
+            :Accept (mime-type :item)
+            :Accept-Charset "utf-8"
+            :Content-Type (mime-type :item)}
+          :body {:name i}})]
         (:status response) => 404
         (response-mime-type response) => (mime-type :text)
         (let [body (body-from-response response)]
@@ -356,11 +356,11 @@
         (response-location response) => "/e/i"
         (json? response)
         ;; Get the created item and make sure it's right
-        (item/get-item e i) => (contains
-                                 {:collection e
-                                   :name i
-                                   :slug i
-                                   :version 1})
+        (item/get-item e i) => (contains {
+          :collection e
+          :name i
+          :slug i
+          :version 1})
         (collection/item-count e) => 1)
       (let [response (create-item-with-api {:name "another-i" :slug i})]
         (:status response) => 422
