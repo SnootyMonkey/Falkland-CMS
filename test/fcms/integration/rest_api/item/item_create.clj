@@ -38,7 +38,7 @@
       :headers {
         :Accept (mime-type :item)
         :Content-Type (mime-type :item)}
-        :body body}))
+      :body body}))
   ([headers body]
      (api-request :post "/e/" {
         :headers headers
