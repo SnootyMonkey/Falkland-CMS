@@ -13,7 +13,7 @@
     [fcms.resources.item :as item]))
 
 ;; The system should return the detail of items stored in a collection and handle the following scenarios:
-
+;;
 ;; all good
 ;; all good with unicode
 ;; no accept
