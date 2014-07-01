@@ -55,4 +55,4 @@
         (update-in [:updated-at] #(unparse timestamp-format %))
         (common/ordered ordered-keys)
         (common/append-sorted (common/remaining-keys coll-props ordered-keys))
-        links)) {:pretty true}))
+        links) {:pretty true})))
