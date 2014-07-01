@@ -85,7 +85,7 @@
     [lein-ring "0.8.11"] ; common ring tasks https://github.com/weavejester/lein-ring
     [lein-environ "0.5.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [lein-cljsbuild "1.0.3"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
-    [codox "0.8.9"] ; Generate Clojure API docs https://github.com/weavejester/codox
+    [codox "0.8.10"] ; Generate Clojure API docs https://github.com/weavejester/codox
     [lein-midje "3.1.3"] ; Example-based testing https://github.com/marick/lein-midje
     [lein-bikeshed "0.1.7"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
     [lein-kibit "0.0.8"] ; Static code search for non-idiomatic code https://github.com/jonase/kibit
