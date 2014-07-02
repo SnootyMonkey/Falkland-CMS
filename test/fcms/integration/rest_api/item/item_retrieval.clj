@@ -36,11 +36,7 @@
     ;; all good - 200 OK
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/e/i
     (fact "a normal item"
-      (let [response (api-request :get "/e/i" {
-        :headers {
-          :Accept (mime-type :item)
-          :Content-Type (mime-type :item)
-          }})]
+      (let [response (api-request :get "/e/i" {:headers {:Accept (mime-type :item)}})]
       (:status response) => 200
       (response-mime-type response) => (mime-type :item)
       (json? response) => true

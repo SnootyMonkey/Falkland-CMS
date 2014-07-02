@@ -6,6 +6,9 @@
             [ring.mock.request :refer (request body content-type header)]
             [cheshire.core :as json]))
 
+(defn- base-mime-type [full-mime-type]
+  (first (s/split full-mime-type #";")))
+
 (defn mime-type
   "Provide the mime-type for a given resources symbol."
   [res-type]
@@ -14,9 +17,6 @@
     :item-collection "application/vnd.collection+vnd.fcms.item+json"
     :collection "application/vnd.fcms.collection+json"
     :text "text/plain"))
-
-(defn- base-mime-type [full-mime-type]
-  (first (s/split full-mime-type #";")))
 
 (defn response-mime-type [response]
   (base-mime-type (get-in response [:headers "Content-Type"])))
