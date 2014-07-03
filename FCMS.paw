@@ -272,7 +272,7 @@
         <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z123"></relationship>
     </object>
     <object type="LMREQUEST" id="z123">
-        <attribute name="body" type="string">["{\\"name\\":\\"empty\\"}"]</attribute>
+        <attribute name="body" type="string">["{\\"name\\":\\"mudskippers\\"}"]</attribute>
         <attribute name="uuid" type="string">CD0847AE-AFBC-482B-BEE6-38871FE7EA3D</attribute>
         <attribute name="url" type="string">http://localhost:3000/</attribute>
         <attribute name="timeoutinterval" type="float">30</attribute>
@@ -284,7 +284,7 @@
         <attribute name="name" type="string">Create Collection</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z107"></relationship>
         <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
-        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z126 z122 z125 z124"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z126 z124 z122 z125"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z124">
         <attribute name="value" type="string">UTF-8</attribute>
