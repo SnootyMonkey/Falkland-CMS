@@ -10,7 +10,7 @@ organizational structures for the items in the collection.
 
 Some examples of collection:
 
-- Secondary sources about Albert Camus works for Camus.org
+- Secondary sources about Albert Camus' works for Camus.org
 - Everything there is on the Internet about mudskippers for Mudskippers.org
 - All the books in Jack Freeman's Library
 - Everything published about amoralism for nil.org

@@ -51,8 +51,9 @@ Again, most developers should just use the [online docs](http://falkland-cms-api
 The REST API docs are written in [reStructuredText](http://docutils.sourceforge.net/rst.html) and built by [Sphinx](http://sphinx-doc.org). You'll need a few things:
 
  * [Python](http://www.python.org/) - many Linux or Mac systems will already have Python
- * [Sphinx](http://sphinx-doc.org/) - `easy_install -U Sphinx`
- * [pygments-style-solarized](https://pypi.python.org/pypi/pygments-style-solarized) - `easy_install -U pygments-style-solarized`
+ * [pip](http://pip.readthedocs.org/en/latest/installing.html) - Python package manager
+ * [Sphinx](http://sphinx-doc.org/) - ```pip install sphinx```
+ * [pygments-style-solarized](https://pypi.python.org/pypi/pygments-style-solarized) - ```pip install pygments-style-solarized```
 
 To build the docs:
 
