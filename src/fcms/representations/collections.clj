@@ -29,7 +29,7 @@
 (defn- delete-link [coll]
   (common/delete-link (url coll)))
 
-(defn links
+(defn collection-links
   "Add the HATEAOS links to the collection"
   [coll]
   (apply array-map (concat (flatten (vec coll)) [:links [
@@ -39,9 +39,12 @@
     (update-link coll)
     (delete-link coll)]])))
 
-(defn render-collection
-  "Create a JSON representation of a collection for the REST API"
-  [coll]
+(defn- collection-list-links
+  "Array of HATEAOS links for the item list"
+  []
+  [(common/create-link (str "/") collection/collection-media-type)])
+
+(defn- collection-to-json-map [coll]
   ;; Generate JSON from the sorted array map that results from:
   ;; 1) render timestamps as strings
   ;; 2) removing unneeded :id key
@@ -49,10 +52,26 @@
   ;; 4) adding a sorted hash of any remaining keys
   ;; 5) adding the HATEAOS links to the array hash
   (let [coll-props (dissoc coll :id)]
-    (json/generate-string
-      (-> coll-props
-        (update-in [:created-at] #(unparse timestamp-format %))
-        (update-in [:updated-at] #(unparse timestamp-format %))
-        (common/ordered ordered-keys)
-        (common/append-sorted (common/remaining-keys coll-props ordered-keys))
-        links) {:pretty true})))
+    (-> coll-props
+      (update-in [:created-at] #(unparse timestamp-format %))
+      (update-in [:updated-at] #(unparse timestamp-format %))
+      (common/ordered ordered-keys)
+      (common/append-sorted (common/remaining-keys coll-props ordered-keys))
+      collection-links)))
+
+;; TODO collection list links
+(defn render-collections
+  "Create a JSON representation of a group of collections for the REST API"
+  [collections]
+  (json/generate-string {
+    :collection (array-map
+      :version common/json-collection-version
+      :href "/"
+      :links (collection-list-links)
+      :collections (map collection-to-json-map collections))}
+    {:pretty true}))
+
+(defn render-collection
+  "Create a JSON representation of a collection for the REST API"
+  [coll]
+  (json/generate-string (collection-to-json-map coll) {:pretty true}))

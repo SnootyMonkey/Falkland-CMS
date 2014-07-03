@@ -385,7 +385,7 @@
         <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z127"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z133">
-        <attribute name="value" type="string">application/vnd.fcms.item+json;version=1</attribute>
+        <attribute name="value" type="string">application/vnd.collection+vnd.fcms.item+json;version=1</attribute>
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">Accept</attribute>
         <attribute name="enabled" type="bool">1</attribute>

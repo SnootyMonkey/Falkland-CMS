@@ -15,18 +15,6 @@
     {:status 404
      :headers {"Content-Type" (format "text/plain;charset=%s" common/UTF8)}}))
 
-(defn- get-item [coll-slug item-slug]
-  (let [item (item/get-item coll-slug item-slug)]
-    (match item
-      :bad-collection [false {:bad-collection true}]
-      nil false
-      :else {:item item})))
-
-(defn- get-items [coll-slug]
-  (if-let [collection (collection/get-collection coll-slug)]
-    [true {:items (item/all-items coll-slug)}]
-    [false {:bad-collection true}]))
-
 (defn- item-location-response [coll-slug item]
   (common/location-response [coll-slug (:slug item)] (render-item item) item/item-media-type))
 
@@ -40,13 +28,27 @@
     :invalid-slug (common/unprocessable-entity-response"Invalid slug.")
     :else (common/unprocessable-entity-response "Not processable.")))
 
-;; ----- Create new item -----
+;; ----- Get items -----
+
+(defn- get-item [coll-slug item-slug]
+  (let [item (item/get-item coll-slug item-slug)]
+    (match item
+      :bad-collection [false {:bad-collection true}]
+      nil false
+      :else {:item item})))
+
+(defn- get-items [coll-slug]
+  (if-let [collection (collection/get-collection coll-slug)]
+    [true {:items (item/all-items coll-slug)}]
+    [false {:bad-collection true}]))
+
+;; ----- Create a new item -----
 
 (defn- create-item [coll-slug item]
-  (when-let [item (item/create-item coll-slug (:name item) item)]
-    {:item item}))
+  (when-let [new-item (item/create-item coll-slug (:name item) item)]
+    {:item new-item}))
 
-;; ----- Update item -----
+;; ----- Update an item -----
 
 (defn- update-item [coll-slug item-slug item]
   (when-let [result (item/update-item coll-slug item-slug item)]
@@ -92,7 +94,7 @@
   ;; Delete an item
   :delete! (fn [_] (item/delete-item coll-slug item-slug))
   
-  ;; Update/Create an item
+  ;; Update an item
   :new? (by-method {:post true :put false})
   :malformed? (by-method {
     :get false
@@ -113,12 +115,12 @@
     :get (fn [_] (common/only-accept 406 item/item-collection-media-type))
     :post (fn [_] (common/only-accept 406 item/item-media-type))})
   :allowed-methods [:get :post]
-  :exists? (fn [_] (get-items coll-slug))
-
+  
   ;; Get a list of items
+  :exists? (fn [_] (get-items coll-slug))
   :handle-ok (fn [ctx] (render-items coll-slug (:items ctx)))
 
-  ;; Create new item
+  ;; Create a new item
   :malformed? (by-method {
     :get false
     :post (fn [ctx] (common/malformed-json? ctx))})
