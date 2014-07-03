@@ -5,12 +5,6 @@ title: Falkland CMS - Changelog
 
 ## Falkland CMS Changelog
 
-### v0.1.0
-
-* Clojure API for collections and items. 
-
-* Tests for REST API for items.
-
 ### v0.2.0-SNAPSHOT
 
 * Taxonomy support.
@@ -23,4 +17,14 @@ title: Falkland CMS - Changelog
 
 * Created project website.
 
+* Moved item REST API tests to midje.
+
 * Updated CouchDB dependency to >1.6.0.
+
+* REST API for collections.
+
+### v0.1.0
+
+* Clojure API for collections and items. 
+
+* Tests for REST API for items.
