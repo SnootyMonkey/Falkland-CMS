@@ -54,8 +54,9 @@
       ;; must not be valid JSON
       (:body resp-map))))
 
-(defn json? [resp]
+(defn json?
   "True if the body of the response contains JSON."
+  [resp]
   (map? (body-from-response resp)))
 
 (defn body?

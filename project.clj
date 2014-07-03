@@ -77,7 +77,7 @@
     "test!" ["with-profile" "qa" "do" "build," "test"] ; build and run all tests
     "start" ["do" "build," "ring" "server-headless"] ; start an FCMS server
     "start!" ["with-profile" "prod" "run"] ; start an FCMS server in production
-    "spell" ["spell" "-n"] ; check spelling in docs and docstrings
+    "spell!" ["spell" "-n"] ; check spelling in docs and docstrings
     "ancient" ["with-profile" "dev" "do" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"] ; check for out of date dependencies
   }
 
