@@ -83,12 +83,10 @@
   :processable? (by-method {
     :get true
     :delete true
-    :post (fn [ctx] (common/check-input (item/valid-item-update coll-slug item-slug (:data ctx))))
     :put (fn [ctx] (common/check-input (item/valid-item-update coll-slug item-slug (:data ctx))))})
   
   :handle-ok (by-method {
     :get (fn [ctx] (render-item (:item ctx)))
-    :post (fn [ctx] (render-item (:item ctx)))
     :put (fn [ctx] (update-item-response coll-slug ctx))})
   
   ;; Delete an item

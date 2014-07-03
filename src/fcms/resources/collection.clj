@@ -83,7 +83,7 @@
     (delete-collection-and-contents (first (:value coll)) (last (:value coll)))
     :bad-collection))
 
-(defn valid-collection-update?
+(defn valid-collection-update
   "Given the slug of the collection, and a map of updated
   properties for the collection, check if the everything
   is in order to update the collection.
@@ -115,7 +115,7 @@
   the item will be moved to the new slug, otherwise the slug will remain the same.
   The same validity conditions and invalid return values as valid-item-update? apply."
   [slug props]
-    (let [reason (valid-collection-update? slug props)]
+    (let [reason (valid-collection-update slug props)]
       (if (= reason true)
         (update slug props)
         reason)))

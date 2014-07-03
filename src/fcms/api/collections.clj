@@ -27,6 +27,17 @@
 
 ;; ----- Update a collection -----
 
+(defn- update-collection [coll-slug collection]
+  (when-let [result (collection/update-collection coll-slug collection)]
+    {:updated-collection result}))
+
+(defn- update-collection-response [coll-slug ctx]
+  (if (= (get-in ctx [:updated-collection :slug]) (get-in ctx [:collection :slug]))
+    ; it's in the same spot
+    (render-collection (:updated-collection ctx))
+    ; it moved
+    (collection-location-response coll-slug (:updated-collection ctx))))
+
 ;; ----- Resources -----
 ;; see: http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
 
@@ -35,31 +46,37 @@
 })
 
 (defresource collection [coll-slug]
-    collection-resource-config
-    :available-media-types [collection/collection-media-type]
-    :handle-not-acceptable (fn [_] (common/only-accept 406 collection/collection-media-type))
-    :allowed-methods [:get :put :delete]
-    :exists? (fn [_] (get-collection coll-slug))
-    :known-content-type? (fn [ctx] (common/known-content-type? ctx collection/collection-media-type))
-    :handle-unsupported-media-type (fn [_] (common/only-accept 415 collection/collection-media-type))
-    :respond-with-entity? (by-method {:put true :delete false})
+  collection-resource-config
+  :available-media-types [collection/collection-media-type]
+  :handle-not-acceptable (fn [_] (common/only-accept 406 collection/collection-media-type))
+  :allowed-methods [:get :put :delete]
+  :exists? (fn [_] (get-collection coll-slug))
+  :known-content-type? (fn [ctx] (common/known-content-type? ctx collection/collection-media-type))
+  :handle-unsupported-media-type (fn [_] (common/only-accept 415 collection/collection-media-type))
+  :respond-with-entity? (by-method {:put true :delete false})
 
   :processable? (by-method {
     :get true
     :delete true
-    :post true;(fn [ctx] (common/check-input (collection/valid-collection-update coll-slug (:data ctx))))
-    :put true ;(fn [ctx] (common/check-input (collection/valid-collection-update coll-slug (:data ctx))))
-    })
+    :put (fn [ctx] (common/check-input (collection/valid-collection-update coll-slug (:data ctx))))})
 
-    :handle-ok (by-method {
-      :get (fn [ctx] (render-collection (:collection ctx)))})
+  :handle-ok (by-method {
+    :get (fn [ctx] (render-collection (:collection ctx)))
+    :put (fn [ctx] (update-collection-response coll-slug ctx))})
 
-    ;; Delete a collection
-    :delete! (fn [_] (collection/delete-collection coll-slug))
+  ;; Delete a collection
+  :delete! (fn [_] (collection/delete-collection coll-slug))
 
-    ;; Update/create a collection
-
-    )
+  ;; Update/create a collection
+  :new? (by-method {:post true :put false})
+  :malformed? (by-method {
+    :get false
+    :delete false
+    :post (fn [ctx] (common/malformed-json? ctx))
+    :put (fn [ctx] (common/malformed-json? ctx))})
+  :can-put-to-missing? (fn [_] false) ; temporarily only use PUT for update
+  :conflict? (fn [_] false)
+  :put! (fn [ctx] (update-collection coll-slug (:data ctx))))
 
 (defresource collection-list []
   collection-resource-config
