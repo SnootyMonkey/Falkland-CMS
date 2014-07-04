@@ -2,6 +2,7 @@
   (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
             [fcms.lib.rest-api-mock :refer :all]
+            [fcms.resources.common :as common]
             [fcms.resources.collection :as collection]))
 
 ;; Creating collections with the REST API
@@ -27,34 +28,197 @@
 ;; slug specified in body is already used
 ;; slug specified in body is invalid
 
+;; ----- Utilities -----
+
+(defn- create-collection-with-api
+  "Makes an API request to create the collection and returns the response."  
+  ([body]
+     (api-request :post "/" {
+      :headers {
+        :Accept (mime-type :collection)
+        :Content-Type (mime-type :collection)}
+      :body body}))
+  ([headers body]
+     (api-request :post "/" {
+        :headers headers
+        :body body})))
+
+;; ----- Tests -----
 (with-state-changes [(after :facts (collection/delete-collection c))]
 
-  (future-facts "about creating valid new collections"
+  (facts "about creating valid new collections"
 
     ;; all good, no slug - 201 Created
     ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/
     (fact "when no slug is specified"
       ;; Create the collection
-      (let [response (api-request :post "/" {
-        :headers {
-          :Accept (mime-type :collection)
-          :Content-Type (mime-type :collection)
-        }
-        :body {
-          :name "c"
-        }})]
+      (let [response (create-collection-with-api {:name c})]
         (:status response) => 201
         (response-mime-type response) => (mime-type :collection)
         (response-location response) => "/c"
-        (json? response) => true
-        (collection/get-collection c) => (contains {
-          :name "c"
-          :slug "c"
-          :version 1}))
+        (json? response) => true)
       ;; Get the created collection and make sure it's right
-      (let [collection (collection/get-collection c)]
-        (:slug collection) => c
-        (:name collection) => c
-        (:version collection) => 1)
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name c
+        :version 1})
       ;; Collection is empty?
-      (collection/item-count c) => 0)))
+      (collection/item-count c) => 0)
+
+    (future-fact "when the generated slug is different than the provided name")
+
+    (future-fact "when the generated slug is already used")
+
+    (future-fact "with a provided slug")
+
+    (future-fact "containing unicode")
+
+    (future-fact "without an Accept header")
+
+    (future-fact "without a Content-Type header")
+
+    (future-fact "without an Accept-Charset header"))
+
+  (facts "about failing to create a new collection"
+    
+    ;; conflicting reserved properties - 422 Unprocessable Entity
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c", "id":"foo"}' http://localhost:3000/
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c", "version":"foo"}' http://localhost:3000/
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c", "links":"foo"}' http://localhost:3000/
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c", "type":"foo"}' http://localhost:3000/
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c", "created-at":"foo"}' http://localhost:3000/
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c", "updated-at":"foo"}' http://localhost:3000/
+    (fact "with a property that conflicts with a reserved property"
+      ;; conflicts with each reserved property
+      (doseq [keyword-name common/reserved-properties]
+        (let [response (create-collection-with-api {:name c keyword-name "foo"})
+              body (body-from-response response)]
+          (:status response) => 422
+          (response-mime-type response) => (mime-type :text)
+          (.contains body "A reserved property was used.") => true)
+        ;; check that the collection does not exist
+        (collection/get-collection c) => nil))
+
+    ;; wrong accept type - 406 Not Acceptable
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/
+    (fact "with the wrong Accept header"
+      (let [response (create-collection-with-api {
+        :Accept (mime-type :item)
+        :Content-Type (mime-type :collection)}
+        {:name c})]
+        (:status response) => 406
+        (response-mime-type response) => (mime-type :text)
+        (response-location response) => nil
+        (let [body (body-from-response response)]
+          (.contains body "Acceptable media type: application/vnd.fcms.collection+json;version=1") => true
+          (.contains body "Acceptable charset: utf-8") => true))
+      ;; check that the collection does not exist
+      (collection/get-collection c) => nil)
+
+    ;; wrong content type - 415 Unsupported Media Type
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/
+    (fact "with the wrong Content-Type header"
+      (let [response (create-collection-with-api {
+        :Accept (mime-type :collection)
+        :Content-Type (mime-type :item)}
+        {:name c})]
+        (:status response) => 415
+        (response-mime-type response) => (mime-type :text)
+        (response-location response) => nil
+        (let [body (body-from-response response)]
+          (.contains body "Acceptable media type: application/vnd.fcms.collection+json;version=1") => true
+          (.contains body "Acceptable charset: utf-8") => true))
+      ;; check that the collection does not exist
+      (collection/get-collection c) => nil)
+
+    ;; wrong charset - 406 Not Acceptable
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: iso-8859-1" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/
+    (fact "with the wrong Accept-Charset header"
+      (let [response (create-collection-with-api {
+        :Accept-Charset "iso-8859-1"
+        :Accept (mime-type :collection)
+        :Content-Type (mime-type :collection)}
+        {:name c})]
+        (:status response) => 406
+        (response-mime-type response) => (mime-type :text)
+        (response-location response) => nil
+        (let [body (body-from-response response)]
+          (.contains body "Acceptable media type: application/vnd.fcms.collection+json;version=1") => true
+          (.contains body "Acceptable charset: utf-8") => true))
+      ;; check that the collection does not exist
+      (collection/get-collection c) => nil)
+
+    ;; no body - 400 Bad Request
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Content-Type: application/vnd.fcms.collection+json;version=1" --header "Charset: UTF-8" -X POST http://localhost:3000/
+    (fact "with no body"
+      (let [response (api-request :post "/" {
+        :skip-body true
+        :headers {
+          :Accept (mime-type :collection)
+          :Content-Type (mime-type :collection)}})]
+        (:status response) => 400
+        (response-mime-type response) => (mime-type :text)
+        (.contains (body-from-response response) "Bad request.") => true)
+      ;; check that the collection does not exist
+      (collection/get-collection c) => nil)
+
+    ;; body, but not valid JSON - 400 Bad Request
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Content-Type: application/vnd.fcms.collection+json;version=1" --header "Charset: UTF-8" -X POST -d 'Hi Mom!' http://localhost:3000/
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Content-Type: application/vnd.fcms.collection+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"c' http://localhost:3000/
+    (fact "with an invalid body"
+      (doseq [bad-body ["Hi Mom!" "{'name': 'c'"]]
+        (let [response (create-collection-with-api bad-body)
+              body (body-from-response response)]
+          (:status response) => 400
+          (response-mime-type response) => (mime-type :text)
+          (response-location response) => nil
+          (.contains body "Bad request.") => true)
+        ;; check that the collection does not exist
+        (collection/get-collection c) => nil))
+
+    ;; no "name" in body - 422 Unprocessable Entity
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Content-Type: application/vnd.fcms.collection+json;version=1" --header "Charset: UTF-8" -X POST -d '{"slug":"c"}' http://localhost:3000/
+    (fact "without a name"
+      (let [response (create-collection-with-api {:slug c})
+            body (body-from-response response)]
+        (:status response) => 422
+        (response-mime-type response) => (mime-type :text)
+        (.contains body "Name is required.") => true)
+      ;; check that the collection does not exist
+      (collection/get-collection c) => nil)
+
+    ;; slug specified in body is already used - 422 Unprocessable Entity
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Content-Type: application/vnd.fcms.collection+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"another c", "slug":"c"}' http://localhost:3000/
+    (fact "with a slug that's already used in the collection"
+      ;; Create a collection to conflict with
+      (collection/create-collection c)
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection c) => (contains {
+        :name c
+        :slug c
+        :version 1})
+      (collection/collection-count) => 1
+      (let [response (create-collection-with-api {:name "another c" :slug c})
+            body (body-from-response response)]
+        (:status response) => 422
+        (response-mime-type response) => (mime-type :text)
+        (response-location response) => nil
+        (.contains body "Slug already used.") => true)
+      ;; check if only the original collection still exists
+      (collection/get-collection c) => (contains {
+        :name c
+        :slug c
+        :version 1})
+      (collection/collection-count) => 1)
+
+    ;; slug specified in body is invalid - 422 Unprocessable Entity
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Content-Type: application/vnd.fcms.collection+json;version=1" --header "Charset: UTF-8" -X POST -d '{"name":"c", "slug":"C c"}' http://localhost:3000/
+    (fact "with a slug that's invalid"
+      (let [response (create-collection-with-api {:name c :slug "C c"})
+            body (body-from-response response)]
+        (:status response) => 422
+        (response-mime-type response) => (mime-type :text)
+        (response-location response) => nil
+        (.contains body "Invalid slug.") => true)
+      ;; check that the collection does not exist
+      (collection/get-collection c) => nil)))

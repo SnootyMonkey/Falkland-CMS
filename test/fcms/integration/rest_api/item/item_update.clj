@@ -426,7 +426,7 @@
           :i i}})]
         (:status response) => 422
         (response-mime-type response) => (mime-type :text)
-        (body-from-response response) => "Slug already used in collection.")
+        (body-from-response response) => "Slug already used in the collection.")
       ;; check that the update failed
       (item/get-item c i) => (contains {
         :collection c

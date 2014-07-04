@@ -1,5 +1,6 @@
 (ns fcms.api.collections
-  (:require [compojure.core :refer (defroutes ANY GET POST)]
+  (:require [clojure.core.match :refer (match)]
+            [compojure.core :refer (defroutes ANY GET POST)]
             [liberator.core :refer (by-method)]
             [liberator.representation :refer (ring-response)]
             [taoensso.timbre :refer (debug info warn error fatal spy)]
@@ -12,6 +13,14 @@
 
 (defn- collection-location-response [collection]
   (common/location-response [(:slug collection)] (render-collection collection) collection/collection-media-type))
+
+(defn- unprocessable-reason [reason]
+  (match reason
+    :no-name (common/unprocessable-entity-response "Name is required.")
+    :property-conflict (common/unprocessable-entity-response "A reserved property was used.")
+    :slug-conflict (common/unprocessable-entity-response "Slug already used.")
+    :invalid-slug (common/unprocessable-entity-response"Invalid slug.")
+    :else (common/unprocessable-entity-response "Not processable.")))
 
 ;; ----- Get collections -----
 
@@ -47,6 +56,7 @@
 (def collection-resource-config {
   :available-charsets [common/UTF8]
   :handle-not-found (fn [_] common/missing-response)
+  :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
 })
 
 (defresource collection [coll-slug]
