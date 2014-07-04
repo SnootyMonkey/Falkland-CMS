@@ -31,11 +31,11 @@
     (fact "delete an item"
       (let [response (api-request :delete "/c/i" {:headers {}})]
         (:status response) => 204
-        (body-from-response response) => nil
-        (collection/item-count c) => 1)
+        (body-from-response response) => nil)
       ;; Check that it's really gone
       (item/get-item c i) => nil
       ;; Check that the other item in the collection wasn't deleted
+      (collection/item-count c) => 1
       (item/get-item c "another-i") => (contains {
         :collection c
         :name "another-i"
@@ -48,9 +48,9 @@
       (let [response (api-request :delete "/not-here/i" {:headers {}})]
         (:status response) => 404
         (response-mime-type response) => (mime-type :text)
-        (body-from-response response) => "Collection not found."
-        (collection/item-count c) => 2)
+        (body-from-response response) => "Collection not found.")
       ;; Check that no items in the collection were deleted
+      (collection/item-count c) => 2
       (doseq [item-name ["i" "another-i"]]
         (item/get-item c item-name) => (contains {
           :collection c
@@ -63,9 +63,9 @@
     (fact "deleting an item that doesn't exist"
       (let [response (api-request :delete "/c/not-here" {:headers {}})]
         (:status response) => 404
-        (body-from-response response) => nil
-        (collection/item-count c) => 2)
+        (body-from-response response) => nil)
       ;; Check that no items in the collection were deleted
+      (collection/item-count c) => 2
       (doseq [item-name ["i" "another-i"]]
         (item/get-item c item-name) => (contains {
           :collection c

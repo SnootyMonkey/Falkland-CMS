@@ -1,11 +1,14 @@
 (ns fcms.api.collections
   (:require [compojure.core :refer (defroutes ANY GET POST)]
             [liberator.core :refer (by-method)]
+            [liberator.representation :refer (ring-response)]
             [taoensso.timbre :refer (debug info warn error fatal spy)]
             [fcms.api.common :refer (defresource)]
             [fcms.api.common :as common]
             [fcms.resources.collection :as collection]
             [fcms.representations.collections :refer (render-collection render-collections)]))
+
+;; ----- Responses -----
 
 (defn- collection-location-response [collection]
   (common/location-response [(:slug collection)] (render-collection collection) collection/collection-media-type))
@@ -43,6 +46,7 @@
 
 (def collection-resource-config {
   :available-charsets [common/UTF8]
+  :handle-not-found (fn [_] common/missing-response)
 })
 
 (defresource collection [coll-slug]
@@ -67,7 +71,7 @@
   ;; Delete a collection
   :delete! (fn [_] (collection/delete-collection coll-slug))
 
-  ;; Update/create a collection
+  ;; Update a collection
   :new? (by-method {:post true :put false})
   :malformed? (by-method {
     :get false

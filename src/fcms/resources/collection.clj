@@ -143,3 +143,8 @@
   []
   (when-let [collections (common/doc-from-view :collection :all-ids-by-slug)]
     (vec (map #(common/map-from-db (:doc %)) collections))))
+
+(defn collection-count
+  "Return the number of collections in the system."
+  []
+  (count (common/doc-from-view :collection :all-ids-by-slug)))

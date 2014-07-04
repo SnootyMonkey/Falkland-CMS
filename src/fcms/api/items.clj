@@ -10,10 +10,7 @@
             [fcms.resources.item :as item]
             [fcms.representations.items :refer (render-item render-items)]))
 
-(def missing-item-response
-  (ring-response
-    {:status 404
-     :headers {"Content-Type" (format "text/plain;charset=%s" common/UTF8)}}))
+;; ----- Responses -----
 
 (defn- item-location-response [coll-slug item]
   (common/location-response [coll-slug (:slug item)] (render-item item) item/item-media-type))
@@ -21,7 +18,7 @@
 (defn- unprocessable-reason [reason]
   (match reason
     :bad-collection common/missing-collection-response
-    :bad-item missing-item-response
+    :bad-item common/missing-response
     :no-name (common/unprocessable-entity-response "Name is required.")
     :property-conflict (common/unprocessable-entity-response "A reserved property was used.")
     :slug-conflict (common/unprocessable-entity-response "Slug already used in collection.")

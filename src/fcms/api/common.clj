@@ -32,6 +32,17 @@
 
 ;; ----------
 
+(def missing-response
+  (ring-response
+    {:status 404
+     :headers {"Content-Type" (format "text/plain;charset=%s" UTF8)}}))
+
+(def missing-collection-response
+  (ring-response
+    {:status 404
+     :body "Collection not found."
+     :headers {"Content-Type" (format "text/plain;charset=%s" UTF8)}}))
+
 (defn unprocessable-entity-response [reason]
   (ring-response
     {:status 422
@@ -42,12 +53,6 @@
   (ring-response
     {:status status
      :body (format "Acceptable media type: %s\nAcceptable charset: %s" media-type UTF8)
-     :headers {"Content-Type" (format "text/plain;charset=%s" UTF8)}}))
-
-(def missing-collection-response
-  (ring-response
-    {:status 404
-     :body "Collection not found."
      :headers {"Content-Type" (format "text/plain;charset=%s" UTF8)}}))
 
 (defn location-response [path-parts body media-type]
