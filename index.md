@@ -81,8 +81,6 @@ Because of this difference of focus, the acronym that is used for Falkland CMS i
 
 ### A word about standards.
 
-If there is one thing the world of digital cataloging is not short of, its acronyms and standards. It seems there are enough for everyone to have a standard of their own!
-
 Standards are very important... and very plentiful. Falkland CMS is flexible so you can use the metadata and interoperability standards most relevant to you. At the same time, Falkland CMS takes an informed, pragmatic and opinionated approach, using widely supported general standards as defaults. If you aren't a card carrying metadata geek, you won't need to make confusing choices from the dizzying amount of potentially relevant standards just to utilize Falkland CMS.
 
 ### Who is using Falkland CMS?
