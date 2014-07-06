@@ -7,7 +7,7 @@
             [fcms.resources.collection-resource :as resource]
             [fcms.resources.item :as item]))
 
-;; The system should return the detail of items stored in a collection and handle the following scenarios:
+;; The system should update items stored in a collection and handle the following scenarios:
 ;;
 ;; all good - no slug
 ;; all good - with same slug
@@ -39,7 +39,7 @@
 (with-state-changes [(before :facts (do (reset-collection c) (create-collection-c-items)))
                      (after :facts (collection/delete-collection c))]
 
-  (facts "about updating an item with the REST API"
+  (facts "about using the REST API to update an item"
 
     ;; all good, no slug - 200 OK
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i
@@ -244,7 +244,7 @@
       ;; check it didn't create another item
       (collection/item-count c) => 2))
 
-  (facts "about failing to update an item with the REST API"
+  (facts "about attempting to use the REST API to update an item"
 
     ;; conflicting reserved properties - 422 Unprocessable Entity
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i", "id":"foo", "i":"k"}' http://localhost:3000/c/i
@@ -280,7 +280,7 @@
 
     ;; wrong accept type - 406 Not Acceptable
     ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i
-    (fact "attempt to update an item with the wrong accept-header"
+    (fact "with the wrong accept-header"
       (let [response (api-request :put "/c/i" {
         :headers {
           :Accept (mime-type :collection)

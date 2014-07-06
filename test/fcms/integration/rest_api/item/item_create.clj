@@ -49,7 +49,7 @@
 (with-state-changes [(before :facts (reset-collection e))
                      (after :facts (collection/delete-collection e))]
 
-  (facts "about creating valid new items"
+  (facts "about using the REST API to create a valid new item"
 
     ;; all good, no slug - 201 Created
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i"}' http://localhost:3000/c/
@@ -203,7 +203,7 @@
         :version 1})        
       (collection/item-count e) => 1))
 
-  (facts "about failing to create a new item"
+  (facts "about attempting to use the REST API to create valid new items"
     
     ;; conflicting reserved properties - 422 Unprocessable Entity
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":"i", "id":"foo"}' http://localhost:3000/c/

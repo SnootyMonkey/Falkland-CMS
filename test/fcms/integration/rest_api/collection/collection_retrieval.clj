@@ -17,6 +17,6 @@
 ;; wrong accept charset
 ;; collection doesn't exist
 
-(with-state-changes [(after :facts (collection/delete-collection c))]
+(future-facts "about using the REST API to retrieve a collection")
 
-  (future-facts "about retrieving collections"))
+(future-facts "about attempting to use the REST API to retrieve a collection")

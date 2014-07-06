@@ -14,35 +14,33 @@
 (with-state-changes [(before :facts (reset-collection e))
                      (after :facts (collection/delete-collection e))]
 
-  (facts "about deleting collections with the REST API"
-         
+  (fact "about using the REST API to delete a collection"
     ;; all good - 204 No Content
     ;; curl -i -X DELETE http://localhost:3000/c
-    (fact "delete a collection"
-      (collection/create-collection "c")
-      (collection/collection-count) => 2
-      ;; Delete the collection
-      (let [response (api-request :delete "/c" {:headers {}})]
-        (:status response) => 204
-        (body-from-response response) => nil)
-      ;; Check that it's really gone
-      (collection/get-collection c) => nil
+    (collection/create-collection "c")
+    (collection/collection-count) => 2
+    ;; Delete the collection
+    (let [response (api-request :delete "/c" {:headers {}})]
+      (:status response) => 204
+      (body-from-response response) => nil)
+    ;; Check that it's really gone
+    (collection/get-collection c) => nil
+    ;; Check that the other collection wasn't deleted
+    (collection/collection-count) => 1
+    (collection/get-collection e) => (contains {
+      :name e
+      :slug e
+      :version 1}))
+
+  (fact "about attempting to use the REST API to delete a collection that doesn't exist"
+    ;; collection doesn't exist - 404 Not Found
+    ;; curl -i -X DELETE http://localhost:3000/not-here
+    (let [response (api-request :delete "/not-here" {:headers {}})]
+      (:status response) => 404
+      (body-from-response response) => nil)
       ;; Check that the other collection wasn't deleted
       (collection/collection-count) => 1
       (collection/get-collection e) => (contains {
         :name e
         :slug e
-        :version 1}))
-
-    ;; collection doesn't exist - 404 Not Found
-    ;; curl -i -X DELETE http://localhost:3000/not-here
-    (fact "deleting a collection that doesn't exist"
-      (let [response (api-request :delete "/not-here" {:headers {}})]
-        (:status response) => 404
-        (body-from-response response) => nil)
-        ;; Check that the other collection wasn't deleted
-        (collection/collection-count) => 1
-        (collection/get-collection e) => (contains {
-          :name e
-          :slug e
-          :version 1}))))
+        :version 1})))

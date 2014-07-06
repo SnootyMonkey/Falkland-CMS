@@ -7,7 +7,7 @@
             [fcms.resources.collection :as collection]
             [fcms.resources.item :as item]))
 
-;; The system should return a summary of the items stored in a collection and handle the following scenarios:
+;; The system should return a summary list of the items stored in a collection and handle the following scenarios:
 ;;
 ;; GET
 ;; all good, empty collection
@@ -56,7 +56,7 @@
 (with-state-changes [(before :facts (setup))
                      (after :facts (teardown))]
 
-  (facts "about listing items"
+  (facts "about using the REST API to list items"
 
     ;; all good, empty collection - 200 OK
     ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/empty/
@@ -185,7 +185,7 @@
           (:collection item) => one
           (instance? timestamp (parse (:created-at item))) => true))))
 
-  (facts "about failing to list items"
+  (facts "about attempting to use the REST API to list items"
 
     ;; wrong accept - 406 Not Acceptable
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/one/

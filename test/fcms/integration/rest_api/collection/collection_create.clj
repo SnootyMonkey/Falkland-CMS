@@ -46,7 +46,7 @@
 ;; ----- Tests -----
 (with-state-changes [(after :facts (collection/delete-collection c))]
 
-  (facts "about creating valid new collections"
+  (facts "about using the REST API to create a valid new collection"
 
     ;; all good, no slug - 201 Created
     ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/
@@ -79,7 +79,7 @@
 
     (future-fact "without an Accept-Charset header"))
 
-  (facts "about failing to create a new collection"
+  (facts "about attempting to use the REST API to create a collection"
     
     ;; conflicting reserved properties - 422 Unprocessable Entity
     ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c", "id":"foo"}' http://localhost:3000/
