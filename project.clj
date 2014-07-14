@@ -16,9 +16,9 @@
     [org.flatland/ordered "1.5.2"] ; Ordered hash map https://github.com/flatland/ordered
     [ring/ring-jetty-adapter "1.3.0"] ; Web Server https://github.com/ring-clojure/ring
     [compojure "1.1.8"] ; Web routing https://github.com/weavejester/compojure
-    [liberator "0.11.1"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
+    [liberator "0.12.0"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0-RC1"] ; CouchDB client https://github.com/clojure-clutch/clutch
-    [clojurewerkz/elastisch "2.1.0-beta1"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
+    [clojurewerkz/elastisch "2.1.0-beta2"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "0.5.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [com.taoensso/timbre "3.2.1"] ; Logging https://github.com/ptaoussanis/timbre
   ]
