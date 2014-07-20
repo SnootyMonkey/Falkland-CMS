@@ -8,6 +8,7 @@
 
   :dependencies [
     [org.clojure/clojure "1.6.0"] ; Lisp on the JVM http://clojure.org/documentation
+    [org.clojure/core.typed "0.2.58"] ; Typed Clojure https://github.com/clojure/core.typed
     [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [org.clojure/core.match "0.2.1"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [org.clojure/clojurescript "0.0-2268"] ; ClojureScript compiler https://github.com/clojure/clojurescript

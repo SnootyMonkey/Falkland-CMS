@@ -1,7 +1,8 @@
 (ns fcms.resources.collection-resource
   "Namespace for collection resources. Collection resources are either taxonomies or items, and are
   stored in a particular collection."
-  (:require [clojure.set :refer (intersection)]
+  (:require [clojure.core.typed :refer (ann HSet Kw)]
+            [clojure.set :refer (intersection)]
             [clojure.string :refer (blank?)]
             [clojure.walk :refer (keywordize-keys)]
             [com.ashafa.clutch :as clutch]
@@ -9,9 +10,11 @@
             [fcms.resources.collection :as collection]
             [fcms.lib.slugify :refer (slugify)]))
 
+(ann reserved-properties (HSet))
 (def reserved-properties
   "Properties that can't be specified during a create and are ignored during an update."
   (conj common/reserved-properties :collection :categories))
+(ann retained-properties (HSet))
 (def retained-properties
   "Properties that are retained during an update even if they aren't in the updated property set."
   (conj common/retained-properties :collection :categories))
@@ -40,7 +43,8 @@
   Ensure the slug is valid and doesn't already exist if it's specified,
   or return :invalid-slug or :slug-conflict respectively.
   :property-conflict is returned if a property is included in the map of properties that is in
-  the reserved-properties set."
+  the reserved-properties set.
+  true is returned if the new resource is valid."
   ([coll-slug resource-name type reserved-properties] (valid-new-resource coll-slug resource-name reserved-properties type {}))
   ([coll-slug resource-name type reserved-properties {provided-slug :slug :as props}]
     (if-let [coll-id (:id (collection/get-collection coll-slug))]

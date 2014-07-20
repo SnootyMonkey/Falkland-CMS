@@ -2,16 +2,21 @@
   "Namespace for FCMS items. An item is any resource that's been stored in a particular collection.
   Items may also be organized in one or more taxonomies."
   (:require [clojure.set :refer (intersection)]
+            [clojure.core.typed :refer (ann IFn U Str Kw HMap)]
             [fcms.resources.common :as common]
             [fcms.resources.collection-resource :as resource]))
 
+(ann item-media-type Str)
 (def
   ^{:no-doc true}
   item-media-type "application/vnd.fcms.item+json;version=1")
+
+(ann item-media-type Str)
 (def
   ^{:no-doc true}
   item-collection-media-type "application/vnd.collection+vnd.fcms.item+json;version=1")
 
+(ann get-item [Str Str -> Map])
 (defn get-item
   "Given the slug of the collection containing the item and the slug of the item,
   return the item as a map, or return :bad-collection if there's no collection with that slug, or
@@ -19,6 +24,8 @@
   [coll-slug slug]
     (resource/get-resource coll-slug slug :item))
 
+(ann valid-new-item (IFn [Str Str -> (U Kw true)]
+                         [Str Str (HMap :complete? true) -> (U Kw true)]))
 (defn valid-new-item
   "Given the slug of the collection, the name of the new item, and a map of the new item's properties,
   check if the everything is in order to create the new item.
@@ -27,11 +34,14 @@
   Ensure the slug is valid and doesn't already exist if it's specified,
   or return :invalid-slug or :slug-conflict respectively.
   :property-conflict is returned if a property is included in the map of properties that is in the reserved-properties
-  set."
+  set.
+  true is returned if the new item is valid."
   ([coll-slug item-name] (valid-new-item coll-slug item-name {}))
   ([coll-slug item-name props]
     (resource/valid-new-resource coll-slug item-name :item resource/reserved-properties props)))
 
+(ann create-item (IFn [Str Str -> (U Kw Map)]
+                      [Str Str (HMap :complete? true) -> (U Kw Map)]))
 (defn create-item
   "Create a new item in the collection specified by its slug, using the specified
   item name and an optional map of properties.
@@ -46,6 +56,7 @@
   ([coll-slug item-name props]
     (resource/create-resource coll-slug item-name :item resource/reserved-properties props)))
 
+(ann delete-item [Str Str -> (U Kw true)])
 (defn delete-item
   "Given the slug of the collection containing the item and the slug of the item,
   delete the item and return true. 

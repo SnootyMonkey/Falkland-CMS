@@ -1,6 +1,7 @@
 (ns fcms.resources.common
   "Namespace for FCMS resources. FCMS resources are things stored in FCMS, so either collections, taxonomies or items."
-  (:require [clojure.string :as s]
+  (:require [clojure.core.typed :refer (ann HSet Kw)]
+            [clojure.string :as s]
             [clj-time.format :refer (parse formatters unparse)]
             [clj-time.core :refer (now)]
             [com.ashafa.clutch :as clutch]
@@ -9,11 +10,13 @@
 
 ;; ----- Properties common to all FCMS resources -----
 
+(ann reserved-properties (HSet))
 (def
   ^{:no-doc true}
   reserved-properties
   "Properties that can't be specified during a create and are ignored during an update."
   #{:id :created-at :updated-at :type :version :links})
+(ann retained-properties (HSet))
 (def
   ^{:no-doc true}
   retained-properties

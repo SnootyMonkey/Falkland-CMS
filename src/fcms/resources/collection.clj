@@ -38,7 +38,8 @@
   Ensure the slug is valid and doesn't already exist if it's specified,
   or return :invalid-slug or :slug-conflict respectively.
   :property-conflict is returned if a property is included in the map of properties that is in the common/reserved-properties
-  set."
+  set.
+  true is returned if the new collection is valid."
   ([coll-name] (valid-new-collection coll-name {}))
   ([coll-name {provided-slug :slug :as props}]
   (cond
