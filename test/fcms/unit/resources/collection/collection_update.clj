@@ -75,27 +75,18 @@
   (facts "about updating collections"
 
     (fact "when updating with no properties"
-      (let [collection (get-collection c)]
-        (:custom collection) => foo
-        (:version collection) => 1)
       (update-collection c {})
       (let [collection (get-collection c)]
-        (:custom collection) => nil
+        (:custom collection) => nil ; custom drops out because it wasn't in the update
         (:version collection) => 2))
 
     (fact "when updating the name"
-      (let [collection (get-collection c)]
-        (:name collection) => c
-        (:version collection) => 1)
       (update-collection c {:name new-name})
       (let [collection (get-collection c)]
         (:name collection) => new-name
         (:version collection) => 2))
 
     (fact "when updating the slug"
-      (let [collection (get-collection c)]
-        (:slug collection) => c
-        (:version collection) => 1)
       (update-collection c {:slug slug})
       ; can no longer retrieve the collection by the old slug
       (get-collection c) => nil
@@ -104,28 +95,20 @@
         (:version collection) => 2))
 
     (fact "when updating a custom property"
-      (let [collection (get-collection c)]
-        (:custom collection) => foo
-        (:version collection) => 1)
       (update-collection c {:custom bar})
       (let [collection (get-collection c)]
         (:custom collection) => bar
         (:version collection) => 2))
 
     (fact "when updating with new custom properties"
-      (let [collection (get-collection c)]
-        (:custom collection) => foo
-        (:version collection) => 1)
       (update-collection c {:custom2 foo "custom3" bar})
       (let [collection (get-collection c)]
+        (:custom collection) => nil ; custom drops out because it wasn't in the update
         (:custom2 collection) => foo
         (:custom3 collection) => bar
         (:version collection) => 2))
 
     (fact "when updating with multiple updates"
-      (let [collection (get-collection c)]
-        (:custom collection) => foo
-        (:version collection) => 1)
       (update-collection c {:name new-name :slug slug :custom2 foo "custom3" bar}) => truthy
       (let [collection (get-collection slug)]
         (:name collection) => new-name

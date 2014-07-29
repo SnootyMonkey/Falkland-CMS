@@ -18,18 +18,22 @@
 
   (facts "about checking validity of invalid item updates"
 
-    (facts "when the specified collection doesn't exist"
+    (fact "when the specified collection doesn't exist"
       (doseq [coll-slug (conj bad-strings "not-here")]
         (valid-item-update coll-slug i {}) => :bad-collection))
 
-    (facts "when the specified item doesn't exist"
+    (fact "when the specified item doesn't exist"
       (doseq [item-slug (conj bad-strings "not-here")]
         (valid-item-update e item-slug {}) => :bad-item))
+
 
     (with-state-changes [(before :facts (existing-item-i))
                          (after :facts (delete-item e i))]
 
-      (facts "when updating a reserved property"
+      (fact "when updating with an invalid slug"
+        (valid-item-update e i {:slug unicode-name}) => :invalid-slug)
+
+      (fact "when updating a reserved property"
         (doseq [prop resource/reserved-properties]
           (valid-item-update e i {prop foo}) => :property-conflict
           (valid-item-update e i {(name prop) foo}) => :property-conflict))))
@@ -130,9 +134,9 @@
       (facts "when updating with new custom properties"
         (:custom2 (update-item e i {:custom2 foo "custom3" bar})) => foo
         (let [item (get-item e i)]
+          (:custom item) => nil ; custom drops out because it wasn't in the update
           (:custom2 item) => foo
           (:custom3 item) => bar
-          (:custom item) => nil ; custom drops out because it wasn't in the update
           (:version item) => 2))
 
       (facts "when updating with multiple updates"
