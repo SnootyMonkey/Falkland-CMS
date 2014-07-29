@@ -96,7 +96,7 @@
   valid or return :invalid-slug and ensure it is unused or
   return :slug-conflict. If no item slug is specified in
   the properties it will be retain its current slug."
-  [coll-slug slug type reserved-properties {item-name :name provided-slug :slug :as props}]
+  [coll-slug slug type reserved-properties {provided-slug :slug :as props}]
     (let [coll-id (:id (collection/get-collection coll-slug))
           resource-id (:id (get-resource coll-slug slug type))]
       (cond

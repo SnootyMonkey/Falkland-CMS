@@ -31,29 +31,29 @@
         (valid-collection-update coll-slug {}) => :bad-collection))
 
     (fact "when updating with an invalid slug"
-      (valid-collection-update e {:slug unicode-name}) => :invalid-slug)
+      (valid-collection-update e {:slug unicode-name}) => :invalid-slug))
     
-    (fact "when updating with the same slug"
-      (valid-collection-update c {:slug e}) => :slug-conflict))
-
   (facts "about checking validity of valid collection updates"
 
-    (fact "it's valid with no properties"
+    (fact "with no properties"
       (valid-collection-update e {}) => true)
     
-    (fact "it's valid when updating the name"
+    (fact "when updating the name"
       (valid-collection-update e {:name new-name}) => true)
 
-    (fact "it's valid when updating the slug"
+    (fact "when updating the slug"
       (valid-collection-update e {:slug slug}) => true)
 
-    (fact "it's valid when updating a custom property"
+    (fact "when updating with the same slug"
+      (valid-collection-update c {:slug c}) => true)
+
+    (fact "when updating a custom property"
       (valid-collection-update e {:custom bar}) => true)
 
-    (fact "it's valid when adding new custom properties"
+    (fact "when adding new custom properties"
       (valid-collection-update e {:custom2 foo "custom3" bar}) => true)
 
-    (fact "it's valid when updating many things at once"
+    (fact "when updating many things at once"
       (valid-collection-update e {
         :name new-name
         :slug slug
@@ -66,10 +66,10 @@
       (doseq [coll-slug (conj bad-strings "not-here")]
         (update-collection coll-slug {}) => :bad-collection))
 
-    (fact "it fails with a provided slug that is invalid"
+    (fact "with a provided slug that is invalid"
       (update-collection e {:slug "i I"}) => :invalid-slug)
 
-    (fact "it fails with a provided slug that is already used"
+    (fact "with a provided slug that is already used"
       (update-collection e {:slug c}) => :slug-conflict))
 
   (facts "about updating collections"

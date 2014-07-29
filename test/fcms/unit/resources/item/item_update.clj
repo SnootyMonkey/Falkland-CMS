@@ -39,22 +39,28 @@
     (with-state-changes [(before :facts (existing-item-i))
                          (after :facts (delete-item e i))]
 
-      (fact "it's valid with no properties"
+      (fact "with no properties"
         (valid-item-update e i {}) => true)
 
-      (fact "it's valid when updating the name"
+      (fact "when updating the name"
         (valid-item-update e i {:name new-name}) => true)
 
-      (fact "it's valid when updating the slug"
+      (fact "when updating the name to be the same name"
+        (valid-item-update e i {:name i}) => true)
+
+      (fact "when updating the slug"
         (valid-item-update e i {:slug slug}) => true)
 
-      (fact "it's valid when updating a custom property"
+      (fact "when updating with the same slug"
+        (valid-item-update e i {:slug i}) => true)
+
+      (fact "when updating a custom property"
         (valid-item-update e i {:custom bar}) => true)
 
-      (fact "it's valid when adding new custom properties"
+      (fact "when adding new custom properties"
         (valid-item-update e i {:custom2 foo "custom3" bar}) => true)
 
-      (fact "it's valid when updating many things at once"
+      (fact "when updating many things at once"
         (valid-item-update e i {
           :name new-name
           :slug slug
@@ -74,13 +80,13 @@
     (with-state-changes [(before :facts (existing-item-i))
                          (after :facts (delete-item e i))]
 
-      (fact "it fails with a provided slug that is invalid"
+      (fact "with a provided slug that is invalid"
         (update-item e i {:slug "i I"}) => :invalid-slug)
 
       (with-state-changes [(before :facts (create-item e slug))
                            (after :facts (delete-item e slug))]
 
-        (fact "it fails with a provided slug that is already used"
+        (fact "with a provided slug that is already used"
           (update-item e i {:slug slug}) => :slug-conflict))
 
       (facts "when updating a reserved property"

@@ -97,7 +97,7 @@
   valid or return :invalid-slug and ensure it is unused or
   return :slug-conflict. If no slug is specified in
   the properties it will be retain its current slug."
-  [slug {coll-name :name provided-slug :slug}]
+  [slug {provided-slug :slug}]
     (let [id (:id (get-collection slug))]
       (cond
         (nil? id) :bad-collection
