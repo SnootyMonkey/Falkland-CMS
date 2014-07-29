@@ -93,14 +93,16 @@
   properties for the collection, check if the everything
   is in order to update the collection.
   Ensure the collection exists or return :bad-collection.
+  Ensure no reserved properties are used or return :property-conflict.
   If a new slug is provided in the properties, ensure it is
   valid or return :invalid-slug and ensure it is unused or
   return :slug-conflict. If no slug is specified in
   the properties it will be retain its current slug."
-  [slug {provided-slug :slug}]
+  [slug {provided-slug :slug :as props}]
     (let [id (:id (get-collection slug))]
       (cond
         (nil? id) :bad-collection
+        (not-empty (intersection (set (keys (keywordize-keys props))) common/reserved-properties)) :property-conflict
         (not provided-slug) true
         (not (common/valid-slug? provided-slug)) :invalid-slug
         (= slug provided-slug) true

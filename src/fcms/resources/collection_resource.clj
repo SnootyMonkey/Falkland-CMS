@@ -92,6 +92,7 @@
   check if the everything is in order to update the resource.
   Ensure the collection exists or return :bad-collection.
   Ensure the resource exists or return :bad-<resource>.
+  Ensure no reserved properties are used or return :property-conflict.
   If a new slug is provided in the properties, ensure it is
   valid or return :invalid-slug and ensure it is unused or
   return :slug-conflict. If no item slug is specified in

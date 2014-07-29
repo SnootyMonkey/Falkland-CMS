@@ -27,11 +27,14 @@
         (valid-item-update e item-slug {}) => :bad-item))
 
 
-    (with-state-changes [(before :facts (existing-item-i))
-                         (after :facts (delete-item e i))]
+    (with-state-changes [(before :facts (do (existing-item-i) (create-item e slug)))
+                         (after :facts (do (delete-item e i) (delete-item e slug)))]
 
-      (fact "when updating with an invalid slug"
+      (fact "when updating with a provided slug that is invalid"
         (valid-item-update e i {:slug unicode-name}) => :invalid-slug)
+
+      (fact "when updating with a provided slug that is already used"
+        (valid-item-update e i {:slug slug}) => :slug-conflict)
 
       (fact "when updating a reserved property"
         (doseq [prop resource/reserved-properties]
@@ -93,7 +96,7 @@
         (fact "with a provided slug that is already used"
           (update-item e i {:slug slug}) => :slug-conflict))
 
-      (facts "when updating a reserved property"
+      (facts "with a reserved property"
         (doseq [prop resource/reserved-properties]
           (update-item e i {prop foo}) => :property-conflict
           (update-item e i {(name prop) foo}) => :property-conflict))))

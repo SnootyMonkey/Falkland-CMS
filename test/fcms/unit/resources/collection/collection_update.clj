@@ -30,31 +30,39 @@
       (doseq [coll-slug (conj bad-strings "not-here")]
         (valid-collection-update coll-slug {}) => :bad-collection))
 
-    (fact "when updating with an invalid slug"
-      (valid-collection-update e {:slug unicode-name}) => :invalid-slug))
+    (fact "when updating with a provided slug that is invalid"
+      (valid-collection-update c {:slug unicode-name}) => :invalid-slug)
+
+    (fact "when updating with a provided slug that is already used"
+      (valid-collection-update c {:slug e}) => :slug-conflict)
     
+    (fact "when updating a reserved property"
+      (doseq [prop common/reserved-properties]
+        (valid-collection-update c {prop foo}) => :property-conflict
+        (valid-collection-update c {(name prop) foo}) => :property-conflict)))
+
   (facts "about checking validity of valid collection updates"
 
     (fact "with no properties"
-      (valid-collection-update e {}) => true)
+      (valid-collection-update c {}) => true)
     
     (fact "when updating the name"
-      (valid-collection-update e {:name new-name}) => true)
+      (valid-collection-update c {:name new-name}) => true)
 
     (fact "when updating the slug"
-      (valid-collection-update e {:slug slug}) => true)
+      (valid-collection-update c {:slug slug}) => true)
 
     (fact "when updating with the same slug"
       (valid-collection-update c {:slug c}) => true)
 
     (fact "when updating a custom property"
-      (valid-collection-update e {:custom bar}) => true)
+      (valid-collection-update c {:custom bar}) => true)
 
     (fact "when adding new custom properties"
-      (valid-collection-update e {:custom2 foo "custom3" bar}) => true)
+      (valid-collection-update c {:custom2 foo "custom3" bar}) => true)
 
     (fact "when updating many things at once"
-      (valid-collection-update e {
+      (valid-collection-update c {
         :name new-name
         :slug slug
         :custom bar
