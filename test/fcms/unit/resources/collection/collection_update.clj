@@ -49,6 +49,9 @@
     (fact "when updating the name"
       (valid-collection-update c {:name new-name}) => true)
 
+    (fact "when updating with the same name"
+      (valid-collection-update c {:name c}) => true)
+
     (fact "when updating the slug"
       (valid-collection-update c {:slug slug}) => true)
 
@@ -75,10 +78,15 @@
         (update-collection coll-slug {}) => :bad-collection))
 
     (fact "with a provided slug that is invalid"
-      (update-collection e {:slug "i I"}) => :invalid-slug)
+      (update-collection c {:slug "i I"}) => :invalid-slug)
 
     (fact "with a provided slug that is already used"
-      (update-collection e {:slug c}) => :slug-conflict))
+      (update-collection c {:slug e}) => :slug-conflict)
+
+    (fact "with a reserved property"
+        (doseq [prop common/reserved-properties]
+          (update-collection c {prop foo}) => :property-conflict
+          (update-collection c {(name prop) foo}) => :property-conflict)))
 
   (facts "about updating collections"
 

@@ -52,7 +52,7 @@
       (fact "when updating the name"
         (valid-item-update e i {:name new-name}) => true)
 
-      (fact "when updating the name to be the same name"
+      (fact "when updating with the same name"
         (valid-item-update e i {:name i}) => true)
 
       (fact "when updating the slug"
@@ -76,11 +76,11 @@
 
   (facts "about item update failures"
 
-    (facts "when the specified collection doesn't exist"
+    (fact "when the specified collection doesn't exist"
       (doseq [coll-slug (conj bad-strings "not-here")]
         (update-item coll-slug i {}) => :bad-collection))
 
-    (facts "when the specified item doesn't exist"
+    (fact "when the specified item doesn't exist"
       (doseq [item-slug (conj bad-strings "not-here")]
         (update-item e item-slug {}) => :bad-item))
 
@@ -96,7 +96,7 @@
         (fact "with a provided slug that is already used"
           (update-item e i {:slug slug}) => :slug-conflict))
 
-      (facts "with a reserved property"
+      (fact "with a reserved property"
         (doseq [prop resource/reserved-properties]
           (update-item e i {prop foo}) => :property-conflict
           (update-item e i {(name prop) foo}) => :property-conflict))))
@@ -106,13 +106,13 @@
     (with-state-changes [(before :facts (existing-item-i))
                          (after :facts (delete-item e i))]
 
-      (facts "when updating with no properties"
+      (fact "when updating with no properties"
         (update-item e i {})
         (let [item (get-item e i)]
           (:custom item) => nil ; custom drops out because it wasn't in the update
           (:version item) => 2))
 
-      (facts "when updating the name"
+      (fact "when updating the name"
         (let [new-name (str ascii-name unicode-name)]
           (:name (update-item e i {:name new-name})) => new-name
           (let [item (get-item e i)]
@@ -120,7 +120,7 @@
             (:custom item) => nil ; custom drops out because it wasn't in the update
             (:version item) => 2)))
 
-      (facts "when updating the slug"
+      (fact "when updating the slug"
         (:slug (update-item e i {:slug slug})) => slug
         (get-item e i) => nil ; can no longer retrieve the item by the old slug
         (let [item (get-item e slug)]
@@ -128,13 +128,13 @@
           (:custom item) => nil ; custom drops out because it wasn't in the update
           (:version item) => 2))
 
-      (facts "when updating a custom property"
+      (fact "when updating a custom property"
         (:custom (update-item e i {:custom bar})) => bar
         (let [item (get-item e i)]
           (:custom item) => bar
           (:version item) => 2))
 
-      (facts "when updating with new custom properties"
+      (fact "when updating with new custom properties"
         (:custom2 (update-item e i {:custom2 foo "custom3" bar})) => foo
         (let [item (get-item e i)]
           (:custom item) => nil ; custom drops out because it wasn't in the update
@@ -142,7 +142,7 @@
           (:custom3 item) => bar
           (:version item) => 2))
 
-      (facts "when updating with multiple updates"
+      (fact "when updating with multiple updates"
         (update-item e i {:name new-name :slug slug :custom2 foo "custom3" bar}) => truthy
         (let [item (get-item e slug)]
           (:name item) => new-name
@@ -152,7 +152,7 @@
           (:custom3 item) => bar
           (:version item) => 2))
 
-      (facts "about changes to the item's timestamps"
+      (fact "about changes to the item's timestamps"
         (Thread/sleep 1000) ; delay 1 sec. since the timestamps are at second resolution
         (update-item e i {})
         (let [item (get-item e i)]
