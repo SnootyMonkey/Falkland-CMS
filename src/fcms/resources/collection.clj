@@ -74,13 +74,18 @@
     (let [delete-items (map #(common/delete-map (:value %)) items)]
       (clutch/bulk-update (common/db) (vec (conj delete-items (common/delete-map [id rev])))))))
 
-;; TODO this is returning the raw bulk update response, should return something else
 (defn delete-collection
   "Given the slug of the collection, delete it and all its contents and return true,
-  or return :bad-collection if the collection slug is not good"
+  or return :bad-collection if no collection exists for the slug.
+
+  If any portion of the bulk delete fails then the raw Couch DB bulk update response
+  is returned."
   [slug]
   (if-let [coll (first (common/from-view :collection :delete-by-slug slug))]
-    (delete-collection-and-contents (first (:value coll)) (last (:value coll)))
+    (let [result (delete-collection-and-contents (first (:value coll)) (last (:value coll)))]
+      (if (every? #(and (map? %) (true? (:ok %))) result)
+        true
+        result))
     :bad-collection))
 
 (defn valid-collection-update
