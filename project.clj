@@ -11,7 +11,7 @@
   ]
   
   :aliases {
-    "spell" ["spell" "-n"] ; check spelling in docs and docstrings
+    "spell!" ["spell" "-n"] ; check spelling in docs and docstrings
     "ancient" ["with-profile" "dev" "do" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"] ; check for out of date dependencies
   }
 
