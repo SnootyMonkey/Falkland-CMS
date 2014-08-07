@@ -141,6 +141,7 @@
 
   :ring {
     :handler fcms.app/app
+    :reload-paths ["src"] ; work around issue https://github.com/weavejester/lein-ring/issues/68
   }
 
   :main fcms.app
