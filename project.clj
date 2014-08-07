@@ -4,7 +4,7 @@
   :license {:name "Mozilla Public License v2.0"
             :url "http://www.mozilla.org/MPL/2.0/"}
   
-  :min-lein-version "2.3.4" ;; highest version supported by Travis-CI as of 1/14/2014
+  :min-lein-version "2.4.2" ;; highest version supported by Travis-CI as of 8/7/2014
 
   :dependencies [
     [org.clojure/clojure "1.6.0"] ; Lisp on the JVM http://clojure.org/documentation
