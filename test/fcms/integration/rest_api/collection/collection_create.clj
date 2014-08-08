@@ -1,6 +1,7 @@
 (ns fcms.integration.rest-api.collection.collection-create
   (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
+            [fcms.resources.collection :refer :all]
             [fcms.lib.rest-api-mock :refer :all]
             [fcms.resources.common :as common]
             [fcms.resources.collection :as collection]))
@@ -35,6 +36,7 @@
   ([body]
      (api-request :post "/" {
       :headers {
+        :Accept-Charset "utf-8"
         :Accept (mime-type :collection)
         :Content-Type (mime-type :collection)}
       :body body}))
@@ -44,7 +46,8 @@
         :body body})))
 
 ;; ----- Tests -----
-(with-state-changes [(after :facts (collection/delete-collection c))]
+(with-state-changes [(after :facts (doseq [coll (all-collections)]
+                                     (delete-collection (:slug coll))))]
 
   (facts "about using the REST API to create a valid new collection"
 
@@ -65,19 +68,109 @@
       ;; Collection is empty?
       (collection/item-count c) => 0)
 
-    (future-fact "when the generated slug is different than the provided name")
+    (fact "when the generated slug is different than the provided name"
+      ;; Create the collection
+      (let [response (create-collection-with-api {:name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => "/this-is-also-a-slug"
+        (json? response) => true)
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection "this-is-also-a-slug") => (contains {
+                                                   :slug "this-is-also-a-slug"
+                                                   :name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - " 
+                                                   :version 1})
+      ;; Collection is empty?
+      (collection/item-count "this-is-also-a-slug") => 0)
 
-    (future-fact "when the generated slug is already used")
+    (fact "when the generated slug is already used"
+      ;; Create first collection
+      (let [response (create-collection-with-api {:name c})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => "/c"
+        (json? response) => true)
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name c
+        :version 1})
+      ;; Collection is empty?
+      (collection/item-count c) => 0
+      
+      ;; Create second collection
+      (let [response (create-collection-with-api {:name c})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => "/c-1"
+        (json? response) => true)
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection "c-1") => (contains {
+        :slug "c-1"
+        :name c
+        :version 1})
+      ;; Collection is empty?
+      (collection/item-count c) => 0)
 
-    (future-fact "with a provided slug")
+    (fact "with a provided slug"
+      ;; Create the collection
+      (let [response (create-collection-with-api {:name c :slug "another-c"})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => "/another-c"
+        (json? response) => true)
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection "another-c") => (contains {
+        :slug "another-c"
+        :name c
+        :version 1})
+      ;; Collection is empty?
+      (collection/item-count "another-c") => 0)
 
-    (future-fact "containing unicode")
+    (fact "containing unicode"
+      ;; Create the collection
+      (let [response (create-collection-with-api {:name unicode-name :slug c :description unicode-description})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => "/c"
+        (json? response) => true)
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name unicode-name
+        :version 1})
+      ;; Collection is empty?
+      (collection/item-count c) => 0)
 
-    (future-fact "without an Accept header")
+    (fact "without an Accept header"
+      (let [response (create-collection-with-api {:Content-Type (mime-type :collection) :Accept-Charset "utf-8"} {:name c})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => "/c"
+        (json? response) => true)
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name c
+        :version 1})
+      ;; Collection is empty?
+      (collection/item-count c) => 0)
 
-    (future-fact "without a Content-Type header")
+    (fact "without a Content-Type header"
+      (let [response (create-collection-with-api {:Accept (mime-type :collection) :Accept-Charset "utf-8"} {:name c})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => "/c"
+        (json? response) => true)
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name c
+        :version 1})
+      ;; Collection is empty?
+      (collection/item-count c) => 0)
 
-    (future-fact "without an Accept-Charset header"))
+    (fact "without an Accept-Charset header"))
 
   (facts "about attempting to use the REST API to create a collection"
     
