@@ -61,21 +61,21 @@
     ;; all good, empty collection - 200 OK
     ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/empty/
     (fact "from an empty collection"
-      (let [response (api-request :get "/e/" {:headers {:Accept (mime-type :item-collection)}})]
+      (let [response (api-request :get "/e/" {:headers {:Accept (mime-type :item-list)}})]
         (:status response) => 200
-        (response-mime-type response) => (mime-type :item-collection)
+        (response-mime-type response) => (mime-type :item-list)
         (json? response) => true
         (items-from-body (body-from-response response)) => []))
 
     ;; all good, 1 item - 200 OK
     ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/one/
     (fact "from a collection with one item"
-      (let [response (api-request :get "/one/" {:headers {:Accept (mime-type :item-collection)}})
+      (let [response (api-request :get "/one/" {:headers {:Accept (mime-type :item-list)}})
             body (body-from-response response)
             items (items-from-body body)
             item (first items)]
           (:status response) => 200
-          (response-mime-type response) => (mime-type :item-collection)
+          (response-mime-type response) => (mime-type :item-list)
           (json? response) => true
           (collection/item-count one) => 1
           (count items) => 1
@@ -89,7 +89,7 @@
     ;; all good, many items - 200 OK
     ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/one/
     (fact "from a collection with many items"
-      (let [response (api-request :get "/many/" {:headers {:Accept (mime-type :item-collection)}})
+      (let [response (api-request :get "/many/" {:headers {:Accept (mime-type :item-list)}})
             body (body-from-response response)
             items (items-from-body body)
             i-1 (first items)
@@ -98,7 +98,7 @@
             i-3 (nth items 3)
             i-4 (nth items 4)]
         (:status response) => 200
-        (response-mime-type response) => (mime-type :item-collection)
+        (response-mime-type response) => (mime-type :item-list)
         (json? response) => true
         (collection/item-count many) => 5
         (count items) => 5
@@ -152,7 +152,7 @@
             items (items-from-body body)
             item (first items)]
         (:status response) => 200
-        (response-mime-type response) => (mime-type :item-collection)
+        (response-mime-type response) => (mime-type :item-list)
         (json? response) => true
         (count items) => 1
         item => (contains {
@@ -169,9 +169,9 @@
       (let [response (api-request :get "/one/" {
         :skip-charset true
         :headers {
-          :Accept (mime-type :item-collection)}})]
+          :Accept (mime-type :item-list)}})]
         (:status response) => 200
-        (response-mime-type response) => (mime-type :item-collection)
+        (response-mime-type response) => (mime-type :item-list)
         (json? response) => true
         (collection/item-count one) => 1
         (let [body (body-from-response response)
@@ -202,7 +202,7 @@
     (fact "with the wrong Accept-Charset header"
          (let [response (api-request :get "/one/" {
           :headers {
-            :Accept (mime-type :item-collection)
+            :Accept (mime-type :item-list)
             :Accept-Charset "iso-8859-1"}})]
           (:status response) => 406
           (response-mime-type response) => (mime-type :text)
@@ -213,7 +213,7 @@
     ;; collection doesn't exist - 404 Not Found
     ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/not-here/
     (fact "from a collection that doesn't exist"
-      (let [response (api-request :get "/not-here/" {:headers {:Accept (mime-type :item-collection)}})
+      (let [response (api-request :get "/not-here/" {:headers {:Accept (mime-type :item-list)}})
             body (body-from-response response)]
         (:status response) => 404
         (response-mime-type response) => (mime-type :text)

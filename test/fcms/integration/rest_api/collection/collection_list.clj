@@ -36,7 +36,7 @@
     (fact "no collections"
       (let [response (api-request :get "/" {})]
         (:status response) => 200
-        (response-mime-type response) => (mime-type :collection)
+        (response-mime-type response) => (mime-type :collection-list)
         (json? response) => true
         (collections-from-body (body-from-response response)) => [])))
   
@@ -45,7 +45,7 @@
     (fact "one collection"
       (let [response (api-request :get "/" {})]
         (:status response) => 200
-        (response-mime-type response) => (mime-type :collection)
+        (response-mime-type response) => (mime-type :collection-list)
         (json? response) => true 
         (first (collections-from-body (body-from-response response))) => (contains {:name c
                                                                                      :slug c
@@ -59,7 +59,7 @@
     (fact "many collections"
       (let [response (api-request :get "/" {})]
         (:status response) => 200
-        (response-mime-type response) => (mime-type :collection)
+        (response-mime-type response) => (mime-type :collection-list)
         (json? response) => true
         (let [collections (collections-from-body (body-from-response response))]
           (first collections) => (contains {:name c
@@ -84,7 +84,7 @@
     (fact "without using an Accept header"
       (let [response (api-request :get "/" {})]
         (:status response) => 200
-        (response-mime-type response) => (mime-type :collection)
+        (response-mime-type response) => (mime-type :collection-list)
         (json? response) => true
         (collections-from-body (body-from-response response)) => []))
     
@@ -93,13 +93,13 @@
         (:status response) => 406
         (response-mime-type response) => (mime-type :text)
         (let [body (body-from-response response)]
-          (.contains body "Acceptable media type: application/vnd.fcms.collection+json") => true
+          (.contains body "Acceptable media type: application/vnd.collection+vnd.fcms.collection+json") => true
           (.contains body "Acceptable charset: utf-8") => true)))
 
     (fact "no Accept-Charset"
       (let [response (api-request :get "/" {:headers {}})]
         (:status response) => 200
-        (response-mime-type response) => (mime-type :collection)
+        (response-mime-type response) => (mime-type :collection-list)
         (json? response) => true
         (collections-from-body (body-from-response response)) => []))
 
@@ -108,7 +108,7 @@
         (:status response) => 406
         (response-mime-type response) => (mime-type :text)
         (let [body (body-from-response response)]
-          (.contains body "Acceptable media type: application/vnd.fcms.collection+json") => true
+          (.contains body "Acceptable media type: application/vnd.collection+vnd.fcms.collection+json") => true
           (.contains body "Acceptable charset: utf-8") => true)))
     
     (future-fact "using an invalid page")))

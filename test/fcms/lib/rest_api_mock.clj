@@ -14,8 +14,9 @@
   [res-type]
   (case res-type
     :item "application/vnd.fcms.item+json"
-    :item-collection "application/vnd.collection+vnd.fcms.item+json"
+    :item-list "application/vnd.collection+vnd.fcms.item+json"
     :collection "application/vnd.fcms.collection+json"
+    :collection-list "application/vnd.collection+vnd.fcms.collection+json"
     :text "text/plain"))
 
 (defn response-mime-type [response]
