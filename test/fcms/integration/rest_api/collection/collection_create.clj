@@ -170,7 +170,19 @@
       ;; Collection is empty?
       (collection/item-count c) => 0)
 
-    (fact "without an Accept-Charset header"))
+    (fact "without an Accept-Charset header"
+      (let [response (create-collection-with-api {:Accept (mime-type :collection) :Accept-Charset "utf-8"} {:name c})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => "/c"
+        (json? response) => true)
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name c
+        :version 1})
+      ;; Collection is empty?
+      (collection/item-count c) => 0))
 
   (facts "about attempting to use the REST API to create a collection"
     
