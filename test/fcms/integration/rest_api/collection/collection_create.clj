@@ -70,16 +70,16 @@
 
     (fact "when the generated slug is different than the provided name"
       ;; Create the collection
-      (let [response (create-collection-with-api {:name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "})]
+      (let [response (create-collection-with-api {:name long-unicode-name})]
         (:status response) => 201
         (response-mime-type response) => (mime-type :collection)
-        (response-location response) => "/this-is-also-a-slug"
+        (response-location response) => (str "/" generated-slug)
         (json? response) => true)
       ;; Get the created collection and make sure it's right
       (collection/get-collection "this-is-also-a-slug") => (contains {
-                                                   :slug "this-is-also-a-slug"
-                                                   :name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - " 
-                                                   :version 1})
+        :slug generated-slug
+        :name long-unicode-name
+        :version 1})
       ;; Collection is empty?
       (collection/item-count "this-is-also-a-slug") => 0)
 

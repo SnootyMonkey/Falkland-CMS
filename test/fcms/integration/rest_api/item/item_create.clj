@@ -1,8 +1,11 @@
 (ns fcms.integration.rest-api.item.item-create
   "Integration tests for creating items with the REST API."
-  (:require [midje.sweet :refer :all]
+  (:require [clj-time.format :refer (parse)]
+            [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
             [fcms.lib.rest-api-mock :refer :all]
+            [fcms.lib.body :refer (verify-item-links)]
+            [fcms.lib.check :refer (about-now?)]
             [fcms.resources.collection :as collection]
             [fcms.resources.collection-resource :as resource]
             [fcms.resources.item :as item]))
@@ -59,7 +62,16 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i"
-        (json? response) => true)
+        (json? response) => true
+        (let [item (body-from-response response)]
+          (:name item) => i
+          (:slug item) => i
+          (:collection item) => e
+          (:version item) => 1
+          (instance? timestamp (parse (:created-at item))) => true
+          (about-now? (:created-at item)) => true
+          (:created-at item) => (:updated-at item)
+          (verify-item-links e i (:links item))))
       ;; Get the created item and make sure it's right
       (item/get-item e i) => (contains {
         :collection e
@@ -72,16 +84,25 @@
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":" -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "}' http://localhost:3000/c/
     (fact "when the generated slug is different than the provided name"
       ;; Create the item
-      (let [response (create-item-with-api {:name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "})]
+      (let [response (create-item-with-api {:name long-unicode-name})]
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
-        (response-location response) => "/e/this-is-also-a-slug"
-        (json? response) => true)
+        (response-location response) => (str "/e/" generated-slug)
+        (json? response) => true
+        (let [item (body-from-response response)]
+          (:name item) => long-unicode-name
+          (:slug item) => generated-slug
+          (:collection item) => e
+          (:version item) => 1
+          (instance? timestamp (parse (:created-at item))) => true
+          (about-now? (:created-at item)) => true
+          (:created-at item) => (:updated-at item)
+          (verify-item-links e generated-slug (:links item))))
       ;; Get the created item and make sure it's right
-      (item/get-item e "this-is-also-a-slug") => (contains {
+      (item/get-item e generated-slug) => (contains {
         :collection e
-        :name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
-        :slug "this-is-also-a-slug"
+        :name long-unicode-name
+        :slug generated-slug
         :version 1})
       (collection/item-count "e") => 1)
 
