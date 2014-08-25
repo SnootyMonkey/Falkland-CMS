@@ -1,10 +1,9 @@
 (ns fcms.api.items
   (:require [clojure.core.match :refer (match)]
             [compojure.core :refer (defroutes ANY)]
-            [liberator.core :refer (by-method)]
+            [liberator.core :refer (defresource by-method)]
             [liberator.representation :refer (ring-response)]
             [taoensso.timbre :refer (debug info warn error fatal spy)]
-            [fcms.api.common :refer (defresource)]
             [fcms.api.common :as common]
             [fcms.resources.collection :as collection]
             [fcms.resources.item :as item]

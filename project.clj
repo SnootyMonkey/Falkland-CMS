@@ -4,7 +4,7 @@
   :license {:name "Mozilla Public License v2.0"
             :url "http://www.mozilla.org/MPL/2.0/"}
   
-  :min-lein-version "2.3.4" ;; highest version supported by Travis-CI as of 1/14/2014
+  :min-lein-version "2.4.2" ; highest version supported by Travis-CI as of 8/7/2014
 
   :dependencies [
     [org.clojure/clojure "1.6.0"] ; Lisp on the JVM http://clojure.org/documentation
@@ -45,7 +45,7 @@
         [org.clojure/tools.trace "0.7.6"] ; Tracing macros/fns https://github.com/clojure/tools.trace
         [com.cemerick/piggieback "0.1.2"] ; ClojureScript bREPL from the nREPL https://github.com/cemerick/piggieback
       ]
-      ; REPL injections
+      ;; REPL injections
       :injections [
         (require '[clojure.pprint :refer :all]
                  '[clojure.stacktrace :refer (print-stack-trace)]
@@ -141,6 +141,7 @@
 
   :ring {
     :handler fcms.app/app
+    :reload-paths ["src"] ; work around issue https://github.com/weavejester/lein-ring/issues/68
   }
 
   :main fcms.app
