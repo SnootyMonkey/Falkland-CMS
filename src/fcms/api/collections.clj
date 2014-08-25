@@ -55,7 +55,7 @@
 
 (def collection-resource-config {
   :available-charsets [common/UTF8]
-  :handle-not-found (fn [_] common/missing-response)
+  :handle-not-found (fn [_] common/missing-collection-response)
   :handle-unprocessable-entity (fn [ctx] (unprocessable-reason (:reason ctx)))
 })
 
