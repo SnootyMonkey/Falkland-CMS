@@ -167,6 +167,7 @@
       (item/get-item e i) => (contains {
         :collection e
         :name unicode-name
+        :description unicode-description
         :slug i
         :version 1})
       (collection/item-count e) => 1)
