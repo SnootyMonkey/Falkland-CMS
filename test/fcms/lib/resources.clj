@@ -21,9 +21,9 @@
 
 (def ascii-name "test this")
 (def unicode-name "私はガラスを食")
+(def mixed-name (str "test " unicode-name))
 (def long-unicode-name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - ")
 (def generated-slug "this-is-also-a-slug")
-(def mixed-name (str "test " unicode-name))
 
 (def ascii-description "this is an item")
 (def unicode-description "er stîget ûf mit grôzer kraft Τη γλώσσα μου έδωσαν ελληνική მივჰხვდე მას ჩემსა الزجاج و هذا لا يؤلمني. मैं काँच खा सकता ฉันกินกระจกได้ לא מזיק Mogę jeść szkło €")
