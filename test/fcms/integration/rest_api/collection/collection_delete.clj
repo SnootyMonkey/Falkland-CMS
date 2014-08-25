@@ -37,7 +37,7 @@
     ;; curl -i -X DELETE http://localhost:3000/not-here
     (let [response (api-request :delete "/not-here" {:headers {}})]
       (:status response) => 404
-      (body-from-response response) => nil)
+      (body-from-response response) => "Collection not found.")
       ;; Check that the other collection wasn't deleted
       (collection/collection-count) => 1
       (collection/get-collection e) => (contains {
