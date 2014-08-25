@@ -55,11 +55,11 @@ Additional short lived feature branches will come and go.
 
 [/src/fcms/resources/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/src/fcms/resources/) - Clojure API, a light business logic wrapper around [CouchDB](http://couchdb.apache.org/)
 
-[/test/fcms/features/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/test/fcms/features/) - [Cucumber](http://cukes.info/) integration tests
+[/test/fcms/features/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/test/fcms/integration/) - [Midje](https://github.com/marick/Midje) integration tests of the REST API
 
 [/test/fcms/lib/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/test/fcms/lib/) - helper files for tests
 
-[/test/fcms/unit/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/test/fcms/unit/) - [Midje](https://github.com/marick/Midje) and [core.test](http://richhickey.github.io/clojure/clojure.test-api.html) unit tests
+[/test/fcms/unit/](https://github.com/SnootyMonkey/Falkland-CMS/blob/master/test/fcms/unit/) - [Midje](https://github.com/marick/Midje) unit tests of the Clojure API
 
 ### Repository Structure - Documentation (gh-pages branch)
 
