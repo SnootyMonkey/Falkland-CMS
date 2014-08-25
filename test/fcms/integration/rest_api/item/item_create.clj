@@ -146,7 +146,16 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/another-i"
-        (json? response) => true)
+        (json? response) => true
+        (let [item (body-from-response response)]
+          (:name item) => i
+          (:slug item) => "another-i"
+          (:collection item) => e
+          (:version item) => 1
+          (instance? timestamp (parse (:created-at item))) => true
+          (about-now? (:created-at item)) => true
+          (:created-at item) => (:updated-at item)
+          (verify-item-links e "another-i" (:links item))))
       ;; Get the created item and make sure it's right
       (item/get-item e "another-i") => (contains {
        :collection e
