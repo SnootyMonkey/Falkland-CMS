@@ -2,6 +2,7 @@
   (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
             [fcms.resources.collection :refer :all]
+            [fcms.lib.body :refer (verify-collection-links)]
             [fcms.lib.rest-api-mock :refer :all]
             [fcms.resources.common :as common]
             [fcms.resources.collection :as collection]))
@@ -59,7 +60,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :collection)
         (response-location response) => "/c"
-        (json? response) => true)
+        (json? response) => true
+        (verify-collection-links c (:links (body-from-response response))))
       ;; Get the created collection and make sure it's right
       (collection/get-collection c) => (contains {
         :slug c
@@ -74,7 +76,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :collection)
         (response-location response) => (str "/" generated-slug)
-        (json? response) => true)
+        (json? response) => true
+        (verify-collection-links generated-slug (:links (body-from-response response))))
       ;; Get the created collection and make sure it's right
       (collection/get-collection "this-is-also-a-slug") => (contains {
         :slug generated-slug
@@ -89,7 +92,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :collection)
         (response-location response) => "/c"
-        (json? response) => true)
+        (json? response) => true
+        (verify-collection-links c (:links (body-from-response response))))
       ;; Get the created collection and make sure it's right
       (collection/get-collection c) => (contains {
         :slug c
@@ -103,7 +107,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :collection)
         (response-location response) => "/c-1"
-        (json? response) => true)
+        (json? response) => true
+        (verify-collection-links "c-1" (:links (body-from-response response))))
       ;; Get the created collection and make sure it's right
       (collection/get-collection "c-1") => (contains {
         :slug "c-1"
@@ -118,7 +123,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :collection)
         (response-location response) => "/another-c"
-        (json? response) => true)
+        (json? response) => true
+        (verify-collection-links "another-c" (:links (body-from-response response))))
       ;; Get the created collection and make sure it's right
       (collection/get-collection "another-c") => (contains {
         :slug "another-c"
@@ -133,7 +139,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :collection)
         (response-location response) => "/c"
-        (json? response) => true)
+        (json? response) => true
+        (verify-collection-links c (:links (body-from-response response))))
       ;; Get the created collection and make sure it's right
       (collection/get-collection c) => (contains {
         :slug c
@@ -147,7 +154,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :collection)
         (response-location response) => "/c"
-        (json? response) => true)
+        (json? response) => true
+        (verify-collection-links c (:links (body-from-response response))))
       ;; Get the created collection and make sure it's right
       (collection/get-collection c) => (contains {
         :slug c
@@ -161,7 +169,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :collection)
         (response-location response) => "/c"
-        (json? response) => true)
+        (json? response) => true
+        (verify-collection-links c (:links (body-from-response response))))
       ;; Get the created collection and make sure it's right
       (collection/get-collection c) => (contains {
         :slug c
@@ -175,7 +184,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :collection)
         (response-location response) => "/c"
-        (json? response) => true)
+        (json? response) => true
+        (verify-collection-links c (:links (body-from-response response))))
       ;; Get the created collection and make sure it's right
       (collection/get-collection c) => (contains {
         :slug c
