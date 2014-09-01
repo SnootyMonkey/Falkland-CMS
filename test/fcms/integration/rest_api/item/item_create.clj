@@ -119,23 +119,25 @@
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i-1"
         (json? response) => true
-        (item/get-item e "i-1") => (contains {
-          :collection e
-          :name i
-          :slug "i-1"
-          :version 1})
-        (collection/item-count e) => 2)
+        (verify-item-links e "i-1" (:links (body-from-response response))))
+      (item/get-item e "i-1") => (contains {
+        :collection e
+        :name i
+        :slug "i-1"
+        :version 1})
+      (collection/item-count e) => 2
       ;; Create the third item with the same name
       (let [response (create-item-with-api {:name i})]
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i-2"
         (json? response) => true
-        (item/get-item e "i-2") => (contains {
-          :collection e
-          :name i
-          :slug "i-2"
-          :version 1}))
+        (verify-item-links e "i-2" (:links (body-from-response response))))
+      (item/get-item e "i-2") => (contains {
+        :collection e
+        :name i
+        :slug "i-2"
+        :version 1})
       ;; Make sure all 3 exist in the collection
       (collection/item-count e) => 3)
 
@@ -171,7 +173,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i"
-        (json? response) => true)
+        (json? response) => true
+        (verify-item-links e i (:links (body-from-response response))))
       ;; Get the created item and make sure it's right
       (item/get-item e i) => (contains {
         :collection e
@@ -188,7 +191,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i"
-        (json? response) => true)
+        (json? response) => true
+        (verify-item-links e i (:links (body-from-response response))))
       ;; Get the created item and make sure it's right
       (item/get-item e i) => (contains {
         :collection e
@@ -204,7 +208,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i"
-        (json? response) => true)
+        (json? response) => true
+        (verify-item-links e i (:links (body-from-response response))))
       ;; Get the created item and make sure it's right
       (item/get-item e i) => (contains {
         :collection e
@@ -225,7 +230,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i"
-        (json? response) => true)
+        (json? response) => true
+        (verify-item-links e i (:links (body-from-response response))))
       ;; Get the created item and make sure it's right
       (item/get-item e i) => (contains {
         :collection e

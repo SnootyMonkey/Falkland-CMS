@@ -3,6 +3,7 @@
   (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
             [fcms.lib.rest-api-mock :refer :all]
+            [fcms.lib.body :refer (verify-item-links)]
             [fcms.resources.collection :as collection]
             [fcms.resources.collection-resource :as resource]
             [fcms.resources.item :as item]))
@@ -53,7 +54,8 @@
           :i i}})]
         (:status response) => 200
         (response-mime-type response) => (mime-type :item)
-        (json? response) => true)
+        (json? response) => true
+        (verify-item-links c i (:links (body-from-response response))))
       ;; check that the update worked
       (let [item (item/get-item c i)]
         item => (contains {
@@ -79,7 +81,8 @@
           :i "i"}})]
         (:status response) => 200
         (response-mime-type response) => (mime-type :item)
-        (json? response) => true)
+        (json? response) => true
+        (verify-item-links c i (:links (body-from-response response))))
       ;; check that the update worked
       (let [item (item/get-item c i)]
         item => (contains {
@@ -106,7 +109,8 @@
         (:status response) => 200
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/c/i-moved"
-        (json? response) => true)
+        (json? response) => true
+        (verify-item-links c "i-moved" (:links (body-from-response response))))
       ;; check it's no longer at the old location
       (item/get-item c "i") => nil
       ;; check that the update worked
@@ -134,7 +138,8 @@
           :i i}})]
         (:status response) => 200
         (response-mime-type response) => (mime-type :item)
-        (json? response) => true)
+        (json? response) => true
+        (verify-item-links c "another-i" (:links (body-from-response response))))
       ;; check that the update worked
       (item/get-item c "another-i") => (contains {
         :collection c
@@ -158,7 +163,8 @@
           :i i}})]
         (:status response) => 200
         (response-mime-type response) => (mime-type :item)
-        (json? response) => true)
+        (json? response) => true
+        (verify-item-links c i (:links (body-from-response response))))
       ;; check that the update worked and the name is still there
       (item/get-item c i) => (contains {
         :collection c
@@ -180,8 +186,9 @@
           :name "i-prime"
           :i i}})]
         (:status response) => 200
+        (response-mime-type response) => (mime-type :item)
         (json? response) => true
-        (response-mime-type response) => (mime-type :item))
+        (verify-item-links c i (:links (body-from-response response))))
       ;; check that the update worked
       (let [item (item/get-item c i)]
         item => (contains {
@@ -205,7 +212,8 @@
           :i i}})]
         (:status response) => 200
         (response-mime-type response) => (mime-type :item)
-        (json? response) => true)
+        (json? response) => true
+        (verify-item-links c i (:links (body-from-response response))))
       ;; check that the update worked
       (let [item (item/get-item c i)]
         item => (contains {
@@ -231,7 +239,8 @@
           :i i}})]
         (:status response) => 200
         (response-mime-type response) => (mime-type :item)
-        (json? response) => true)
+        (json? response) => true
+        (verify-item-links c i (:links (body-from-response response))))
       ;; check that the update worked
       (let [item (item/get-item c i)]
         item => (contains {
