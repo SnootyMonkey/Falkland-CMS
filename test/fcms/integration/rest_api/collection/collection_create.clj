@@ -17,14 +17,14 @@
 ;; all good - generated slug is already used
 ;; all good - with slug
 ;; all good - unicode in the body
-;; conflicting reserved properties
 ;; no accept
-;; wrong accept
 ;; no content type
-;; wrong content type
 ;; no charset
-;; wrong charset
+;; conflicting reserved properties
+;; wrong accept
+;; wrong content type
 ;; no body
+;; wrong charset
 ;; body not valid JSON
 ;; no name in body
 ;; slug specified in body is already used
@@ -70,6 +70,8 @@
       ;; Collection is empty?
       (collection/item-count c) => 0)
 
+    ;; all good - generated slug is different than the provided name - 201 Created
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":" -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "}' http://localhost:3000/
     (fact "when the generated slug is different than the provided name"
       ;; Create the collection
       (let [response (create-collection-with-api {:name long-unicode-name})]
@@ -86,6 +88,10 @@
       ;; Collection is empty?
       (collection/item-count "this-is-also-a-slug") => 0)
 
+    ;; all good - generated slug is already used - 201 Created
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/
     (fact "when the generated slug is already used"
       ;; Create first collection
       (let [response (create-collection-with-api {:name c})]
@@ -117,6 +123,8 @@
       ;; Collection is empty?
       (collection/item-count c) => 0)
 
+    ;; all good - with slug - 201 Created
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c", "slug":"another-c"}' http://localhost:3000/
     (fact "with a provided slug"
       ;; Create the collection
       (let [response (create-collection-with-api {:name c :slug "another-c"})]
@@ -133,6 +141,7 @@
       ;; Collection is empty?
       (collection/item-count "another-c") => 0)
 
+    ;; all good - unicode in the body - 201 Created
     (fact "containing unicode"
       ;; Create the collection
       (let [response (create-collection-with-api {:name unicode-name :slug c :description unicode-description})]
@@ -149,6 +158,8 @@
       ;; Collection is empty?
       (collection/item-count c) => 0)
 
+    ;; no accept - 201 Created
+    ;; curl -i --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/
     (fact "without an Accept header"
       (let [response (create-collection-with-api {:Content-Type (mime-type :collection) :Accept-Charset "utf-8"} {:name c})]
         (:status response) => 201
@@ -164,6 +175,8 @@
       ;; Collection is empty?
       (collection/item-count c) => 0)
 
+    ;; no content type - 201 Created
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" -X POST -d '{"name":"c"}' http://localhost:3000/
     (fact "without a Content-Type header"
       (let [response (create-collection-with-api {:Accept (mime-type :collection) :Accept-Charset "utf-8"} {:name c})]
         (:status response) => 201
@@ -179,6 +192,8 @@
       ;; Collection is empty?
       (collection/item-count c) => 0)
 
+    ;; no charset - 201 Created
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/
     (fact "without an Accept-Charset header"
       (let [response (create-collection-with-api {:Accept (mime-type :collection) :Accept-Charset "utf-8"} {:name c})]
         (:status response) => 201
