@@ -1,3 +1,47 @@
+Schema
+======
+
+User defined schema of what's required: items, collections
+
+Representation
+==============
+
+How to represent user defined item or collection schema?
+	Prismatic native?
+	Role of Standards?
+
+How to represent instance of FCMS taxonomy?
+	Current nested JSON scheme?
+	Flattened RDF triples?
+	Role of Standards?
+
+How to represent schema of FCMS taxonomy?
+	Current nested JSON scheme?
+	Flattened RDF triples?
+	Role of Standards?
+
+Validation
+==========
+
+Create / Update: collection, item
+Clojure API / REST API
+	Does it have the required items for FCMS?
+	Does it not have prohibited items for FCMS?
+
+Create / Update: collection, item
+Clojure API / REST API
+	Does it have the required items for user schema?
+
+Prismatic schema?
+Validateur?
+
+Create / Update: taxonomy
+Clojure API / REST API
+	Does it conform to the FCMS taxonomy schema?
+
+
+
+
 CouchDB
 ========
 
