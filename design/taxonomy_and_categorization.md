@@ -12,12 +12,18 @@ Should the user's expression and view of the schema be the same as FCMS's intern
 User will want to use "off-the-shelf" metadata schemas by just selecting them without having to express them. Casual users will want an "off-the-shelf" schema selected for them.
 
 Relevant standards:
-	Dublin Core
+	[Dublin Core](http://dublincore.org/) - "core metadata" for simple and generic resource descriptions
+	[Schema.org](http://schema.org/) - an initiative from the big search engines (Google, Bing, Yahoo, Yandex) to index web data
 
+http://www.k4all.ca/book/export/html/189
 
 ### Metadata Schema Representation
 
 Technical representation will be different than UI representation which should be incredibly simple (without being simplistic). But more technical users will care about the technical representation too.
+
+There is the representation TOO the tool. Where the user expresses this is the schema I want enforced.
+
+There is the representation FROM the tool. Where the user sees the data values of the schema elements for a particular item they are "looking" at. This could be in an HTML editing page (a web form/UI), an HTML presentation page (RDFa, Microdata, Microformats), a metadat presentation page (RDF) or in an API (JSON, RDF, XML...). [Background](http://stackoverflow.com/questions/14307792/what-is-the-relationship-between-rdf-rdfa-microformats-and-microdata).
 
 How to externally represent user defined item or collection schema?
 	Role of standards?
@@ -30,6 +36,7 @@ Relevant representations:
 	Prismatic schema "native"
 	XML Schema - [Dublin Core example](http://dublincore.org/schemas/xmls/)
 	RDF Schema - [Dublin Core example](http://dublincore.org/schemas/rdfs/)
+	OWL
 	JSON?
 
 ### Metadata Schema Validation
