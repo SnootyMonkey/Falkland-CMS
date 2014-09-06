@@ -1,39 +1,66 @@
-Schema
-======
+Open Questions on Metadata / Schemas / Representations / Validation
+===================================================================
+
+## User Defined Metadata Schemas
 
 User defined schema of what's required: items, collections
 
-Representation
-==============
+There is some schema the user wants expressed and enforced.
 
-How to represent user defined item or collection schema?
-	Prismatic native?
-	Role of Standards?
+Should the user's expression and view of the schema be the same as FCMS's internal representation? Ideally, for simplicity, it should, otherwise there is mapping required. But is the mapping more or less work/complexity then validating with the schema as expressed by the user? And is there only one expression/view for the user? Or will FCMS support multiple different ways of representing schemas to/from the user?
 
-How to represent instance of FCMS taxonomy?
-	Current nested JSON scheme?
-	Flattened RDF triples?
-	Role of Standards?
+User will want to use "off-the-shelf" metadata schemas by just selecting them without having to express them. Casual users will want an "off-the-shelf" schema selected for them.
 
-How to represent schema of FCMS taxonomy?
-	Current nested JSON scheme?
-	Flattened RDF triples?
-	Role of Standards?
+Relevant standards:
+	Dublin Core
 
-Validation
-==========
+
+### Metadata Schema Representation
+
+Technical representation will be different than UI representation which should be incredibly simple (without being simplistic). But more technical users will care about the technical representation too.
+
+How to externally represent user defined item or collection schema?
+	Role of standards?
+	Just one or multiple representations?
+
+How to internally represent user defined item or collection schema?
+	Same as external? Harder when external is multiple.
+
+Relevant representations:
+	Prismatic schema "native"
+	XML Schema - [Dublin Core example](http://dublincore.org/schemas/xmls/)
+	RDF Schema - [Dublin Core example](http://dublincore.org/schemas/rdfs/)
+	JSON?
+
+### Metadata Schema Validation
 
 Create / Update: collection, item
 Clojure API / REST API
 	Does it have the required items for FCMS?
 	Does it not have prohibited items for FCMS?
-
-Create / Update: collection, item
-Clojure API / REST API
 	Does it have the required items for user schema?
 
-Prismatic schema?
-Validateur?
+Prismatic schema? https://github.com/prismatic/schema
+Validateur? http://clojurevalidations.info/
+Manners? https://github.com/RyanMcG/manners
+
+## Taxonomy Schema
+
+The taxonomy schema defines what is and isn't a valid taxonomy. It's not strictly internal as it'll be exposed to API users to define what is and isn't a valid taxonomy. May benefit in terms of cognitive load from using the same technology as item/collection schema.
+
+### Taxonomy Schema Representation
+
+How to represent instance of FCMS taxonomy?
+	Current nested JSON scheme?
+	Flattened RDF triples?
+	Role of standards?
+
+How to represent schema of FCMS taxonomy?
+	Current nested JSON scheme?
+	Flattened RDF triples?
+	Role of standards?
+
+### Taxonomy Validation
 
 Create / Update: taxonomy
 Clojure API / REST API
@@ -41,9 +68,10 @@ Clojure API / REST API
 
 
 
+Existing Taxonomy Design / Implementation
+=========================================
 
-CouchDB
-========
+## CouchDB
 
 Inside a taxonomy...
 
@@ -57,8 +85,7 @@ Inside a taxonomy...
 Inside an item...
 
 
-Clojure API
-========
+## Clojure API
 
 create-taxonomy coll-slug, name
 create-taxonomy coll-slug, name, properties
@@ -104,8 +131,7 @@ item-count-for-category coll-slug, category-path
 categories-for-category coll-slug, category-path
 category-count-for-category coll-slug, category-path
 
-REST API
-========
+## REST API
 
 # Taxonomy operations
 
@@ -125,8 +151,7 @@ POST /category-move/ ( https://www.dropbox.com/developers/core/docs#fileops-move
 # Item operations
 
 
-Actions
-========
+## Actions
 
 Create a taxonomy
 	new taxonomy document
