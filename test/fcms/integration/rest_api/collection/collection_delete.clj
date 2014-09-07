@@ -11,13 +11,15 @@
 ;; all good
 ;; collection doesn't exist
 
-(with-state-changes [(before :facts (reset-collection e))
-                     (after :facts (collection/delete-collection e))]
+(with-state-changes [(before :facts (do
+                                      (delete-all-collections)
+                                      (collection/create-collection e)))
+                     (after :facts (delete-all-collections))]
 
+  ;; all good - 204 No Content
+  ;; curl -i -X DELETE http://localhost:3000/c
   (fact "about using the REST API to delete a collection"
-    ;; all good - 204 No Content
-    ;; curl -i -X DELETE http://localhost:3000/c
-    (collection/create-collection "c")
+    (collection/create-collection c)
     (collection/collection-count) => 2
     ;; Delete the collection
     (let [response (api-request :delete "/c" {:headers {}})]
@@ -32,9 +34,9 @@
       :slug e
       :version 1}))
 
+  ;; collection doesn't exist - 404 Not Found
+  ;; curl -i -X DELETE http://localhost:3000/not-here
   (fact "about attempting to use the REST API to delete a collection that doesn't exist"
-    ;; collection doesn't exist - 404 Not Found
-    ;; curl -i -X DELETE http://localhost:3000/not-here
     (let [response (api-request :delete "/not-here" {:headers {}})]
       (:status response) => 404
       (body-from-response response) => nil)

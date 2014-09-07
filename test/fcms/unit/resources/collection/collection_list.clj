@@ -7,10 +7,6 @@
 
 ;; ----- Utilities -----
 
-(defn- delete-all-collections []
-  (doseq [coll (all-collections)]
-    (delete-collection (:slug coll))))
-
 (defn- two-collections []
   (create-collection "custom" {:slug "custom" :description ascii-description :custom foo})
   (create-collection "coll" {:slug "coll"}))

@@ -41,6 +41,10 @@
   (collection/delete-collection collection)
   (collection/create-collection collection))
 
+(defn delete-all-collections []
+  (doseq [coll (collection/all-collections)]
+    (collection/delete-collection (:slug coll))))
+
 ;; ----- Items -----
 
 (defn existing-item-i []

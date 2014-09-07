@@ -10,12 +10,6 @@
 
 (def new-name (str ascii-name unicode-name))
 
-;; ----- Utilities -----
-
-(defn- delete-all-collections []
-  (doseq [coll (all-collections)]
-    (delete-collection (:slug coll))))
-
 ;; ----- Tests -----
 
 (with-state-changes [(before :facts (do

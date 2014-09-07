@@ -47,8 +47,8 @@
         :body body})))
 
 ;; ----- Tests -----
-(with-state-changes [(after :facts (doseq [coll (all-collections)]
-                                     (delete-collection (:slug coll))))]
+(with-state-changes [(before :facts (delete-all-collections))
+                     (after :facts (delete-all-collections))]
 
   (facts "about using the REST API to create a valid new collection"
 

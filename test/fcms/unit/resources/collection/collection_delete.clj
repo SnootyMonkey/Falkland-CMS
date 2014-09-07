@@ -9,7 +9,7 @@
 ;; ----- Tests -----
 
 (with-state-changes [(before :facts (do
-                                      (delete-collection c)
+                                      (delete-all-collections)
                                       (create-collection c)
                                       (i/create-item c "foo")
                                       (t/create-taxonomy c "bar")))

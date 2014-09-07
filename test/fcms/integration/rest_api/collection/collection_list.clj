@@ -30,9 +30,7 @@
 
 (facts "about using the REST API to list collections"
   
-  (with-state-changes [(before :facts (do
-                                        (doseq [coll (all-collections)]
-                                          (delete-collection (:slug coll)))))]
+  (with-state-changes [(before :facts (delete-all-collections))]
 
     ;; all good, no collections - 200 OK
     ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/
@@ -43,7 +41,7 @@
         (json? response) => true
         (collections-from-body (body-from-response response)) => [])))
   
-  (with-state-changes [(before :facts (create-collection c))
+  (with-state-changes [(before :facts (do (delete-all-collections)(create-collection c)))
                         (after :facts (delete-collection c))]
 
     ;; all good, 1 collection - 200 OK
@@ -60,10 +58,11 @@
           (verify-collection-links c (:links coll))))))
   
   (with-state-changes [(before :facts (do
+                                        (delete-all-collections)
                                         (create-collection c)
                                         (create-collection "c-1")
                                         (create-collection "c-2")))
-                        (after :facts (delete-collection c))]
+                        (after :facts (delete-all-collections))]
     
     ;; all good, many collections - 200 OK
     ;; curl -i --header "Accept: application/vnd.collection+vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" -X GET http://localhost:3000/
@@ -73,6 +72,7 @@
         (response-mime-type response) => (mime-type :collection-list)
         (json? response) => true
         (let [collections (collections-from-body (body-from-response response))]
+          (count collections) => 3
           (first collections) => (contains {:name c
                                              :slug c
                                              :version 1})
@@ -84,7 +84,7 @@
           (last collections) => (contains {:name "c-2"
                                             :slug "c-2"
                                             :version 1})
-          (verify-collection-links "c-2" (:links (last collections)))))))
+          (verify-collection-links "c-2" (:links (last collections))))))
 
     ;; all good, force pagination - 200 OK
     (future-fact "when forcing pagination")
@@ -92,9 +92,7 @@
     ;; all good, force pagination and using a subsequent page - 200 OK
     (future-fact "when forcing pagination and using a subsequent page"))
 
-  (with-state-changes [(before :facts (do
-                                        (doseq [coll (all-collections)]
-                                          (delete-collection (:slug coll)))))]
+  (with-state-changes [(before :facts (delete-all-collections))]
 
     ;; no accept - 200 OK
     ;; curl -i --header --header "Accept-Charset: utf-8" -X GET http://localhost:3000/
@@ -112,11 +110,10 @@
         (:status response) => 200
         (response-mime-type response) => (mime-type :collection-list)
         (json? response) => true
-        (collections-from-body (body-from-response response)) => [])))
+        (collections-from-body (body-from-response response)) => []))))
 
 
-(with-state-changes [(before :facts (doseq [coll (all-collections)]
-                         (delete-collection (:slug coll))))]
+(with-state-changes [(before :facts (delete-all-collections))]
   (facts "about attempting to use the REST API to list collections"
         
     ;; wrong accept - 406 Not Acceptable
