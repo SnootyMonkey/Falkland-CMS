@@ -42,12 +42,13 @@
       }
       :dependencies [
         [print-foo "0.4.6"] ; Old school print debugging https://github.com/danielribeiro/print-foo
+        [aprint "0.1.0"] ; Pretty printing in the REPL (aprint thing) https://github.com/razum2um/aprint
         [org.clojure/tools.trace "0.7.6"] ; Tracing macros/fns https://github.com/clojure/tools.trace
         [com.cemerick/piggieback "0.1.2"] ; ClojureScript bREPL from the nREPL https://github.com/cemerick/piggieback
       ]
       ;; REPL injections
       :injections [
-        (require '[clojure.pprint :refer :all]
+        (require '[aprint.core :refer (aprint ap)]
                  '[clojure.stacktrace :refer (print-stack-trace)]
                  '[clojure.test :refer :all]
                  '[print.foo :refer :all]
