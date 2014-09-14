@@ -226,7 +226,7 @@
       ;; check it didn't create another item
       (collection/item-count c) => 2)
 
-    ;; no charset header - 200 OK
+    ;; no Accept-Charset header - 200 OK
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i         
     (fact "without an Accept-Charset header"
       (let [response (api-request :put "/c/i" {
