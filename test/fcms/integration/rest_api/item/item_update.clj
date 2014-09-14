@@ -15,12 +15,12 @@
 ;; all good - with different slug
 ;; all good - unicode in the body
 ;; all good - no name in body
-;; conflicting reserved properties
 ;; no accept
-;; wrong accept
 ;; no content header
-;; wrong content header
 ;; no charset
+;; conflicting reserved properties
+;; wrong accept
+;; wrong content header
 ;; wrong charset
 ;; no body
 ;; body, but not valid JSON
@@ -176,7 +176,7 @@
       ;; check it didn't create another item
       (collection/item-count c) => 2)
 
-    ;; no accept type - 200 OK
+    ;; no Accept header - 200 OK
     ;; curl -i --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i         
     (fact "without an accept header"
       (let [response (api-request :put "/c/i" {
@@ -226,7 +226,7 @@
       ;; check it didn't create another item
       (collection/item-count c) => 2)
 
-    ;; no charset - 200 OK
+    ;; no charset header - 200 OK
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i         
     (fact "without an Accept-Charset header"
       (let [response (api-request :put "/c/i" {

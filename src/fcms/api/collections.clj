@@ -47,7 +47,7 @@
     ; it's in the same spot
     (render-collection (:updated-collection ctx))
     ; it moved
-    (collection-location-response coll-slug (:updated-collection ctx))))
+    (collection-location-response (:updated-collection ctx))))
 
 ;; ----- Resources -----
 ;; see: http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
