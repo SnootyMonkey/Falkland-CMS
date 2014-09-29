@@ -23,7 +23,7 @@ Technical representation will be different than UI representation which should b
 
 There is the representation TOO the tool. Where the user expresses this is the schema I want enforced.
 
-There is the representation FROM the tool. Where the user sees the data values of the schema elements for a particular item they are "looking" at. This could be in an HTML editing page (a web form/UI), an HTML presentation page (RDFa, Microdata, Microformats), a metadat presentation page (RDF) or in an API (JSON, RDF, XML...). [Background](http://stackoverflow.com/questions/14307792/what-is-the-relationship-between-rdf-rdfa-microformats-and-microdata).
+There is the representation FROM the tool. Where the user sees the data values of the schema elements for a particular item they are "looking" at. This could be in an HTML editing page (a web form/UI), an HTML presentation page (RDFa, Microdata, Microformats), a metadata presentation page (RDF) or in an API (JSON, RDF, XML...). [Background](http://stackoverflow.com/questions/14307792/what-is-the-relationship-between-rdf-rdfa-microformats-and-microdata).
 
 How to externally represent user defined item or collection schema?
 	Role of standards?
