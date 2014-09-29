@@ -256,14 +256,14 @@
   (facts "about attempting to use the REST API to update an item"
 
     ;; conflicting reserved properties - 422 Unprocessable Entity
-    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i", "id":"foo", "i":"k"}' http://localhost:3000/c/i
-    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i", "version":"foo", "i":"i"}' http://localhost:3000/c/i
-    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i", "collection":"foo", "i":"j"}' http://localhost:3000/c/i
-    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i", "links":"foo", "i":"l"}' http://localhost:3000/c/i
-    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i", "categories":"foo", "i":"l"}' http://localhost:3000/c/i
-    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i", "type":"foo", "i":"l"}' http://localhost:3000/c/i
-    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i", "created-at":"foo", "i":"m"}' http://localhost:3000/c/i
-    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i", "updated-at":"foo", "i":"n"}' http://localhost:3000/c/i
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "id":"foo", "description": "this is an updated item"}' http://localhost:3000/c/i
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "version":"foo", "description": "this is an updated item"}' http://localhost:3000/c/i
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "collection":"foo", "description": "this is an updated item"}' http://localhost:3000/c/i
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "links":"foo", "description": "this is an updated item"}' http://localhost:3000/c/i
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "categories":"foo", "description": "this is an updated item"}' http://localhost:3000/c/i
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "type":"foo", "description": "this is an updated item"}' http://localhost:3000/c/i
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "created-at":"foo", "description": "this is an updated item"}' http://localhost:3000/c/i
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "updated-at":"foo", "description": "this is an updated item"}' http://localhost:3000/c/i
     (fact "with a property that conflicts with a reserved property"
       ;; conflicts with each reserved property
       (doseq [keyword-name resource/reserved-properties]
@@ -274,7 +274,7 @@
           :body {
             :name "i-prime"
             keyword-name "foo"
-            :i i}})]
+            :description "this is an updated item"}})]
           (:status response) => 422
           (response-mime-type response) => (mime-type :text)
           (body-from-response response) => "A reserved property was used.")
@@ -283,12 +283,13 @@
           :collection c
           :slug i
           :name i
-          :description "this is an item"}))
+          :description "this is an item"
+          :version 1}))
       ;; check it didn't create another item
       (collection/item-count c) => 2)
 
     ;; wrong accept type - 406 Not Acceptable
-    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "description": "this is an updated item"}' http://localhost:3000/c/i
     (fact "with the wrong accept-header"
       (let [response (api-request :put "/c/i" {
         :headers {
@@ -296,7 +297,7 @@
           :Content-Type (mime-type :item)}
         :body {
           :name "i-prime"
-          :i i}})]
+          :description "this is an updated item"}})]
         (:status response) => 406
         (response-mime-type response) => (mime-type :text)
         (let [body (body-from-response response)]
@@ -307,12 +308,13 @@
         :collection c
         :slug i
         :name i
-        :description "this is an item"})
+        :description "this is an item"
+        :version 1})
       ;; check it didn't create another item
       (collection/item-count c) => 2)
 
     ;; wrong Content-Type header - 415 Unsupported Media Type
-    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"i-prime", "description": "this is an updated item"}' http://localhost:3000/c/i
     (fact "with the wrong Content-Type header"
       (let [response (api-request :put "/c/i" {
         :headers {
@@ -320,7 +322,7 @@
           :Accept (mime-type :item)}
         :body {
           :name "i-prime"
-          :i i}})]
+          :description "this is an updated item"}})]
         (:status response) => 415
         (response-mime-type response) => (mime-type :text)
         (let [body (body-from-response response)]
@@ -331,12 +333,13 @@
         :collection c
         :slug i
         :name i
-        :description "this is an item"})
+        :description "this is an item"
+        :version 1})
       ;; check it didn't create another item
       (collection/item-count c) => 2)
 
     ;; wrong charset - 406 Not Acceptable
-    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: iso-8859-1" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/i
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: iso-8859-1" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "description": "this is an updated item"}' http://localhost:3000/c/i
     (fact "with the wrong Accept-Charset header"
       (let [response (api-request :put "/c/i" {
         :headers {
@@ -345,7 +348,7 @@
           :Accept (mime-type :item)}
         :body {
           :name "i-prime"
-          :i i}})]
+          :description "this is an updated item"}})]
         (:status response) => 406
         (response-mime-type response) => (mime-type :text)
         (let [body (body-from-response response)]
@@ -356,7 +359,8 @@
         :collection c
         :slug i
         :name i
-        :description "this is an item"})
+        :description "this is an item"
+        :version 1})
       ;; check it didn't create another item
       (collection/item-count c) => 2)
 
@@ -380,12 +384,13 @@
           :collection c
           :slug i
           :name i
-          :description "this is an item"}))
+          :description "this is an item"
+          :version 1}))
       ;; check it didn't create another item
       (collection/item-count c) => 2)
 
     ;; collection doesn't exist - 404 Not Found
-    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/not-here/i
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "description": "this is an updated item"}' http://localhost:3000/not-here/i
     (fact "in a collection that doesn't exist"
       (let [response (api-request :put "/not-here/i" {
         :headers {
@@ -393,7 +398,7 @@
           :Accept (mime-type :item)}
         :body {
           :name "i-prime"
-          :i i}})]
+          :description "this is an updated item"}})]
         (:status response) => 404
         (response-mime-type response) => (mime-type :text)
         (body-from-response response) => "Collection not found.")
@@ -402,12 +407,13 @@
         :collection c
         :slug i
         :name i
-        :description "this is an item"})
+        :description "this is an item"
+        :version 1})
       ;; check it didn't create another item
       (collection/item-count c) => 2)
 
     ;; item doesn't exist - 404 Not Found
-    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "i":"i"}' http://localhost:3000/c/not-here
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "description": "this is an updated item"}' http://localhost:3000/c/not-here
     (fact "that doesn't exist"
       (let [response (api-request :put "/c/not-here" {
         :headers {
@@ -415,15 +421,22 @@
           :Accept (mime-type :item)}
         :body {
           :name "i-prime"
-          :i i}})]
+          :description "this is an updated item"}})]
         (:status response) => 404
         (response-mime-type response) => (mime-type :text)
         (body-from-response response) => nil)
+      ;; check that the update failed
+      (item/get-item c i) => (contains {
+        :collection c
+        :slug i
+        :name i
+        :description "this is an item"
+        :version 1})
       ;; check it didn't create another item
       (collection/item-count c) => 2)
 
     ;; different slug specified in body is already used - 422 Unprocessable Entity
-    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "slug":"another-i", "i":"i"}' http://localhost:3000/c/i
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "slug":"another-i", "description": "this is an updated item"}' http://localhost:3000/c/i
     (fact "with a slug that's already used in the collection"
       (let [response (api-request :put "/c/i" {
         :headers {
@@ -432,7 +445,7 @@
         :body {
           :name "i-prime"
           :slug "another-i"
-          :i i}})]
+          :description "this is an updated item"}})]
         (:status response) => 422
         (response-mime-type response) => (mime-type :text)
         (body-from-response response) => "Slug already used in the collection.")
@@ -441,12 +454,13 @@
         :collection c
         :slug i
         :name i
-        :description "this is an item"})
+        :description "this is an item"
+        :version 1})
       ;; check it didn't create another item
       (collection/item-count c) => 2)
 
     ;; different slug specified in body is invalid - 422 Unprocessable Entity
-    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "slug":"I i", "i":"i"}' http://localhost:3000/c/i
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "slug":"I i", "description": "this is an updated item"}' http://localhost:3000/c/i
     (fact "with a slug that's invalid"
       (let [response (api-request :put "/c/i" {
         :headers {
@@ -455,7 +469,7 @@
         :body {
           :name "i-prime"
           :slug "I i"
-          :i i}})]
+          :description "this is an updated item"}})]
         (:status response) => 422
         (response-mime-type response) => (mime-type :text)
         (body-from-response response) => "Invalid slug.")
@@ -464,6 +478,7 @@
         :collection c
         :slug i
         :name i
-        :description "this is an item"})
+        :description "this is an item"
+        :version 1})
       ;; check it didn't create another item
       (collection/item-count c) => 2)))
