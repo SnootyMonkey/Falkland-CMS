@@ -1,9 +1,17 @@
 -= [Falkland CMS](http://falkland-cms.com) =- [![Build Status](https://travis-ci.org/SnootyMonkey/Falkland-CMS.png?branch=master)](https://travis-ci.org/SnootyMonkey/Falkland-CMS) [![Development on Trello](http://snooty-monkey-open-images.s3.amazonaws.com/managed_on_trello.jpg)](https://trello.com/b/UgzPjFAX/falkland-cms)
 ============
 
+This README is just a stub, please visit the [Falkland CMS website](http://falkland-cms.com) at [falkland-cms.com](http://falkland-cms.com).
+
 Falkland CMS is a Curation Management System used to collect, organize, curate and present the knowledge that exists in the world about a particular topic.
 
-This README is just a stub, please visit the [Falkland CMS website](http://falkland-cms.com) at [falkland-cms.com](http://falkland-cms.com).
+![FCMS Key Concepts]({{site.url}}/assets/img/FCMS-High-level.png "FCMS Key Concepts")
+
+Anything that can be unambiguously referenced with a unique identifier such as an [ISBN/ISSN](http://en.wikipedia.org/wiki/International_Standard_Book_Number), DOI ([Digital Object Identifier](http://en.wikipedia.org/wiki/Digital_object_identifier)), PURL ([Persistent URL](http://en.wikipedia.org/wiki/Persistent_uniform_resource_locator)) or URL ([Uniform Resource Locator](http://en.wikipedia.org/wiki/Uniform_resource_locator)) can be curated with Falkland CMS. The curation process consists of adding metadata information about an item that makes it easier to collect, organize, search, present and exhibit.
+
+Items can be physical things: books, magazines, newspapers, documents, papers, consumer products, artifacts, animals, buildings, people, etc. Or items can be digital or abstract: web pages, articles, chapters, images, audio files, video files, web sites, databases, directories, words, concepts, topics, etc.
+
+Falkland CMS can be used to describe relationships among items and can assist in the archiving and preservation of digital items.
 
 ## Documentation
 
@@ -11,7 +19,7 @@ Complete documentation is on the [Falkland CMS website](http://falkland-cms.com)
 
 ## Getting Help
 
-Falkland CMS is pre-alpha and not yet usable. A usable version is expected before the end of 2014, and instructions for getting help will be available then.
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected in early 2015, and instructions for getting help will be available then.
 
 ## Development and Contributing
 
