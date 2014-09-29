@@ -288,13 +288,13 @@
       ;; check it didn't create another item
       (collection/item-count c) => 2)
 
-    ;; wrong accept type - 406 Not Acceptable
+    ;; wrong Accept header - 406 Not Acceptable
     ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"i-prime", "description": "this is an updated item"}' http://localhost:3000/c/i
     (fact "with the wrong accept-header"
       (let [response (api-request :put "/c/i" {
         :headers {
-          :Accept (mime-type :collection)
-          :Content-Type (mime-type :item)}
+          :Content-Type (mime-type :item)
+          :Accept (mime-type :collection)}
         :body {
           :name "i-prime"
           :description "this is an updated item"}})]

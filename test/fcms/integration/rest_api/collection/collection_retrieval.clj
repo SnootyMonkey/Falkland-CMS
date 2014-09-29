@@ -13,8 +13,8 @@
 ;; all good
 ;; all good with unicode
 ;; no accept
-;; wrong accept
 ;; no accept charset
+;; wrong accept
 ;; wrong accept charset
 ;; collection doesn't exist
 

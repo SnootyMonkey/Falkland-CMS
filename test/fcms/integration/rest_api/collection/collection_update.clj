@@ -4,6 +4,7 @@
             [fcms.lib.resources :refer :all]
             [fcms.lib.rest-api-mock :refer :all]
             [fcms.lib.body :refer (verify-collection-links)]
+            [fcms.resources.common :as common]
             [fcms.resources.collection :as collection]))
 
 ;; The system should update collections stored in the system and handle the following scenarios:
@@ -26,7 +27,9 @@
 ;; different slug specified in body is already used
 ;; different slug specified in body is invalid
 
-(with-state-changes [(before :facts (do (delete-all-collections)(reset-collection c)))
+(with-state-changes [(before :facts (do
+                                      (delete-all-collections)
+                                      (collection/create-collection c {:description "this is a collection"})))
                      (after :facts (delete-all-collections))]
 
   (facts "about using the REST API to update a collection"
@@ -231,4 +234,83 @@
       ;; check it didn't create another collection
       (collection/collection-count) => 1))
 
-(future-facts "about attempting to use the REST API to update a collection"))
+  (facts "about attempting to use the REST API to update a collection"
+
+    ;; conflicting reserved properties - 422 Unprocessable Entity
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"c-prime", "id":"foo", "description":"this is an updated collection"}' http://localhost:3000/c
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"c-prime", "created-at":"foo", "description":"this is an updated collection"}' http://localhost:3000/c
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"c-prime", "updated-at":"foo", "description":"this is an updated collection"}' http://localhost:3000/c
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"c-prime", "type":"foo", "description":"this is an updated collection"}' http://localhost:3000/c
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"c-prime", "version":"foo", "description":"this is an updated collection"}' http://localhost:3000/c
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"c-prime", "links":"foo", "description":"this is an updated collection"}' http://localhost:3000/c
+    (fact "with a property that conflicts with a reserved property"
+      ;; conflicts with each reserved property
+      (doseq [keyword-name common/reserved-properties]
+        (let [response (api-request :put "/c" {
+          :headers {
+            :Content-Type (mime-type :collection)
+            :Accept (mime-type :collection)}
+          :body {
+            :name "c-prime"
+            keyword-name "foo"
+            :c c
+            :description "this is an updated collection"}})]
+          (:status response) => 422
+          (response-mime-type response) => (mime-type :text)
+          (body-from-response response) => "A reserved property was used.")
+        ;; check that the update failed
+        (collection/get-collection c) => (contains {
+          :slug c
+          :name c
+          :description "this is a collection"
+          :version 1}))
+      ;; check it didn't create another collection
+      (collection/collection-count) => 1)
+
+    ;; wrong Accept header - 406 Not Acceptable
+    ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"c-prime", "description": "this is an updated collection"}' http://localhost:3000/c
+    (fact "with the wrong accept-header"
+      (let [response (api-request :put "/c" {
+        :headers {
+          :Content-Type (mime-type :collection)
+          :Accept (mime-type :item)}
+        :body {
+          :name "c-prime"
+          :description "this is an updated collection"}})]
+        (:status response) => 406
+        (response-mime-type response) => (mime-type :text)
+        (let [body (body-from-response response)]
+          (.contains body "Acceptable media type: application/vnd.fcms.collection+json;version=1") => true
+          (.contains body "Acceptable charset: utf-8") => true))
+      ;; check that the update failed
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name c
+        :description "this is a collection"
+        :version 1})
+      ;; check it didn't create another collection
+      (collection/collection-count) => 1)
+
+    ;; wrong Content-Type header - 415 Unsupported Media Type
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"c-prime", "description": "this is an updated collection"}' http://localhost:3000/c
+    (fact "with the wrong accept-header"
+      (let [response (api-request :put "/c" {
+        :headers {
+          :Content-Type (mime-type :item)
+          :Accept (mime-type :collection)}
+        :body {
+          :name "c-prime"
+          :description "this is an updated collection"}})]
+        (:status response) => 415
+        (response-mime-type response) => (mime-type :text)
+        (let [body (body-from-response response)]
+          (.contains body "Acceptable media type: application/vnd.fcms.collection+json;version=1") => true
+          (.contains body "Acceptable charset: utf-8") => true))
+      ;; check that the update failed
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name c
+        :description "this is a collection"
+        :version 1})
+      ;; check it didn't create another collection
+      (collection/collection-count) => 1)))

@@ -18,12 +18,12 @@
 ;; all good - generated slug is already used
 ;; all good - with slug
 ;; all good - unicode in the body
-;; conflicting reserved properties
 ;; no accept
-;; wrong accept
 ;; no content type
-;; wrong content type
 ;; no charset
+;; conflicting reserved properties
+;; wrong accept
+;; wrong content type
 ;; wrong charset
 ;; no body
 ;; body not valid JSON
