@@ -5,7 +5,7 @@ This README is just a stub, please visit the [Falkland CMS website](http://falkl
 
 Falkland CMS is a Curation Management System used to collect, organize, curate and present the knowledge that exists in the world about a particular topic.
 
-![FCMS Key Concepts]({{site.url}}/assets/img/FCMS-High-level.png "FCMS Key Concepts")
+![FCMS Key Concepts](http://falkland-cms.com/assets/img/FCMS-High-level.png "FCMS Key Concepts")
 
 Anything that can be unambiguously referenced with a unique identifier such as an [ISBN/ISSN](http://en.wikipedia.org/wiki/International_Standard_Book_Number), DOI ([Digital Object Identifier](http://en.wikipedia.org/wiki/Digital_object_identifier)), PURL ([Persistent URL](http://en.wikipedia.org/wiki/Persistent_uniform_resource_locator)) or URL ([Uniform Resource Locator](http://en.wikipedia.org/wiki/Uniform_resource_locator)) can be curated with Falkland CMS. The curation process consists of adding metadata information about an item that makes it easier to collect, organize, search, present and exhibit.
 
