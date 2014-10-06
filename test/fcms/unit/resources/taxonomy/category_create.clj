@@ -62,8 +62,8 @@
       ((create-category e "et/b/" "B") :categories) => [{:slug "b" :name "B"}])
 
     (fact "with a long unicode name"
-      ((create-category e "/et/c" " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - ") :categories) =>
-        [{:slug "c" :name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "}])
+      ((create-category e "/et/c" long-unicode-name) :categories) =>
+        [{:slug "c" :name long-unicode-name}])
 
     (fact "nested without a name"
       (first ((create-category e "/t/foo/foo/") :categories)) => {:slug "foo" :name "Foo" :categories [{:slug "foo" :name "foo"}]})
@@ -88,8 +88,8 @@
       ((create-category e "et/a/b" "B") :categories) => [{:slug "a" :name "a" :categories [{:slug "b" :name "B"}]}])
 
     (fact "with a long unicode name"
-      ((create-category e "et/a/c/" " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - ") :categories) =>
-        [{:slug "a" :name "a" :categories [{:slug "c" :name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "}]}])
+      ((create-category e "et/a/c/" long-unicode-name) :categories) =>
+        [{:slug "a" :name "a" :categories [{:slug "c" :name long-unicode-name}]}])
 
     (fact "with 5 levels"
       ((create-category e "/et/a/b/c/d/e/") :categories) =>

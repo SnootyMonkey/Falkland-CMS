@@ -17,8 +17,8 @@
 ;; all good
 ;; all good with unicode
 ;; no accept
-;; wrong accept
 ;; no accept charset
+;; wrong accept
 ;; wrong accept charset
 ;; collection doesn't exist
 ;; item doesn't exist
@@ -74,7 +74,7 @@
 
     ;; no accept - 200 OK
     ;; curl -i --header "Accept-Charset: utf-8" -X GET http://localhost:3000/e/i
-    (fact "without using an Accept header"
+    (fact "without an Accept header"
       (let [response (api-request :get "/e/i" {:headers {}})]
         (:status response) => 200
         (response-mime-type response) => (mime-type :item)
@@ -122,8 +122,6 @@
 
     ;; wrong accept charset - 406 Not Acceptable
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: iso-8859-1" -X GET http://localhost:3000/e/i
-    ;; Fails: Returns content type of
-    ;; "application/vnd.fcms.item+json;charset=UTF-8" instead of text/plain
     (fact "with the wrong Accept-Charset header"
       (let [response (api-request :get "/e/i" {
         :headers {

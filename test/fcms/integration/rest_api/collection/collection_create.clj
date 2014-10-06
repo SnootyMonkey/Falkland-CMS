@@ -1,6 +1,8 @@
 (ns fcms.integration.rest-api.collection.collection-create
   (:require [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
+            [fcms.resources.collection :refer :all]
+            [fcms.lib.body :refer (verify-collection-links)]
             [fcms.lib.rest-api-mock :refer :all]
             [fcms.resources.common :as common]
             [fcms.resources.collection :as collection]))
@@ -15,14 +17,14 @@
 ;; all good - generated slug is already used
 ;; all good - with slug
 ;; all good - unicode in the body
-;; conflicting reserved properties
 ;; no accept
-;; wrong accept
 ;; no content type
-;; wrong content type
 ;; no charset
-;; wrong charset
+;; conflicting reserved properties
+;; wrong accept
+;; wrong content type
 ;; no body
+;; wrong charset
 ;; body not valid JSON
 ;; no name in body
 ;; slug specified in body is already used
@@ -35,6 +37,7 @@
   ([body]
      (api-request :post "/" {
       :headers {
+        :Accept-Charset "utf-8"
         :Accept (mime-type :collection)
         :Content-Type (mime-type :collection)}
       :body body}))
@@ -44,7 +47,8 @@
         :body body})))
 
 ;; ----- Tests -----
-(with-state-changes [(after :facts (collection/delete-collection c))]
+(with-state-changes [(before :facts (delete-all-collections))
+                     (after :facts (delete-all-collections))]
 
   (facts "about using the REST API to create a valid new collection"
 
@@ -56,7 +60,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :collection)
         (response-location response) => "/c"
-        (json? response) => true)
+        (json? response) => true
+        (verify-collection-links c (:links (body-from-response response))))
       ;; Get the created collection and make sure it's right
       (collection/get-collection c) => (contains {
         :slug c
@@ -65,19 +70,144 @@
       ;; Collection is empty?
       (collection/item-count c) => 0)
 
-    (future-fact "when the generated slug is different than the provided name")
+    ;; all good - generated slug is different than the provided name - 201 Created
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":" -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "}' http://localhost:3000/
+    (fact "when the generated slug is different than the provided name"
+      ;; Create the collection
+      (let [response (create-collection-with-api {:name long-unicode-name})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => (str "/" generated-slug)
+        (json? response) => true
+        (verify-collection-links generated-slug (:links (body-from-response response))))
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection "this-is-also-a-slug") => (contains {
+        :slug generated-slug
+        :name long-unicode-name
+        :version 1})
+      ;; Collection is empty?
+      (collection/item-count "this-is-also-a-slug") => 0)
 
-    (future-fact "when the generated slug is already used")
+    ;; all good - generated slug is already used - 201 Created
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/
+    (fact "when the generated slug is already used"
+      ;; Create first collection
+      (let [response (create-collection-with-api {:name c})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => "/c"
+        (json? response) => true
+        (verify-collection-links c (:links (body-from-response response))))
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name c
+        :version 1})
+      ;; Collection is empty?
+      (collection/item-count c) => 0
+      
+      ;; Create second collection
+      (let [response (create-collection-with-api {:name c})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => "/c-1"
+        (json? response) => true
+        (verify-collection-links "c-1" (:links (body-from-response response))))
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection "c-1") => (contains {
+        :slug "c-1"
+        :name c
+        :version 1})
+      ;; Collection is empty?
+      (collection/item-count c) => 0)
 
-    (future-fact "with a provided slug")
+    ;; all good - with slug - 201 Created
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c", "slug":"another-c"}' http://localhost:3000/
+    (fact "with a provided slug"
+      ;; Create the collection
+      (let [response (create-collection-with-api {:name c :slug "another-c"})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => "/another-c"
+        (json? response) => true
+        (verify-collection-links "another-c" (:links (body-from-response response))))
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection "another-c") => (contains {
+        :slug "another-c"
+        :name c
+        :version 1})
+      ;; Collection is empty?
+      (collection/item-count "another-c") => 0)
 
-    (future-fact "containing unicode")
+    ;; all good - unicode in the body - 201 Created
+    (fact "containing unicode"
+      ;; Create the collection
+      (let [response (create-collection-with-api {:name unicode-name :slug c :description unicode-description})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => "/c"
+        (json? response) => true
+        (verify-collection-links c (:links (body-from-response response))))
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name unicode-name
+        :version 1})
+      ;; Collection is empty?
+      (collection/item-count c) => 0)
 
-    (future-fact "without an Accept header")
+    ;; no accept - 201 Created
+    ;; curl -i --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/
+    (fact "without an Accept header"
+      (let [response (create-collection-with-api {:Content-Type (mime-type :collection) :Accept-Charset "utf-8"} {:name c})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => "/c"
+        (json? response) => true
+        (verify-collection-links c (:links (body-from-response response))))
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name c
+        :version 1})
+      ;; Collection is empty?
+      (collection/item-count c) => 0)
 
-    (future-fact "without a Content-Type header")
+    ;; no content type - 201 Created
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" -X POST -d '{"name":"c"}' http://localhost:3000/
+    (fact "without a Content-Type header"
+      (let [response (create-collection-with-api {:Accept (mime-type :collection) :Accept-Charset "utf-8"} {:name c})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => "/c"
+        (json? response) => true
+        (verify-collection-links c (:links (body-from-response response))))
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name c
+        :version 1})
+      ;; Collection is empty?
+      (collection/item-count c) => 0)
 
-    (future-fact "without an Accept-Charset header"))
+    ;; no charset - 201 Created
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X POST -d '{"name":"c"}' http://localhost:3000/
+    (fact "without an Accept-Charset header"
+      (let [response (create-collection-with-api {:Accept (mime-type :collection) :Accept-Charset "utf-8"} {:name c})]
+        (:status response) => 201
+        (response-mime-type response) => (mime-type :collection)
+        (response-location response) => "/c"
+        (json? response) => true
+        (verify-collection-links c (:links (body-from-response response))))
+      ;; Get the created collection and make sure it's right
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name c
+        :version 1})
+      ;; Collection is empty?
+      (collection/item-count c) => 0))
 
   (facts "about attempting to use the REST API to create a collection"
     

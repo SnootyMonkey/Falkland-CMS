@@ -1,8 +1,11 @@
 (ns fcms.integration.rest-api.item.item-create
   "Integration tests for creating items with the REST API."
-  (:require [midje.sweet :refer :all]
+  (:require [clj-time.format :refer (parse)]
+            [midje.sweet :refer :all]
             [fcms.lib.resources :refer :all]
             [fcms.lib.rest-api-mock :refer :all]
+            [fcms.lib.body :refer (verify-item-links)]
+            [fcms.lib.check :refer (about-now?)]
             [fcms.resources.collection :as collection]
             [fcms.resources.collection-resource :as resource]
             [fcms.resources.item :as item]))
@@ -15,12 +18,12 @@
 ;; all good - generated slug is already used
 ;; all good - with slug
 ;; all good - unicode in the body
-;; conflicting reserved properties
 ;; no accept
-;; wrong accept
 ;; no content type
-;; wrong content type
 ;; no charset
+;; conflicting reserved properties
+;; wrong accept
+;; wrong content type
 ;; wrong charset
 ;; no body
 ;; body not valid JSON
@@ -59,7 +62,16 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i"
-        (json? response) => true)
+        (json? response) => true
+        (let [item (body-from-response response)]
+          (:name item) => i
+          (:slug item) => i
+          (:collection item) => e
+          (:version item) => 1
+          (instance? timestamp (parse (:created-at item))) => true
+          (about-now? (:created-at item)) => true
+          (:created-at item) => (:updated-at item)
+          (verify-item-links e i (:links item))))
       ;; Get the created item and make sure it's right
       (item/get-item e i) => (contains {
         :collection e
@@ -72,16 +84,25 @@
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X POST -d '{"name":" -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "}' http://localhost:3000/c/
     (fact "when the generated slug is different than the provided name"
       ;; Create the item
-      (let [response (create-item-with-api {:name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "})]
+      (let [response (create-item-with-api {:name long-unicode-name})]
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
-        (response-location response) => "/e/this-is-also-a-slug"
-        (json? response) => true)
+        (response-location response) => (str "/e/" generated-slug)
+        (json? response) => true
+        (let [item (body-from-response response)]
+          (:name item) => long-unicode-name
+          (:slug item) => generated-slug
+          (:collection item) => e
+          (:version item) => 1
+          (instance? timestamp (parse (:created-at item))) => true
+          (about-now? (:created-at item)) => true
+          (:created-at item) => (:updated-at item)
+          (verify-item-links e generated-slug (:links item))))
       ;; Get the created item and make sure it's right
-      (item/get-item e "this-is-also-a-slug") => (contains {
+      (item/get-item e generated-slug) => (contains {
         :collection e
-        :name " -tHiS #$is%?-----ελληνικήalso-მივჰხვდემასჩემსაãالزجاجوهذالايؤلمني-slüg♜-♛-☃-✄-✈  - "
-        :slug "this-is-also-a-slug"
+        :name long-unicode-name
+        :slug generated-slug
         :version 1})
       (collection/item-count "e") => 1)
 
@@ -98,23 +119,25 @@
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i-1"
         (json? response) => true
-        (item/get-item e "i-1") => (contains {
-          :collection e
-          :name i
-          :slug "i-1"
-          :version 1})
-        (collection/item-count e) => 2)
+        (verify-item-links e "i-1" (:links (body-from-response response))))
+      (item/get-item e "i-1") => (contains {
+        :collection e
+        :name i
+        :slug "i-1"
+        :version 1})
+      (collection/item-count e) => 2
       ;; Create the third item with the same name
       (let [response (create-item-with-api {:name i})]
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i-2"
         (json? response) => true
-        (item/get-item e "i-2") => (contains {
-          :collection e
-          :name i
-          :slug "i-2"
-          :version 1}))
+        (verify-item-links e "i-2" (:links (body-from-response response))))
+      (item/get-item e "i-2") => (contains {
+        :collection e
+        :name i
+        :slug "i-2"
+        :version 1})
       ;; Make sure all 3 exist in the collection
       (collection/item-count e) => 3)
 
@@ -125,7 +148,16 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/another-i"
-        (json? response) => true)
+        (json? response) => true
+        (let [item (body-from-response response)]
+          (:name item) => i
+          (:slug item) => "another-i"
+          (:collection item) => e
+          (:version item) => 1
+          (instance? timestamp (parse (:created-at item))) => true
+          (about-now? (:created-at item)) => true
+          (:created-at item) => (:updated-at item)
+          (verify-item-links e "another-i" (:links item))))
       ;; Get the created item and make sure it's right
       (item/get-item e "another-i") => (contains {
        :collection e
@@ -141,11 +173,13 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i"
-        (json? response) => true)
+        (json? response) => true
+        (verify-item-links e i (:links (body-from-response response))))
       ;; Get the created item and make sure it's right
       (item/get-item e i) => (contains {
         :collection e
         :name unicode-name
+        :description unicode-description
         :slug i
         :version 1})
       (collection/item-count e) => 1)
@@ -157,7 +191,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i"
-        (json? response) => true)
+        (json? response) => true
+        (verify-item-links e i (:links (body-from-response response))))
       ;; Get the created item and make sure it's right
       (item/get-item e i) => (contains {
         :collection e
@@ -173,7 +208,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i"
-        (json? response) => true)
+        (json? response) => true
+        (verify-item-links e i (:links (body-from-response response))))
       ;; Get the created item and make sure it's right
       (item/get-item e i) => (contains {
         :collection e
@@ -194,7 +230,8 @@
         (:status response) => 201
         (response-mime-type response) => (mime-type :item)
         (response-location response) => "/e/i"
-        (json? response) => true)
+        (json? response) => true
+        (verify-item-links e i (:links (body-from-response response))))
       ;; Get the created item and make sure it's right
       (item/get-item e i) => (contains {
         :collection e

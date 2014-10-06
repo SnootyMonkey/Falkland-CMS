@@ -1,10 +1,9 @@
 (ns fcms.api.collections
   (:require [clojure.core.match :refer (match)]
             [compojure.core :refer (defroutes ANY GET POST)]
-            [liberator.core :refer (by-method)]
+            [liberator.core :refer (defresource by-method)]
             [liberator.representation :refer (ring-response)]
             [taoensso.timbre :refer (debug info warn error fatal spy)]
-            [fcms.api.common :refer (defresource)]
             [fcms.api.common :as common]
             [fcms.resources.collection :as collection]
             [fcms.representations.collections :refer (render-collection render-collections)]))
@@ -48,7 +47,7 @@
     ; it's in the same spot
     (render-collection (:updated-collection ctx))
     ; it moved
-    (collection-location-response coll-slug (:updated-collection ctx))))
+    (collection-location-response (:updated-collection ctx))))
 
 ;; ----- Resources -----
 ;; see: http://clojure-liberator.github.io/liberator/assets/img/decision-graph.svg
