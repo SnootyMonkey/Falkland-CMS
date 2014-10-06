@@ -15,7 +15,7 @@
     [cheshire "5.3.1"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.2"] ; Ordered hash map https://github.com/flatland/ordered
     [ring/ring-jetty-adapter "1.3.1"] ; Web Server https://github.com/ring-clojure/ring
-    [compojure "1.1.9"] ; Web routing https://github.com/weavejester/compojure
+    [compojure "1.2.0"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.12.2"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "2.1.0-beta7"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
