@@ -15,6 +15,7 @@
 
 (defn- unprocessable-reason [reason]
   (match reason
+    :bad-collection common/missing-response
     :no-name (common/unprocessable-entity-response "Name is required.")
     :property-conflict (common/unprocessable-entity-response "A reserved property was used.")
     :slug-conflict (common/unprocessable-entity-response "Slug already used.")
