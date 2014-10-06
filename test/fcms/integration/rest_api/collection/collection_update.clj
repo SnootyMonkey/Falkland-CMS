@@ -269,7 +269,7 @@
 
     ;; wrong Accept header - 406 Not Acceptable
     ;; curl -i --header "Accept: application/vnd.fcms.item+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"c-prime", "description": "this is an updated collection"}' http://localhost:3000/c
-    (fact "with the wrong accept-header"
+    (fact "with the wrong Accept header"
       (let [response (api-request :put "/c" {
         :headers {
           :Content-Type (mime-type :collection)
@@ -293,7 +293,7 @@
 
     ;; wrong Content-Type header - 415 Unsupported Media Type
     ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.item+json;version=1" -X PUT -d '{"name":"c-prime", "description": "this is an updated collection"}' http://localhost:3000/c
-    (fact "with the wrong accept-header"
+    (fact "with the wrong Content-Type header"
       (let [response (api-request :put "/c" {
         :headers {
           :Content-Type (mime-type :item)
@@ -306,6 +306,77 @@
         (let [body (body-from-response response)]
           (.contains body "Acceptable media type: application/vnd.fcms.collection+json;version=1") => true
           (.contains body "Acceptable charset: utf-8") => true))
+      ;; check that the update failed
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name c
+        :description "this is a collection"
+        :version 1})
+      ;; check it didn't create another collection
+      (collection/collection-count) => 1)
+
+    ;; wrong charset - 406 Not Acceptable
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: iso-8859-1" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"c-prime", "description": "this is an updated collection"}' http://localhost:3000/c
+    (fact "with the wrong Accept-Charset header"
+      (let [response (api-request :put "/c" {
+        :headers {
+          :Accept-Charset "iso-8859-1"
+          :Content-Type (mime-type :collection)
+          :Accept (mime-type :collection)}
+        :body {
+          :name "c-prime"
+          :description "this is an updated collection"}})]
+        (:status response) => 406
+        (response-mime-type response) => (mime-type :text)
+        (let [body (body-from-response response)]
+          (.contains body "Acceptable media type: application/vnd.fcms.collection+json;version=1") => true
+          (.contains body "Acceptable charset: utf-8") => true))
+      ;; check that the update failed
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name c
+        :description "this is a collection"
+        :version 1})
+      ;; check it didn't create another collection
+      (collection/collection-count) => 1)
+
+    ;; no body - 400 Bad Request
+    ;; body, but not valid JSON - 400 Bad Request
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT http://localhost:3000/c
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d 'Hi Mom!' http://localhost:3000/c
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"c-prime"' http://localhost:3000/c
+    (fact "with an invalid body"
+      (doseq [body [nil "Hi Mom!" "{'name': 'c-prime'"]]
+        (let [response (api-request :put "/c" {
+          :headers {
+            :Content-Type (mime-type :collection)
+            :Accept (mime-type :collection)}
+          :body body})]
+          (:status response) => 400
+          (response-mime-type response) => (mime-type :text)
+          (body-from-response response) => "Bad request.")
+        ;; check that the update failed
+        (collection/get-collection c) => (contains {
+          :slug c
+          :name c
+          :description "this is a collection"
+          :version 1}))
+      ;; check it didn't create another collection
+      (collection/collection-count) => 1)
+
+    ;; collection doesn't exist - 404 Not Found
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"c-prime", "description": "this is an updated collection"}' http://localhost:3000/not-here
+    (fact "that doesn't exist"
+      (let [response (api-request :put "/not-here" {
+        :headers {
+          :Content-Type (mime-type :collection)
+          :Accept (mime-type :collection)}
+        :body {
+          :name "c-prime"
+          :description "this is an updated collection"}})]
+        (:status response) => 404
+        (response-mime-type response) => (mime-type :text)
+        (body-from-response response) => nil)
       ;; check that the update failed
       (collection/get-collection c) => (contains {
         :slug c
