@@ -2,7 +2,6 @@
   "Namespace for FCMS items. An item is any resource that's been stored in a particular collection.
   Items may also be organized in one or more taxonomies."
   (:require [clojure.set :refer (intersection)]
-            [fcms.resources.common :as common]
             [fcms.resources.collection-resource :as resource]))
 
 (def

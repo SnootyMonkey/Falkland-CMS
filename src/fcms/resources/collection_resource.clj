@@ -70,7 +70,7 @@
       (if (true? validity)
         (collection/with-collection coll-slug
           (let [slug (common/unique-slug (:id collection) (or (:slug props) (slugify resource-name)))]
-            (when-let [resource (common/create-with-db
+            (when-let [resource (common/create-resource-with-db
               (merge props {:slug slug :collection (:id collection) :name resource-name}) type)]
               (common/resource-from-db coll-slug resource))))
         validity))))
@@ -82,7 +82,7 @@
   [coll-slug slug type]
   (if-let [coll-id (:id (collection/get-collection coll-slug))]
     (if-let [resource (clutch/with-db (common/db) (common/resource-doc coll-id slug type))]
-      (common/delete resource)
+      (common/delete-resource resource)
       (keyword (str "bad-" (name type))))
     :bad-collection))
 
@@ -118,7 +118,7 @@
             retained-props (select-keys (:data resource) (conj (:retained props) :version))
             updated-props (apply dissoc (:updated props) (:reserved props))
             new-props (merge retained-props updated-props)]
-        (common/resource-from-db coll-slug (common/update-with-db resource new-props))
+        (common/resource-from-db coll-slug (common/update-resource-with-db resource new-props))
         (get-resource-with-db (:id collection) coll-slug (:slug new-props) type))
       (keyword (str "bad-" (name type))))))
 

@@ -146,7 +146,7 @@
 
 (defn
   ^{:no-doc true}
-  create-with-db
+  create-resource-with-db
   "Create an FCMS resource in the DB, returning the property map for the resource.
    This works when you ARE already in a clutch/with-db macro."
   [props provided-type]
@@ -159,17 +159,17 @@
 
 (defn
   ^{:no-doc true}
-  create
+  create-resource
   "Create an FCMS resource in the DB, returning the property map for the resource.
    This works when you AREN'T already in a clutch/with-db macro."
   [props provided-type]
   (clutch/with-db (db)
-    (create-with-db props provided-type)))
+    (create-resource-with-db props provided-type)))
 
 (defn
   ^{:no-doc true}
-  update-with-db
-  "Update the CouchDB document provided with a nev version number, updated-at timestamp,
+  update-resource-with-db
+  "Update the CouchDB document provided with a new version number, updated-at timestamp,
    and any new or updated properties from the provided map of props.
    This works when you ARE already in a clutch/with-db macro."
   [document props]
@@ -179,13 +179,13 @@
 
 (defn
   ^{:no-doc true}
-  update
-  "Update the CouchDB document provided with a nev version number, updated-at timestamp,
+  update-resource
+  "Update the CouchDB document provided with a new version number, updated-at timestamp,
    and any new or updated properties from the provided map of props.
    This works when you AREN'T already in a clutch/with-db macro."
   [document props]
   (clutch/with-db (db)
-    (update-with-db document props)))
+    (update-resource-with-db document props)))
 
 (defn
   ^{:no-doc true}
@@ -196,7 +196,7 @@
 
 (defn
   ^{:no-doc true}
-  delete
+  delete-resource
   "Delete the provided CouchDB document.
    This works when you AREN'T already in a clutch/with-db macro."
   [resource]
