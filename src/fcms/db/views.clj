@@ -1,7 +1,8 @@
 (ns fcms.db.views
   "Initialize CouchDB with the views needed for Falkland CMS."
   (:require [com.ashafa.clutch :as clutch]
-            [fcms.resources.common :as common]))
+            [fcms.resources.common :as common]
+            [fcms.config :refer (db-name)]))
 
 ;; http://localhost:5984/falklandcms/_design/fcms/_view/all
 ;; http://localhost:5984/falklandcms/_design/fcms/_view/all?include_docs=true
@@ -128,14 +129,14 @@
         :reduce "_count"}})))
 
 (defn init []
-  (println "FCMS: Initializing database...")
+  (println (str "FCMS: Initializing database - " db-name))
   (clutch/with-db (common/db)
      (fcms-views) (print ".")
      (collection-views) (print ".")
      (resource-views) (print ".")
      (item-views) (print ".")
      (taxonomy-views) (print "."))
-  (println "\nFCMS: Database initialization complete."))
+  (println "\nFCMS: Database initialization complete - " db-name))
 
 (defn -main []
   (init))
