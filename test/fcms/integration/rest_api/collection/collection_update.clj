@@ -384,4 +384,58 @@
         :description "this is a collection"
         :version 1})
       ;; check it didn't create another collection
+      (collection/collection-count) => 1)
+
+    (with-state-changes [(before :facts (collection/create-collection "another-c" {:description "this is another collection"}))]
+
+      ;; different slug specified in body is already used - 422 Unprocessable Entity
+      ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"name":"another-c", "description": "this is an updated collection"}' http://localhost:3000/c
+      (fact "with a slug that's already used"
+        (let [response (api-request :put "/c" {
+          :headers {
+            :Content-Type (mime-type :collection)
+            :Accept (mime-type :collection)}
+          :body {
+            :name "c-prime"
+            :slug "another-c"
+            :description "this is an updated collection"}})]
+          (:status response) => 422
+          (response-mime-type response) => (mime-type :text)
+          (body-from-response response) => "Slug already used.")
+        ;; check that the update failed
+        (collection/get-collection c) => (contains {
+          :slug c
+          :name c
+          :description "this is a collection"
+          :version 1})
+        ;; check that it didn't modify the other collection
+        (collection/get-collection "another-c") => (contains {
+          :slug "another-c"
+          :name "another-c"
+          :description "this is another collection"
+          :version 1})
+        ;; check it didn't create another collection
+        (collection/collection-count) => 2))
+
+    ;; different slug specified in body is invalid - 422 Unprocessable Entity
+    ;; curl -i --header "Accept: application/vnd.fcms.collection+json;version=1" --header "Accept-Charset: utf-8" --header "Content-Type: application/vnd.fcms.collection+json;version=1" -X PUT -d '{"slug": "c C", "name":"c-prime", "description": "this is an updated collection"}' http://localhost:3000/c
+    (fact "with a slug that's invalid"
+      (let [response (api-request :put "/c" {
+        :headers {
+          :Content-Type (mime-type :collection)
+          :Accept (mime-type :collection)}
+        :body {
+          :slug "c C"
+          :name "c-prime"
+          :description "this is an updated collection"}})]
+        (:status response) => 422
+        (response-mime-type response) => (mime-type :text)
+        (body-from-response response) => "Invalid slug.")
+      ;; check that the update failed
+      (collection/get-collection c) => (contains {
+        :slug c
+        :name c
+        :description "this is a collection"
+        :version 1})
+      ;; check it didn't create another collection
       (collection/collection-count) => 1)))

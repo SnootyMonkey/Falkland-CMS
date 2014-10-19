@@ -64,7 +64,7 @@
           validity (valid-new-collection coll-name props)]
       (if (true? validity)
         (let [slug (unique-slug (or (:slug props) (slugify coll-name)))]
-          (when-let [collection (common/create (merge props {:slug slug :name coll-name}) :collection)]
+          (when-let [collection (common/create-resource (merge props {:slug slug :name coll-name}) :collection)]
             (common/map-from-db collection)))
         validity))))
 
@@ -109,12 +109,12 @@
         (= slug provided-slug) true
         :else (if (nil? (get-collection provided-slug)) true :slug-conflict))))
 
-(defn- update
+(defn- update-collection-in-db
   "Update a collection retaining it's manufactured properties and replacing the rest with the provided properties"
   [slug updated-props]
   (if-let [coll (:doc (first (common/doc-from-view :collection :all-ids-by-slug slug)))]
     (let [retained-props (select-keys (:data coll) (conj common/retained-properties :version))]
-      (common/map-from-db (common/update coll (merge retained-props updated-props))))
+      (common/map-from-db (common/update-resource coll (merge retained-props updated-props))))
     :bad-collection))
 
 (defn update-collection
@@ -125,7 +125,7 @@
   [slug props]
     (let [reason (valid-collection-update slug props)]
       (if (= reason true)
-        (update slug props)
+        (update-collection-in-db slug props)
         reason)))
 
 (defmacro with-collection

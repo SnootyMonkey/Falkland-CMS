@@ -3,7 +3,6 @@
   Items may also be organized in one or more taxonomies."
   (:require [clojure.set :refer (intersection)]
             [clojure.core.typed :refer (ann IFn U Str Kw HMap)]
-            [fcms.resources.common :as common]
             [fcms.resources.collection-resource :as resource]))
 
 (ann item-media-type Str)
