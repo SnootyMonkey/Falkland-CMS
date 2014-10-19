@@ -12,7 +12,7 @@
     [org.clojure/core.match "0.2.2"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [org.clojure/clojurescript "0.0-2371"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     [org.clojure/tools.nrepl "0.2.6"] ; REPL server and client https://github.com/clojure/tools.nrepl
-    [defun "0.1.0"] ; Pattern matching for Clojure functions https://github.com/killme2008/defun
+    [defun "0.2.0-RC"] ; Pattern matching for Clojure functions https://github.com/killme2008/defun
     [cheshire "5.3.1"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.2"] ; Ordered hash map https://github.com/flatland/ordered
     [ring/ring-jetty-adapter "1.3.1"] ; Web Server https://github.com/ring-clojure/ring
