@@ -1,4 +1,4 @@
-(defproject falkland-cms "0.2.0"
+(defproject falkland-cms "0.3.0-SNAPSHOT"
   :description "Falkland CMS is a Curation Management System written in Clojure, ClojureScript and CouchDB."
   :url "http://falkland-cms.com/"
   :license {:name "Mozilla Public License v2.0"
