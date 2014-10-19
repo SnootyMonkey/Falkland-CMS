@@ -8,14 +8,16 @@
 
   :dependencies [
     [org.clojure/clojure "1.7.0-alpha2"] ; Lisp on the JVM http://clojure.org/documentation
-    [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
-    [org.clojure/core.match "0.2.2"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [org.clojure/clojurescript "0.0-2371"] ; ClojureScript compiler https://github.com/clojure/clojurescript
+    [org.clojure/core.match "0.2.2"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
+    [defun "0.2.0-RC"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
+    [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [org.clojure/tools.nrepl "0.2.6"] ; REPL server and client https://github.com/clojure/tools.nrepl
-    [defun "0.2.0-RC"] ; Pattern matching for Clojure functions https://github.com/killme2008/defun
     [cheshire "5.3.1"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.2"] ; Ordered hash map https://github.com/flatland/ordered
-    [ring/ring-jetty-adapter "1.3.1"] ; Web Server https://github.com/ring-clojure/ring
+    [ring/ring-devel "1.3.1"] ; Web application library https://github.com/ring-clojure/ring
+    [ring/ring-core "1.3.1"] ; Web application library https://github.com/ring-clojure/ring
+    [http-kit "2.1.19"] ; Web Server http://http-kit.org/
     [compojure "1.2.0"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.12.2"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
@@ -29,6 +31,7 @@
       :env {
         :db-name "falklandcms-test"
         :liberator-trace false
+        :hot-reload false
       }
       :dependencies [
         [midje "1.6.3"] ; Example-based testing https://github.com/marick/Midje
@@ -38,8 +41,9 @@
 
     :dev [:qa {
       :env ^:replace {
-        :db-name "falklandcms"
+        :db-name "falklandcms-dev"
         :liberator-trace true
+        :hot-reload true
       }
       :dependencies [
         [print-foo "0.4.6"] ; Old school print debugging https://github.com/danielribeiro/print-foo
@@ -65,6 +69,7 @@
       :env {
         :db-name "falklandcms"
         :liberator-trace false
+        :hot-reload false
       }
     }
   }
@@ -77,8 +82,8 @@
     "midje" ["with-profile" "qa" "midje"] ; run all tests
     "test" ["with-profile" "qa" "do" "clean-test-db," "midje," "clean-test-db"] ; run all tests with clean test DB
     "test!" ["with-profile" "qa" "do" "build," "test"] ; build and run all tests
-    "start" ["do" "build," "ring" "server-headless"] ; start an FCMS server
-    "start!" ["with-profile" "prod" "run"] ; start an FCMS server in production
+    "start" ["do" "build," "run"] ; start a development FCMS server
+    "start!" ["with-profile" "prod" "do" "init-db," "run"] ; start an FCMS server in production
     "spell!" ["spell" "-n"] ; check spelling in docs and docstrings
     "ancient" ["with-profile" "dev" "do" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"] ; check for out of date dependencies
   }
@@ -96,6 +101,7 @@
     [lein-pprint "1.1.2"] ; pretty-print the lein project map https://github.com/technomancy/leiningen/tree/master/lein-pprint
     [lein-ancient "0.5.5"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
     [lein-spell "0.1.0"] ; Catch spelling mistakes in docs and docstrings https://github.com/cldwalker/lein-spell
+    [lein-deps-tree "0.1.2"] ; Print a tree of project dependencies https://github.com/the-kenny/lein-deps-tree
   ]
 
   ;; ----- Code check configuration -----

@@ -3,9 +3,10 @@
   (:require
     [liberator.core :refer [resource defresource]]
     [liberator.dev :refer (wrap-trace)]
+    [ring.middleware.reload :as reload]
     [compojure.core :refer (defroutes ANY)]
-    [ring.adapter.jetty :as ring]
-    [fcms.config :refer (liberator-trace)]
+    [org.httpkit.server :refer (run-server)]
+    [fcms.config :refer (liberator-trace hot-reload web-server-port)]
     [fcms.api.collections :refer (collection-routes)]
     [fcms.api.items :refer (item-routes)]
     [fcms.db.views :as db-views]
@@ -17,15 +18,18 @@
   (route/resources "/media/"))
 
 (def trace-app
-  (wrap-trace routes :header :ui))
+  (if liberator-trace 
+    (wrap-trace routes :header :ui)
+    routes))
 
 (def app
-  (if liberator-trace trace-app routes))
+  (if hot-reload
+    (reload/wrap-reload trace-app)
+    trace-app))
 
 (defn start [port]
-  (ring/run-jetty app {:port port :join? false}))
+  (run-server app {:port port :join? false})
+  (println (str "\nFCMS: Server running on port - " port ", hot-reload - " hot-reload)))
 
 (defn -main []
-  (let [port (Integer/parseInt
-   (or (System/getenv "PORT") "3000"))]
-  (start port)))
+  (start web-server-port))
