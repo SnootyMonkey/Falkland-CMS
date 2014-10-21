@@ -89,7 +89,7 @@
   }
 
   :plugins [
-    [lein-ring "0.8.12"] ; common ring tasks https://github.com/weavejester/lein-ring
+    [lein-ring "0.8.13"] ; common ring tasks https://github.com/weavejester/lein-ring
     [lein-environ "1.0.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [lein-cljsbuild "1.0.3"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
     [codox "0.8.10"] ; Generate Clojure API docs https://github.com/weavejester/codox
