@@ -4,10 +4,10 @@
 Items
 *****
 
-An `item <http://www.wordnik.com/words/item>`_ is a single entry in a collection. An item
-is not itself THE member of the collection, but is a pointer TO the member of the collection.
-It's not THE article on Faulkner's early history with bedwetting and its effect on his later
-writing career, it's a pointer TO the article.
+An `item <http://www.wordnik.com/words/item>`_ is a single reference entry in a collection. An item
+is referential. It's not itself **the** member of the collection, but is a pointer **to** the
+member of the collection. It's not **the** article on Faulkner's early history with bedwetting, it's
+a pointer **to** the article.
 
 With Falkland CMS, you capture items in a collection and categorize them into multiple orthogonal
 taxonomies. Items can point to literally anything in the world: books, articles, web pages,
@@ -17,13 +17,13 @@ Once created, items can be browsed and searched, and can be displayed in exhibit
 
 Some examples of items:
 
-* a VIC-20 cartridge for vic20.com
-* a secondary source about *The Fall* for Camus.org
-* a Youtube video about mudskippers for Mudskippers.org
-* a book, *The Fall*, in Jack Freeman's Library
-* a wikipedia entry on amoralism for nil.org
-* an Atari 7800 game for 8-bit.com
-* a John McKay quote for pitifulpirates.com
+* an item for the Dracula VIC-20 cartridge for vic20.com
+* an item for a journal article about *The Fall* for Camus.org
+* an item for a book, *The Fall*, in Jack Freeman's Library
+* an item for a Youtube video about mudskippers for Mudskippers.org
+* an item for the wikipedia entry on amoralism for nil.org
+* an item for the definition of the acronym PC for Falklandsophile.com
+* an item for a John McKay quote for pitifulpirates.com
 
 List Items
 ==========

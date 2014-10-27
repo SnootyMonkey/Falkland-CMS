@@ -24,7 +24,7 @@ parents. As an illustrative example, imagine an item, “Mecklenburg Declaration
 
 With Falkland CMS, it is typical to have multiple orthogonal taxonomies categorizing the items in a collection. 
 
-In addition to be classified in multiple taxonomies, items can also be categorized in more than 1 category in
+In addition to being classified in multiple different taxonomies, items can also be categorized in more than 1 category in
 the same taxonomy. In fact, as has been pointed out above, it is rare for items to be categorized in just one
 category in a taxonomy since they are members of their categories' parent categories as well.
 
