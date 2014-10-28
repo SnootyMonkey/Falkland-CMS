@@ -10,7 +10,7 @@
     :email "sean@snootymonkey.com"
   }
   
-  :min-lein-version "2.4.2" ; highest version supported by Travis-CI as of 8/7/2014
+  :min-lein-version "2.5.0" ; highest version supported by Travis-CI as of 10/28/2014
 
   :dependencies [
     [org.clojure/clojure "1.7.0-alpha3"] ; Lisp on the JVM http://clojure.org/documentation
