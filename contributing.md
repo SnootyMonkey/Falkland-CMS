@@ -7,7 +7,16 @@ author: Sean Johnson
 
 ## Development and Contributing
 
-If you'd like to enhance Falkland CMS, please fork [Falkland CMS on GitHub](https://github.com/SnootyMonkey/Falkland-CMS). If you'd like to contribute back your enhancements, please submit your pull requests to the dev branch. I promise to look at every pull request and incorporate it, or at least provide feedback on why if I won't.
+If you'd like to enhance Falkland CMS, please fork [Falkland CMS on GitHub](https://github.com/SnootyMonkey/Falkland-CMS). If you'd like to contribute back your enhancements (awesome!), please submit your pull requests to the `dev` branch. I promise to look at every pull request and incorporate it, or at least provide feedback on why if I won't.
+
+* Do your best to conform to the coding style that's here... I like it.
+* Use 2 soft spaces for indentation.
+* Don't leave trailing spaces after lines.
+* Don't leave trailing new lines at the end of files.
+* Write comments.
+* Write tests.
+* Don't submit über pull requests, keep your changes atomic.
+* Have fun!
 
 If you want to contribute to the documentation, there is a [separate guide](https://github.com/SnootyMonkey/Falkland-CMS/blob/gh-pages/README.md).
 
@@ -16,7 +25,6 @@ If you want to contribute to the documentation, there is a [separate guide](http
 There are 3 long lived branches in the repository:
 
 [master](https://github.com/SnootyMonkey/Falkland-CMS/tree/master) - mainline, picked up by [continual integration on Travis-CI](https://travis-ci.org/SnootyMonkey/Falkland-CMS), named releases are tagged with: vX.X.X
-
 
 [dev](https://github.com/SnootyMonkey/Falkland-CMS/tree/dev) - development mainline, picked up by [continual integration on Travis-CI](https://travis-ci.org/SnootyMonkey/Falkland-CMS)
 
