@@ -1,8 +1,14 @@
 (defproject falkland-cms "0.3.0-SNAPSHOT"
   :description "Falkland CMS is a Curation Management System written in Clojure, ClojureScript and CouchDB."
   :url "http://falkland-cms.com/"
-  :license {:name "Mozilla Public License v2.0"
-            :url "http://www.mozilla.org/MPL/2.0/"}
+  :license {
+    :name "Mozilla Public License v2.0"
+    :url "http://www.mozilla.org/MPL/2.0/"
+  }
+  :support {
+    :name "Sean Johnson"
+    :email "sean@snootymonkey.com"
+  }
   
   :min-lein-version "2.4.2" ; highest version supported by Travis-CI as of 8/7/2014
 
@@ -41,9 +47,9 @@
 
     :dev [:qa {
       :env ^:replace {
-        :db-name "falklandcms-dev"
-        :liberator-trace true
-        :hot-reload true
+        :db-name "falklandcms-dev" ; CouchDB database name
+        :liberator-trace true ; liberator debug data in HTTP response headers
+        :hot-reload true ; reload code when changed on the file system
       }
       :dependencies [
         [print-foo "0.4.6"] ; Old school print debugging https://github.com/danielribeiro/print-foo
@@ -67,7 +73,7 @@
 
     :prod {
       :env {
-        :db-name "falklandcms"
+        :db-name "falklandcms" ; CouchDB database name
         :liberator-trace false
         :hot-reload false
       }
