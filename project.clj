@@ -121,6 +121,7 @@
     :output-dir "../Falkland-CMS-docs/API/Clojure"
     :src-dir-uri "http://github.com/SnootyMonkey/Falkland-CMS/blob/master/"
     :src-linenum-anchor-prefix "L" ; for Github
+    :defaults {:doc/format :markdown}
   }
 
   ;; ----- ClojureScript -----
