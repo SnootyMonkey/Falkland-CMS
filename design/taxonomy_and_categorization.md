@@ -13,7 +13,7 @@ User will want to use "off-the-shelf" metadata schemas by just selecting them wi
 
 Relevant standards:
 	[Dublin Core](http://dublincore.org/) - "core metadata" for simple and generic resource descriptions
-	[Schema.org](http://schema.org/) - an initiative from the big search engines (Google, Bing, Yahoo, Yandex) to index web data
+	[Schema.org](http://schema.org/docs/schemas.html) - an initiative from the big search engines (Google, Bing, Yahoo, Yandex) to index web data
 
 http://www.k4all.ca/book/export/html/189
 
