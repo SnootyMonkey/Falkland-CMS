@@ -14,7 +14,7 @@
 
   :dependencies [
     ;; Server-side
-    [org.clojure/clojure "1.7.0-alpha3"] ; Lisp on the JVM http://clojure.org/documentation
+    [org.clojure/clojure "1.7.0-alpha4"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.match "0.2.2"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [defun "0.2.0-RC"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
     [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
@@ -27,7 +27,7 @@
     [compojure "1.2.1"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.12.2"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
-    [clojurewerkz/elastisch "2.1.0-beta9"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
+    [clojurewerkz/elastisch "2.1.0-rc1"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "1.0.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [com.taoensso/timbre "3.3.1"] ; Logging https://github.com/ptaoussanis/timbre
     ;; Web Client-side
