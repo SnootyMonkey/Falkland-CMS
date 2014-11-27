@@ -17,7 +17,7 @@
   ^{:no-doc true}
   category-media-type "application/vnd.fcms.category+json;version=1")
 
-;; ----- taxonomy lifecycle functions -----
+;; ----- Taxonomy lifecycle functions -----
 
 (defn get-taxonomy
   "Given the slug of the collection containing the taxonomy and the slug of the taxonomy,
