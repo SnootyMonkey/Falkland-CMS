@@ -1,5 +1,5 @@
 (ns fcms.resources.common
-  "Namespace for FCMS resources. FCMS resources are things stored in FCMS, so either collections, taxonomies or items."
+  "Resources are any thing stored in FCMS: collections, taxonomies or items."
   (:require [clojure.string :as s]
             [clj-time.format :refer (parse formatters unparse)]
             [clj-time.core :refer (now)]

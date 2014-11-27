@@ -1,6 +1,5 @@
 (ns fcms.resources.collection-resource
-  "Namespace for collection resources. Collection resources are either taxonomies or items, and are
-  stored in a particular collection."
+  "Collection resources are either taxonomies or items, and are stored in a particular collection."
   (:require [clojure.set :refer (intersection)]
             [clojure.string :refer (blank?)]
             [clojure.walk :refer (keywordize-keys)]
