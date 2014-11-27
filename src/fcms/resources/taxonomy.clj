@@ -103,7 +103,7 @@
 (defn- valid-category-structure?
   ""
   [category]
-  (and (contains? :slug) (contains? :name)
+  (and (contains? category :slug) (contains? category :name)
     (= 2 (count (dissoc category :categories)))))
 
 (defn- valid-category-name?
