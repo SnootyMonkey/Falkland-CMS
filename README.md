@@ -1,7 +1,9 @@
 -= [Falkland CMS](http://falkland-cms.com) =-
 ============
 
-[![MPL License](http://img.shields.io/badge/license-MPL-green.svg?style=flat)](https://www.mozilla.org/MPL/2.0/) [![Build Status](http://img.shields.io/travis/SnootyMonkey/Falkland-CMS.svg?style=flat)](https://travis-ci.org/SnootyMonkey/Falkland-CMS) [![Roadmap on Trello](http://img.shields.io/badge/roadmap-trello-blue.svg?style=flat)](https://trello.com/b/UgzPjFAX/falkland-cms)
+[![MPL License](http://img.shields.io/badge/license-MPL-green.svg?style=flat)](https://www.mozilla.org/MPL/2.0/)
+[![Build Status](http://img.shields.io/travis/SnootyMonkey/Falkland-CMS.svg?style=flat)](https://travis-ci.org/SnootyMonkey/Falkland-CMS)
+[![Roadmap on Trello](http://img.shields.io/badge/roadmap-trello-blue.svg?style=flat)](https://trello.com/b/UgzPjFAX/falkland-cms)
 
 This README is just a stub, please visit the [Falkland CMS website](http://falkland-cms.com) at [falkland-cms.com](http://falkland-cms.com).
 
