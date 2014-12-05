@@ -10,14 +10,12 @@
 ;; ----- Properties common to all FCMS resources -----
 
 (def
-  ^{:no-doc true}
   reserved-properties
-  "Properties that can't be specified during a create and are ignored during an update."
+  "Properties of a resource that can't be specified during a create and are ignored during an update."
   #{:id :created-at :updated-at :type :version :links})
 (def
-  ^{:no-doc true}
   retained-properties
-  "Properties that are retained during an update even if they aren't in the updated property set."
+  "Properties of a resource that are retained during an update even if they aren't in the updated property set."
   #{:name :slug :created-at :type})
 
 ;; ----- ISO 8601 timestamp -----
@@ -32,7 +30,9 @@
 ;; ----- Validation functions -----
 
 (defn valid-name?
-  "Return true if the provided name is a valid name, false if not"
+  "Returns `true` if the provided name is a valid name, `false` if not.
+
+  Any non-blank string (including Unicode) is a valid name."
   [n]
   ;; any non-blank string is a valid name
   (and (string? n) (not (s/blank? n))))
@@ -82,7 +82,7 @@
 ;; ----- Slug functions -----
 
 (defn valid-slug?
-  "Return true if the provided-slug is a valid slug and false if not"
+  "Returns `true` if the provided slug is a valid, and `false` if not."
   [provided-slug]
   ;; if the slug is the same one we'd provide for a resource with that name, then it's valid
   (and (string? provided-slug) (= provided-slug (slugify provided-slug)) (not (s/blank? provided-slug))))
