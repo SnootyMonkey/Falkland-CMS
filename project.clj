@@ -21,10 +21,10 @@
     [org.clojure/tools.nrepl "0.2.6"] ; REPL server and client https://github.com/clojure/tools.nrepl
     [cheshire "5.3.1"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.2"] ; Ordered hash map https://github.com/flatland/ordered
-    [ring/ring-devel "1.3.1"] ; Web application library https://github.com/ring-clojure/ring
-    [ring/ring-core "1.3.1"] ; Web application library https://github.com/ring-clojure/ring
+    [ring/ring-devel "1.3.2"] ; Web application library https://github.com/ring-clojure/ring
+    [ring/ring-core "1.3.2"] ; Web application library https://github.com/ring-clojure/ring
     [http-kit "2.1.19"] ; Web Server http://http-kit.org/
-    [compojure "1.2.1"] ; Web routing https://github.com/weavejester/compojure
+    [compojure "1.3.1"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.12.2"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "2.1.0-rc1"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
@@ -103,7 +103,7 @@
     [lein-cljsbuild "1.0.3"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
     [codox "0.8.10"] ; Generate Clojure API docs https://github.com/weavejester/codox
     [lein-midje "3.1.3"] ; Example-based testing https://github.com/marick/lein-midje
-    [lein-bikeshed "0.1.8"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
+    [lein-bikeshed "0.2.0"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
     [lein-kibit "0.0.8"] ; Static code search for non-idiomatic code https://github.com/jonase/kibit
     [jonase/eastwood "0.2.0"] ; Clojure linter https://github.com/jonase/eastwood
     [lein-checkall "0.1.1"] ; Runs bikeshed, kibit and eastwood https://github.com/itang/lein-checkall
