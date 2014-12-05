@@ -55,7 +55,7 @@
         :hot-reload true ; reload code when changed on the file system
       }
       :dependencies [
-        [print-foo "0.4.6"] ; Old school print debugging https://github.com/danielribeiro/print-foo
+        [print-foo "1.0.1"] ; Old school print debugging https://github.com/danielribeiro/print-foo
         [aprint "0.1.0"] ; Pretty printing in the REPL (aprint thing) https://github.com/razum2um/aprint
         [org.clojure/tools.trace "0.7.6"] ; Tracing macros/fns https://github.com/clojure/tools.trace
         [com.cemerick/piggieback "0.1.2"] ; ClojureScript bREPL from the nREPL https://github.com/cemerick/piggieback
