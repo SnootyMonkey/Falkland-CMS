@@ -19,7 +19,7 @@
     [defun "0.2.0-RC"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
     [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [org.clojure/tools.nrepl "0.2.6"] ; REPL server and client https://github.com/clojure/tools.nrepl
-    [cheshire "5.3.1"] ; JSON de/encoding https://github.com/dakrone/cheshire
+    [cheshire "5.4.0"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.2"] ; Ordered hash map https://github.com/flatland/ordered
     [ring/ring-devel "1.3.2"] ; Web application library https://github.com/ring-clojure/ring
     [ring/ring-core "1.3.2"] ; Web application library https://github.com/ring-clojure/ring
