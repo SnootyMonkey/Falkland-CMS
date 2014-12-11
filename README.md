@@ -1,7 +1,7 @@
 -= [Falkland CMS](http://falkland-cms.com) =-
 ============
 
-[![MPL License](http://img.shields.io/badge/license-MPL-green.svg?style=flat)](https://www.mozilla.org/MPL/2.0/)
+[![MPL License](http://img.shields.io/badge/license-MPL-blue.svg?style=flat)](https://www.mozilla.org/MPL/2.0/)
 [![Build Status](http://img.shields.io/travis/SnootyMonkey/Falkland-CMS.svg?style=flat)](https://travis-ci.org/SnootyMonkey/Falkland-CMS)
 [![Roadmap on Trello](http://img.shields.io/badge/roadmap-trello-blue.svg?style=flat)](https://trello.com/b/UgzPjFAX/falkland-cms)
 
@@ -23,7 +23,7 @@ Complete documentation is on the [Falkland CMS website](http://falkland-cms.com)
 
 ## Getting Help
 
-Falkland CMS is pre-alpha and not yet usable. A usable version is expected in early 2015, and instructions for getting help will be available then.
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected in 2015, and instructions for getting help will be available then.
 
 ## Development and Contributing
 
