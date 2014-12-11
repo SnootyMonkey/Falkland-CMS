@@ -93,7 +93,7 @@ If you're using Falkland CMS, please drop me a note and I'll link to you here.
 
 ## <a id="status"></a> Status &amp; Roadmap
 
-Falkland CMS is pre-alpha and not yet usable. A usable version is expected sometime in early 2015.
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected sometime in 2015.
 
 You can see the roadmap and check on the development progress on [Trello](https://trello.com/b/UgzPjFAX/falkland-cms).
 
@@ -101,7 +101,7 @@ You can see the roadmap and check on the development progress on [Trello](https:
 
 ## <a id="help"></a> Getting Help
 
-Falkland CMS is pre-alpha and not yet usable. A usable version is expected in early 2015 and instructions for getting help will be available then.
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected in 2015 and instructions for getting help will be available then.
 
 You can open an issue or feature request in the [GitHub issue tracker](https://github.com/SnootyMonkey/Falkland-CMS/issues).
 

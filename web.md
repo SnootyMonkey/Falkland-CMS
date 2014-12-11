@@ -6,4 +6,4 @@ author: Sean Johnson
 
 # Web UI
 
-A usable initial version of the Falkland CMS web UI is expected in early 2015.
+A usable initial version of the Falkland CMS web UI is expected in 2015.
