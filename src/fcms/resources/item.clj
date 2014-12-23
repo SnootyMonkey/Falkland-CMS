@@ -4,8 +4,7 @@
   
   Items may also be organized in one or more taxonomies.
   "
-  (:require [clojure.set :refer (intersection)]
-            [fcms.resources.collection-resource :as resource]))
+  (:require [fcms.resources.collection-resource :as resource]))
 
 (def
   ^{:no-doc true}

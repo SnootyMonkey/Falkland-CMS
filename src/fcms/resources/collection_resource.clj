@@ -42,7 +42,7 @@
   the reserved-properties set."
   ([coll-slug resource-name type reserved-properties] (valid-new-resource coll-slug resource-name reserved-properties type {}))
   ([coll-slug resource-name type reserved-properties {provided-slug :slug :as props}]
-    (if-let [coll-id (:id (collection/get-collection coll-slug))]
+    (if (:id (collection/get-collection coll-slug))
       (cond
         (or (nil? resource-name) (blank? resource-name)) :no-name
         (not-empty (intersection (set (keys (keywordize-keys props))) reserved-properties)) :property-conflict

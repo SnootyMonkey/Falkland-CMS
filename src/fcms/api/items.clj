@@ -2,8 +2,6 @@
   (:require [clojure.core.match :refer (match)]
             [compojure.core :refer (defroutes ANY)]
             [liberator.core :refer (defresource by-method)]
-            [liberator.representation :refer (ring-response)]
-            [taoensso.timbre :refer (debug info warn error fatal spy)]
             [fcms.api.common :as common]
             [fcms.resources.collection :as collection]
             [fcms.resources.item :as item]
@@ -34,7 +32,7 @@
       :else {:item item})))
 
 (defn- get-items [coll-slug]
-  (if-let [collection (collection/get-collection coll-slug)]
+  (if (collection/get-collection coll-slug)
     [true {:items (item/all-items coll-slug)}]
     [false {:bad-collection true}]))
 

@@ -2,7 +2,6 @@
   (:require [taoensso.timbre :refer (debug info warn error fatal spy)]
             [clojure.string :refer (join split)]
             [cheshire.core :as json]
-            [liberator.core :refer (run-resource)]
             [liberator.representation :refer (ring-response)]))
 
 (def UTF8 "utf-8")

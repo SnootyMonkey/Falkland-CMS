@@ -390,7 +390,6 @@
   [coll-slug category-path]
   (let [path (normalize-category-path category-path)
       taxonomy-slug (taxonomy-slug-from-path path)
-      category-slugs (category-slugs-from-path path)
       result (get-taxonomy coll-slug taxonomy-slug)]
     (cond
       (keyword? result) result

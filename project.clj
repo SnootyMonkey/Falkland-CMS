@@ -15,7 +15,7 @@
   :dependencies [
     ;; Server-side
     [org.clojure/clojure "1.7.0-alpha4"] ; Lisp on the JVM http://clojure.org/documentation
-    [org.clojure/core.match "0.2.2"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
+    [org.clojure/core.match "0.3.0-alpha4"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [defun "0.2.0-RC"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
     [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [org.clojure/tools.nrepl "0.2.6"] ; REPL server and client https://github.com/clojure/tools.nrepl
@@ -31,7 +31,7 @@
     [environ "1.0.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [com.taoensso/timbre "3.3.1"] ; Logging https://github.com/ptaoussanis/timbre
     ;; Web Client-side
-    [org.clojure/clojurescript "0.0-2411"] ; ClojureScript compiler https://github.com/clojure/clojurescript
+    [org.clojure/clojurescript "0.0-2511"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     [secretary "1.2.1"] ; Client-side routing for ClojureScript https://github.com/gf3/secretary
   ]
   
@@ -94,6 +94,7 @@
     "start" ["do" "build," "run"] ; start a development FCMS server
     "start!" ["with-profile" "prod" "do" "init-db," "run"] ; start an FCMS server in production
     "spell!" ["spell" "-n"] ; check spelling in docs and docstrings
+    "bikeshed!" ["bikeshed" "-v" "-m" "120"] ; code check with max line length warning of 120 characters
     "ancient" ["with-profile" "dev" "do" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"] ; check for out of date dependencies
   }
 
@@ -105,7 +106,7 @@
     [lein-midje "3.1.3"] ; Example-based testing https://github.com/marick/lein-midje
     [lein-bikeshed "0.2.0"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
     [lein-kibit "0.0.8"] ; Static code search for non-idiomatic code https://github.com/jonase/kibit
-    [jonase/eastwood "0.2.0"] ; Clojure linter https://github.com/jonase/eastwood
+    [jonase/eastwood "0.2.1"] ; Clojure linter https://github.com/jonase/eastwood
     [lein-checkall "0.1.1"] ; Runs bikeshed, kibit and eastwood https://github.com/itang/lein-checkall
     [lein-pprint "1.1.2"] ; pretty-print the lein project map https://github.com/technomancy/leiningen/tree/master/lein-pprint
     [lein-ancient "0.5.5"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
@@ -116,7 +117,15 @@
   ;; ----- Code check configuration -----
 
   :eastwood {
-    :exclude-linters [:keyword-typos]
+    ;; Enable some linters that are disabled by default
+    :add-linters [:unused-namespaces :unused-private-vars :unused-locals]
+
+    ;; More extensive lintering that will have a few false positives
+    ;; :add-linters [:unused-namespaces :unused-private-vars :unused-locals :unused-fn-args]
+
+    ;; Exclude testing namespaces
+    :tests-paths ["test"]
+    :exclude-namespaces [:test-paths]
   }
 
   ;; ----- Clojure API Documentation -----

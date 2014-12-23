@@ -1,7 +1,6 @@
 (ns fcms.app
   "Namespace for the FCMS web application which serves the REST API."
   (:require
-    [liberator.core :refer [resource defresource]]
     [liberator.dev :refer (wrap-trace)]
     [ring.middleware.reload :as reload]
     [compojure.core :refer (defroutes ANY)]
@@ -9,7 +8,6 @@
     [fcms.config :refer (liberator-trace hot-reload web-server-port)]
     [fcms.api.collections :refer (collection-routes)]
     [fcms.api.items :refer (item-routes)]
-    [fcms.db.views :as db-views]
     [compojure.route :as route]))
 
 (defroutes routes
