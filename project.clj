@@ -31,7 +31,7 @@
     [environ "1.0.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [com.taoensso/timbre "3.3.1"] ; Logging https://github.com/ptaoussanis/timbre
     ;; Web Client-side
-    [org.clojure/clojurescript "0.0-2511"] ; ClojureScript compiler https://github.com/clojure/clojurescript
+    [org.clojure/clojurescript "0.0-2657"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     [secretary "1.2.1"] ; Client-side routing for ClojureScript https://github.com/gf3/secretary
   ]
   
@@ -101,7 +101,7 @@
   :plugins [
     [lein-ring "0.8.13"] ; common ring tasks https://github.com/weavejester/lein-ring
     [lein-environ "1.0.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    [lein-cljsbuild "1.0.3"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
+    [lein-cljsbuild "1.0.4"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
     [codox "0.8.10"] ; Generate Clojure API docs https://github.com/weavejester/codox
     [lein-midje "3.1.3"] ; Example-based testing https://github.com/marick/lein-midje
     [lein-bikeshed "0.2.0"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
