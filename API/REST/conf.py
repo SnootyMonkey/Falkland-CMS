@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Falkland CMS'
-copyright = u'2013-2014, Snooty Monkey, LLC'
+copyright = u'2013-2015, Snooty Monkey, LLC'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

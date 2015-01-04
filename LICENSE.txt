@@ -1,4 +1,4 @@
-Copyright 2013-2014 Snooty Monkey, LLC
+Copyright 2013-2015 Snooty Monkey, LLC
 http://snootymonkey.com/
 
 Mozilla Public License

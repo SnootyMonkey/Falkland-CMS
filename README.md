@@ -22,8 +22,9 @@ gem install redcarpet
 gem install jekyll
 
 jekyll serve --baseurl '' --port 3000
-open http://localhost:3000
 ```
+
+Then you can access it with your web browser at: [http://localhost:3000](http://localhost:3000)
 
 ## Generating the API Reference Documentation
 
