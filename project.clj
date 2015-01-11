@@ -14,7 +14,7 @@
 
   :dependencies [
     ;; Server-side
-    [org.clojure/clojure "1.7.0-alpha4"] ; Lisp on the JVM http://clojure.org/documentation
+    [org.clojure/clojure "1.7.0-alpha5"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.match "0.3.0-alpha4"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [defun "0.2.0-RC"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
     [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
@@ -29,10 +29,10 @@
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "2.1.0"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "1.0.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    [com.taoensso/timbre "3.3.1"] ; Logging https://github.com/ptaoussanis/timbre
+    [com.taoensso/timbre "3.3.1-1cd4b70"] ; Logging https://github.com/ptaoussanis/timbre
     ;; Web Client-side
-    [org.clojure/clojurescript "0.0-2657"] ; ClojureScript compiler https://github.com/clojure/clojurescript
-    [secretary "1.2.1"] ; Client-side routing for ClojureScript https://github.com/gf3/secretary
+    [org.clojure/clojurescript "0.0-2665"] ; ClojureScript compiler https://github.com/clojure/clojurescript
+    [secretary "2.0.0.1-5a007a"] ; Client-side routing for ClojureScript https://github.com/gf3/secretary
   ]
   
   :profiles {
@@ -99,7 +99,7 @@
   }
 
   :plugins [
-    [lein-ring "0.8.13"] ; common ring tasks https://github.com/weavejester/lein-ring
+    [lein-ring "0.9.0"] ; common ring tasks https://github.com/weavejester/lein-ring
     [lein-environ "1.0.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [lein-cljsbuild "1.0.4"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
     [codox "0.8.10"] ; Generate Clojure API docs https://github.com/weavejester/codox
