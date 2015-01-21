@@ -1,24 +1,63 @@
-/target
-/targets
-/lib
-/classes
-/checkouts
-/out
-/docs/test-urls.txt
-_build/
-/resources/public/js/*
-REPL_prep.clj
-pom.xml
-*.jar
-*.class
+#####=== Clojure ===#####
 
-.repl
-.nrepl-port
+pom.xml
+pom.xml.asc
+*jar
+/lib/
+/classes/
+/target/
+/checkouts/
+/.repl/
+.lein-env
 .lein-git-deps
 .lein-deps-sum
-.lein-failures
-.lein-plugins
 .lein-repl-history
-.lein-env
+.lein-plugins/
+.lein-failures
+.nrepl-port
+REPL_prep.clj
+
+#####=== Generated Assets ===#####
+
+_build/
+/resources/public/js/*
+/out/
+
+#####=== Java ===#####
+
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+#####=== OSX ===#####
 
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
