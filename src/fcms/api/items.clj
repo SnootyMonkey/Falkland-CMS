@@ -1,6 +1,5 @@
 (ns fcms.api.items
-  (:require [clojure.core.match :refer (match)]
-            [compojure.core :refer (defroutes ANY)]
+  (:require [compojure.core :refer (defroutes ANY)]
             [liberator.core :refer (defresource by-method)]
             [fcms.api.common :as common]
             [fcms.resources.collection :as collection]
@@ -13,23 +12,23 @@
   (common/location-response [coll-slug (:slug item)] (render-item item) item/item-media-type))
 
 (defn- unprocessable-reason [reason]
-  (match reason
+  (case reason
     :bad-collection common/missing-collection-response
     :bad-item common/missing-response
     :no-name (common/unprocessable-entity-response "Name is required.")
     :property-conflict (common/unprocessable-entity-response "A reserved property was used.")
     :slug-conflict (common/unprocessable-entity-response "Slug already used in the collection.")
-    :invalid-slug (common/unprocessable-entity-response"Invalid slug.")
-    :else (common/unprocessable-entity-response "Not processable.")))
+    :invalid-slug (common/unprocessable-entity-response "Invalid slug.")
+    (common/unprocessable-entity-response "Not processable.")))
 
 ;; ----- Get items -----
 
 (defn- get-item [coll-slug item-slug]
   (let [item (item/get-item coll-slug item-slug)]
-    (match item
+    (case item
       :bad-collection [false {:bad-collection true}]
       nil false
-      :else {:item item})))
+      {:item item})))
 
 (defn- get-items [coll-slug]
   (if (collection/get-collection coll-slug)

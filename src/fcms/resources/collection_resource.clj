@@ -6,7 +6,8 @@
             [com.ashafa.clutch :as clutch]
             [fcms.resources.common :as common]
             [fcms.resources.collection :as collection]
-            [fcms.lib.slugify :refer (slugify)]))
+            [fcms.lib.slugify :refer (slugify)]
+            [defun :refer (defun)]))
 
 (def reserved-properties
   "Properties that can't be specified during a create and are ignored during an update."
@@ -30,7 +31,7 @@
     (collection/with-collection coll-slug
       (get-resource-with-db (:id collection) coll-slug slug type)))
 
-(defn valid-new-resource
+(defun valid-new-resource
   "Given the slug of the collection, the name of the resource, a map of a potential new resource,
   and a retrieval function for the resource type, check if the everything is in order to create
   the new resource.
@@ -41,16 +42,15 @@
   :property-conflict is returned if a property is included in the map of properties that is in
   the reserved-properties set."
   ([coll-slug resource-name type reserved-properties] (valid-new-resource coll-slug resource-name reserved-properties type {}))
-  ([coll-slug resource-name type reserved-properties {provided-slug :slug :as props}]
-    (if (:id (collection/get-collection coll-slug))
-      (cond
-        (or (nil? resource-name) (blank? resource-name)) :no-name
-        (not-empty (intersection (set (keys (keywordize-keys props))) reserved-properties)) :property-conflict
-        (not provided-slug) true
-        (not (common/valid-slug? provided-slug)) :invalid-slug
-        (nil? (get-resource coll-slug provided-slug type)) true
-        :else :slug-conflict)
-      :bad-collection)))
+  ([coll-slug :guard #(collection/get-collection %) resource-name type reserved-properties props]
+    (cond
+      (or (nil? resource-name) (blank? resource-name)) :no-name
+      (not-empty (intersection (set (keys (keywordize-keys props))) reserved-properties)) :property-conflict
+      (not (:slug props)) true
+      (not (common/valid-slug? (:slug props))) :invalid-slug
+      (nil? (get-resource coll-slug (:slug props) type)) true
+      :else :slug-conflict))
+  ([_ _ _ _ _] :bad-collection))
 
 (defn create-resource
   "Create a new resource in the collection specified by its slug, using the specified

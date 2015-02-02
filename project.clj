@@ -31,7 +31,7 @@
     [environ "1.0.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [com.taoensso/timbre "3.3.1-1cd4b70"] ; Logging https://github.com/ptaoussanis/timbre
     ;; Web Client-side
-    [org.clojure/clojurescript "0.0-2665"] ; ClojureScript compiler https://github.com/clojure/clojurescript
+    [org.clojure/clojurescript "0.0-2755"] ; ClojureScript compiler https://github.com/clojure/clojurescript
     [secretary "2.0.0.1-5a007a"] ; Client-side routing for ClojureScript https://github.com/gf3/secretary
   ]
   

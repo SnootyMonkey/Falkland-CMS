@@ -233,7 +233,7 @@
                                (new-categories (vec (cons category-slug remaining-path)) category-name))
 
         ;; the category exists and it has categories already
-        [_ _ ({} :guard :categories)]
+        [_ _ {} :guard :categories]
           ; recurse (not tail recursion)
           (create-categories category-name (conj category-path category-slug :categories) remaining-path categories)
 
