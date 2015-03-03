@@ -67,7 +67,6 @@
         [print-foo "1.0.1"] ; Old school print debugging https://github.com/danielribeiro/print-foo
         [aprint "0.1.1"] ; Pretty printing in the REPL (aprint thing) https://github.com/razum2um/aprint
         [org.clojure/tools.trace "0.7.8"] ; Tracing macros/fns https://github.com/clojure/tools.trace
-        [com.cemerick/piggieback "0.1.3"] ; ClojureScript bREPL from the nREPL https://github.com/cemerick/piggieback
       ]
       :plugins [
         [lein-cljsbuild "1.0.5"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
@@ -92,9 +91,7 @@
                  '[print.foo :refer :all]
                  '[clj-time.format :as t]
                  '[clojure.string :as s]
-                 '[cljs.repl.browser :as b-repl]
-                 '[cemerick.piggieback :as pb])
-        (defn brepl [] (pb/cljs-repl :repl-env (b-repl/repl-env :port 9000)))
+                 '[cljs.repl.browser :as b-repl])
       ]
     }]
 
