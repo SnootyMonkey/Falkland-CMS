@@ -38,12 +38,12 @@
   "
   Given the name of a new collection, and a map of the new collection's properties,
   check if the everything is in order to create the new collection.
-  
+
   Ensures the name of the item is specified or returns `:no-name`.
-  
+
   Ensures the slug is valid and doesn't already exist if it's specified,
   or returns `:invalid-slug` or `:slug-conflict` respectively.
-  
+
   If a property is included in the map of properties that is in the `common/reserved-properties`
   set of reserved property names `:property-conflict` is returned.
 
@@ -143,7 +143,7 @@
 
   If `:slug` is included in the properties the item will be moved to the
   new slug, otherwise the slug will remain the same.
-  
+
   The same validity conditions and invalid return values as the `valid-collection-update` function
   apply.
 

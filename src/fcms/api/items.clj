@@ -77,14 +77,14 @@
     :get true
     :delete true
     :put (fn [ctx] (common/check-input (item/valid-item-update coll-slug item-slug (:data ctx))))})
-  
+
   :handle-ok (by-method {
     :get (fn [ctx] (render-item (:item ctx)))
     :put (fn [ctx] (update-item-response coll-slug ctx))})
-  
+
   ;; Delete an item
   :delete! (fn [_] (item/delete-item coll-slug item-slug))
-  
+
   ;; Update an item
   :new? (by-method {:post true :put false})
   :malformed? (by-method {
@@ -106,7 +106,7 @@
     :get (fn [_] (common/only-accept 406 item/item-collection-media-type))
     :post (fn [_] (common/only-accept 406 item/item-media-type))})
   :allowed-methods [:get :post]
-  
+
   ;; Get a list of items
   :exists? (fn [_] (get-items coll-slug))
   :handle-ok (fn [ctx] (render-items coll-slug (:items ctx)))
