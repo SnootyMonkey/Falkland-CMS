@@ -10,7 +10,7 @@
     :email "sean@snootymonkey.com"
   }
   
-  :min-lein-version "2.5.0" ; highest version supported by Travis-CI as of 10/28/2014
+  :min-lein-version "2.5.1" ; highest version supported by Travis-CI as of 2/17/2015
 
   :dependencies [
     ;; Server-side
@@ -122,6 +122,8 @@
   ;; ----- Code check configuration -----
 
   :eastwood {
+    ;; Dinable some linters that are enabled by default
+    :exclude-linters [:wrong-arity]
     ;; Enable some linters that are disabled by default
     :add-linters [:unused-namespaces :unused-private-vars :unused-locals]
 
@@ -130,7 +132,7 @@
 
     ;; Exclude testing namespaces
     :tests-paths ["test"]
-    :exclude-namespaces [:test-paths]
+    :exclude-namespaces [:test-paths fcms.config]
   }
 
   ;; ----- Clojure API Documentation -----
@@ -144,8 +146,6 @@
   }
 
   ;; ----- ClojureScript -----
-
-  :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
   :cljsbuild {
     :crossovers [] ; compile for both Clojure and ClojureScript

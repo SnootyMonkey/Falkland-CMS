@@ -1,3 +1,6 @@
+(ns fcms.integration.rest-api.taxonomy.taxonomy-create
+  "Integration tests for creating taxonomies with the REST API.")
+
 ; Feature: Creating Taxonomies with the REST API
 
 ;   The system should store valid items into a collection and handle the following scenarios:
