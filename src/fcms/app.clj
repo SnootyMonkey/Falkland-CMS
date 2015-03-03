@@ -16,7 +16,7 @@
   (route/resources "/media/"))
 
 (def trace-app
-  (if liberator-trace 
+  (if liberator-trace
     (wrap-trace routes :header :ui)
     routes))
 

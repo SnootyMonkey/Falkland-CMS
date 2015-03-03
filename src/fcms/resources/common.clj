@@ -130,7 +130,7 @@
   "Turn a resource from its CouchDB map representation into its FCMS map representation."
   [db-map]
   (if-let [data (:data db-map)]
-    (-> 
+    (->
       (assoc (dissoc data :type) :id (:_id db-map))
       (update-in [:created-at] parse)
       (update-in [:updated-at] parse))))
