@@ -1,7 +1,7 @@
 (ns fcms.lib.check
   "Namespace for utility functions used in tests to check that things are as expected."
   (:require [clojure.test :refer (is)]
-            [clj-time.core :refer (now before? after? ago secs within?)]
+            [clj-time.core :refer (now before? after? ago seconds within?)]
             [clj-time.format :refer (parse)]))
 
 (defmacro check [forms]
@@ -23,5 +23,5 @@
   [timestamp]
   (if (timestamp? timestamp)
     (let [compare-time (time-for timestamp)]
-      (within? (-> 10 secs ago) (now) compare-time))
+      (within? (-> 10 seconds ago) (now) compare-time))
     false))

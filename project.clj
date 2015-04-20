@@ -18,25 +18,21 @@
     [org.clojure/core.match "0.3.0-alpha4"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [defun "0.2.0-RC"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
     [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
-    [org.clojure/tools.nrepl "0.2.7"] ; REPL server and client https://github.com/clojure/tools.nrepl
     [cheshire "5.4.0"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.2"] ; Ordered hash map https://github.com/flatland/ordered
-    [ring/ring-devel "1.3.2"] ; Web application library https://github.com/ring-clojure/ring
-    [ring/ring-core "1.3.2"] ; Web application library https://github.com/ring-clojure/ring
+    [ring/ring-devel "1.4.0-beta1"] ; Web application library https://github.com/ring-clojure/ring
+    [ring/ring-core "1.4.0-beta1"] ; Web application library https://github.com/ring-clojure/ring
     [http-kit "2.1.19"] ; Web Server http://http-kit.org/
-    [compojure "1.3.2"] ; Web routing https://github.com/weavejester/compojure
+    [compojure "1.3.3"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.12.2"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
-    [clojurewerkz/elastisch "2.2.0-beta1"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
+    [clojurewerkz/elastisch "2.2.0-beta3"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "1.0.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [com.taoensso/timbre "3.4.0"] ; Logging https://github.com/ptaoussanis/timbre
-    ;; Web Client-side
-    [org.clojure/clojurescript "0.0-2913"] ; ClojureScript compiler https://github.com/clojure/clojurescript
-    [secretary "2.0.0.1-5a007a"] ; Client-side routing for ClojureScript https://github.com/gf3/secretary
   ]
 
   :plugins [
-    [lein-ring "0.9.2"] ; common ring tasks https://github.com/weavejester/lein-ring
+    [lein-ring "0.9.3"] ; common ring tasks https://github.com/weavejester/lein-ring
     [lein-environ "1.0.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
   ]
   
@@ -90,8 +86,7 @@
                  '[clojure.test :refer :all]
                  '[print.foo :refer :all]
                  '[clj-time.format :as t]
-                 '[clojure.string :as s]
-                 '[cljs.repl.browser :as b-repl])
+                 '[clojure.string :as s])
       ]
     }]
 
@@ -143,32 +138,6 @@
     :src-dir-uri "http://github.com/SnootyMonkey/Falkland-CMS/blob/master/"
     :src-linenum-anchor-prefix "L" ; for Github
     :defaults {:doc/format :markdown}
-  }
-
-  ;; ----- ClojureScript -----
-
-  :cljsbuild {
-    :crossovers [] ; compile for both Clojure and ClojureScript
-    :builds {
-      :dev {
-        :source-paths ["src/fcms/cljs" "src/brepl"] ; CLJS source code path
-        ;; Google Closure (CLS) options configuration
-        :compiler {
-          :output-to "resources/public/js/fcms.js"
-          :optimizations :whitespace
-          :pretty-print true
-        }
-      }
-      :prod {
-        :source-paths ["src/fcms/cljs"] ; CLJS source code path
-        ;; Google Closure (CLS) options configuration
-        :compiler {
-          :output-to "resources/public/js/fcms.js"
-          :optimizations :advanced
-          :pretty-print false
-        }
-      }
-    }
   }
 
   ;; ----- Web Application -----
