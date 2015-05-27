@@ -28,7 +28,7 @@
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "2.2.0-beta4"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "1.0.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    [com.taoensso/timbre "3.4.0"] ; Logging https://github.com/ptaoussanis/timbre
+    [com.taoensso/timbre "4.0.0-beta2"] ; Logging https://github.com/ptaoussanis/timbre
   ]
 
   :plugins [
@@ -61,7 +61,7 @@
       }
       :dependencies [
         [print-foo "1.0.2"] ; Old school print debugging https://github.com/danielribeiro/print-foo
-        [aprint "0.1.1"] ; Pretty printing in the REPL (aprint thing) https://github.com/razum2um/aprint
+        [aprint "0.1.3"] ; Pretty printing in the REPL (aprint thing) https://github.com/razum2um/aprint
         [org.clojure/tools.trace "0.7.8"] ; Tracing macros/fns https://github.com/clojure/tools.trace
       ]
       :plugins [
