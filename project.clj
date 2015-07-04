@@ -20,15 +20,15 @@
     [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [cheshire "5.5.0"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.3"] ; Ordered hash map https://github.com/flatland/ordered
-    [ring/ring-devel "1.4.0-RC1"] ; Web application library https://github.com/ring-clojure/ring
-    [ring/ring-core "1.4.0-RC1"] ; Web application library https://github.com/ring-clojure/ring
+    [ring/ring-devel "1.4.0-RC2"] ; Web application library https://github.com/ring-clojure/ring
+    [ring/ring-core "1.4.0-RC2"] ; Web application library https://github.com/ring-clojure/ring
     [http-kit "2.1.19"] ; Web Server http://http-kit.org/
     [compojure "1.3.4"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.13"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "2.2.0-beta4"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "1.0.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    [com.taoensso/timbre "4.0.2"] ; Logging https://github.com/ptaoussanis/timbre
+    [com.taoensso/timbre "4.1.0-alpha1"] ; Logging https://github.com/ptaoussanis/timbre
   ]
 
   :plugins [
@@ -74,7 +74,7 @@
         [lein-ancient "0.6.7"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
         [lein-spell "0.1.0"] ; Catch spelling mistakes in docs and docstrings https://github.com/cldwalker/lein-spell
         [lein-deps-tree "0.1.2"] ; Print a tree of project dependencies https://github.com/the-kenny/lein-deps-tree
-        [lein-cljfmt "0.1.10"] ; Code formatting https://github.com/weavejester/cljfmt
+        [lein-cljfmt "0.2.0"] ; Code formatting https://github.com/weavejester/cljfmt
         [venantius/ultra "0.3.3"] ; Enhancement's to Leiningen's REPL https://github.com/venantius/ultra
       ]  
       ;; REPL colors
