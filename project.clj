@@ -44,7 +44,7 @@
         :hot-reload false
       }
       :dependencies [
-        [midje "1.7.0-SNAPSHOT"] ; Example-based testing https://github.com/marick/Midje
+        [midje "1.7.0"] ; Example-based testing https://github.com/marick/Midje
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
       ]
       :plugins [
