@@ -75,7 +75,8 @@
         [lein-spell "0.1.0"] ; Catch spelling mistakes in docs and docstrings https://github.com/cldwalker/lein-spell
         [lein-deps-tree "0.1.2"] ; Print a tree of project dependencies https://github.com/the-kenny/lein-deps-tree
         [lein-cljfmt "0.2.0"] ; Code formatting https://github.com/weavejester/cljfmt
-        [venantius/ultra "0.3.3"] ; Enhancement's to Leiningen's REPL https://github.com/venantius/ultra
+        [venantius/ultra "0.3.4"] ; Enhancement's to Leiningen's REPL https://github.com/venantius/ultra
+        [venantius/yagni "0.1.1"] ; Dead code finder https://github.com/venantius/yagni
       ]  
       ;; REPL colors
       :ultra {:color-scheme :solarized_dark}
