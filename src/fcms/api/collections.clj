@@ -16,7 +16,7 @@
     :no-name (common/unprocessable-entity-response "Name is required.")
     :property-conflict (common/unprocessable-entity-response "A reserved property was used.")
     :slug-conflict (common/unprocessable-entity-response "Slug already used.")
-    :invalid-slug (common/unprocessable-entity-response"Invalid slug.")
+    :invalid-slug (common/unprocessable-entity-response "Invalid slug.")
     (common/unprocessable-entity-response "Not processable.")))
 
 ;; ----- Get collections -----

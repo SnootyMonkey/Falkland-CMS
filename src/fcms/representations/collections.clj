@@ -46,8 +46,8 @@
 
 (defn- collection-to-json-map [coll]
   ;; Generate JSON from the sorted array map that results from:
-  ;; 1) render timestamps as strings
-  ;; 2) removing unneeded :id key
+  ;; 1) removing unneeded :id key
+  ;; 2) render timestamps as strings
   ;; 3) making an ordered array hash of the known ordered keys
   ;; 4) adding a sorted hash of any remaining keys
   ;; 5) adding the HATEAOS links to the array hash
