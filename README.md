@@ -17,17 +17,21 @@ Items can be physical things: books, magazines, newspapers, documents, papers, c
 
 Falkland CMS can be used to describe relationships among items and can assist in the archiving and preservation of digital items.
 
+
 ## Documentation
 
 Complete documentation is on the [Falkland CMS website](http://falkland-cms.com).
+
 
 ## Getting Help
 
 Falkland CMS is pre-alpha and not yet usable. A usable version is expected in 2015, and instructions for getting help will be available then.
 
+
 ## Development and Contributing
 
 If you want to contribute to the development, complete documentation on how to proceed is on the [Falkland CMS website](http://falkland-cms.com/contributing.html).
+
 
 ## License
 
