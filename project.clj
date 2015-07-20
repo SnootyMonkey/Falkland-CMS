@@ -14,7 +14,7 @@
 
   :dependencies [
     ;; Server-side
-    [org.clojure/clojure "1.7.0"] ; Lisp on the JVM http://clojure.org/documentation
+    [org.clojure/clojure "1.8.0-alpha2"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.match "0.3.0-alpha4"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [defun "0.2.0-RC"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
     [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
@@ -29,6 +29,7 @@
     [clojurewerkz/elastisch "2.2.0-beta4"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "1.0.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [com.taoensso/timbre "4.1.0-alpha2"] ; Logging https://github.com/ptaoussanis/timbre
+    [clj-http "2.0.0"] ; HTTP client https://github.com/dakrone/clj-http
   ]
 
   :plugins [
@@ -60,7 +61,6 @@
         :hot-reload true ; reload code when changed on the file system
       }
       :dependencies [
-        [print-foo "1.0.2"] ; Old school print debugging https://github.com/danielribeiro/print-foo
         [aprint "0.1.3"] ; Pretty printing in the REPL (aprint thing) https://github.com/razum2um/aprint
         [org.clojure/tools.trace "0.7.8"] ; Tracing macros/fns https://github.com/clojure/tools.trace
       ]
@@ -85,7 +85,6 @@
         (require '[aprint.core :refer (aprint ap)]
                  '[clojure.stacktrace :refer (print-stack-trace)]
                  '[clojure.test :refer :all]
-                 '[print.foo :refer :all]
                  '[clj-time.format :as t]
                  '[clojure.string :as s])
       ]

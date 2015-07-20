@@ -129,14 +129,14 @@
         :reduce "_count"}})))
 
 (defn init []
-  (println (str "FCMS: Initializing database - " db-name))
+  (println (str "\nFCMS: Initializing database - " db-name))
   (clutch/with-db (common/db)
      (fcms-views) (print ".")
      (collection-views) (print ".")
      (resource-views) (print ".")
      (item-views) (print ".")
      (taxonomy-views) (print "."))
-  (println "\nFCMS: Database initialization complete - " db-name))
+  (println "\nFCMS: Database initialization complete - " db-name "\n"))
 
 (defn -main []
   (init))
