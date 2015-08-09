@@ -28,7 +28,7 @@
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "2.2.0-beta4"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "1.0.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    [com.taoensso/timbre "4.1.0-alpha2"] ; Logging https://github.com/ptaoussanis/timbre
+    [com.taoensso/timbre "4.1.0"] ; Logging https://github.com/ptaoussanis/timbre
     [clj-http "2.0.0"] ; HTTP client https://github.com/dakrone/clj-http
   ]
 
@@ -45,11 +45,11 @@
         :hot-reload false
       }
       :dependencies [
-        [midje "1.7.0"] ; Example-based testing https://github.com/marick/Midje
+        [midje "1.8-alpha1"] ; Example-based testing https://github.com/marick/Midje
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
       ]
       :plugins [
-        [lein-midje "3.1.3"] ; Example-based testing https://github.com/marick/lein-midje
+        [lein-midje "3.2-RC4"] ; Example-based testing https://github.com/marick/lein-midje
         [jonase/eastwood "0.2.1"] ; Clojure linter https://github.com/jonase/eastwood
       ]
     }
