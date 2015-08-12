@@ -30,6 +30,7 @@
     [environ "1.0.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
     [com.taoensso/timbre "4.1.0"] ; Logging https://github.com/ptaoussanis/timbre
     [clj-http "2.0.0"] ; HTTP client https://github.com/dakrone/clj-http
+    [superstring "1.0.1"] ; String manipulation https://github.com/expez/superstring
   ]
 
   :plugins [
