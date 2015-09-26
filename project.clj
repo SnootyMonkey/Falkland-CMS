@@ -16,7 +16,7 @@
     ;; Server-side
     [org.clojure/clojure "1.8.0-alpha2"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.match "0.3.0-alpha4"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
-    [defun "0.2.0-RC"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
+    [defun "0.2.0"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
     [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [cheshire "5.5.0"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.3"] ; Ordered hash map https://github.com/flatland/ordered
@@ -28,7 +28,7 @@
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "2.2.0-beta4"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "1.0.1"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    [com.taoensso/timbre "4.1.1"] ; Logging https://github.com/ptaoussanis/timbre
+    [com.taoensso/timbre "4.1.2"] ; Logging https://github.com/ptaoussanis/timbre
     [clj-http "2.0.0"] ; HTTP client https://github.com/dakrone/clj-http
     [superstring "2.1.0"] ; String manipulation https://github.com/expez/superstring
   ]
@@ -72,7 +72,7 @@
         [lein-kibit "0.1.2"] ; Static code search for non-idiomatic code https://github.com/jonase/kibit
         [lein-checkall "0.1.1"] ; Runs bikeshed, kibit and eastwood https://github.com/itang/lein-checkall
         [lein-pprint "1.1.2"] ; pretty-print the lein project map https://github.com/technomancy/leiningen/tree/master/lein-pprint
-        [lein-ancient "0.6.7"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
+        [lein-ancient "0.6.8-SNAPSHOT"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
         [lein-spell "0.1.0"] ; Catch spelling mistakes in docs and docstrings https://github.com/cldwalker/lein-spell
         [lein-deps-tree "0.1.2"] ; Print a tree of project dependencies https://github.com/the-kenny/lein-deps-tree
         [lein-cljfmt "0.2.0"] ; Code formatting https://github.com/weavejester/cljfmt
@@ -112,7 +112,7 @@
     "start!" ["with-profile" "prod" "do" "init-db," "run"] ; start an FCMS server in production
     "spell!" ["spell" "-n"] ; check spelling in docs and docstrings
     "bikeshed!" ["bikeshed" "-v" "-m" "120"] ; code check with max line length warning of 120 characters
-    "ancient" ["with-profile" "dev" "do" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"] ; check for out of date dependencies
+    "ancient!" ["do" "ancient" ":allow-qualified," "ancient" ":plugins" ":allow-qualified"] ; check for out of date dependencies
   }
 
   ;; ----- Code check configuration -----
