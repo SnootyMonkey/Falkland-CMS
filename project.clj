@@ -14,9 +14,9 @@
 
   :dependencies [
     ;; Server-side
-    [org.clojure/clojure "1.8.0-beta1"] ; Lisp on the JVM http://clojure.org/documentation
+    [org.clojure/clojure "1.8.0-beta2"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.match "0.3.0-alpha4"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
-    [defun "0.2.0"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
+    [defun "0.3.0-alapha"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
     [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [cheshire "5.5.0"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.3"] ; Ordered hash map https://github.com/flatland/ordered
@@ -46,11 +46,14 @@
         :hot-reload false
       }
       :dependencies [
+        ; --- DO NOT UPDATE MIDJE, it breaks the tests https://github.com/marick/Midje/issues/323
+        [midje "1.7.0"] ; Example-based testing https://github.com/marick/Midje
+
         [midje "1.7.0"] ; Example-based testing https://github.com/marick/Midje
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
       ]
       :plugins [
-        [lein-midje "3.2-RC4"] ; Example-based testing https://github.com/marick/lein-midje
+        [lein-midje "3.2"] ; Example-based testing https://github.com/marick/lein-midje
         [jonase/eastwood "0.2.1"] ; Clojure linter https://github.com/jonase/eastwood
       ]
     }
@@ -67,7 +70,7 @@
       ]
       :plugins [
         [lein-cljsbuild "1.1.0"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
-        [codox "0.8.15"] ; Generate Clojure API docs https://github.com/weavejester/codox
+        [codox "0.9.0"] ; Generate Clojure API docs https://github.com/weavejester/codox
         [lein-bikeshed "0.2.0"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
         [lein-kibit "0.1.2"] ; Static code search for non-idiomatic code https://github.com/jonase/kibit
         [lein-checkall "0.1.1"] ; Runs bikeshed, kibit and eastwood https://github.com/itang/lein-checkall
