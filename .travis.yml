@@ -3,19 +3,18 @@ language: clojure
 lein: lein2
 cache:
   directories:
-    - $HOME/.m2
+  - "$HOME/.m2"
 script:
-  - lein2 test!
-  - lein2 eastwood
+- lein2 test!
+- lein2 eastwood
 branches:
   only:
-    - master
-    - dev
+  - master
+  - dev
 jdk:
-  - oraclejdk8
+- oraclejdk8
 services:
-  - couchdb
+- couchdb
 notifications:
-  hipchat:
-    rooms:
-      - ec1ead2b384476ea5bcb232b5bb9b6@Snooty Monkey
+  slack:
+    secure: KP14WdC7/2BXM5lEsFgCPUhRchXn4zMk1AmAS1QQEqhHT6rDb2r3jbKBJV6R3TTpaMx2lve1Wwtbkhzpbr2uczYnuXOxqqbkrGxNXFEWm0F4/w/mjtUBcRmAVIwzTc5akrfrZ0v+pwD2HkSJRoNaP4HiKCXzgq2mf0JasGcf7kc=
