@@ -24,7 +24,7 @@
     [ring/ring-core "1.4.0"] ; Web application library https://github.com/ring-clojure/ring
     [http-kit "2.1.19"] ; Web Server http://http-kit.org/
     [compojure "1.4.0"] ; Web routing https://github.com/weavejester/compojure
-    [liberator "0.13"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
+    [liberator "0.14.0"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "2.2.0-beta4"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "1.0.1"] ; Get environment settings from different sources https://github.com/weavejester/environ
@@ -47,12 +47,12 @@
         :hot-reload false
       }
       :dependencies [
-        [midje "1.8.1"] ; Example-based testing https://github.com/marick/Midje
+        [midje "1.8.2"] ; Example-based testing https://github.com/marick/Midje
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
       ]
       :plugins [
         [lein-midje "3.2"] ; Example-based testing https://github.com/marick/lein-midje
-        [jonase/eastwood "0.2.1"] ; Clojure linter https://github.com/jonase/eastwood
+        [jonase/eastwood "0.2.2"] ; Clojure linter https://github.com/jonase/eastwood
       ]
     }
 
@@ -67,7 +67,7 @@
         [org.clojure/tools.trace "0.7.9"] ; Tracing macros/fns https://github.com/clojure/tools.trace
       ]
       :plugins [
-        [lein-cljsbuild "1.1.0"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
+        [lein-cljsbuild "1.1.1"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
         [codox "0.9.0"] ; Generate Clojure API docs https://github.com/weavejester/codox
         [lein-bikeshed "0.2.0"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
         [lein-kibit "0.1.2"] ; Static code search for non-idiomatic code https://github.com/jonase/kibit
@@ -76,12 +76,7 @@
         [lein-ancient "0.6.8"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
         [lein-spell "0.1.0"] ; Catch spelling mistakes in docs and docstrings https://github.com/cldwalker/lein-spell
         [lein-deps-tree "0.1.2"] ; Print a tree of project dependencies https://github.com/the-kenny/lein-deps-tree
-        [lein-cljfmt "0.3.0"] ; Code formatting https://github.com/weavejester/cljfmt
-        [venantius/ultra "0.3.4"] ; Enhancement's to Leiningen's REPL https://github.com/venantius/ultra
-        [venantius/yagni "0.1.4"] ; Dead code finder https://github.com/venantius/yagni
       ]  
-      ;; REPL colors
-      :ultra {:color-scheme :solarized_dark}
       ;; REPL injections
       :injections [
         (require '[aprint.core :refer (aprint ap)]
