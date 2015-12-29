@@ -26,9 +26,9 @@
     [compojure "1.4.0"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.14.0"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
-    [clojurewerkz/elastisch "2.2.0-beta5"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
+    [clojurewerkz/elastisch "2.2.0-rc1"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "1.0.1"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    [com.taoensso/timbre "4.2.0-alpha3"] ; Logging https://github.com/ptaoussanis/timbre
+    [com.taoensso/timbre "4.2.0"] ; Logging https://github.com/ptaoussanis/timbre
     [clj-http "2.0.0"] ; HTTP client https://github.com/dakrone/clj-http
     [superstring "2.1.0"] ; String manipulation https://github.com/expez/superstring
     [commons-codec "1.10" :exclusions [[org.clojure/clojure]]] ; Dependency of compojure, ring-core, and midje http://commons.apache.org/proper/commons-codec/
@@ -47,7 +47,7 @@
         :hot-reload false
       }
       :dependencies [
-        [midje "1.8.2"] ; Example-based testing https://github.com/marick/Midje
+        [midje "1.8.3"] ; Example-based testing https://github.com/marick/Midje
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
       ]
       :plugins [
@@ -68,7 +68,7 @@
       ]
       :plugins [
         [lein-cljsbuild "1.1.2"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
-        [codox "0.9.0"] ; Generate Clojure API docs https://github.com/weavejester/codox
+        [codox "0.9.1"] ; Generate Clojure API docs https://github.com/weavejester/codox
         [lein-bikeshed "0.2.0"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
         [lein-kibit "0.1.2"] ; Static code search for non-idiomatic code https://github.com/jonase/kibit
         [lein-checkall "0.1.1"] ; Runs bikeshed, kibit and eastwood https://github.com/itang/lein-checkall
