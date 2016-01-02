@@ -25,7 +25,7 @@ Complete documentation is on the [Falkland CMS website](http://falkland-cms.com)
 
 ## Getting Help
 
-Falkland CMS is pre-alpha and not yet usable. A usable version is expected in 2015, and instructions for getting help will be available then.
+Falkland CMS is pre-alpha and not yet usable. A usable version is expected in 2016, and instructions for getting help will be available then.
 
 
 ## Development and Contributing
@@ -37,4 +37,4 @@ If you want to contribute to the development, complete documentation on how to p
 
 Falkland CMS is distributed under the [Mozilla Public License v2.0](http://www.mozilla.org/MPL/2.0/).
 
-Copyright © 2013-2015 [Snooty Monkey, LLC](http://snootymonkey.com/)
+Copyright © 2013-2016 [Snooty Monkey, LLC](http://snootymonkey.com/)
