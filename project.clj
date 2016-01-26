@@ -14,7 +14,7 @@
 
   :dependencies [
     ;; Server-side
-    [org.clojure/clojure "1.8.0-RC5"] ; Lisp on the JVM http://clojure.org/documentation
+    [org.clojure/clojure "1.8.0"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.match "0.3.0-alpha4"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [defun "0.3.0-alapha"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
     [org.clojure/core.incubator "0.1.3"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
@@ -28,8 +28,8 @@
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "2.2.1"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "1.0.1"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    [com.taoensso/timbre "4.2.0"] ; Logging https://github.com/ptaoussanis/timbre
-    [clj-http "2.0.0"] ; HTTP client https://github.com/dakrone/clj-http
+    [com.taoensso/timbre "4.2.1"] ; Logging https://github.com/ptaoussanis/timbre
+    [clj-http "2.0.1"] ; HTTP client https://github.com/dakrone/clj-http
     [superstring "2.1.0"] ; String manipulation https://github.com/expez/superstring
     [commons-codec "1.10" :exclusions [[org.clojure/clojure]]] ; Dependency of compojure, ring-core, and midje http://commons.apache.org/proper/commons-codec/
   ]
