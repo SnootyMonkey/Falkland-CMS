@@ -3,6 +3,11 @@
   (:require [environ.core :refer (env)]
             [com.ashafa.clutch :as clutch]))
 
+(defn- bool
+  "Handle the fact that we may have 'true'/'false' strings, when we want booleans."
+  [val]
+  (boolean (Boolean/valueOf val)))
+
 ;; ----- CouchDB config -----
 
 (defonce db-host (or (env :db-host) "http://localhost:5984/"))
@@ -18,9 +23,9 @@
 
 ;; ----- Web server config -----
 
-(defonce hot-reload (or (env :hot-reload) false))
+(defonce hot-reload (bool (or (env :hot-reload) false)))
 (defonce web-server-port (Integer/parseInt (or (env :port) "3000")))
 
 ;; ----- Liberator config -----
 
-(defonce liberator-trace (or (env :liberator-trace) false))
+(defonce liberator-trace (bool (or (env :liberator-trace) false)))

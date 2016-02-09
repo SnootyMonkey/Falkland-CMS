@@ -27,8 +27,8 @@
     [liberator "0.14.0"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "2.2.1"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
-    [environ "1.0.1"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    [com.taoensso/timbre "4.2.1"] ; Logging https://github.com/ptaoussanis/timbre
+    [environ "1.0.2"] ; Get environment settings from different sources https://github.com/weavejester/environ
+    [com.taoensso/timbre "4.3.0-RC1"] ; Logging https://github.com/ptaoussanis/timbre
     [clj-http "2.0.1"] ; HTTP client https://github.com/dakrone/clj-http
     [superstring "2.1.0"] ; String manipulation https://github.com/expez/superstring
     [commons-codec "1.10" :exclusions [[org.clojure/clojure]]] ; Dependency of compojure, ring-core, and midje http://commons.apache.org/proper/commons-codec/
@@ -36,15 +36,15 @@
 
   :plugins [
     [lein-ring "0.9.7"] ; common ring tasks https://github.com/weavejester/lein-ring
-    [lein-environ "1.0.1"] ; Get environment settings from different sources https://github.com/weavejester/environ
+    [lein-environ "1.0.2"] ; Get environment settings from different sources https://github.com/weavejester/environ
   ]
   
   :profiles {
     :qa {
       :env {
         :db-name "falklandcms-test"
-        :liberator-trace false
-        :hot-reload false
+        :liberator-trace "false"
+        :hot-reload "false"
       }
       :dependencies [
         [midje "1.8.3"] ; Example-based testing https://github.com/marick/Midje
@@ -59,8 +59,8 @@
     :dev [:qa {
       :env ^:replace {
         :db-name "falklandcms-dev" ; CouchDB database name
-        :liberator-trace true ; liberator debug data in HTTP response headers
-        :hot-reload true ; reload code when changed on the file system
+        :liberator-trace "true" ; liberator debug data in HTTP response headers
+        :hot-reload "true" ; reload code when changed on the file system
       }
       :dependencies [
         [aprint "0.1.3"] ; Pretty printing in the REPL (aprint thing) https://github.com/razum2um/aprint
@@ -68,7 +68,7 @@
       ]
       :plugins [
         [lein-cljsbuild "1.1.2"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
-        [codox "0.9.1"] ; Generate Clojure API docs https://github.com/weavejester/codox
+        [codox "0.9.4"] ; Generate Clojure API docs https://github.com/weavejester/codox
         [lein-bikeshed "0.2.0"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
         [lein-kibit "0.1.2"] ; Static code search for non-idiomatic code https://github.com/jonase/kibit
         [lein-checkall "0.1.1"] ; Runs bikeshed, kibit and eastwood https://github.com/itang/lein-checkall
@@ -90,8 +90,8 @@
     :prod {
       :env {
         :db-name "falklandcms" ; CouchDB database name
-        :liberator-trace false
-        :hot-reload false
+        :liberator-trace "false"
+        :hot-reload "false"
       }
     }
   }
