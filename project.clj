@@ -18,17 +18,17 @@
     [org.clojure/core.match "0.3.0-alpha4"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [defun "0.3.0-alapha"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
     [org.clojure/core.incubator "0.1.4"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
-    [cheshire "5.6.1"] ; JSON de/encoding https://github.com/dakrone/cheshire
+    [cheshire "5.6.3"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.3"] ; Ordered hash map https://github.com/flatland/ordered
-    [ring/ring-devel "1.5.0"] ; Web application library https://github.com/ring-clojure/ring
-    [ring/ring-core "1.5.0"] ; Web application library https://github.com/ring-clojure/ring
-    [http-kit "2.2.0-alpha2"] ; Web Server http://http-kit.org/
+    [ring/ring-devel "1.6.0-beta1"] ; Web application library https://github.com/ring-clojure/ring
+    [ring/ring-core "1.6.0-beta1"] ; Web application library https://github.com/ring-clojure/ring
+    [http-kit "2.2.0-beta1"] ; Web Server http://http-kit.org/
     [compojure "1.5.1"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.14.1"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "3.0.0-beta1"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "1.0.3"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    [com.taoensso/timbre "4.5.0-RC2"] ; Logging https://github.com/ptaoussanis/timbre
+    [com.taoensso/timbre "4.5.0"] ; Logging https://github.com/ptaoussanis/timbre
     [clj-http "3.1.0"] ; HTTP client https://github.com/dakrone/clj-http
     [superstring "2.1.0"] ; String manipulation https://github.com/expez/superstring
     [commons-codec "1.10" :exclusions [[org.clojure/clojure]]] ; Dependency of compojure, ring-core, and midje http://commons.apache.org/proper/commons-codec/
