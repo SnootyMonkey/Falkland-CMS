@@ -14,29 +14,29 @@
 
   :dependencies [
     ;; Server-side
-    [org.clojure/clojure "1.9.0-alpha10"] ; Lisp on the JVM http://clojure.org/documentation
+    [org.clojure/clojure "1.9.0-alpha13"] ; Lisp on the JVM http://clojure.org/documentation
     [org.clojure/core.match "0.3.0-alpha4"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [defun "0.3.0-alapha"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
     [org.clojure/core.incubator "0.1.4"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [cheshire "5.6.3"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.4"] ; Ordered hash map https://github.com/flatland/ordered
-    [ring/ring-devel "1.6.0-beta4"] ; Web application library https://github.com/ring-clojure/ring
-    [ring/ring-core "1.6.0-beta4"] ; Web application library https://github.com/ring-clojure/ring
-    [http-kit "2.2.0"] ; Web Server http://http-kit.org/
-    [compojure "1.5.1"] ; Web routing https://github.com/weavejester/compojure
+    [ring/ring-devel "1.6.0-beta6"] ; Web application library https://github.com/ring-clojure/ring
+    [ring/ring-core "1.6.0-beta6"] ; Web application library https://github.com/ring-clojure/ring
+    [http-kit "2.3.0-alpha1"] ; Web Server http://http-kit.org/
+    [compojure "1.6.0-beta1"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.14.1"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "3.0.0-beta1"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
-    [environ "1.0.3"] ; Get environment settings from different sources https://github.com/weavejester/environ
-    [com.taoensso/timbre "4.6.0"] ; Logging https://github.com/ptaoussanis/timbre
-    [clj-http "3.1.0"] ; HTTP client https://github.com/dakrone/clj-http
+    [environ "1.1.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
+    [com.taoensso/timbre "4.8.0-alpha1"] ; Logging https://github.com/ptaoussanis/timbre
+    [clj-http "3.3.0"] ; HTTP client https://github.com/dakrone/clj-http
     [superstring "2.1.0"] ; String manipulation https://github.com/expez/superstring
     [commons-codec "1.10" :exclusions [[org.clojure/clojure]]] ; Dependency of compojure, ring-core, and midje http://commons.apache.org/proper/commons-codec/
   ]
 
   :plugins [
     [lein-ring "0.9.7"] ; common ring tasks https://github.com/weavejester/lein-ring
-    [lein-environ "1.0.3"] ; Get environment settings from different sources https://github.com/weavejester/environ
+    [lein-environ "1.1.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
   ]
   
   :profiles {
@@ -47,11 +47,11 @@
         :hot-reload "false"
       }
       :dependencies [
-        [midje "1.9.0-alpha3"] ; Example-based testing https://github.com/marick/Midje
+        [midje "1.9.0-alpha5"] ; Example-based testing https://github.com/marick/Midje
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
       ]
       :plugins [
-        [lein-midje "3.2"] ; Example-based testing https://github.com/marick/lein-midje
+        [lein-midje "3.2.1"] ; Example-based testing https://github.com/marick/lein-midje
         [jonase/eastwood "0.2.3"] ; Clojure linter https://github.com/jonase/eastwood
       ]
     }
@@ -67,8 +67,7 @@
         [org.clojure/tools.trace "0.7.9"] ; Tracing macros/fns https://github.com/clojure/tools.trace
       ]
       :plugins [
-        [lein-cljsbuild "1.1.3"] ; ClojureScript compiler https://github.com/emezeske/lein-cljsbuild
-        [codox "0.9.5"] ; Generate Clojure API docs https://github.com/weavejester/codox
+        [codox "0.10.1"] ; Generate Clojure API docs https://github.com/weavejester/codox
         [lein-bikeshed "0.3.0"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
         [lein-kibit "0.1.2"] ; Static code search for non-idiomatic code https://github.com/jonase/kibit
         [lein-checkall "0.1.1"] ; Runs bikeshed, kibit and eastwood https://github.com/itang/lein-checkall
