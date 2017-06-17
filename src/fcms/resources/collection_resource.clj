@@ -7,7 +7,7 @@
             [fcms.resources.common :as common]
             [fcms.resources.collection :as collection]
             [fcms.lib.slugify :refer (slugify)]
-            [defun :refer (defun)]))
+            [defun.core :refer (defun)]))
 
 (def reserved-properties
   "Properties that can't be specified during a create and are ignored during an update."
