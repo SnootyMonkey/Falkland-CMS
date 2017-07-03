@@ -24,7 +24,7 @@
     [ring/ring-core "1.6.1"] ; Web application library https://github.com/ring-clojure/ring
     [http-kit "2.3.0-alpha2"] ; Web Server http://http-kit.org/
     [compojure "1.6.0"] ; Web routing https://github.com/weavejester/compojure
-    [liberator "0.14.1"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
+    [liberator "0.15.0"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "3.0.0-beta2"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "1.1.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
