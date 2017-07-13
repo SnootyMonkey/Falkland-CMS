@@ -19,12 +19,12 @@
     [defun "0.3.0-RC1"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
     [org.clojure/core.incubator "0.1.4"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [cheshire "5.7.1"] ; JSON de/encoding https://github.com/dakrone/cheshire
-    [org.flatland/ordered "1.5.4"] ; Ordered hash map https://github.com/flatland/ordered
+    [org.flatland/ordered "1.5.5"] ; Ordered hash map https://github.com/flatland/ordered
     [ring/ring-devel "1.6.1"] ; Web application library https://github.com/ring-clojure/ring
     [ring/ring-core "1.6.1"] ; Web application library https://github.com/ring-clojure/ring
     [http-kit "2.3.0-alpha2"] ; Web Server http://http-kit.org/
     [compojure "1.6.0"] ; Web routing https://github.com/weavejester/compojure
-    [liberator "0.15.0"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
+    [liberator "0.15.1"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
     [com.ashafa/clutch "0.4.0"] ; CouchDB client https://github.com/clojure-clutch/clutch
     [clojurewerkz/elastisch "3.0.0-beta2"] ; Client for ElasticSearch https://github.com/clojurewerkz/elastisch
     [environ "1.1.0"] ; Get environment settings from different sources https://github.com/weavejester/environ
@@ -47,7 +47,7 @@
         :hot-reload "false"
       }
       :dependencies [
-        [midje "1.9.0-alpha6"] ; Example-based testing https://github.com/marick/Midje
+        [midje "1.9.0-alpha8"] ; Example-based testing https://github.com/marick/Midje
         [ring-mock "0.1.5"] ; Test Ring requests https://github.com/weavejester/ring-mock
       ]
       :plugins [
