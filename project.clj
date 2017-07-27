@@ -15,13 +15,13 @@
   :dependencies [
     ;; Server-side
     [org.clojure/clojure "1.9.0-alpha17"] ; Lisp on the JVM http://clojure.org/documentation
-    [org.clojure/core.match "0.3.0-alpha4"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
+    [org.clojure/core.match "0.3.0-alpha5"] ; Erlang-esque pattern matching https://github.com/clojure/core.match
     [defun "0.3.0-RC1"] ; Erlang-esque pattern matching for Clojure functions https://github.com/killme2008/defun
     [org.clojure/core.incubator "0.1.4"] ; Functions proposed for inclusion in Clojure https://github.com/clojure/core.incubator
     [cheshire "5.7.1"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [org.flatland/ordered "1.5.5"] ; Ordered hash map https://github.com/flatland/ordered
-    [ring/ring-devel "1.6.1"] ; Web application library https://github.com/ring-clojure/ring
-    [ring/ring-core "1.6.1"] ; Web application library https://github.com/ring-clojure/ring
+    [ring/ring-devel "1.6.2"] ; Web application library https://github.com/ring-clojure/ring
+    [ring/ring-core "1.6.2"] ; Web application library https://github.com/ring-clojure/ring
     [http-kit "2.3.0-alpha2"] ; Web Server http://http-kit.org/
     [compojure "1.6.0"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.15.1"] ; WebMachine (REST API server) port to Clojure https://github.com/clojure-liberator/liberator
@@ -69,7 +69,7 @@
       :plugins [
         [codox "0.10.3"] ; Generate Clojure API docs https://github.com/weavejester/codox
         [lein-bikeshed "0.4.1"] ; Check for code smells https://github.com/dakrone/lein-bikeshed
-        [lein-kibit "0.1.5"] ; Static code search for non-idiomatic code https://github.com/jonase/kibit
+        [lein-kibit "0.1.6-beta1"] ; Static code search for non-idiomatic code https://github.com/jonase/kibit
         [lein-checkall "0.1.1"] ; Runs bikeshed, kibit and eastwood https://github.com/itang/lein-checkall
         [lein-pprint "1.1.2"] ; pretty-print the lein project map https://github.com/technomancy/leiningen/tree/master/lein-pprint
         [lein-ancient "0.6.10"] ; Check for outdated dependencies https://github.com/xsc/lein-ancient
